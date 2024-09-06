@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "module": "Node16",
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": ".",
+    "strict": true,
+    "target": "es2022",
+    "moduleResolution": "node16",
+    "jsx": "react-jsx",
+    "paths": {
+      "@cli/baseCommand": ["./src/baseCommand.ts"],
+      "@cli/components": ["./src/components/index.tsx"],
+      "@cli/config": ["./src/config.ts"],
+      "@cli/lib": ["./src/lib/index.ts"]
+    }
+  },
+  "include": ["./src/**/*", "./tsconfig.json"],
+
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
+}
