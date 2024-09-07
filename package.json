@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "author": "Hello Invent Ltd",
   "bin": {
-    "shipthis": "./bin/run.js"
+    "shipthis": "./dist/bin/run.js"
   },
   "bugs": "https://github.com/oclif-cli/shipthis/issues",
   "dependencies": {
@@ -41,9 +41,11 @@
     "eslint-config-prettier": "^9",
     "mocha": "^10",
     "oclif": "^4",
+    "pkgroll": "^2.4.2",
     "shx": "^0.3.3",
     "ts-node": "^10",
     "tsconfig-paths": "^4.2.0",
+    "tsx": "^4.19.0",
     "typescript": "^5"
   },
   "engines": {
@@ -61,6 +63,28 @@
   "license": "MIT",
   "main": "dist/index.js",
   "type": "module",
+  "exports": [
+    "./dist/commands/apple/status.js",
+    "./dist/commands/apple/certificate/import.js",
+    "./dist/commands/apple/certificate/create.js",
+    "./dist/commands/apple/certificate/status.js",
+    "./dist/commands/apple/login.js",
+    "./dist/commands/game/import.js",
+    "./dist/commands/game/ios/app/create.js",
+    "./dist/commands/game/ios/app/status.js",
+    "./dist/commands/game/ios/status.js",
+    "./dist/commands/game/ios/apiKey/import.js",
+    "./dist/commands/game/ios/apiKey/create.js",
+    "./dist/commands/game/ios/apiKey/status.js",
+    "./dist/commands/game/ios/profile/import.js",
+    "./dist/commands/game/ios/profile/create.js",
+    "./dist/commands/game/ios/profile/status.js",
+    "./dist/commands/game/list.js",
+    "./dist/commands/game/create.js",
+    "./dist/commands/game/status.js",
+    "./dist/commands/status.js",
+    "./dist/commands/login.js"
+  ],
   "oclif": {
     "bin": "shipthis",
     "dirname": "shipthis",
@@ -78,8 +102,9 @@
   },
   "repository": "oclif-cli/shipthis",
   "scripts": {
-    "build": "shx rm -rf dist && tsc -b",
-    "build-new": "shx rm -rf dist && npx tsc --build && npx tsc-alias -p tsconfig.json",
+    "build-original": "shx rm -rf dist && tsc -b",
+    "build-tsc-alias": "shx rm -rf dist && npx tsc --build && npx tsc-alias -p tsconfig.json",
+    "build": "pkgroll --clean-dist",
     "lint": "eslint . --ext .ts",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "npm run lint",

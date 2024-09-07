@@ -29,8 +29,454 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`shipthis apple certificate create [FILE]`](#shipthis-apple-certificate-create-file)
+* [`shipthis apple certificate import [FILE]`](#shipthis-apple-certificate-import-file)
+* [`shipthis apple certificate status [FILE]`](#shipthis-apple-certificate-status-file)
+* [`shipthis apple login`](#shipthis-apple-login)
+* [`shipthis apple status`](#shipthis-apple-status)
+* [`shipthis game create`](#shipthis-game-create)
+* [`shipthis game import [FILE]`](#shipthis-game-import-file)
+* [`shipthis game ios apiKey create [FILE]`](#shipthis-game-ios-apikey-create-file)
+* [`shipthis game ios apiKey import [FILE]`](#shipthis-game-ios-apikey-import-file)
+* [`shipthis game ios apiKey status [FILE]`](#shipthis-game-ios-apikey-status-file)
+* [`shipthis game ios app create [FILE]`](#shipthis-game-ios-app-create-file)
+* [`shipthis game ios app status [FILE]`](#shipthis-game-ios-app-status-file)
+* [`shipthis game ios profile create [FILE]`](#shipthis-game-ios-profile-create-file)
+* [`shipthis game ios profile import [FILE]`](#shipthis-game-ios-profile-import-file)
+* [`shipthis game ios profile status [FILE]`](#shipthis-game-ios-profile-status-file)
+* [`shipthis game ios status`](#shipthis-game-ios-status)
+* [`shipthis game list [FILE]`](#shipthis-game-list-file)
+* [`shipthis game status`](#shipthis-game-status)
 * [`shipthis help [COMMAND]`](#shipthis-help-command)
 * [`shipthis login`](#shipthis-login)
+* [`shipthis status`](#shipthis-status)
+
+## `shipthis apple certificate create [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis apple certificate create [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis apple certificate create
+```
+
+_See code: [src/commands/apple/certificate/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/create.ts)_
+
+## `shipthis apple certificate import [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis apple certificate import [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis apple certificate import
+```
+
+_See code: [src/commands/apple/certificate/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/import.ts)_
+
+## `shipthis apple certificate status [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis apple certificate status [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis apple certificate status
+```
+
+_See code: [src/commands/apple/certificate/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/status.ts)_
+
+## `shipthis apple login`
+
+Authenticate with Apple - saves the session to the auth file
+
+```
+USAGE
+  $ shipthis apple login [--log-level debug|warn|error|info|trace] [-f] [-e <value>]
+
+FLAGS
+  -e, --email=<value>  Your Apple email address
+  -f, --force
+
+GLOBAL FLAGS
+  --log-level=<option>  [default: info] Specify level for logging.
+                        <options: debug|warn|error|info|trace>
+
+DESCRIPTION
+  Authenticate with Apple - saves the session to the auth file
+
+EXAMPLES
+  $ shipthis apple login
+
+  $ shipthis apple login --force --email me@email.nowhere
+```
+
+_See code: [src/commands/apple/login.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/login.ts)_
+
+## `shipthis apple status`
+
+Shows the current Apple Overall status
+
+```
+USAGE
+  $ shipthis apple status [--log-level debug|warn|error|info|trace]
+
+GLOBAL FLAGS
+  --log-level=<option>  [default: info] Specify level for logging.
+                        <options: debug|warn|error|info|trace>
+
+DESCRIPTION
+  Shows the current Apple Overall status
+
+EXAMPLES
+  $ shipthis apple status
+```
+
+_See code: [src/commands/apple/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/status.ts)_
+
+## `shipthis game create`
+
+Create a new ShipThis game
+
+```
+USAGE
+  $ shipthis game create [--log-level debug|warn|error|info|trace] [-f] [-n <value>]
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  The name of the game
+
+GLOBAL FLAGS
+  --log-level=<option>  [default: info] Specify level for logging.
+                        <options: debug|warn|error|info|trace>
+
+DESCRIPTION
+  Create a new ShipThis game
+
+EXAMPLES
+  $ shipthis game create
+```
+
+_See code: [src/commands/game/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/create.ts)_
+
+## `shipthis game import [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game import [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game import
+```
+
+_See code: [src/commands/game/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/import.ts)_
+
+## `shipthis game ios apiKey create [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game ios apiKey create [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game ios apiKey create
+```
+
+_See code: [src/commands/game/ios/apiKey/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/apiKey/create.ts)_
+
+## `shipthis game ios apiKey import [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game ios apiKey import [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game ios apiKey import
+```
+
+_See code: [src/commands/game/ios/apiKey/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/apiKey/import.ts)_
+
+## `shipthis game ios apiKey status [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game ios apiKey status [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game ios apiKey status
+```
+
+_See code: [src/commands/game/ios/apiKey/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/apiKey/status.ts)_
+
+## `shipthis game ios app create [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game ios app create [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game ios app create
+```
+
+_See code: [src/commands/game/ios/app/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/create.ts)_
+
+## `shipthis game ios app status [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game ios app status [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game ios app status
+```
+
+_See code: [src/commands/game/ios/app/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/status.ts)_
+
+## `shipthis game ios profile create [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game ios profile create [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game ios profile create
+```
+
+_See code: [src/commands/game/ios/profile/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/create.ts)_
+
+## `shipthis game ios profile import [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game ios profile import [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game ios profile import
+```
+
+_See code: [src/commands/game/ios/profile/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/import.ts)_
+
+## `shipthis game ios profile status [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game ios profile status [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game ios profile status
+```
+
+_See code: [src/commands/game/ios/profile/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/status.ts)_
+
+## `shipthis game ios status`
+
+Shows the current Game Platform iOS status
+
+```
+USAGE
+  $ shipthis game ios status [--log-level debug|warn|error|info|trace]
+
+GLOBAL FLAGS
+  --log-level=<option>  [default: info] Specify level for logging.
+                        <options: debug|warn|error|info|trace>
+
+DESCRIPTION
+  Shows the current Game Platform iOS status
+
+EXAMPLES
+  $ shipthis game ios status
+```
+
+_See code: [src/commands/game/ios/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/status.ts)_
+
+## `shipthis game list [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game list [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game list
+```
+
+_See code: [src/commands/game/list.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/list.ts)_
+
+## `shipthis game status`
+
+Shows the current Game status
+
+```
+USAGE
+  $ shipthis game status [--log-level debug|warn|error|info|trace]
+
+GLOBAL FLAGS
+  --log-level=<option>  [default: info] Specify level for logging.
+                        <options: debug|warn|error|info|trace>
+
+DESCRIPTION
+  Shows the current Game status
+
+EXAMPLES
+  $ shipthis game status
+```
+
+_See code: [src/commands/game/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/status.ts)_
 
 ## `shipthis help [COMMAND]`
 
@@ -58,14 +504,13 @@ Authenticate with shipthis - will create a new account if one does not exist
 
 ```
 USAGE
-  $ shipthis login [--json] [--log-level debug|warn|error|info|trace] [-f] [-e <value>]
+  $ shipthis login [--log-level debug|warn|error|info|trace] [-f] [-e <value>]
 
 FLAGS
   -e, --email=<value>  Your email address
   -f, --force
 
 GLOBAL FLAGS
-  --json                Format output as json.
   --log-level=<option>  [default: info] Specify level for logging.
                         <options: debug|warn|error|info|trace>
 
@@ -79,4 +524,25 @@ EXAMPLES
 ```
 
 _See code: [src/commands/login.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/login.ts)_
+
+## `shipthis status`
+
+Displays the current shipthis status
+
+```
+USAGE
+  $ shipthis status [--log-level debug|warn|error|info|trace]
+
+GLOBAL FLAGS
+  --log-level=<option>  [default: info] Specify level for logging.
+                        <options: debug|warn|error|info|trace>
+
+DESCRIPTION
+  Displays the current shipthis status
+
+EXAMPLES
+  $ shipthis status
+```
+
+_See code: [src/commands/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/status.ts)_
 <!-- commandsstop -->

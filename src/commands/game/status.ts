@@ -1,8 +1,8 @@
 import {colorize, stderr} from '@oclif/core/ux'
 
-import {BaseCommand} from '@cli/baseCommands'
+import {BaseCommand} from '@cli/baseCommands/index.js'
 
-export default class Status extends BaseCommand<typeof Status> {
+export default class GameStatus extends BaseCommand<typeof GameStatus> {
   static override args = {}
 
   static override description = 'Shows the current Game status'
@@ -12,12 +12,6 @@ export default class Status extends BaseCommand<typeof Status> {
   static override flags = {}
 
   public async run(): Promise<void> {
-    try {
-      this.log('TODO: Status')
-      this.exit(0)
-    } catch (err: any) {
-      stderr(colorize('#FF0000', err.message))
-      this.exit(1)
-    }
+    //
   }
 }

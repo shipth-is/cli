@@ -3,10 +3,10 @@ import {Flags} from '@oclif/core'
 import {colorize, stderr} from '@oclif/core/ux'
 import {promises as readline} from 'node:readline'
 
-import {BaseCommand} from '@cli/baseCommands'
-import {API_URL} from '@cli/config'
+import {BaseCommand} from '@cli/baseCommands/index.js'
+import {API_URL} from '@cli/config.js'
 
-export default class Login extends BaseCommand<typeof Login> {
+export default class AppleLogin extends BaseCommand<typeof AppleLogin> {
   static override args = {}
 
   static override description = 'Authenticate with Apple - saves the session to the auth file'

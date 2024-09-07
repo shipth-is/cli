@@ -1,2 +1,1 @@
-// @ts-nocheck
-export * from './baseCommand.ts'
+export * from './baseCommand.js'

@@ -10,8 +10,8 @@ import {
   // @ts-ignore
 } from './types.ts'
 
-import {getAuthedHeaders} from '@cli/auth'
-import {API_URL} from '@cli/config'
+import {getAuthedHeaders} from '@cli/api/index.js'
+import {API_URL} from '@cli/config.js'
 
 interface UploadTicket {
   url: string
@@ -21,7 +21,7 @@ interface UploadTicket {
 // Returns a signed URL to upload the contents of a credential to
 async function getNewUploadTicket(projectId: string | null = null): Promise<UploadTicket> {
   const url = projectId ? `${API_URL}/projects/${projectId}/credentials/url` : `${API_URL}/credentials/url`
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const {data: uploadInfo} = await axios({
     method: 'post',
     url,
@@ -50,7 +50,7 @@ export async function uploadUserCredentials({contents, platform, type, serialNum
     },
   })
   // Save to our account
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   return await axios({
     method: 'post',
     url: `${API_URL}/credentials`,
@@ -79,7 +79,7 @@ export async function uploadProjectCredentials(
     },
   })
   // Persist the upload onto the project
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   return await axios({
     method: 'post',
     url: `${API_URL}/projects/${projectId}/credentials`,

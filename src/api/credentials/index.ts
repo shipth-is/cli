@@ -1,9 +1,8 @@
 import axios from 'axios'
 import {ApiKey, Certificate} from '@expo/apple-utils'
 
-import {getAuthedHeaders} from '@cli/auth'
-import {API_URL} from '@cli/config'
-import {getProjectFromConfig} from '@cli/project'
+import {getAuthedHeaders} from '@cli/api/index.js'
+import {API_URL} from '@cli/config.js'
 
 // @ts-ignore
 import {UserCertificate_iOS, UserCredential} from './types.ts'
@@ -17,7 +16,7 @@ export * from './import.ts'
 
 async function getAllUserCredentials(): Promise<UserCredential[]> {
   console.debug('only getting first 100 credentials')
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const {data} = await axios({
     method: 'get',
     url: `${API_URL}/credentials?pageSize=100`,
@@ -55,11 +54,9 @@ export async function getUsableKey(keys: ApiKey[]): Promise<ApiKey | undefined> 
 
 // Tells us if we need to create a project cert given the valid user cert
 // TODO: rename as is apple specific?
-export async function hasProjectCredentials(userCert: Certificate): Promise<Boolean> {
-  const project = await getProjectFromConfig()
-  const {id: projectId} = project
+export async function hasProjectCredentials(projectId: string, userCert: Certificate): Promise<Boolean> {
   const serialNumber = userCert.attributes.serialNumber
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   try {
     await axios({
       method: 'get',
@@ -76,7 +73,7 @@ export async function hasProjectCredentials(userCert: Certificate): Promise<Bool
 // TODO: rename as is apple specific?
 export async function getUserCredentialsContent(userCert: Certificate): Promise<UserCertificate_iOS> {
   const serialNumber = userCert.attributes.serialNumber
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const {data} = await axios({
     method: 'get',
     url: `${API_URL}/credentials/${serialNumber}`,
@@ -94,7 +91,7 @@ export async function getUserCredentialsContent(userCert: Certificate): Promise<
 // Tells us if we need to create/upload a keystore for a project
 // TODO: rename as is Android specific?
 export async function getHasKeystore(projectId: string) {
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   try {
     await axios.get(`${API_URL}/projects/${projectId}/credentials/android/certificate`, {
       headers,

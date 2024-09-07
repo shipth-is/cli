@@ -1,30 +1,50 @@
-import {Args, Command, Flags} from '@oclif/core'
+import {Flags} from '@oclif/core'
+import {promises as readline} from 'node:readline'
 
-export default class GameCreate extends Command {
-  static override args = {
-    file: Args.string({description: 'file to read'}),
-  }
+import {BaseCommand} from '@cli/baseCommands/index.js'
+import {createProject} from '@cli/api/index.js'
 
-  static override description = 'describe the command here'
+export default class GameCreate extends BaseCommand<typeof GameCreate> {
+  static override args = {}
 
-  static override examples = [
-    '<%= config.bin %> <%= command.id %>',
-  ]
+  static override description = 'Create a new ShipThis game'
+
+  static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    // flag with no value (-f, --force)
     force: Flags.boolean({char: 'f'}),
-    // flag with a value (-n, --name=VALUE)
-    name: Flags.string({char: 'n', description: 'name to print'}),
+    name: Flags.string({char: 'n', description: 'The name of the game'}),
   }
 
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(GameCreate)
+    const {flags} = this
 
-    const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/game/create.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
+    const authConfig = await this.getAuthConfig()
+    if (!authConfig.shipThisUser) {
+      throw new Error('You must be logged in to create a game. Run `shipthis login` to authenticate.')
     }
+
+    if (this.hasProjectConfig() && !flags.force) {
+      throw new Error('This directory already has a ShipThis project. Use --force to overwrite.')
+    }
+
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    })
+
+    const getName = async (): Promise<string> => {
+      if (flags.name) return flags.name
+      const name = await rl.question('Please enter the name of the game: ')
+      if (!name) throw new Error('Game name is required')
+      return name
+    }
+
+    const name = await getName()
+    const project = await createProject(name)
+
+    await this.setProjectConfig({project})
+    await this.config.runCommand('game:status')
+    this.exit(0)
   }
 }
