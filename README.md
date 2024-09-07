@@ -35,7 +35,6 @@ USAGE
 * [`shipthis apple login`](#shipthis-apple-login)
 * [`shipthis apple status`](#shipthis-apple-status)
 * [`shipthis game create`](#shipthis-game-create)
-* [`shipthis game import [FILE]`](#shipthis-game-import-file)
 * [`shipthis game ios apiKey create [FILE]`](#shipthis-game-ios-apikey-create-file)
 * [`shipthis game ios apiKey import [FILE]`](#shipthis-game-ios-apikey-import-file)
 * [`shipthis game ios apiKey status [FILE]`](#shipthis-game-ios-apikey-status-file)
@@ -129,15 +128,11 @@ Authenticate with Apple - saves the session to the auth file
 
 ```
 USAGE
-  $ shipthis apple login [--log-level debug|warn|error|info|trace] [-f] [-e <value>]
+  $ shipthis apple login [-f] [-e <value>]
 
 FLAGS
   -e, --email=<value>  Your Apple email address
   -f, --force
-
-GLOBAL FLAGS
-  --log-level=<option>  [default: info] Specify level for logging.
-                        <options: debug|warn|error|info|trace>
 
 DESCRIPTION
   Authenticate with Apple - saves the session to the auth file
@@ -156,11 +151,7 @@ Shows the current Apple Overall status
 
 ```
 USAGE
-  $ shipthis apple status [--log-level debug|warn|error|info|trace]
-
-GLOBAL FLAGS
-  --log-level=<option>  [default: info] Specify level for logging.
-                        <options: debug|warn|error|info|trace>
+  $ shipthis apple status
 
 DESCRIPTION
   Shows the current Apple Overall status
@@ -173,52 +164,24 @@ _See code: [src/commands/apple/status.ts](https://github.com/oclif-cli/shipthis/
 
 ## `shipthis game create`
 
-Create a new ShipThis game
+Create a new game
 
 ```
 USAGE
-  $ shipthis game create [--log-level debug|warn|error|info|trace] [-f] [-n <value>]
+  $ shipthis game create [-f] [-n <value>]
 
 FLAGS
   -f, --force
   -n, --name=<value>  The name of the game
 
-GLOBAL FLAGS
-  --log-level=<option>  [default: info] Specify level for logging.
-                        <options: debug|warn|error|info|trace>
-
 DESCRIPTION
-  Create a new ShipThis game
+  Create a new game
 
 EXAMPLES
   $ shipthis game create
 ```
 
 _See code: [src/commands/game/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/create.ts)_
-
-## `shipthis game import [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ shipthis game import [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
-
-FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
-
-DESCRIPTION
-  describe the command here
-
-EXAMPLES
-  $ shipthis game import
-```
-
-_See code: [src/commands/game/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/import.ts)_
 
 ## `shipthis game ios apiKey create [FILE]`
 
@@ -418,11 +381,7 @@ Shows the current Game Platform iOS status
 
 ```
 USAGE
-  $ shipthis game ios status [--log-level debug|warn|error|info|trace]
-
-GLOBAL FLAGS
-  --log-level=<option>  [default: info] Specify level for logging.
-                        <options: debug|warn|error|info|trace>
+  $ shipthis game ios status
 
 DESCRIPTION
   Shows the current Game Platform iOS status
@@ -463,11 +422,7 @@ Shows the current Game status
 
 ```
 USAGE
-  $ shipthis game status [--log-level debug|warn|error|info|trace]
-
-GLOBAL FLAGS
-  --log-level=<option>  [default: info] Specify level for logging.
-                        <options: debug|warn|error|info|trace>
+  $ shipthis game status
 
 DESCRIPTION
   Shows the current Game status
@@ -500,22 +455,18 @@ _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.1
 
 ## `shipthis login`
 
-Authenticate with shipthis - will create a new account if one does not exist
+Authenticate - will create a new account if one does not exist.
 
 ```
 USAGE
-  $ shipthis login [--log-level debug|warn|error|info|trace] [-f] [-e <value>]
+  $ shipthis login [-f] [-e <value>]
 
 FLAGS
   -e, --email=<value>  Your email address
   -f, --force
 
-GLOBAL FLAGS
-  --log-level=<option>  [default: info] Specify level for logging.
-                        <options: debug|warn|error|info|trace>
-
 DESCRIPTION
-  Authenticate with shipthis - will create a new account if one does not exist
+  Authenticate - will create a new account if one does not exist.
 
 EXAMPLES
   $ shipthis login
@@ -527,18 +478,14 @@ _See code: [src/commands/login.ts](https://github.com/oclif-cli/shipthis/blob/v0
 
 ## `shipthis status`
 
-Displays the current shipthis status
+Displays the current overall status.
 
 ```
 USAGE
-  $ shipthis status [--log-level debug|warn|error|info|trace]
-
-GLOBAL FLAGS
-  --log-level=<option>  [default: info] Specify level for logging.
-                        <options: debug|warn|error|info|trace>
+  $ shipthis status
 
 DESCRIPTION
-  Displays the current shipthis status
+  Displays the current overall status.
 
 EXAMPLES
   $ shipthis status
