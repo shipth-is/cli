@@ -10,10 +10,13 @@
     "moduleResolution": "node16",
     "jsx": "react-jsx",
     "paths": {
-      "@cli/baseCommand": ["./src/baseCommand.ts"],
+      "@cli/api": ["./src/api/index.ts"],
+      "@cli/apple": ["./src/apple/index.ts"],
+      "@cli/baseCommands": ["./src/baseCommands/index.ts"],
       "@cli/components": ["./src/components/index.tsx"],
       "@cli/config": ["./src/config.ts"],
-      "@cli/lib": ["./src/lib/index.ts"]
+      "@cli/types": ["./src/types.d.ts"],
+      "@cli/utils": ["./src/utils/index.ts"]
     }
   },
   "include": ["./src/**/*", "./tsconfig.json"],

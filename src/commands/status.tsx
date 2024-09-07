@@ -3,10 +3,10 @@ import {Flags, ux} from '@oclif/core'
 import {promises as readline} from 'node:readline'
 import {render} from 'ink'
 
-import {BaseCommand} from '@cli/baseCommand'
+import {BaseCommand} from '@cli/baseCommands'
 import {API_URL} from '@cli/config'
 
-import {StatusTable} from '@cli/components'
+import {Container, StatusTable} from '@cli/components'
 
 export default class Status extends BaseCommand<typeof Status> {
   static override args = {}
@@ -19,10 +19,19 @@ export default class Status extends BaseCommand<typeof Status> {
 
   public async run(): Promise<void> {
     const authConfig = await this.getAuthConfig()
-    if (!authConfig.shipThisUser) {
-      this.log('You are not logged in')
-      return
+
+    const statusProps = {
+      title: 'ShipThis Status',
+      statuses: {
+        'Logged in': !!authConfig.shipThisUser ? '✅' : '❌',
+        'Game in current directory': '❌',
+      },
     }
-    render(<StatusTable />)
+
+    render(
+      <Container>
+        <StatusTable {...statusProps} />
+      </Container>,
+    )
   }
 }

@@ -1,15 +1,14 @@
 import path from 'path'
 import fs from 'fs'
 import {Command, Flags, Interfaces} from '@oclif/core'
-
-import {auth} from '@cli/lib'
+import {AuthConfig} from '@cli/types'
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<(typeof BaseCommand)['baseFlags'] & T['flags']>
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
 
 export abstract class BaseCommand<T extends typeof Command> extends Command {
   // add the --json flag
-  static enableJsonFlag = true
+  static enableJsonFlag = false
 
   // define flags that can be inherited by any command that extends BaseCommand
   static baseFlags = {
@@ -52,19 +51,19 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return path.join(this.config.home, '.shipthis.auth.json')
   }
 
-  public async getAuthConfig(): Promise<auth.AuthConfig> {
-    const baseConfig = {} as auth.AuthConfig
+  public async getAuthConfig(): Promise<AuthConfig> {
+    const baseConfig = {} as AuthConfig
     const configPath = this.getConfigPath()
     if (!fs.existsSync(configPath)) return baseConfig
     const raw = await fs.promises.readFile(configPath, 'utf8')
-    const authConfig = JSON.parse(raw)
+    const typesConfig = JSON.parse(raw)
     return {
       ...baseConfig,
-      ...authConfig,
+      ...typesConfig,
     }
   }
 
-  public async setAuthConfig(config: auth.AuthConfig): Promise<void> {
+  public async setAuthConfig(config: AuthConfig): Promise<void> {
     const configPath = this.getConfigPath()
     await fs.promises.writeFile(configPath, JSON.stringify(config, null, 2))
   }
