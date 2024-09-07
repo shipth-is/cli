@@ -69,7 +69,6 @@
     "./dist/commands/apple/certificate/create.js",
     "./dist/commands/apple/certificate/status.js",
     "./dist/commands/apple/login.js",
-    "./dist/commands/game/import.js",
     "./dist/commands/game/ios/app/create.js",
     "./dist/commands/game/ios/app/status.js",
     "./dist/commands/game/ios/status.js",
@@ -95,8 +94,11 @@
     ],
     "topicSeparator": " ",
     "topics": {
-      "hello": {
-        "description": "Say hello to the world and others"
+      "apple": {
+        "description": "Commands related to Apple Developer Portal"
+      },
+      "game": {
+        "description": "Commands related to Game Management"
       }
     }
   },

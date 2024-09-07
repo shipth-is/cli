@@ -1,13 +1,13 @@
 import {Flags} from '@oclif/core'
 import {promises as readline} from 'node:readline'
 
-import {BaseCommand} from '@cli/baseCommands/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {createProject} from '@cli/api/index.js'
 
-export default class GameCreate extends BaseCommand<typeof GameCreate> {
+export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCreate> {
   static override args = {}
 
-  static override description = 'Create a new ShipThis game'
+  static override description = 'Create a new game'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
@@ -18,11 +18,6 @@ export default class GameCreate extends BaseCommand<typeof GameCreate> {
 
   public async run(): Promise<void> {
     const {flags} = this
-
-    const authConfig = await this.getAuthConfig()
-    if (!authConfig.shipThisUser) {
-      throw new Error('You must be logged in to create a game. Run `shipthis login` to authenticate.')
-    }
 
     if (this.hasProjectConfig() && !flags.force) {
       throw new Error('This directory already has a ShipThis project. Use --force to overwrite.')

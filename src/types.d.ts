@@ -33,3 +33,8 @@ export interface Project extends EditableProject {
 export interface ProjectConfig {
   project?: Project
 }
+
+export enum Platform {
+  IOS = 'IOS',
+  ANDROID = 'ANDROID',
+}

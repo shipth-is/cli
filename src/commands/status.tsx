@@ -1,13 +1,13 @@
 import {render} from 'ink'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
-import {Container, NextSteps, StatusTable} from '@cli/components/index.js'
+import {Container, Environment, NextSteps, StatusTable} from '@cli/components/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
 
 export default class Status extends BaseCommand<typeof Status> {
   static override args = {}
 
-  static override description = 'Displays the current shipthis status'
+  static override description = 'Displays the current overall status.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
@@ -26,6 +26,8 @@ export default class Status extends BaseCommand<typeof Status> {
     if (!isGodotGame) steps.push('Run this command in a Godot project directory')
     if (!isShipThisConfigured) steps.push('$ shipthis game create --name "My Awesome Game"')
 
+    if (steps.length === 0) steps = ['$ shipthis game status']
+
     const statusProps = {
       title: 'ShipThis Status',
       statuses: {
@@ -38,6 +40,7 @@ export default class Status extends BaseCommand<typeof Status> {
     render(
       <Container>
         <StatusTable {...statusProps} />
+        <Environment />
         <NextSteps steps={steps} />
       </Container>,
     )

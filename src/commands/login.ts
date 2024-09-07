@@ -9,7 +9,7 @@ import {API_URL} from '@cli/config.js'
 export default class Login extends BaseCommand<typeof Login> {
   static override args = {}
 
-  static override description = 'Authenticate with shipthis - will create a new account if one does not exist'
+  static override description = 'Authenticate - will create a new account if one does not exist.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',

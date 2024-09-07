@@ -13,14 +13,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   static enableJsonFlag = false
 
   // define flags that can be inherited by any command that extends BaseCommand
-  static baseFlags = {
-    'log-level': Flags.option({
-      default: 'info',
-      helpGroup: 'GLOBAL',
-      options: ['debug', 'warn', 'error', 'info', 'trace'] as const,
-      summary: 'Specify level for logging.',
-    })(),
-  }
+  static baseFlags = {}
 
   protected flags!: Flags<T>
   protected args!: Args<T>
