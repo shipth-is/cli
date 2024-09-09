@@ -1,19 +1,12 @@
-import {Box, Text} from 'ink'
+import React from 'react'
 
 import {API_URL} from '@cli/config.js'
+import {ListWithTitle} from './ListWithTitle.js'
 
+// Shows some debugging when not in production
 export const Environment = () => {
   const {NODE_ENV} = process.env
-
+  // TODO: will this be set in prod? Maybe in prod it is empty?
   if (NODE_ENV === 'production') return null
-
-  return (
-    <Box marginTop={1} flexDirection="column">
-      <Text bold>ENVIRONMENT</Text>
-      <Box marginLeft={2} flexDirection="column">
-        <Text>{`NODE_ENV is ${NODE_ENV}`}</Text>
-        <Text>{`API_URL is ${API_URL}`}</Text>
-      </Box>
-    </Box>
-  )
+  return <ListWithTitle title="Environment" listItems={[`NODE_ENV is ${NODE_ENV}`, `API_URL is ${API_URL}`]} />
 }

@@ -1,23 +1,30 @@
-import {colorize, stderr} from '@oclif/core/ux'
+import {Args, Command, Flags} from '@oclif/core'
 
-import {BaseCommand} from '@cli/baseCommands'
+export default class GameIosStatus extends Command {
+  static override args = {
+    file: Args.string({description: 'file to read'}),
+  }
 
-export default class Status extends BaseCommand<typeof Status> {
-  static override args = {}
-
-  static override description = 'Shows the current Game Platform iOS status'
+  static override description = 'describe the command here'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
-  static override flags = {}
+  static override flags = {
+    // flag with no value (-f, --force)
+    force: Flags.boolean({char: 'f'}),
+    // flag with a value (-n, --name=VALUE)
+    name: Flags.string({char: 'n', description: 'name to print'}),
+  }
 
   public async run(): Promise<void> {
-    try {
-      this.log('TODO: Status')
-      this.exit(0)
-    } catch (err: any) {
-      stderr(colorize('#FF0000', err.message))
-      this.exit(1)
+    const {args, flags} = await this.parse(GameIosStatus)
+
+    const name = flags.name ?? 'world'
+    this.log(
+      `hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/game/ios/profile/status.ts`,
+    )
+    if (args.file && flags.force) {
+      this.log(`you input --force and --file: ${args.file}`)
     }
   }
 }

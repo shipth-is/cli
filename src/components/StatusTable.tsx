@@ -28,7 +28,7 @@ export const StatusTable = ({title, statuses, colors}: StatusTableProps) => {
 
   return (
     <Box flexDirection="column">
-      <Text bold>STATUS</Text>
+      <Text bold>{title.toUpperCase()}</Text>
       <Box flexDirection="column" marginLeft={2}>
         <Box flexDirection="row">
           <Box flexDirection="column">

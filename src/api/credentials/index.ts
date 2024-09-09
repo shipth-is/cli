@@ -4,18 +4,14 @@ import {ApiKey, Certificate} from '@expo/apple-utils'
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/config.js'
 
-// @ts-ignore
-import {UserCertificate_iOS, UserCredential} from './types.ts'
+import {ProjectCredential, UserCertificate_iOS, UserCredential} from './types.js'
 
-// @ts-ignore
-export * from './types.ts'
-// @ts-ignore
-export * from './upload.ts'
-// @ts-ignore
-export * from './import.ts'
+export * from './types.js'
+export * from './upload.js'
+export * from './import.js'
 
-async function getAllUserCredentials(): Promise<UserCredential[]> {
-  console.debug('only getting first 100 credentials')
+export async function getUserCredentials(): Promise<UserCredential[]> {
+  console.warn('only getting first 100 credentials')
   const headers = getAuthedHeaders()
   const {data} = await axios({
     method: 'get',
@@ -25,13 +21,24 @@ async function getAllUserCredentials(): Promise<UserCredential[]> {
   return data.data as UserCredential[]
 }
 
+export async function getProjectCredentials(projectId: string): Promise<ProjectCredential[]> {
+  console.warn('only getting first 100 credentials')
+  const headers = getAuthedHeaders()
+  const {data} = await axios({
+    method: 'get',
+    url: `${API_URL}/projects/${projectId}/credentials?pageSize=100`,
+    headers,
+  })
+  return data.data as ProjectCredential[]
+}
+
 // Find a valid cert that we have the private key for
 // TODO: rename as is apple specific?
 export async function getUseableCert(certs: Certificate[]): Promise<Certificate | undefined> {
   const validCertSerialNumbers = certs
     .filter((cert) => cert.attributes.status == 'Issued')
     .map((cert) => cert.attributes.serialNumber)
-  const userCredentials = await getAllUserCredentials()
+  const userCredentials = await getUserCredentials()
   const userCred = userCredentials.find((cred) => {
     return validCertSerialNumbers.includes(cred.serialNumber)
   })
@@ -44,7 +51,7 @@ export async function getUseableCert(certs: Certificate[]): Promise<Certificate 
 export async function getUsableKey(keys: ApiKey[]): Promise<ApiKey | undefined> {
   // For the keys we use the "ids" as the serial number
   const validKeyIds = keys.filter((key) => key.attributes.isActive).map((key) => key.id)
-  const userCredentials = await getAllUserCredentials()
+  const userCredentials = await getUserCredentials()
   const userCred = userCredentials.find((cred) => {
     return validKeyIds.includes(cred.serialNumber)
   })

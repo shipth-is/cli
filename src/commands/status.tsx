@@ -29,7 +29,7 @@ export default class Status extends BaseCommand<typeof Status> {
     if (steps.length === 0) steps = ['$ shipthis game status']
 
     const statusProps = {
-      title: 'ShipThis Status',
+      title: 'Status',
       statuses: {
         'Logged in': isLoggedIn,
         'Godot project detected': isGodotGame,

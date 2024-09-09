@@ -1,6 +1,5 @@
-//@ts-nocheck
-
 import tough from 'tough-cookie'
+import {CookieJar} from 'tough-cookie'
 
 import {ApplePortalCookieService} from 'nativescript/lib/services/apple-portal/apple-portal-cookie-service'
 import {ApplePortalSessionService} from 'nativescript/lib/services/apple-portal/apple-portal-session-service'
@@ -11,7 +10,6 @@ import {IErrors, IFailOptions} from 'nativescript/lib/common/declarations'
 //import { Auth, Session } from "@cli/lib/apple-utils";
 
 import {Auth, Session} from '@expo/apple-utils'
-import {getAuthConfig} from '@cli/auth'
 
 interface ILogger {
   initialize(opts?: any): void
@@ -167,16 +165,17 @@ export async function getNewAuthState(
   return authState
 }
 
-export async function getCurrentAuthState(): Promise<Session.AuthState | null> {
-  const credentialsConfig = await getAuthConfig()
-  if (!credentialsConfig) return null
-  if (!credentialsConfig.appleCookies) return null
-  const serialized = credentialsConfig.appleCookies
+export async function getCurrentAuthState({
+  appleCookies,
+}: {
+  appleCookies: CookieJar.Serialized
+}): Promise<Session.AuthState | null> {
+  if (!appleCookies) return null
 
   // TODO: re-implement this so it does not output anything?
   const authState = await Auth.loginWithCookiesAsync(
     {
-      cookies: serialized,
+      cookies: appleCookies,
     },
     {},
   )
