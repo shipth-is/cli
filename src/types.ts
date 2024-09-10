@@ -1,10 +1,11 @@
 import {CookieJar} from 'tough-cookie'
+import {DateTime} from 'luxon'
 
 export interface Self {
   id: string
   email: string
-  createdAt: string
-  updatedAt: string
+  createdAt: DateTime
+  updatedAt: DateTime
   jwt: string
 }
 
@@ -25,8 +26,8 @@ export interface EditableProject {
 // What a project from the API looks like
 export interface Project extends EditableProject {
   id: string
-  createdAt: string
-  updatedAt: string
+  createdAt: DateTime
+  updatedAt: DateTime
 }
 
 // Structure of the JSON project config file
@@ -37,4 +38,19 @@ export interface ProjectConfig {
 export enum Platform {
   IOS = 'IOS',
   ANDROID = 'ANDROID',
+}
+
+export interface ProjectPlatformProgress {
+  platform: string
+  hasBundleSet: boolean
+  hasCredentialsForPlatform: boolean
+  hasApiKeyForPlatform: boolean
+  hasSuccessfulJobForPlatform: boolean
+}
+
+export interface PageAndSortParams {
+  pageNumber?: number
+  pageSize?: number
+  order?: 'asc' | 'desc'
+  orderBy?: 'createdAt' | 'updatedAt'
 }

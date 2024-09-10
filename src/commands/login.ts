@@ -5,6 +5,7 @@ import {promises as readline} from 'node:readline'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {API_URL} from '@cli/config.js'
+import {AuthConfig} from '@cli/types.js'
 
 export default class Login extends BaseCommand<typeof Login> {
   static override args = {}
@@ -27,7 +28,7 @@ export default class Login extends BaseCommand<typeof Login> {
   public async run(): Promise<void> {
     const {flags} = this
 
-    const authConfig = await this.getAuthConfig()
+    const authConfig: AuthConfig = await this.getAuthConfig()
     if (authConfig.shipThisUser && !flags.force) {
       throw new Error(
         `You are already logged in as ${authConfig.shipThisUser.email} use --force to login as a different user or remove the auth file`,
