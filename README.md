@@ -43,8 +43,8 @@ USAGE
 * [`shipthis game ios profile create [FILE]`](#shipthis-game-ios-profile-create-file)
 * [`shipthis game ios profile import [FILE]`](#shipthis-game-ios-profile-import-file)
 * [`shipthis game ios profile status [FILE]`](#shipthis-game-ios-profile-status-file)
-* [`shipthis game ios status`](#shipthis-game-ios-status)
-* [`shipthis game list [FILE]`](#shipthis-game-list-file)
+* [`shipthis game ios status [FILE]`](#shipthis-game-ios-status-file)
+* [`shipthis game list`](#shipthis-game-list)
 * [`shipthis game status`](#shipthis-game-status)
 * [`shipthis help [COMMAND]`](#shipthis-help-command)
 * [`shipthis login`](#shipthis-login)
@@ -375,30 +375,13 @@ EXAMPLES
 
 _See code: [src/commands/game/ios/profile/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/status.ts)_
 
-## `shipthis game ios status`
-
-Shows the current Game Platform iOS status
-
-```
-USAGE
-  $ shipthis game ios status
-
-DESCRIPTION
-  Shows the current Game Platform iOS status
-
-EXAMPLES
-  $ shipthis game ios status
-```
-
-_See code: [src/commands/game/ios/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/status.ts)_
-
-## `shipthis game list [FILE]`
+## `shipthis game ios status [FILE]`
 
 describe the command here
 
 ```
 USAGE
-  $ shipthis game list [FILE] [-f] [-n <value>]
+  $ shipthis game ios status [FILE] [-f] [-n <value>]
 
 ARGUMENTS
   FILE  file to read
@@ -409,6 +392,31 @@ FLAGS
 
 DESCRIPTION
   describe the command here
+
+EXAMPLES
+  $ shipthis game ios status
+```
+
+_See code: [src/commands/game/ios/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/status.ts)_
+
+## `shipthis game list`
+
+Shows a list of all your games
+
+```
+USAGE
+  $ shipthis game list [-p <value>] [-s <value>] [-o createdAt|updatedAt|name] [-r asc|desc]
+
+FLAGS
+  -o, --orderBy=<option>    [default: createdAt] The field to order by
+                            <options: createdAt|updatedAt|name>
+  -p, --pageNumber=<value>  The page number to show
+  -r, --order=<option>      [default: desc] The order to sort by
+                            <options: asc|desc>
+  -s, --pageSize=<value>    [default: 10] The number of items to show per page
+
+DESCRIPTION
+  Shows a list of all your games
 
 EXAMPLES
   $ shipthis game list
