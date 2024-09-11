@@ -1,4 +1,4 @@
-import {BaseAppleCommand} from '@cli/baseCommands/baseAppleCommand.js'
+import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {Container, NextSteps, StatusTable} from '@cli/components/index.js'
 import {render} from 'ink'
 
@@ -18,17 +18,16 @@ export default class AppleStatus extends BaseAppleCommand<typeof AppleStatus> {
 
     const statuses = {
       fullName: session.user.fullName,
-      email: session.user.emailAddress,
       providerName: session.provider.name,
     }
 
     // TODO: steps
     const steps: string[] = []
 
+    // TODO: this looks ugly as shit
     render(
       <Container>
         <StatusTable marginBottom={1} title="Apple Status" statuses={statuses as any} />
-
         <NextSteps steps={steps} />
       </Container>,
     )

@@ -76,8 +76,7 @@ export async function getProjectPlatformProgress(
 export async function getNewUploadTicket(projectId: string): Promise<UploadTicket> {
   const headers = await getAuthedHeaders()
   const opt = {headers}
-  console.log('getting upload ticket', `${API_URL}/uploads/${projectId}/url`)
-  const {data} = await axios.post(`${API_URL}/uploads/${projectId}/url`, {}, opt)
+  const {data} = await axios.post(`${API_URL}/upload/${projectId}/url`, {}, opt)
   return data as UploadTicket
 }
 
@@ -85,5 +84,5 @@ export async function getNewUploadTicket(projectId: string): Promise<UploadTicke
 export async function startJobsFromUpload(uploadTicketId: string): Promise<void> {
   const headers = await getAuthedHeaders()
   const opt = {headers}
-  await axios.post(`${API_URL}/uploads/start/${uploadTicketId}`, {}, opt)
+  await axios.post(`${API_URL}/upload/start/${uploadTicketId}`, {}, opt)
 }

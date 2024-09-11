@@ -67,6 +67,8 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
 
     await this.setAppleCookies(authState.cookies)
 
+    // TODO: run the status command?
+
     this.exit(0)
   }
 }

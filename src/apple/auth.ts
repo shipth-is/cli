@@ -7,7 +7,7 @@ import {HttpClient} from 'nativescript/lib/common/http-client.js'
 import {IErrors, IFailOptions} from 'nativescript/lib/common/declarations.js'
 
 // TODO: why is this import like this?
-import * as expo from '@expo/apple-utils/build/index.js'
+import {Auth} from '@cli/apple/expo.js'
 
 interface ILogger {
   initialize(opts?: any): void
@@ -157,7 +157,7 @@ export async function getNewAuthState(
   }
 
   // TODO: re-implement this so it does not output anything?
-  const authState = await expo.default.Auth.loginWithCookiesAsync({
+  const authState = await Auth.loginWithCookiesAsync({
     cookies: fixed,
   })
 
@@ -168,7 +168,7 @@ export async function getCurrentAuthState({appleCookies}: {appleCookies: Seriali
   if (!appleCookies) return null
 
   // TODO: re-implement this so it does not output anything?
-  const authState = await expo.default.Auth.loginWithCookiesAsync(
+  const authState = await Auth.loginWithCookiesAsync(
     {
       cookies: appleCookies,
     },

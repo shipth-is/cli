@@ -1,7 +1,7 @@
 import {Command} from '@oclif/core'
 import {BaseAuthenticatedCommand} from './baseAuthenticatedCommand.js'
 
-import * as expo from '@expo/apple-utils/build/index.js'
+import {Auth} from '@cli/apple/expo.js'
 
 export abstract class BaseAppleCommand<T extends typeof Command> extends BaseAuthenticatedCommand<T> {
   public async init(): Promise<void> {
@@ -16,7 +16,7 @@ export abstract class BaseAppleCommand<T extends typeof Command> extends BaseAut
     const rerunMessage = 'Please run shipthis apple login to authenticate with Apple.'
 
     if (!cookies) throw new Error(`No Apple cookies found. ${rerunMessage}`)
-    const authState = await expo.default.Auth.loginWithCookiesAsync(
+    const authState = await Auth.loginWithCookiesAsync(
       {
         cookies,
       },
