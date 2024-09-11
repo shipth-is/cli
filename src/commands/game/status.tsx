@@ -9,7 +9,8 @@ import {Platform, Project} from '@cli/types.js'
 export default class GameStatus extends BaseAuthenticatedCommand<typeof GameStatus> {
   static override args = {}
 
-  static override description = 'Shows the Game status. If --gameId is not provided, it look in the current directory.'
+  static override description =
+    'Shows the Game status. If --gameId is not provided it will look in the current directory.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',

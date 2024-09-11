@@ -1,74 +1,72 @@
-import axios from 'axios'
 import {Flags} from '@oclif/core'
-import {colorize, stderr} from '@oclif/core/ux'
 import {promises as readline} from 'node:readline'
 
-import {BaseCommand} from '@cli/baseCommands/index.js'
-import {API_URL} from '@cli/config.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {getNewAuthState} from '@cli/apple/auth.js'
 
-export default class AppleLogin extends BaseCommand<typeof AppleLogin> {
+export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLogin> {
   static override args = {}
 
   static override description = 'Authenticate with Apple - saves the session to the auth file'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
-    '<%= config.bin %> <%= command.id %> --force --email me@email.nowhere',
+    '<%= config.bin %> <%= command.id %> --force --appleEmail me@email.nowhere',
   ]
 
   static override flags = {
     force: Flags.boolean({char: 'f'}),
-    email: Flags.string({
+    appleEmail: Flags.string({
       char: 'e',
       description: 'Your Apple email address',
     }),
   }
 
   public async run(): Promise<void> {
-    try {
-      const {flags} = this
+    const {flags} = this
 
-      const authConfig = await this.getAuthConfig()
-      if (authConfig.shipThisUser && !flags.force) {
-        throw new Error(
-          `You are already logged in as ${authConfig.shipThisUser.email} use --force to login as a different user or remove the auth file`,
-        )
-      }
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-      })
-
-      const getEmail = async (): Promise<string> => {
-        if (flags.email) return flags.email
-        const email = await rl.question('Please enter your email address: ')
-        if (!email) throw new Error('Email address is required')
-        return email
-      }
-
-      const email = await getEmail()
-
-      await axios.post(`${API_URL}/auth/email/send`, {email})
-
-      this.log('Please check your email for an email with an OTP.')
-
-      const getOTP = async (): Promise<string> => {
-        const otp = await rl.question('Please enter the OTP: ')
-        if (!otp) throw new Error('OTP is required')
-        return otp
-      }
-
-      const otp = await getOTP()
-
-      const {data: shipThisUser} = await axios.post(`${API_URL}/auth/email/verify`, {email, otp})
-
-      await this.setAuthConfig({shipThisUser})
-
-      this.log('You are now logged in as', shipThisUser.email)
-      this.exit(0)
-    } catch (err: any) {
-      stderr(colorize('#FF0000', err.message))
-      this.exit(1)
+    const appleCookies = await this.getAppleCookies()
+    if (appleCookies && !flags.force) {
+      throw new Error('You are already logged in to Apple. Use --force to re-authenticate.')
     }
+
+    // A stdout that we can silence when people enter passwords
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    })
+
+    const getAppleEmail = async (): Promise<string> => {
+      if (flags.appleEmail) return flags.appleEmail
+      const appleEmail = await rl.question('Please enter your Apple email address: ')
+      if (!appleEmail) throw new Error('Email address is required')
+      return appleEmail
+    }
+
+    // TODO;important - make it so it doesnt echo the password
+    const getApplePassword = async (): Promise<string> => {
+      const applePassword = await rl.question('Please enter your Apple password: ')
+      if (!applePassword) throw new Error('Password is required')
+      return applePassword
+    }
+
+    const appleEmail = await getAppleEmail()
+    const applePassword = await getApplePassword()
+
+    const get2FA = async (): Promise<string> => {
+      const otp = await rl.question('Please enter the 2FA code: ')
+      if (!otp) throw new Error('2FA code is required')
+      return otp
+    }
+
+    const authState = await getNewAuthState(appleEmail, applePassword, get2FA)
+
+    if (!authState) {
+      throw new Error('Failed to authenticate with Apple')
+    }
+
+    await this.setAppleCookies(authState.cookies)
+
+    this.exit(0)
   }
 }

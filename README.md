@@ -51,6 +51,7 @@ USAGE
 * [`shipthis apple certificate status [FILE]`](#shipthis-apple-certificate-status-file)
 * [`shipthis apple login`](#shipthis-apple-login)
 * [`shipthis apple status`](#shipthis-apple-status)
+* [`shipthis game create`](#shipthis-game-create)
 * [`shipthis game ios apiKey create [FILE]`](#shipthis-game-ios-apikey-create-file)
 * [`shipthis game ios apiKey import [FILE]`](#shipthis-game-ios-apikey-import-file)
 * [`shipthis game ios apiKey status [FILE]`](#shipthis-game-ios-apikey-status-file)
@@ -148,7 +149,7 @@ USAGE
   $ shipthis apple login [-f] [-e <value>]
 
 FLAGS
-  -e, --email=<value>  Your Apple email address
+  -e, --appleEmail=<value>  Your Apple email address
   -f, --force
 
 DESCRIPTION
@@ -157,27 +158,48 @@ DESCRIPTION
 EXAMPLES
   $ shipthis apple login
 
-  $ shipthis apple login --force --email me@email.nowhere
+  $ shipthis apple login --force --appleEmail me@email.nowhere
 ```
 
 _See code: [src/commands/apple/login.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/login.ts)_
 
 ## `shipthis apple status`
 
-Shows the current Apple Overall status
+Shows the status of the Apple authentication and integration
 
 ```
 USAGE
   $ shipthis apple status
 
 DESCRIPTION
-  Shows the current Apple Overall status
+  Shows the status of the Apple authentication and integration
 
 EXAMPLES
   $ shipthis apple status
 ```
 
 _See code: [src/commands/apple/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/status.ts)_
+
+## `shipthis game create`
+
+Create a new game
+
+```
+USAGE
+  $ shipthis game create [-f] [-n <value>]
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  The name of the game
+
+DESCRIPTION
+  Create a new game
+
+EXAMPLES
+  $ shipthis game create
+```
+
+_See code: [src/commands/game/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/create.ts)_
 
 ## `shipthis game ios apiKey create [FILE]`
 
@@ -439,7 +461,7 @@ _See code: [src/commands/game/ship.ts](https://github.com/oclif-cli/shipthis/blo
 
 ## `shipthis game status`
 
-Shows the Game status. If --gameId is not provided, it look in the current directory.
+Shows the Game status. If --gameId is not provided it will look in the current directory.
 
 ```
 USAGE
@@ -449,7 +471,7 @@ FLAGS
   -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  Shows the Game status. If --gameId is not provided, it look in the current directory.
+  Shows the Game status. If --gameId is not provided it will look in the current directory.
 
 EXAMPLES
   $ shipthis game status

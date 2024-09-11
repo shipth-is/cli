@@ -1,5 +1,6 @@
 import path from 'path'
 import fs from 'fs'
+import {Writable} from 'node:stream'
 
 // Check if the current working directory is a Godot game
 // TODO: allow for cwd override

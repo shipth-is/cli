@@ -1,15 +1,13 @@
-import tough from 'tough-cookie'
-import {CookieJar} from 'tough-cookie'
+import tough, {SerializedCookieJar} from 'tough-cookie'
 
-import {ApplePortalCookieService} from 'nativescript/lib/services/apple-portal/apple-portal-cookie-service'
-import {ApplePortalSessionService} from 'nativescript/lib/services/apple-portal/apple-portal-session-service'
-import {Config} from 'nativescript/lib/common/definitions/config'
-import {HttpClient} from 'nativescript/lib/common/http-client'
-import {IErrors, IFailOptions} from 'nativescript/lib/common/declarations'
+import {ApplePortalCookieService} from 'nativescript/lib/services/apple-portal/apple-portal-cookie-service.js'
+import {ApplePortalSessionService} from 'nativescript/lib/services/apple-portal/apple-portal-session-service.js'
+import {Config} from 'nativescript/lib/common/definitions/config.js'
+import {HttpClient} from 'nativescript/lib/common/http-client.js'
+import {IErrors, IFailOptions} from 'nativescript/lib/common/declarations.js'
 
-//import { Auth, Session } from "@cli/lib/apple-utils";
-
-import {Auth, Session} from '@expo/apple-utils'
+// TODO: why is this import like this?
+import * as expo from '@expo/apple-utils/build/index.js'
 
 interface ILogger {
   initialize(opts?: any): void
@@ -104,7 +102,7 @@ export async function getNewAuthState(
   username: string,
   password: string,
   requestOtp: () => Promise<string>,
-): Promise<Session.AuthState | null> {
+): Promise<any> {
   const cookieService = new ApplePortalCookieService()
   const errors = new Errors()
   const nullProxy = new NullProxy()
@@ -131,7 +129,7 @@ export async function getNewAuthState(
 
   const allRawCookies = session.userSessionCookie.split('; ')
 
-  const getCookieUrl = (name) => {
+  const getCookieUrl = (name: string) => {
     if (name === 'myacinfo') return 'https://apple.com'
     if (name === 'dqsid') return 'https://appstoreconnect.apple.com'
     return 'https://idmsa.apple.com'
@@ -144,6 +142,7 @@ export async function getNewAuthState(
   }
 
   const serialized = cookieJar.serializeSync()
+  if (!serialized) throw new Error('Unable to serialize cookies')
 
   const hackedCookies = serialized.cookies.map((cookie) => {
     return {
@@ -158,22 +157,18 @@ export async function getNewAuthState(
   }
 
   // TODO: re-implement this so it does not output anything?
-  const authState = await Auth.loginWithCookiesAsync({
+  const authState = await expo.default.Auth.loginWithCookiesAsync({
     cookies: fixed,
   })
 
   return authState
 }
 
-export async function getCurrentAuthState({
-  appleCookies,
-}: {
-  appleCookies: CookieJar.Serialized
-}): Promise<Session.AuthState | null> {
+export async function getCurrentAuthState({appleCookies}: {appleCookies: SerializedCookieJar}): Promise<any> {
   if (!appleCookies) return null
 
   // TODO: re-implement this so it does not output anything?
-  const authState = await Auth.loginWithCookiesAsync(
+  const authState = await expo.default.Auth.loginWithCookiesAsync(
     {
       cookies: appleCookies,
     },

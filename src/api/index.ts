@@ -11,9 +11,9 @@ import {
 } from '@cli/types.js'
 import {castArrayObjectDates, castObjectDates} from '@cli/utils/dates.js'
 
-const AUTH_ENV_VAR_NAME = 'SHIPTHIS_AUTH_TOKEN'
+const AUTH_ENV_VAR_NAME = 'SHIPTHIS_TOKEN'
 
-// Most API functions will use getAuthedHeaders or process.env.AUTH_TOKEN
+// Most API functions will use getAuthedHeaders or process.env.SHIPTHIS_TOKEN
 // When the commands run, the value for token will be read from the auth config
 export function setAuthToken(token: string) {
   process.env[AUTH_ENV_VAR_NAME] = token

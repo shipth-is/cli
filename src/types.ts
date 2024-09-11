@@ -1,4 +1,4 @@
-import {CookieJar} from 'tough-cookie'
+import {SerializedCookieJar} from 'tough-cookie'
 import {DateTime} from 'luxon'
 
 export interface Self {
@@ -11,7 +11,7 @@ export interface Self {
 
 export interface AuthConfig {
   shipThisUser?: Self
-  appleCookies?: CookieJar.Serialized
+  appleCookies?: SerializedCookieJar
 }
 
 // What the POST/PUT endpoints accept for creating/updating a project

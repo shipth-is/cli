@@ -1,14 +1,14 @@
 import axios from 'axios'
 
+import {Platform} from '@cli/types.js'
+
 import {
-  CredentialsPlatform,
   CredentialsType,
   ProjectCertificate_Android,
   ProjectCertificate_iOS,
   UserCertificate_iOS,
   UserKey_iOS,
-  // @ts-ignore
-} from './types.ts'
+} from './types.js'
 
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/config.js'
@@ -32,7 +32,7 @@ async function getNewUploadTicket(projectId: string | null = null): Promise<Uplo
 
 export interface UploadCredentialProps {
   contents: UserCertificate_iOS | UserKey_iOS | ProjectCertificate_iOS | ProjectCertificate_Android
-  platform: CredentialsPlatform
+  platform: Platform
   type: CredentialsType
   serialNumber: string
   identifier?: string

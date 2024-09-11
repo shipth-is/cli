@@ -1,8 +1,9 @@
 import path from 'path'
 import fs from 'fs'
+import {SerializedCookieJar} from 'tough-cookie'
 import {Command, Flags, Interfaces} from '@oclif/core'
-import {AuthConfig, ProjectConfig} from '@cli/types'
 
+import {AuthConfig, ProjectConfig} from '@cli/types.js'
 import {setAuthToken} from '@cli/api/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
 
@@ -114,6 +115,26 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
         'No shipthis config found. Please run `shipthis game create --name "Space Invaders"` to create a game.',
         {exit: 1},
       )
+    }
+  }
+
+  // Used in the apple commands to get the cookies from the auth file
+  protected async getAppleCookies(): Promise<SerializedCookieJar | null> {
+    const authConfig = await this.getAuthConfig()
+    if (!authConfig.appleCookies) return null
+    return authConfig.appleCookies
+  }
+
+  protected async setAppleCookies(cookies: SerializedCookieJar): Promise<void> {
+    const authConfig = await this.getAuthConfig()
+    await this.setAuthConfig({...authConfig, appleCookies: cookies})
+  }
+
+  protected ensureWeHaveAppleCookies(): void {
+    if (!this.hasAuthConfig()) {
+      this.error('You must be authenticated with Apple in to use this command. Please run shipthis apple login', {
+        exit: 1,
+      })
     }
   }
 }
