@@ -1,7 +1,14 @@
 import axios from 'axios'
 
 import {API_URL} from '@cli/config.js'
-import {EditableProject, PageAndSortParams, Platform, Project, ProjectPlatformProgress} from '@cli/types.js'
+import {
+  EditableProject,
+  PageAndSortParams,
+  Platform,
+  Project,
+  ProjectPlatformProgress,
+  UploadTicket,
+} from '@cli/types.js'
 import {castArrayObjectDates, castObjectDates} from '@cli/utils/dates.js'
 
 const AUTH_ENV_VAR_NAME = 'SHIPTHIS_AUTH_TOKEN'
@@ -63,4 +70,20 @@ export async function getProjectPlatformProgress(
   const opt = {headers}
   const {data} = await axios.get(`${API_URL}/projects/${projectId}/${platform}/progress`, opt)
   return data as ProjectPlatformProgress
+}
+
+// An UploadTicket is a request to upload. We do a HTTP PUT to the url returned
+export async function getNewUploadTicket(projectId: string): Promise<UploadTicket> {
+  const headers = await getAuthedHeaders()
+  const opt = {headers}
+  console.log('getting upload ticket', `${API_URL}/uploads/${projectId}/url`)
+  const {data} = await axios.post(`${API_URL}/uploads/${projectId}/url`, {}, opt)
+  return data as UploadTicket
+}
+
+// Tells the backend to start running the jobs for an upload-ticket
+export async function startJobsFromUpload(uploadTicketId: string): Promise<void> {
+  const headers = await getAuthedHeaders()
+  const opt = {headers}
+  await axios.post(`${API_URL}/uploads/start/${uploadTicketId}`, {}, opt)
 }

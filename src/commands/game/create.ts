@@ -3,6 +3,7 @@ import {promises as readline} from 'node:readline'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {createProject} from '@cli/api/index.js'
+import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/config.js'
 
 export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCreate> {
   static override args = {}
@@ -38,7 +39,11 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
     const name = await getName()
     const project = await createProject(name)
 
-    await this.setProjectConfig({project})
+    await this.setProjectConfig({
+      project,
+      shippedFilesGlobs: DEFAULT_SHIPPED_FILES_GLOBS,
+      ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
+    })
     await this.config.runCommand('game:status')
     this.exit(0)
   }

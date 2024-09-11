@@ -42,7 +42,7 @@ function generateHeaders(data: ScalarDict[]): ScalarDict {
   return headers
 }
 
-const Table = ({data, showHeaders = true, headerStyles}: TableProps) => {
+export const Table = ({data, showHeaders = true, headerStyles}: TableProps) => {
   // Determine columns and their widths
   const columns: Column[] = getColumns(data)
 
@@ -129,5 +129,3 @@ function renderRowSeparators(columns: Column[], leftChar = '├', midChar = '┼
     </Box>
   )
 }
-
-export default Table

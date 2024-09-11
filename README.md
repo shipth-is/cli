@@ -1,15 +1,32 @@
 shipthis
 =================
 
+# Develomnent Notes
+
+To build and run locally:
+
+```
+npm run build
+npm link
+```
+
+When you add or remove a command you will need to update the `"exports"` section in the `package.json` file using:
+
+```
+find src/commands/ -type f | sed "s/src\([^\.]*\)\..*$/dist\1.js/g"
+```
+
+# Introduction
+
 Mobile Game Shipping Tool
 
-
-[![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/shipthis.svg)](https://npmjs.org/package/shipthis)
 [![Downloads/week](https://img.shields.io/npm/dw/shipthis.svg)](https://npmjs.org/package/shipthis)
 
 
 <!-- toc -->
+* [Develomnent Notes](#develomnent-notes)
+* [Introduction](#introduction)
 * [Usage](#usage)
 * [Commands](#commands)
 <!-- tocstop -->
@@ -34,7 +51,6 @@ USAGE
 * [`shipthis apple certificate status [FILE]`](#shipthis-apple-certificate-status-file)
 * [`shipthis apple login`](#shipthis-apple-login)
 * [`shipthis apple status`](#shipthis-apple-status)
-* [`shipthis game create`](#shipthis-game-create)
 * [`shipthis game ios apiKey create [FILE]`](#shipthis-game-ios-apikey-create-file)
 * [`shipthis game ios apiKey import [FILE]`](#shipthis-game-ios-apikey-import-file)
 * [`shipthis game ios apiKey status [FILE]`](#shipthis-game-ios-apikey-status-file)
@@ -45,6 +61,7 @@ USAGE
 * [`shipthis game ios profile status [FILE]`](#shipthis-game-ios-profile-status-file)
 * [`shipthis game ios status [FILE]`](#shipthis-game-ios-status-file)
 * [`shipthis game list`](#shipthis-game-list)
+* [`shipthis game ship`](#shipthis-game-ship)
 * [`shipthis game status`](#shipthis-game-status)
 * [`shipthis help [COMMAND]`](#shipthis-help-command)
 * [`shipthis login`](#shipthis-login)
@@ -161,27 +178,6 @@ EXAMPLES
 ```
 
 _See code: [src/commands/apple/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/status.ts)_
-
-## `shipthis game create`
-
-Create a new game
-
-```
-USAGE
-  $ shipthis game create [-f] [-n <value>]
-
-FLAGS
-  -f, --force
-  -n, --name=<value>  The name of the game
-
-DESCRIPTION
-  Create a new game
-
-EXAMPLES
-  $ shipthis game create
-```
-
-_See code: [src/commands/game/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/create.ts)_
 
 ## `shipthis game ios apiKey create [FILE]`
 
@@ -410,7 +406,7 @@ USAGE
 FLAGS
   -o, --orderBy=<option>    [default: createdAt] The field to order by
                             <options: createdAt|updatedAt|name>
-  -p, --pageNumber=<value>  The page number to show
+  -p, --pageNumber=<value>  The page number to show (starts at 0)
   -r, --order=<option>      [default: desc] The order to sort by
                             <options: asc|desc>
   -s, --pageSize=<value>    [default: 10] The number of items to show per page
@@ -424,19 +420,41 @@ EXAMPLES
 
 _See code: [src/commands/game/list.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/list.ts)_
 
-## `shipthis game status`
+## `shipthis game ship`
 
-Shows the current Game status
+Builds the app (for all platforms with valid credentials) and ships it to the stores
 
 ```
 USAGE
-  $ shipthis game status
+  $ shipthis game ship
 
 DESCRIPTION
-  Shows the current Game status
+  Builds the app (for all platforms with valid credentials) and ships it to the stores
+
+EXAMPLES
+  $ shipthis game ship
+```
+
+_See code: [src/commands/game/ship.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ship.ts)_
+
+## `shipthis game status`
+
+Shows the Game status. If --gameId is not provided, it look in the current directory.
+
+```
+USAGE
+  $ shipthis game status [-g <value>]
+
+FLAGS
+  -g, --gameId=<value>  The ID of the game
+
+DESCRIPTION
+  Shows the Game status. If --gameId is not provided, it look in the current directory.
 
 EXAMPLES
   $ shipthis game status
+
+  $ shipthis game status --gameId 0c179fc4
 ```
 
 _See code: [src/commands/game/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/status.ts)_

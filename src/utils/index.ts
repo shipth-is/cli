@@ -8,3 +8,9 @@ export function isCWDGodotGame(): boolean {
   const godotProject = path.join(cwd, 'project.godot')
   return fs.existsSync(godotProject)
 }
+
+export function getShortUUID(originalUuid: string): string {
+  // A short git commit hash is an abbreviation of the hash to the first 7 characters
+  // It should be unique within the users account
+  return originalUuid.slice(0, 8)
+}

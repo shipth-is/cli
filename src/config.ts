@@ -1,5 +1,8 @@
 const USE_LOCAL = process.env.NODE_ENV === 'local'
 
+export const DEFAULT_SHIPPED_FILES_GLOBS = ['**/*']
+export const DEFAULT_IGNORED_FILES_GLOBS = ['.git', '.gitignore', 'shipthis.json', 'shipthis-*.zip']
+
 // TODO: prod
 export const DEV_API_URL = 'https://api.develop.shipthis.cc/api/1.0.0'
 export const LOCAL_API_URL = 'https://easy-reliably-gull.ngrok-free.app/api/1.0.0'

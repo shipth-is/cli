@@ -3,6 +3,7 @@ import {render} from 'ink'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {Container, Environment, NextSteps, StatusTable} from '@cli/components/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
+import {AuthConfig} from '@cli/types.js'
 
 export default class Status extends BaseCommand<typeof Status> {
   static override args = {}
@@ -14,7 +15,7 @@ export default class Status extends BaseCommand<typeof Status> {
   static override flags = {}
 
   public async run(): Promise<void> {
-    const authConfig = await this.getAuthConfig()
+    const authConfig: AuthConfig = await this.getAuthConfig()
 
     const isLoggedIn = !!authConfig.shipThisUser
     const isGodotGame = isCWDGodotGame()

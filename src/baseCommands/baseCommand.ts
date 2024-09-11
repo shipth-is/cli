@@ -4,6 +4,7 @@ import {Command, Flags, Interfaces} from '@oclif/core'
 import {AuthConfig, ProjectConfig} from '@cli/types'
 
 import {setAuthToken} from '@cli/api/index.js'
+import {isCWDGodotGame} from '@cli/utils/index.js'
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<(typeof BaseCommand)['baseFlags'] & T['flags']>
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
@@ -100,5 +101,19 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   public async setProjectConfig(config: ProjectConfig): Promise<void> {
     const configPath = this.getProjectConfigPath()
     await fs.promises.writeFile(configPath, JSON.stringify(config, null, 2))
+  }
+
+  // Used in baseGameCommand and the other commands that need to ensure that the CWD is a Godot project
+  protected ensureWeHaveACurrentGame(): void {
+    if (!isCWDGodotGame()) {
+      this.error('No Godot project detected. Please run this from a godot project directory.', {exit: 1})
+    }
+
+    if (!this.hasProjectConfig()) {
+      this.error(
+        'No shipthis config found. Please run `shipthis game create --name "Space Invaders"` to create a game.',
+        {exit: 1},
+      )
+    }
   }
 }

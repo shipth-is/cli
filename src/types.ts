@@ -33,6 +33,8 @@ export interface Project extends EditableProject {
 // Structure of the JSON project config file
 export interface ProjectConfig {
   project?: Project
+  shippedFilesGlobs?: string[]
+  ignoredFilesGlobs?: string[]
 }
 
 export enum Platform {
@@ -53,4 +55,9 @@ export interface PageAndSortParams {
   pageSize?: number
   order?: 'asc' | 'desc'
   orderBy?: 'createdAt' | 'updatedAt'
+}
+
+export interface UploadTicket {
+  url: string
+  id: string
 }
