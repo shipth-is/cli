@@ -61,3 +61,30 @@ export interface UploadTicket {
   url: string
   id: string
 }
+
+export interface Upload {
+  id: string
+  userId: string
+  bucketName: string
+  key: string
+  createdAt: DateTime
+  updatedAt: DateTime
+  url: string
+}
+
+export enum JobStatus {
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+}
+
+export interface Job {
+  id: string
+  project: Project
+  upload: Upload
+  type: Platform // not the best named field
+  status: JobStatus
+  createdAt: DateTime
+  updatedAt: DateTime
+}

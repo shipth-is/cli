@@ -89,6 +89,8 @@
     "./dist/commands/game/ios/profile/create.js",
     "./dist/commands/game/ios/profile/status.js",
     "./dist/commands/game/create.js",
+    "./dist/commands/game/job/list.js",
+    "./dist/commands/game/job/status.js",
     "./dist/commands/game/status.js",
     "./dist/commands/game/export.js",
     "./dist/commands/status.js",

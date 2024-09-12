@@ -3,6 +3,7 @@ import axios from 'axios'
 import {API_URL} from '@cli/config.js'
 import {
   EditableProject,
+  Job,
   PageAndSortParams,
   Platform,
   Project,
@@ -87,4 +88,16 @@ export async function startJobsFromUpload(uploadTicketId: string): Promise<void>
   const headers = await getAuthedHeaders()
   const opt = {headers}
   await axios.post(`${API_URL}/upload/start/${uploadTicketId}`, {}, opt)
+}
+
+// Get a page of jobs for a project
+export async function getProjectJobs(projectId: string, params: PageAndSortParams): Promise<ListResponse<Job>> {
+  const headers = await getAuthedHeaders()
+  const opt = {headers, params}
+  const {data: rawData} = await axios.get(`${API_URL}/projects/${projectId}/jobs`, opt)
+  const data = castArrayObjectDates<Job>(rawData.data)
+  return {
+    data,
+    pageCount: rawData.pageCount,
+  }
 }

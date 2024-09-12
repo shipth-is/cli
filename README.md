@@ -62,6 +62,8 @@ USAGE
 * [`shipthis game ios profile import [FILE]`](#shipthis-game-ios-profile-import-file)
 * [`shipthis game ios profile status [FILE]`](#shipthis-game-ios-profile-status-file)
 * [`shipthis game ios status [FILE]`](#shipthis-game-ios-status-file)
+* [`shipthis game job list`](#shipthis-game-job-list)
+* [`shipthis game job status [JOBID]`](#shipthis-game-job-status-jobid)
 * [`shipthis game list`](#shipthis-game-list)
 * [`shipthis game ship`](#shipthis-game-ship)
 * [`shipthis game status`](#shipthis-game-status)
@@ -436,6 +438,59 @@ EXAMPLES
 
 _See code: [src/commands/game/ios/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/status.ts)_
 
+## `shipthis game job list`
+
+Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
+
+```
+USAGE
+  $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
+
+FLAGS
+  -g, --gameId=<value>      The ID of the game
+  -o, --orderBy=<option>    [default: createdAt] The field to order by
+                            <options: createdAt|updatedAt>
+  -p, --pageNumber=<value>  The page number to show (starts at 0)
+  -r, --order=<option>      [default: desc] The order to sort by
+                            <options: asc|desc>
+  -s, --pageSize=<value>    [default: 10] The number of items to show per page
+
+DESCRIPTION
+  Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
+
+EXAMPLES
+  $ shipthis game job list
+
+  $ shipthis game job list --gameId 0c179fc4
+```
+
+_See code: [src/commands/game/job/list.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/job/list.ts)_
+
+## `shipthis game job status [JOBID]`
+
+Shows the real-time status of a job.
+
+```
+USAGE
+  $ shipthis game job status [JOBID] [-g <value>]
+
+ARGUMENTS
+  JOBID  The id of the job to get the status of
+
+FLAGS
+  -g, --gameId=<value>  The ID of the game
+
+DESCRIPTION
+  Shows the real-time status of a job.
+
+EXAMPLES
+  $ shipthis game job status abcd1234
+
+  $ shipthis game job status --gameId 0c179fc4 abcd1234
+```
+
+_See code: [src/commands/game/job/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/job/status.ts)_
+
 ## `shipthis game list`
 
 Shows a list of all your games
@@ -467,7 +522,10 @@ Builds the app (for all platforms with valid credentials) and ships it to the st
 
 ```
 USAGE
-  $ shipthis game ship
+  $ shipthis game ship [-g <value>]
+
+FLAGS
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Builds the app (for all platforms with valid credentials) and ships it to the stores

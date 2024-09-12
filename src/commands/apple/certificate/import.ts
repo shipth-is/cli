@@ -1,4 +1,4 @@
-import {Args, Command, Flags} from '@oclif/core'
+import {Args, Flags} from '@oclif/core'
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 
 export default class AppleCertificateImport extends BaseAppleCommand<typeof AppleCertificateImport> {

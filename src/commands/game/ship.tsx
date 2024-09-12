@@ -9,15 +9,12 @@ import {ProjectConfig} from '@cli/types.js'
 import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/config.js'
 import {getNewUploadTicket, startJobsFromUpload} from '@cli/api/index.js'
 
-// Only works if in a game dir - so extends BaseGameCommand
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
   static override args = {}
 
   static override description = 'Builds the app (for all platforms with valid credentials) and ships it to the stores'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
-
-  static override flags = {}
 
   public async run(): Promise<void> {
     const projectConfig: ProjectConfig = await this.getProjectConfig()
