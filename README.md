@@ -48,10 +48,11 @@ USAGE
 <!-- commands -->
 * [`shipthis apple certificate create [FILE]`](#shipthis-apple-certificate-create-file)
 * [`shipthis apple certificate import [FILE]`](#shipthis-apple-certificate-import-file)
-* [`shipthis apple certificate status [FILE]`](#shipthis-apple-certificate-status-file)
+* [`shipthis apple certificate status`](#shipthis-apple-certificate-status)
 * [`shipthis apple login`](#shipthis-apple-login)
 * [`shipthis apple status`](#shipthis-apple-status)
 * [`shipthis game create`](#shipthis-game-create)
+* [`shipthis game export [GAMEID]`](#shipthis-game-export-gameid)
 * [`shipthis game ios apiKey create [FILE]`](#shipthis-game-ios-apikey-create-file)
 * [`shipthis game ios apiKey import [FILE]`](#shipthis-game-ios-apikey-import-file)
 * [`shipthis game ios apiKey status [FILE]`](#shipthis-game-ios-apikey-status-file)
@@ -116,23 +117,16 @@ EXAMPLES
 
 _See code: [src/commands/apple/certificate/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/import.ts)_
 
-## `shipthis apple certificate status [FILE]`
+## `shipthis apple certificate status`
 
-describe the command here
+Displays the status of the Apple certificate on your account. This is used to sign all of your iOS apps.
 
 ```
 USAGE
-  $ shipthis apple certificate status [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
-
-FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  $ shipthis apple certificate status
 
 DESCRIPTION
-  describe the command here
+  Displays the status of the Apple certificate on your account. This is used to sign all of your iOS apps.
 
 EXAMPLES
   $ shipthis apple certificate status
@@ -200,6 +194,31 @@ EXAMPLES
 ```
 
 _See code: [src/commands/game/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/create.ts)_
+
+## `shipthis game export [GAMEID]`
+
+Downloads the shipthis.json file for a given game into the current directory.
+
+```
+USAGE
+  $ shipthis game export [GAMEID] [-f]
+
+ARGUMENTS
+  GAMEID  The ID of the game to export (use "list" to get the ID)
+
+FLAGS
+  -f, --force
+
+DESCRIPTION
+  Downloads the shipthis.json file for a given game into the current directory.
+
+EXAMPLES
+  $ shipthis game export abcd1234
+
+  $ shipthis game export abcd1234 --force
+```
+
+_See code: [src/commands/game/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/export.ts)_
 
 ## `shipthis game ios apiKey create [FILE]`
 

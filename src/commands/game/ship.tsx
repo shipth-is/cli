@@ -29,8 +29,6 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
 
     const files = await fg(shippedFilesGlobs, {dot: true, ignore: ignoredFilesGlobs})
 
-    console.log('Shipped files:', files)
-
     const zipFile = new yazl.ZipFile()
 
     for (const file of files) {
@@ -49,9 +47,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     const zipBuffer = fs.readFileSync(tmpZipFile)
     const {size} = fs.statSync(tmpZipFile)
 
-    console.log('getting upload tiuckley')
     const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
-    console.log('got upload ticket', uploadTicket)
 
     await axios.put(uploadTicket.url, zipBuffer, {
       headers: {
@@ -61,5 +57,11 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     })
 
     await startJobsFromUpload(uploadTicket.id)
+
+    // TODO: show the status
+
+    // TODO: websocket output
+
+    // TODO: no watch fla
   }
 }

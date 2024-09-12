@@ -1,15 +1,14 @@
 import {Args, Command, Flags} from '@oclif/core'
+import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 
-export default class AppleCertificateImport extends Command {
+export default class AppleCertificateImport extends BaseAppleCommand<typeof AppleCertificateImport> {
   static override args = {
     file: Args.string({description: 'file to read'}),
   }
 
   static override description = 'describe the command here'
 
-  static override examples = [
-    '<%= config.bin %> <%= command.id %>',
-  ]
+  static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
     // flag with no value (-f, --force)
@@ -22,7 +21,9 @@ export default class AppleCertificateImport extends Command {
     const {args, flags} = await this.parse(AppleCertificateImport)
 
     const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/apple/certificate/import.ts`)
+    this.log(
+      `hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/apple/certificate/import.ts`,
+    )
     if (args.file && flags.force) {
       this.log(`you input --force and --file: ${args.file}`)
     }

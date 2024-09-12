@@ -11,6 +11,8 @@ import {
 } from '@cli/types.js'
 import {castArrayObjectDates, castObjectDates} from '@cli/utils/dates.js'
 
+export * from './credentials/index.js'
+
 const AUTH_ENV_VAR_NAME = 'SHIPTHIS_TOKEN'
 
 // Most API functions will use getAuthedHeaders or process.env.SHIPTHIS_TOKEN
