@@ -28,18 +28,28 @@ export function getDateLocale() {
     const env = process.env
     const fullLocale = env.LC_TIME || env.LANG || env.LANGUAGE || env.LC_ALL || env.LC_MESSAGES
     const shortLocale = fullLocale?.split('.')[0].replace(/_/g, '-')
-
-    return shortLocale || fallback
+    const finalLocal = shortLocale || fallback
+    // Check it doesn't throw an error
+    const tstConvert = DateTime.now().toLocaleString(DateTime.DATE_SHORT, {locale: finalLocal})
+    return finalLocal
   } catch (e) {
     return fallback
   }
 }
 
 export function getShortDate(inputDate: DateTime) {
-  try {
-    const locale = getDateLocale()
-    return inputDate.toLocaleString(DateTime.DATE_SHORT, {locale})
-  } catch (e) {
-    return inputDate.toLocaleString(DateTime.DATE_SHORT, {locale: DEFAULT_LOCALE})
-  }
+  const locale = getDateLocale()
+  return inputDate.toLocaleString(DateTime.DATE_SHORT, {locale})
+}
+
+export function getShortDateTime(inputDate: DateTime) {
+  const locale = getDateLocale()
+  return inputDate.toLocaleString(DateTime.DATETIME_SHORT, {locale})
+}
+
+export function getShortTimeDelta(start: DateTime, end: DateTime): string {
+  return end.diff(start).rescale().set({milliseconds: 0}).shiftTo('minutes', 'seconds').toHuman({
+    listStyle: 'short',
+    unitDisplay: 'short',
+  })
 }

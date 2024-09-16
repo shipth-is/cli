@@ -1,5 +1,5 @@
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
-import {Container, NextSteps, StatusTable} from '@cli/components/index.js'
+import {App, NextSteps, StatusTable} from '@cli/components/index.js'
 import {render} from 'ink'
 
 // TODO: allow to run if not authed so we can see if we are not authed?
@@ -26,10 +26,10 @@ export default class AppleStatus extends BaseAppleCommand<typeof AppleStatus> {
 
     // TODO: this looks ugly as shit
     render(
-      <Container>
+      <App>
         <StatusTable marginBottom={1} title="Apple Status" statuses={statuses as any} />
         <NextSteps steps={steps} />
-      </Container>,
+      </App>,
     )
   }
 }

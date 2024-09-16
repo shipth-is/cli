@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {API_URL} from '@cli/config.js'
+import {API_URL} from '@cli/constants/index.js'
 import {
   EditableProject,
   Job,
@@ -29,14 +29,14 @@ export function getAuthedHeaders() {
 }
 
 export async function createProject(name: string): Promise<Project> {
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.post(`${API_URL}/projects`, {name}, opt)
   return castObjectDates<Project>(data)
 }
 
 export async function getProject(projectId: string): Promise<Project> {
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.get(`${API_URL}/projects/${projectId}`, opt)
   return castObjectDates<Project>(data)
@@ -48,7 +48,7 @@ export interface ListResponse<T> {
 }
 
 export async function getProjects(params: PageAndSortParams): Promise<ListResponse<Project>> {
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const opt = {headers, params}
   const {data: rawData} = await axios.get(`${API_URL}/projects`, opt)
   const data = castArrayObjectDates<Project>(rawData.data)
@@ -59,7 +59,7 @@ export async function getProjects(params: PageAndSortParams): Promise<ListRespon
 }
 
 export async function updateProject(projectId: string, edits: EditableProject): Promise<Project> {
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.put(`${API_URL}/projects/${projectId}`, edits, opt)
   return castObjectDates<Project>(data)
@@ -69,7 +69,7 @@ export async function getProjectPlatformProgress(
   projectId: string,
   platform: Platform,
 ): Promise<ProjectPlatformProgress> {
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.get(`${API_URL}/projects/${projectId}/${platform}/progress`, opt)
   return data as ProjectPlatformProgress
@@ -77,7 +77,7 @@ export async function getProjectPlatformProgress(
 
 // An UploadTicket is a request to upload. We do a HTTP PUT to the url returned
 export async function getNewUploadTicket(projectId: string): Promise<UploadTicket> {
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.post(`${API_URL}/upload/${projectId}/url`, {}, opt)
   return data as UploadTicket
@@ -85,14 +85,14 @@ export async function getNewUploadTicket(projectId: string): Promise<UploadTicke
 
 // Tells the backend to start running the jobs for an upload-ticket
 export async function startJobsFromUpload(uploadTicketId: string): Promise<void> {
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const opt = {headers}
   await axios.post(`${API_URL}/upload/start/${uploadTicketId}`, {}, opt)
 }
 
 // Get a page of jobs for a project
 export async function getProjectJobs(projectId: string, params: PageAndSortParams): Promise<ListResponse<Job>> {
-  const headers = await getAuthedHeaders()
+  const headers = getAuthedHeaders()
   const opt = {headers, params}
   const {data: rawData} = await axios.get(`${API_URL}/projects/${projectId}/jobs`, opt)
   const data = castArrayObjectDates<Job>(rawData.data)
@@ -100,4 +100,12 @@ export async function getProjectJobs(projectId: string, params: PageAndSortParam
     data,
     pageCount: rawData.pageCount,
   }
+}
+
+// Returns a single job
+export async function getJob(jobId: string, projectId: string): Promise<Job> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.get(`${API_URL}/projects/${projectId}/jobs/${jobId}`, opt)
+  return castObjectDates<Job>(data)
 }

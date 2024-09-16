@@ -9,18 +9,13 @@ export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuth
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
   }
 
-  public async init(): Promise<void> {
-    await super.init()
-    this.ensureWeHaveACurrentGame()
-  }
-
   protected async getGame(): Promise<Project> {
     try {
       const {flags} = this
       if (flags.gameId) {
         return await getProject(flags.gameId) // this should work with the short id too
       }
-      this.ensureWeHaveACurrentGame()
+      this.ensureWeAreInAProjectDir()
       const {project} = await this.getProjectConfig()
       if (!project) throw new Error('No project')
       return await getProject(project.id)

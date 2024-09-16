@@ -11,7 +11,7 @@ import {
 } from './types.js'
 
 import {getAuthedHeaders} from '@cli/api/index.js'
-import {API_URL} from '@cli/config.js'
+import {API_URL} from '@cli/constants/index.js'
 
 interface UploadTicket {
   url: string

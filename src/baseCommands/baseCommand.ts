@@ -105,7 +105,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   }
 
   // Used in baseGameCommand and the other commands that need to ensure that the CWD is a Godot project
-  protected ensureWeHaveACurrentGame(): void {
+  protected ensureWeAreInAProjectDir(): void {
     if (!isCWDGodotGame()) {
       this.error('No Godot project detected. Please run this from a godot project directory.', {exit: 1})
     }

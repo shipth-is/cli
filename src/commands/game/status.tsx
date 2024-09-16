@@ -1,12 +1,12 @@
 import {render, Box, Text} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {Container, NextSteps, StatusTable} from '@cli/components/index.js'
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {getProject, getProjectPlatformProgress} from '@cli/api/index.js'
-import {Platform, Project} from '@cli/types.js'
+import {App, NextSteps, StatusTable} from '@cli/components/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {getProjectPlatformProgress} from '@cli/api/index.js'
+import {Platform} from '@cli/types.js'
 
-export default class GameStatus extends BaseAuthenticatedCommand<typeof GameStatus> {
+export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
   static override args = {}
 
   static override description =
@@ -19,23 +19,6 @@ export default class GameStatus extends BaseAuthenticatedCommand<typeof GameStat
 
   static override flags = {
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
-  }
-
-  private async getGame(): Promise<Project> {
-    try {
-      const {flags} = this
-      if (flags.gameId) {
-        return await getProject(flags.gameId) // this should work with the short id too
-      }
-      this.ensureWeHaveACurrentGame()
-      const {project} = await this.getProjectConfig()
-      if (!project) throw new Error('No project')
-      return await getProject(project.id)
-    } catch (e: any) {
-      if (e?.response?.status === 404) {
-        this.error('Game not found - please check you have access')
-      } else throw e
-    }
   }
 
   public async run(): Promise<void> {
@@ -51,7 +34,7 @@ export default class GameStatus extends BaseAuthenticatedCommand<typeof GameStat
     ].filter(Boolean) as string[]
 
     render(
-      <Container>
+      <App>
         <Box flexDirection="column" marginBottom={1}>
           <Text bold>DETAILS</Text>
           <Box marginLeft={2} flexDirection="column">
@@ -62,7 +45,7 @@ export default class GameStatus extends BaseAuthenticatedCommand<typeof GameStat
         <StatusTable marginBottom={1} title="iOS Status" statuses={iosPlatformStatus as any} />
         <StatusTable marginBottom={1} title="Android Status" statuses={androidPlatformStatus as any} />
         <NextSteps steps={steps} />
-      </Container>,
+      </App>,
     )
   }
 }

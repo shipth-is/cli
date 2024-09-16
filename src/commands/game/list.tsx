@@ -5,11 +5,11 @@ import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {PageAndSortParams} from '@cli/types.js'
 import {getProjects} from '@cli/api/index.js'
 
-import {Container, Table} from '@cli/components/index.js'
+import {App, Table} from '@cli/components/index.js'
 import {getShortUUID} from '@cli/utils/index.js'
 import {getShortDate} from '@cli/utils/dates.js'
 
-// Does not need a project config to be run - so it extends BaseAuthenticatedCommand
+// Not specific to one game so we use BaseAuthenticatedCommand
 export default class GameList extends BaseAuthenticatedCommand<typeof GameList> {
   static override args = {}
 
@@ -48,7 +48,7 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
     })
 
     render(
-      <Container>
+      <App>
         <Table data={data} />
         {gameListResponse.pageCount > 1 && (
           <Box marginTop={1} flexDirection="column">
@@ -56,7 +56,7 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
             <Text>Use the --pageNumber parameter to see other pages.</Text>
           </Box>
         )}
-      </Container>,
+      </App>,
     )
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {API_URL} from '@cli/config.js'
+import {API_URL} from '@cli/constants/index.js'
 import {ListWithTitle} from './ListWithTitle.js'
 
 // Shows some debugging when not in production

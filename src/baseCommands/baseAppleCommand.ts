@@ -9,7 +9,6 @@ export abstract class BaseAppleCommand<T extends typeof Command> extends BaseAut
     await this.ensureWeHaveAppleCookies()
   }
 
-  // TODO: fix typing
   protected async refreshAuthState(): Promise<any> {
     const cookies = await this.getAppleCookies()
 

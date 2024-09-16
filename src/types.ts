@@ -88,3 +88,33 @@ export interface Job {
   createdAt: DateTime
   updatedAt: DateTime
 }
+
+export enum JobStage {
+  SETUP = 'SETUP',
+  EXPORT = 'EXPORT',
+  CONFIGURE = 'CONFIGURE',
+  BUILD = 'BUILD',
+  PUBLISH = 'PUBLISH',
+}
+
+export enum LogLevel {
+  INFO = 'INFO',
+  WARN = 'WARN',
+  ERROR = 'ERROR',
+}
+
+export interface JobLogEntry {
+  id: string
+  level: LogLevel
+  stage: JobStage
+  jobId: string
+  message: string
+  details: object
+  sentAt: DateTime
+  createdAt: DateTime
+}
+
+export interface CursorPaginatedResponse<T> {
+  data: T[]
+  nextCursor: string
+}

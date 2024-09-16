@@ -1,7 +1,7 @@
 import {render} from 'ink'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
-import {Container, Environment, NextSteps, StatusTable} from '@cli/components/index.js'
+import {App, Environment, NextSteps, StatusTable} from '@cli/components/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
 import {AuthConfig} from '@cli/types.js'
 
@@ -39,11 +39,11 @@ export default class Status extends BaseCommand<typeof Status> {
     }
 
     render(
-      <Container>
+      <App>
         <StatusTable {...statusProps} />
         <Environment />
         <NextSteps steps={steps} />
-      </Container>,
+      </App>,
     )
   }
 }

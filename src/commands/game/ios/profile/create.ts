@@ -7,9 +7,7 @@ export default class GameIosProfileCreate extends Command {
 
   static override description = 'describe the command here'
 
-  static override examples = [
-    '<%= config.bin %> <%= command.id %>',
-  ]
+  static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
     // flag with no value (-f, --force)
@@ -22,7 +20,9 @@ export default class GameIosProfileCreate extends Command {
     const {args, flags} = await this.parse(GameIosProfileCreate)
 
     const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/game/ios/profile/create.ts`)
+    this.log(
+      `hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/game/ios/profile/create.ts`,
+    )
     if (args.file && flags.force) {
       this.log(`you input --force and --file: ${args.file}`)
     }

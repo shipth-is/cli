@@ -2,6 +2,7 @@ import path from 'path'
 import fs from 'fs'
 
 export * from './dates.js'
+export * from './query/index.js'
 
 // Check if the current working directory is a Godot game
 // TODO: allow for cwd override

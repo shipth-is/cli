@@ -6,7 +6,7 @@ import yazl from 'yazl'
 
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {ProjectConfig} from '@cli/types.js'
-import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/config.js'
+import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
 import {getNewUploadTicket, startJobsFromUpload} from '@cli/api/index.js'
 
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
@@ -17,6 +17,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   public async run(): Promise<void> {
+    // We upload the source code from the current dir.
+    await this.ensureWeAreInAProjectDir()
     const projectConfig: ProjectConfig = await this.getProjectConfig()
     if (!projectConfig) throw new Error('No project config found')
     if (!projectConfig.project) throw new Error('No project found in project config')

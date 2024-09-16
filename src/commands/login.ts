@@ -4,7 +4,7 @@ import {Flags} from '@oclif/core'
 import {promises as readline} from 'node:readline'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
-import {API_URL} from '@cli/config.js'
+import {API_URL} from '@cli/constants/index.js'
 import {AuthConfig} from '@cli/types.js'
 
 export default class Login extends BaseCommand<typeof Login> {

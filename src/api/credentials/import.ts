@@ -4,7 +4,7 @@ import {promises as fsAsync} from 'fs'
 
 import {getAuthedHeaders} from '@cli/api/index.js'
 
-import {API_URL} from '@cli/config.js'
+import {API_URL} from '@cli/constants/index.js'
 // @ts-ignore
 import {CredentialsPlatform, CredentialsType} from './types.ts'
 

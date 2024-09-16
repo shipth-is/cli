@@ -5,9 +5,9 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectJobs} from '@cli/api/index.js'
 import {PageAndSortParams} from '@cli/types.js'
 
-import {Container, Table} from '@cli/components/index.js'
+import {App, Table} from '@cli/components/index.js'
 import {getShortUUID} from '@cli/utils/index.js'
-import {getShortDate} from '@cli/utils/dates.js'
+import {getShortDateTime, getShortTimeDelta} from '@cli/utils/dates.js'
 
 export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
   static override args = {}
@@ -50,14 +50,15 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
     const data = jobListResponse.data.map((job) => {
       return {
         id: getShortUUID(job.id),
-        type: job.type,
+        platform: job.type,
         status: job.status,
-        createdAt: getShortDate(job.createdAt),
+        createdAt: getShortDateTime(job.createdAt),
+        runtime: getShortTimeDelta(job.createdAt, job.updatedAt),
       }
     })
 
     render(
-      <Container>
+      <App>
         <Table data={data} />
         {jobListResponse.pageCount > 1 && (
           <Box marginTop={1} flexDirection="column">
@@ -65,7 +66,7 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
             <Text>Use the --pageNumber parameter to see other pages.</Text>
           </Box>
         )}
-      </Container>,
+      </App>,
     )
   }
 }

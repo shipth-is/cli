@@ -3,7 +3,8 @@ import {promises as readline} from 'node:readline'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {createProject} from '@cli/api/index.js'
-import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/config.js'
+
+import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
 
 export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCreate> {
   static override args = {}
