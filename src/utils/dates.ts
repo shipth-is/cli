@@ -22,6 +22,7 @@ export function castArrayObjectDates<T>(apiArray: any[], keys = ['createdAt', 'u
   return apiArray.map((apiObject) => castObjectDates<T>(apiObject, keys))
 }
 
+// TODO: not sure if working correctly. Needs testing in different locales and environments
 export function getDateLocale() {
   const fallback = Intl.DateTimeFormat().resolvedOptions().locale.replace(/_/g, '-') || DEFAULT_LOCALE
   try {

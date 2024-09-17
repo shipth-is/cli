@@ -21,6 +21,10 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   protected args!: Args<T>
 
   public async init(): Promise<void> {
+    // TODO: is this the best place?
+    process.on('SIGINT', () => process.exit(0))
+    process.on('SIGTERM', () => process.exit(0))
+
     await super.init()
     const {args, flags} = await this.parse({
       flags: this.ctor.flags,

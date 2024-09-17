@@ -22,6 +22,10 @@ export function setAuthToken(token: string) {
   process.env[AUTH_ENV_VAR_NAME] = token
 }
 
+export function getAuthToken() {
+  return process.env[AUTH_ENV_VAR_NAME]
+}
+
 export function getAuthedHeaders() {
   return {
     Authorization: `Bearer ${process.env[AUTH_ENV_VAR_NAME]}`,
@@ -84,10 +88,11 @@ export async function getNewUploadTicket(projectId: string): Promise<UploadTicke
 }
 
 // Tells the backend to start running the jobs for an upload-ticket
-export async function startJobsFromUpload(uploadTicketId: string): Promise<void> {
+export async function startJobsFromUpload(uploadTicketId: string): Promise<Job[]> {
   const headers = getAuthedHeaders()
   const opt = {headers}
-  await axios.post(`${API_URL}/upload/start/${uploadTicketId}`, {}, opt)
+  const {data} = await axios.post(`${API_URL}/upload/start/${uploadTicketId}`, {}, opt)
+  return castArrayObjectDates<Job>(data)
 }
 
 // Get a page of jobs for a project

@@ -15,8 +15,9 @@ export const JobLogTail = ({jobId, projectId}: JobLogTailProps) => {
   const rawData = !data ? [] : data.pages.map((page) => page.data).flat()
   const tableData = rawData.map((log) => {
     return {
-      createdAt: getShortDateTime(log.createdAt),
+      time: getShortDateTime(log.sentAt),
       stage: log.stage,
+      level: log.level, // TODO: colorize?
       message: log.message,
     }
   })

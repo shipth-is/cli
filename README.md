@@ -37,7 +37,7 @@ $ npm install -g shipthis
 $ shipthis COMMAND
 running command...
 $ shipthis (--version)
-shipthis/0.0.0 linux-x64 node-v21.6.1
+shipthis/0.0.0 linux-x64 node-v20.17.0
 $ shipthis --help [COMMAND]
 USAGE
   $ shipthis COMMAND
@@ -63,7 +63,7 @@ USAGE
 * [`shipthis game ios profile status [FILE]`](#shipthis-game-ios-profile-status-file)
 * [`shipthis game ios status [FILE]`](#shipthis-game-ios-status-file)
 * [`shipthis game job list`](#shipthis-game-job-list)
-* [`shipthis game job status [JOBID]`](#shipthis-game-job-status-jobid)
+* [`shipthis game job status JOB_ID`](#shipthis-game-job-status-job_id)
 * [`shipthis game list`](#shipthis-game-list)
 * [`shipthis game ship`](#shipthis-game-ship)
 * [`shipthis game status`](#shipthis-game-status)
@@ -466,16 +466,16 @@ EXAMPLES
 
 _See code: [src/commands/game/job/list.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/job/list.ts)_
 
-## `shipthis game job status [JOBID]`
+## `shipthis game job status JOB_ID`
 
 Shows the real-time status of a job.
 
 ```
 USAGE
-  $ shipthis game job status [JOBID] [-g <value>]
+  $ shipthis game job status JOB_ID [-g <value>]
 
 ARGUMENTS
-  JOBID  The id of the job to get the status of
+  JOB_ID  The id of the job to get the status of
 
 FLAGS
   -g, --gameId=<value>  The ID of the game

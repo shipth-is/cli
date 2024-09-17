@@ -6,6 +6,7 @@ import {cacheKeys} from '@cli/constants/cacheKeys.js'
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/constants/index.js'
 import {CursorPaginatedResponse, JobLogEntry} from '@cli/types.js'
+import {JobLogListener, useWebSocket} from '../hooks/useWebSocket.js'
 
 export interface JobLogsQueryProps {
   projectId: string
@@ -40,8 +41,12 @@ export async function queryJobLogs({
 export const useJobLogs = (
   props: JobLogsQueryProps,
 ): UseInfiniteQueryResult<InfiniteData<JobLogsQueryResponse>, AxiosError> => {
+  const listener = new JobLogListener(props.projectId, props.jobId)
+
+  useWebSocket([listener])
+
   const queryResult = useInfiniteQuery<JobLogsQueryResponse, AxiosError>({
-    queryKey: cacheKeys.jobLogs(props),
+    queryKey: cacheKeys.jobLogs({jobId: props.jobId, projectId: props.projectId}),
     queryFn: async ({pageParam}) => {
       return queryJobLogs({
         ...props,

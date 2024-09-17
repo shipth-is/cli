@@ -25,8 +25,9 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
       return job
     } catch (e: any) {
       if (e?.response?.status === 404) {
-        this.error('Job not found - please check you have access')
-      } else throw e
+        this.error('Job not found - please check you have access', {exit: 1})
+      }
+      throw e
     }
   }
 

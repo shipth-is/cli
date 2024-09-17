@@ -55,12 +55,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       },
     })
 
-    await startJobsFromUpload(uploadTicket.id)
+    const [firstJob] = await startJobsFromUpload(uploadTicket.id)
 
-    // TODO: show the status
-
-    // TODO: websocket output
-
-    // TODO: no watch fla
+    await this.config.runCommand(`game:job:status`, [firstJob.id])
   }
 }
