@@ -55,8 +55,12 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       },
     })
 
+    fs.unlinkSync(tmpZipFile)
+
     const [firstJob] = await startJobsFromUpload(uploadTicket.id)
 
+    // TODO: why are timestamp formats different when run this way instead of
+    // running the command directly?
     await this.config.runCommand(`game:job:status`, [firstJob.id, '--follow'])
   }
 }

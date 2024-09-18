@@ -46,7 +46,7 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
 
     render(
       <App>
-        <JobStatusTable jobId={job.id} projectId={job.project.id} />
+        <JobStatusTable jobId={job.id} projectId={job.project.id} isWatching={follow} />
         <JobLogTail jobId={job.id} projectId={job.project.id} length={lines} isWatching={follow} />
         <NextSteps steps={[]} />
       </App>,

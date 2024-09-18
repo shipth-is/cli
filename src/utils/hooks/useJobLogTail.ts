@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react'
 import {JobLogEntry} from '@cli/types.js'
 import {useJobLogs} from '@cli/utils/query/useJobLogs.js'
 import {useWebSocket, WebSocketListener} from './useWebSocket.js'
+import {castObjectDates} from '../dates.js'
 
 export interface JobLogTailProps {
   projectId: string
@@ -35,8 +36,10 @@ export function useJobLogTail(props: JobLogTailProps): JobLogTailResult {
 
   const listener: WebSocketListener = {
     getPattern: () => `project.${props.projectId}:job.${props.jobId}:log`,
-    eventHandler: async (pattern: string, logEntry: JobLogEntry) => {
+    eventHandler: async (pattern: string, rawLogEntry: JobLogEntry) => {
       setWebsocketLogs((prevLogs) => {
+        // We have to fix the dates
+        const logEntry = castObjectDates<JobLogEntry>(rawLogEntry, ['sentAt', 'createdAt'])
         return getSortedJobLogs([...prevLogs, logEntry])
       })
     },
