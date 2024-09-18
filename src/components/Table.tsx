@@ -14,19 +14,36 @@ type Column = {
   width: number
 }
 
+interface Styles {
+  color?: string
+  backgroundColor?: string
+  bold?: boolean
+  italic?: boolean
+  underline?: boolean
+  inverse?: boolean
+  strikethrough?: boolean
+  dimColor?: boolean
+}
+
+const BASE_HEADER_STYLES: Styles = {
+  color: 'blue',
+  bold: true,
+}
+
+const BASE_TEXT_STYLES: Styles = {
+  color: 'white',
+}
+
+type ColumnStyles = {
+  [key: string]: Styles
+}
+
 type TableProps = {
   data: ScalarDict[]
   showHeaders?: boolean
-  headerStyles?: {
-    color?: string
-    backgroundColor?: string
-    bold?: boolean
-    italic?: boolean
-    underline?: boolean
-    inverse?: boolean
-    strikethrough?: boolean
-    dimColor?: boolean
-  }
+  headerStyles?: Styles
+  columnStyles?: ColumnStyles
+  getTextStyles?: (column: Column, value: Scalar) => Styles | undefined
 }
 
 // Helper function to generate headers from data
@@ -42,9 +59,14 @@ function generateHeaders(data: ScalarDict[]): ScalarDict {
   return headers
 }
 
-export const Table = ({data, showHeaders = true, headerStyles}: TableProps) => {
+export const Table = ({data, showHeaders = true, headerStyles, columnStyles, getTextStyles}: TableProps) => {
   // Determine columns and their widths
   const columns: Column[] = getColumns(data)
+
+  const fullHeaderStyles = {
+    ...BASE_HEADER_STYLES,
+    ...headerStyles,
+  }
 
   return (
     <Box flexDirection="column">
@@ -52,11 +74,7 @@ export const Table = ({data, showHeaders = true, headerStyles}: TableProps) => {
 
       {showHeaders && (
         <>
-          {renderRow(generateHeaders(data), columns, {
-            color: 'blue',
-            bold: true,
-            ...headerStyles,
-          })}
+          {renderRow(generateHeaders(data), columns, fullHeaderStyles)}
           {renderRowSeparators(columns)}
         </>
       )}
@@ -64,7 +82,7 @@ export const Table = ({data, showHeaders = true, headerStyles}: TableProps) => {
       {data.map((row, index) => (
         <React.Fragment key={`row-${index}`}>
           {index !== 0 && renderRowSeparators(columns)}
-          {renderRow(row, columns)}
+          {renderRow(row, columns, BASE_TEXT_STYLES, columnStyles, getTextStyles)}
         </React.Fragment>
       ))}
       {renderFooterSeparators(columns)}
@@ -90,19 +108,33 @@ function getColumns(data: ScalarDict[]): Column[] {
 }
 
 // Helper function to render a row with separators
-function renderRow(row: ScalarDict, columns: Column[], textStyles?: any) {
+function renderRow(
+  row: ScalarDict,
+  columns: Column[],
+  baseCellTextStyles?: Styles,
+  columnStyles?: ColumnStyles,
+  getTextStyles?: (column: Column, value: Scalar) => Styles | undefined,
+) {
   return (
     <Box flexDirection="row">
       <Text>│</Text>
-      {columns.map((column, index) => (
-        <React.Fragment key={column.key}>
-          {index !== 0 && <Text>│</Text>}
-          {/* Add separator before each cell except the first one */}
-          <Box width={column.width} justifyContent="center">
-            <Text {...textStyles}>{row[column.key]?.toString() || ''}</Text>
-          </Box>
-        </React.Fragment>
-      ))}
+      {columns.map((column, index) => {
+        const columnStylesForCell = columnStyles?.[column.key]
+        const cellTextStyles = {
+          ...baseCellTextStyles,
+          ...columnStylesForCell,
+          ...(getTextStyles ? getTextStyles(column, row[column.key]) : {}),
+        }
+        return (
+          <React.Fragment key={column.key}>
+            {index !== 0 && <Text>│</Text>}
+            {/* Add separator before each cell except the first one */}
+            <Box width={column.width} justifyContent="center">
+              <Text {...cellTextStyles}>{row[column.key]?.toString() || ''}</Text>
+            </Box>
+          </React.Fragment>
+        )
+      })}
       <Text>│</Text>
     </Box>
   )

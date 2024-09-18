@@ -3,10 +3,10 @@ import {Flags} from '@oclif/core'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectJobs} from '@cli/api/index.js'
-import {PageAndSortParams} from '@cli/types.js'
+import {JobStatus, PageAndSortParams} from '@cli/types.js'
 
 import {App, Table} from '@cli/components/index.js'
-import {getShortUUID} from '@cli/utils/index.js'
+import {getJobStatusColor, getShortUUID} from '@cli/utils/index.js'
 import {getShortDateTime, getShortTimeDelta} from '@cli/utils/dates.js'
 
 export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
@@ -59,7 +59,13 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
 
     render(
       <App>
-        <Table data={data} />
+        <Table
+          data={data}
+          getTextStyles={(col, val) => {
+            if (col.key !== 'status') return {}
+            return {color: getJobStatusColor(val as JobStatus)}
+          }}
+        />
         {jobListResponse.pageCount > 1 && (
           <Box marginTop={1} flexDirection="column">
             <Text>{`Showing page ${flags.pageNumber + 1} of ${jobListResponse.pageCount}.`}</Text>
