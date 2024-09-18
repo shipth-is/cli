@@ -4,6 +4,7 @@ import {JobLogEntry} from '@cli/types.js'
 import {useJobLogs} from '@cli/utils/query/useJobLogs.js'
 import {useWebSocket, WebSocketListener} from './useWebSocket.js'
 import {castObjectDates} from '../dates.js'
+import {arrayToDictionary, dictionaryToArray} from '../dictionary.js'
 
 export interface JobLogTailProps {
   projectId: string
@@ -59,7 +60,12 @@ export function useJobLogTail(props: JobLogTailProps): JobLogTailResult {
 
   // We only use the first page of the infinite query
   const firstPage = fetchedJobLogs ? fetchedJobLogs?.pages[0].data : []
-  const data = getSortedJobLogs([...firstPage, ...websocketLogs]).slice(-props.length)
+
+  // Deduplicate logs by id
+  const allLogs = [...firstPage, ...websocketLogs]
+  const allLogsById = arrayToDictionary(allLogs)
+
+  const data = getSortedJobLogs(dictionaryToArray(allLogsById)).slice(-props.length)
 
   return {
     isLoading,

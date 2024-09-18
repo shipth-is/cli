@@ -1,5 +1,5 @@
 // Table.tsx
-// From https://github.com/maticzav/ink-table/issues/268
+// From https://github.com/maticzav/ink-table/issues/268 and modified
 import React from 'react'
 import {Box, Text} from 'ink'
 

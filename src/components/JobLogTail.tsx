@@ -19,12 +19,12 @@ export const JobLogTail = (props: JobLogTailProps) => {
           const stageColor = getStageColor(log.stage)
           const messageColor = getMessageColor(log.level)
           return (
-            <Box key={log.id} flexDirection="row">
+            <Box key={log.id} flexDirection="row" overflow="hidden">
               <Text color={stageColor}>{log.stage}</Text>
               <Text> </Text>
               <Text>{getShortTime(log.sentAt)}</Text>
               <Text> </Text>
-              <Text color={messageColor}>{log.message}</Text>
+              <Text color={messageColor}>{log.message.replace(/[\r\n]/g, '')}</Text>
             </Box>
           )
         })}

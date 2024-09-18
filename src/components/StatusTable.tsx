@@ -41,7 +41,7 @@ export const StatusTable = ({title, statuses, colors, ...rest}: StatusTableProps
           <Box flexDirection="column">
             {Object.entries(statuses).map(([key]) => (
               <Box key={key} flexDirection="row">
-                <Text color="#ffffff">{getLabel(key)}</Text>
+                <Text>{getLabel(key)}</Text>
               </Box>
             ))}
           </Box>

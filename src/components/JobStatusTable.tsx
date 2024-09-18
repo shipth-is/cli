@@ -1,9 +1,11 @@
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {getJobStatusColor, getShortTime, getShortTimeDelta} from '@cli/utils/index.js'
+import {getJobStatusColor, getShortTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
 import {Job, JobStatus} from '@cli/types.js'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
+import {DateTime} from 'luxon'
+import {useEffect, useState} from 'react'
 
 interface JobStatusTableProps {
   projectId: string
@@ -15,20 +17,44 @@ interface JobStatusTableProps {
 export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobStatusTableProps) => {
   const {data: job, isLoading} = useJobWatching({projectId, jobId, isWatching, onJobUpdate})
 
+  const [time, setTime] = useState(DateTime.now())
+
+  useEffect(() => {
+    if (!isWatching) return
+    const interval = setInterval(() => setTime(DateTime.now()), 1000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
+  const isJobInProgress = job && ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
+
+  const runtime = !job
+    ? 'N/A'
+    : isJobInProgress
+    ? getShortTimeDelta(job.createdAt, time)
+    : getShortTimeDelta(job.createdAt, job.updatedAt)
+
   return (
     <Box flexDirection="column" marginBottom={1}>
       <Text bold>JOB DETAILS</Text>
       {isLoading && <Spinner type="dots" />}
       {job && (
         <Box flexDirection="column" marginLeft={2}>
-          <Text>{`ID: ${job.id}`}</Text>
+          <Text>{`ID: ${getShortUUID(job.id)}`}</Text>
           <Box flexDirection="row">
             <Text>{`Status: `}</Text>
             <Text color={getJobStatusColor(job.status)}>{`${job.status}`}</Text>
+            {isWatching && isJobInProgress && (
+              <>
+                <Text> </Text>
+                <Spinner type="dots" />
+              </>
+            )}
           </Box>
           <Text>{`Started At: ${getShortTime(job.createdAt)}`}</Text>
           <Text>{`Ended At: ${job.status === JobStatus.COMPLETED ? getShortTime(job.updatedAt) : 'N/A'}`}</Text>
-          <Text>{`Runtime: ${getShortTimeDelta(job.createdAt, job.updatedAt)}`}</Text>
+          <Text>{`Runtime: ${runtime}`}</Text>
         </Box>
       )}
     </Box>
