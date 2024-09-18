@@ -49,7 +49,10 @@ export function getShortDateTime(inputDate: DateTime, extraFormatOpts: DateTimeF
   return inputDate.toLocaleString(formatOpts, {locale})
 }
 
-export function getShortTime(inputDate: DateTime, extraFormatOpts: DateTimeFormatOptions = {}) {
+export function getShortTime(
+  inputDate: DateTime,
+  extraFormatOpts: DateTimeFormatOptions = {fractionalSecondDigits: 3},
+) {
   const locale = getDateLocale()
   const formatOpts = {...DateTime.TIME_24_WITH_SECONDS, ...extraFormatOpts}
   return inputDate.toLocaleString(formatOpts, {locale})

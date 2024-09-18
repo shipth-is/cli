@@ -3,7 +3,7 @@ import {render} from 'ink'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {App, JobLogTail, JobStatusTable, NextSteps} from '@cli/components/index.js'
-import {Job} from '@cli/types.js'
+import {Job, JobStatus} from '@cli/types.js'
 import {getJob} from '@cli/api/index.js'
 
 export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus> {
@@ -44,9 +44,19 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
 
     const {lines, follow} = this.flags
 
+    // If the job is already completed or failed, we can exit early (when watching)
+    const handleJobUpdate = (job: Job) => {
+      if (follow && [JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)) {
+        setTimeout(() => {
+          // Close after 2 seconds to ensure the last log lines are shown
+          process.exit(0)
+        }, 2000)
+      }
+    }
+
     render(
       <App>
-        <JobStatusTable jobId={job.id} projectId={job.project.id} isWatching={follow} />
+        <JobStatusTable jobId={job.id} projectId={job.project.id} isWatching={follow} onJobUpdate={handleJobUpdate} />
         <JobLogTail jobId={job.id} projectId={job.project.id} length={lines} isWatching={follow} />
         <NextSteps steps={[]} />
       </App>,

@@ -22,7 +22,7 @@ export const JobLogTail = (props: JobLogTailProps) => {
             <Box key={log.id} flexDirection="row">
               <Text color={stageColor}>{log.stage}</Text>
               <Text> </Text>
-              <Text>{getShortTime(log.sentAt, {fractionalSecondDigits: 3})}</Text>
+              <Text>{getShortTime(log.sentAt)}</Text>
               <Text> </Text>
               <Text color={messageColor}>{log.message}</Text>
             </Box>

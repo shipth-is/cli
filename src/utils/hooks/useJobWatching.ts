@@ -8,6 +8,7 @@ export interface JobWatchingProps {
   projectId: string
   jobId: string
   isWatching: boolean
+  onJobUpdate?: (job: Job) => void
 }
 
 export interface JobWatchingResult {
@@ -26,6 +27,7 @@ export function useJobWatching(props: JobWatchingProps): JobWatchingResult {
       // We have to fix the dates
       const job = castObjectDates<Job>(rawJob)
       setWebsocketJob(job)
+      if (props.onJobUpdate) props.onJobUpdate(job)
     },
   }
   useWebSocket(props.isWatching ? [listener] : [])

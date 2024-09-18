@@ -1,18 +1,19 @@
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {getJobStatusColor, getShortDate, getShortTime, getShortTimeDelta} from '@cli/utils/index.js'
-import {JobStatus} from '@cli/types.js'
+import {getJobStatusColor, getShortTime, getShortTimeDelta} from '@cli/utils/index.js'
+import {Job, JobStatus} from '@cli/types.js'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
 
 interface JobStatusTableProps {
   projectId: string
   jobId: string
   isWatching: boolean
+  onJobUpdate?: (job: Job) => void
 }
 
-export const JobStatusTable = ({jobId, projectId, isWatching}: JobStatusTableProps) => {
-  const {data: job, isLoading} = useJobWatching({projectId, jobId, isWatching})
+export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobStatusTableProps) => {
+  const {data: job, isLoading} = useJobWatching({projectId, jobId, isWatching, onJobUpdate})
 
   return (
     <Box flexDirection="column" marginBottom={1}>
@@ -25,10 +26,8 @@ export const JobStatusTable = ({jobId, projectId, isWatching}: JobStatusTablePro
             <Text>{`Status: `}</Text>
             <Text color={getJobStatusColor(job.status)}>{`${job.status}`}</Text>
           </Box>
-          <Text>{`Started At: ${getShortTime(job.createdAt, {fractionalSecondDigits: 3})}`}</Text>
-          <Text>{`Ended At: ${
-            job.status === JobStatus.COMPLETED ? getShortTime(job.updatedAt, {fractionalSecondDigits: 3}) : 'N/A'
-          }`}</Text>
+          <Text>{`Started At: ${getShortTime(job.createdAt)}`}</Text>
+          <Text>{`Ended At: ${job.status === JobStatus.COMPLETED ? getShortTime(job.updatedAt) : 'N/A'}`}</Text>
           <Text>{`Runtime: ${getShortTimeDelta(job.createdAt, job.updatedAt)}`}</Text>
         </Box>
       )}
