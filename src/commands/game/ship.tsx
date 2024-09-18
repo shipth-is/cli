@@ -57,6 +57,6 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
 
     const [firstJob] = await startJobsFromUpload(uploadTicket.id)
 
-    await this.config.runCommand(`game:job:status`, [firstJob.id])
+    await this.config.runCommand(`game:job:status`, [firstJob.id, '--follow'])
   }
 }

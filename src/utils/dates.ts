@@ -1,4 +1,4 @@
-import {DateTime} from 'luxon'
+import {DateTime, DateTimeFormatOptions} from 'luxon'
 
 export const DEFAULT_LOCALE = 'en-US'
 
@@ -43,9 +43,16 @@ export function getShortDate(inputDate: DateTime) {
   return inputDate.toLocaleString(DateTime.DATE_SHORT, {locale})
 }
 
-export function getShortDateTime(inputDate: DateTime) {
+export function getShortDateTime(inputDate: DateTime, extraFormatOpts: DateTimeFormatOptions = {}) {
   const locale = getDateLocale()
-  return inputDate.toLocaleString(DateTime.DATETIME_SHORT, {locale})
+  const formatOpts = {...DateTime.DATETIME_SHORT, ...extraFormatOpts}
+  return inputDate.toLocaleString(formatOpts, {locale})
+}
+
+export function getShortTime(inputDate: DateTime, extraFormatOpts: DateTimeFormatOptions = {}) {
+  const locale = getDateLocale()
+  const formatOpts = {...DateTime.TIME_24_WITH_SECONDS, ...extraFormatOpts}
+  return inputDate.toLocaleString(formatOpts, {locale})
 }
 
 export function getShortTimeDelta(start: DateTime, end: DateTime): string {

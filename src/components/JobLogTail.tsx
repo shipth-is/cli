@@ -1,32 +1,34 @@
 import {Box, Text} from 'ink'
-import {useJobLogs} from '@cli/utils/query/index.js'
 import Spinner from 'ink-spinner'
-import {getShortDateTime} from '@cli/utils/dates.js'
-import {Table} from './Table.js'
 
-export interface JobLogTailProps {
-  projectId: string
-  jobId: string
-}
+import {getShortTime} from '@cli/utils/dates.js'
 
-export const JobLogTail = ({jobId, projectId}: JobLogTailProps) => {
-  const {isLoading, data} = useJobLogs({projectId, jobId})
+import {getMessageColor, getStageColor} from '@cli/utils/index.js'
+import {JobLogTailProps, useJobLogTail} from '@cli/utils/hooks/index.js'
+import {JobLogEntry} from '@cli/types.js'
 
-  const rawData = !data ? [] : data.pages.map((page) => page.data).flat()
-  const tableData = rawData.map((log) => {
-    return {
-      time: getShortDateTime(log.sentAt),
-      stage: log.stage,
-      level: log.level, // TODO: colorize?
-      message: log.message,
-    }
-  })
+export const JobLogTail = (props: JobLogTailProps) => {
+  const {isLoading, data} = useJobLogTail(props)
 
   return (
     <Box flexDirection="column">
       <Text bold>JOB LOGS</Text>
       {isLoading && <Spinner type="dots" />}
-      <Table data={tableData} />
+      <Box flexDirection="column">
+        {data.map((log: JobLogEntry) => {
+          const stageColor = getStageColor(log.stage)
+          const messageColor = getMessageColor(log.level)
+          return (
+            <Box key={log.id} flexDirection="row">
+              <Text color={stageColor}>{log.stage}</Text>
+              <Text> </Text>
+              <Text>{getShortTime(log.sentAt, {fractionalSecondDigits: 3})}</Text>
+              <Text> </Text>
+              <Text color={messageColor}>{log.message}</Text>
+            </Box>
+          )
+        })}
+      </Box>
     </Box>
   )
 }

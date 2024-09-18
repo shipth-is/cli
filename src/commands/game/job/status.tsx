@@ -1,4 +1,4 @@
-import {Args} from '@oclif/core'
+import {Args, Flags} from '@oclif/core'
 import {render} from 'ink'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
@@ -14,9 +14,16 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
   static override description = 'Shows the real-time status of a job.'
 
   static override examples = [
-    '<%= config.bin %> <%= command.id %> abcd1234',
-    '<%= config.bin %> <%= command.id %> --gameId 0c179fc4 abcd1234',
+    '<%= config.bin %> <%= command.id %> 4d32239e',
+    '<%= config.bin %> <%= command.id %> --gameId 0c179fc4 4d32239e',
+    '<%= config.bin %> <%= command.id %> --gameId 0c179fc4 --lines 20 --follow 4d32239e',
   ]
+
+  static override flags = {
+    ...super.flags,
+    lines: Flags.integer({char: 'n', description: 'The number of lines to show', default: 10}),
+    follow: Flags.boolean({char: 'f', description: 'Follow the log in real-time', default: false}),
+  }
 
   protected async getJob(): Promise<Job> {
     try {
@@ -35,10 +42,12 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
     // We run the getJob first to check the user has access
     const job = await this.getJob()
 
+    const {lines, follow} = this.flags
+
     render(
       <App>
         <JobStatusTable jobId={job.id} projectId={job.project.id} />
-        <JobLogTail jobId={job.id} projectId={job.project.id} />
+        <JobLogTail jobId={job.id} projectId={job.project.id} length={lines} isWatching={follow} />
         <NextSteps steps={[]} />
       </App>,
     )
