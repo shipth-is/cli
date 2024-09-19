@@ -49,7 +49,7 @@ USAGE
 * [`shipthis apple apiKey create [FILE]`](#shipthis-apple-apikey-create-file)
 * [`shipthis apple apiKey import [FILE]`](#shipthis-apple-apikey-import-file)
 * [`shipthis apple apiKey status [FILE]`](#shipthis-apple-apikey-status-file)
-* [`shipthis apple certificate create [FILE]`](#shipthis-apple-certificate-create-file)
+* [`shipthis apple certificate create`](#shipthis-apple-certificate-create)
 * [`shipthis apple certificate export FILE`](#shipthis-apple-certificate-export-file)
 * [`shipthis apple certificate import FILE`](#shipthis-apple-certificate-import-file)
 * [`shipthis apple certificate status`](#shipthis-apple-certificate-status)
@@ -144,26 +144,25 @@ EXAMPLES
 
 _See code: [src/commands/apple/apiKey/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/status.ts)_
 
-## `shipthis apple certificate create [FILE]`
+## `shipthis apple certificate create`
 
-describe the command here
+Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your shipthis account
 
 ```
 USAGE
-  $ shipthis apple certificate create [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ shipthis apple certificate create [-f]
 
 FLAGS
   -f, --force
-  -n, --name=<value>  name to print
 
 DESCRIPTION
-  describe the command here
+  Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your shipthis
+  account
 
 EXAMPLES
   $ shipthis apple certificate create
+
+  $ shipthis apple certificate create --force
 ```
 
 _See code: [src/commands/apple/certificate/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/create.ts)_
@@ -216,7 +215,7 @@ _See code: [src/commands/apple/certificate/import.ts](https://github.com/oclif-c
 
 ## `shipthis apple certificate status`
 
-Displays the status of the certificates in your Apple account. These are used to sign all of your iOS apps.
+Displays the status of the iOS Distribution certificates in your Apple and Shipthis accounts. These are used to sign all of your iOS apps.
 
 ```
 USAGE
@@ -226,7 +225,8 @@ FLAGS
   -f, --noAppleAuth
 
 DESCRIPTION
-  Displays the status of the certificates in your Apple account. These are used to sign all of your iOS apps.
+  Displays the status of the iOS Distribution certificates in your Apple and Shipthis accounts. These are used to sign
+  all of your iOS apps.
 
 EXAMPLES
   $ shipthis apple certificate status

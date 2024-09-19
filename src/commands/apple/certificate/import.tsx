@@ -3,10 +3,9 @@ import {render} from 'ink'
 import * as fs from 'fs'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {getUserCredentials} from '@cli/api/credentials/index.js'
-import {App} from '@cli/components/index.js'
+import {getUserCredentials, importCredential} from '@cli/api/credentials/index.js'
+import {App, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types.js'
-import {CredentialImport} from '@cli/components/CredentialImport.js'
 
 export default class AppleCertificateImport extends BaseAuthenticatedCommand<typeof AppleCertificateImport> {
   static override args = {
@@ -44,16 +43,18 @@ export default class AppleCertificateImport extends BaseAuthenticatedCommand<typ
     }
 
     const handleComplete = async () => {
-      await this.config.runCommand(`apple:certificate:status`)
+      await this.config.runCommand(`apple:certificate:status`, ['--noAppleAuth'])
       process.exit(0)
     }
 
     render(
       <App>
-        <CredentialImport
-          zipPath={file}
-          type={CredentialsType.CERTIFICATE}
-          platform={Platform.IOS}
+        <RunWithSpinner
+          msgInProgress={`Importing certificate from ${file}...`}
+          msgComplete={`Certificate imported from ${file}`}
+          executeMethod={() =>
+            importCredential({zipPath: file, type: CredentialsType.CERTIFICATE, platform: Platform.IOS})
+          }
           onComplete={handleComplete}
         />
       </App>,

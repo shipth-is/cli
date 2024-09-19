@@ -3,8 +3,8 @@ import {render} from 'ink'
 import * as fs from 'fs'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {getUserCredentials} from '@cli/api/credentials/index.js'
-import {App, CredentialExport} from '@cli/components/index.js'
+import {exportCredential, getUserCredentials} from '@cli/api/credentials/index.js'
+import {App, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types.js'
 
 export default class AppleCertificateExport extends BaseAuthenticatedCommand<typeof AppleCertificateExport> {
@@ -45,7 +45,12 @@ export default class AppleCertificateExport extends BaseAuthenticatedCommand<typ
 
     render(
       <App>
-        <CredentialExport zipPath={file} credentialId={cert.id} onComplete={handleComplete} />
+        <RunWithSpinner
+          msgInProgress={`Exporting certificate to ${file}...`}
+          msgComplete={`Certificate exported to ${file}`}
+          executeMethod={() => exportCredential({zipPath: file, credentialId: cert.id})}
+          onComplete={handleComplete}
+        />
       </App>,
     )
   }
