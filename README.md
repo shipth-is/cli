@@ -46,16 +46,17 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`shipthis apple apiKey create [FILE]`](#shipthis-apple-apikey-create-file)
+* [`shipthis apple apiKey import [FILE]`](#shipthis-apple-apikey-import-file)
+* [`shipthis apple apiKey status [FILE]`](#shipthis-apple-apikey-status-file)
 * [`shipthis apple certificate create [FILE]`](#shipthis-apple-certificate-create-file)
-* [`shipthis apple certificate import [FILE]`](#shipthis-apple-certificate-import-file)
+* [`shipthis apple certificate export FILE`](#shipthis-apple-certificate-export-file)
+* [`shipthis apple certificate import FILE`](#shipthis-apple-certificate-import-file)
 * [`shipthis apple certificate status`](#shipthis-apple-certificate-status)
 * [`shipthis apple login`](#shipthis-apple-login)
 * [`shipthis apple status`](#shipthis-apple-status)
 * [`shipthis game create`](#shipthis-game-create)
 * [`shipthis game export [GAMEID]`](#shipthis-game-export-gameid)
-* [`shipthis game ios apiKey create [FILE]`](#shipthis-game-ios-apikey-create-file)
-* [`shipthis game ios apiKey import [FILE]`](#shipthis-game-ios-apikey-import-file)
-* [`shipthis game ios apiKey status [FILE]`](#shipthis-game-ios-apikey-status-file)
 * [`shipthis game ios app create [FILE]`](#shipthis-game-ios-app-create-file)
 * [`shipthis game ios app status [FILE]`](#shipthis-game-ios-app-status-file)
 * [`shipthis game ios profile create [FILE]`](#shipthis-game-ios-profile-create-file)
@@ -70,6 +71,78 @@ USAGE
 * [`shipthis help [COMMAND]`](#shipthis-help-command)
 * [`shipthis login`](#shipthis-login)
 * [`shipthis status`](#shipthis-status)
+
+## `shipthis apple apiKey create [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis apple apiKey create [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis apple apiKey create
+```
+
+_See code: [src/commands/apple/apiKey/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/create.ts)_
+
+## `shipthis apple apiKey import [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis apple apiKey import [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis apple apiKey import
+```
+
+_See code: [src/commands/apple/apiKey/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/import.ts)_
+
+## `shipthis apple apiKey status [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis apple apiKey status [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis apple apiKey status
+```
+
+_See code: [src/commands/apple/apiKey/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/status.ts)_
 
 ## `shipthis apple certificate create [FILE]`
 
@@ -95,43 +168,70 @@ EXAMPLES
 
 _See code: [src/commands/apple/certificate/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/create.ts)_
 
-## `shipthis apple certificate import [FILE]`
+## `shipthis apple certificate export FILE`
 
-describe the command here
+Saves the current Apple Distribution Certificate to a ZIP file.
 
 ```
 USAGE
-  $ shipthis apple certificate import [FILE] [-f] [-n <value>]
+  $ shipthis apple certificate export FILE [-f]
 
 ARGUMENTS
-  FILE  file to read
+  FILE  Name of the ZIP file to create
+
+FLAGS
+  -f, --force  Overwrite the file if it already exists
+
+DESCRIPTION
+  Saves the current Apple Distribution Certificate to a ZIP file.
+
+EXAMPLES
+  $ shipthis apple certificate export userCert.zip
+```
+
+_See code: [src/commands/apple/certificate/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/export.ts)_
+
+## `shipthis apple certificate import FILE`
+
+Imports an iOS Distribution Certificate to your shipthis account
+
+```
+USAGE
+  $ shipthis apple certificate import FILE [-f]
+
+ARGUMENTS
+  FILE  Name of the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force
-  -n, --name=<value>  name to print
 
 DESCRIPTION
-  describe the command here
+  Imports an iOS Distribution Certificate to your shipthis account
 
 EXAMPLES
-  $ shipthis apple certificate import
+  $ shipthis apple certificate import userCert.zip
 ```
 
 _See code: [src/commands/apple/certificate/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/import.ts)_
 
 ## `shipthis apple certificate status`
 
-Displays the status of the Apple certificate on your account. This is used to sign all of your iOS apps.
+Displays the status of the certificates in your Apple account. These are used to sign all of your iOS apps.
 
 ```
 USAGE
-  $ shipthis apple certificate status
+  $ shipthis apple certificate status [-f]
+
+FLAGS
+  -f, --noAppleAuth
 
 DESCRIPTION
-  Displays the status of the Apple certificate on your account. This is used to sign all of your iOS apps.
+  Displays the status of the certificates in your Apple account. These are used to sign all of your iOS apps.
 
 EXAMPLES
   $ shipthis apple certificate status
+
+  $ shipthis apple certificate status --noAppleAuth
 ```
 
 _See code: [src/commands/apple/certificate/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/status.ts)_
@@ -221,78 +321,6 @@ EXAMPLES
 ```
 
 _See code: [src/commands/game/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/export.ts)_
-
-## `shipthis game ios apiKey create [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ shipthis game ios apiKey create [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
-
-FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
-
-DESCRIPTION
-  describe the command here
-
-EXAMPLES
-  $ shipthis game ios apiKey create
-```
-
-_See code: [src/commands/game/ios/apiKey/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/apiKey/create.ts)_
-
-## `shipthis game ios apiKey import [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ shipthis game ios apiKey import [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
-
-FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
-
-DESCRIPTION
-  describe the command here
-
-EXAMPLES
-  $ shipthis game ios apiKey import
-```
-
-_See code: [src/commands/game/ios/apiKey/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/apiKey/import.ts)_
-
-## `shipthis game ios apiKey status [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ shipthis game ios apiKey status [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
-
-FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
-
-DESCRIPTION
-  describe the command here
-
-EXAMPLES
-  $ shipthis game ios apiKey status
-```
-
-_See code: [src/commands/game/ios/apiKey/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/apiKey/status.ts)_
 
 ## `shipthis game ios app create [FILE]`
 

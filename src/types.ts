@@ -118,3 +118,25 @@ export interface CursorPaginatedResponse<T> {
   data: T[]
   nextCursor: string
 }
+
+export enum CredentialsType {
+  CERTIFICATE = 'CERTIFICATE',
+  KEY = 'KEY',
+}
+export interface UserCredential {
+  id: string
+  platform: Platform
+  type: CredentialsType
+  bucketName: string
+  key: string
+  createdAt: DateTime
+  updatedAt: DateTime
+  url: string
+  serialNumber: string
+  isActive: boolean
+  userId: string
+}
+
+export interface ProjectCredential extends UserCredential {
+  identifier: string
+}

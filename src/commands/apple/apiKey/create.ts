@@ -1,7 +1,6 @@
-import {Args, Flags} from '@oclif/core'
-import {BaseAppleCommand} from '@cli/baseCommands/index.js'
+import {Args, Command, Flags} from '@oclif/core'
 
-export default class AppleCertificateImport extends BaseAppleCommand<typeof AppleCertificateImport> {
+export default class AppleApiKeyCreate extends Command {
   static override args = {
     file: Args.string({description: 'file to read'}),
   }
@@ -18,11 +17,11 @@ export default class AppleCertificateImport extends BaseAppleCommand<typeof Appl
   }
 
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(AppleCertificateImport)
+    const {args, flags} = await this.parse(AppleApiKeyCreate)
 
     const name = flags.name ?? 'world'
     this.log(
-      `hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/apple/certificate/import.ts`,
+      `hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/game/ios/apiKey/create.ts`,
     )
     if (args.file && flags.force) {
       this.log(`you input --force and --file: ${args.file}`)

@@ -1,4 +1,5 @@
 export * from './App.js'
+export * from './CredentialExport.js'
 export * from './Environment.js'
 export * from './JobLogTail.js'
 export * from './JobStatusTable.js'

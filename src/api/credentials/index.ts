@@ -3,12 +3,15 @@ import {ApiKey, Certificate} from '@expo/apple-utils'
 
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/constants/index.js'
+import {ProjectCredential, UserCredential} from '@cli/types.js'
+import {castArrayObjectDates} from '@cli/utils/dates.js'
 
-import {ProjectCredential, UserCertificate_iOS, UserCredential} from './types.js'
+import {UserCertificate_iOS} from './types.js'
 
+export * from './export.js'
+export * from './import.js'
 export * from './types.js'
 export * from './upload.js'
-export * from './import.js'
 
 export async function getUserCredentials(pageSize = 100): Promise<UserCredential[]> {
   const headers = getAuthedHeaders()
@@ -17,7 +20,7 @@ export async function getUserCredentials(pageSize = 100): Promise<UserCredential
     url: `${API_URL}/credentials?pageSize=${pageSize}`,
     headers,
   })
-  return data.data as UserCredential[]
+  return castArrayObjectDates<UserCredential>(data.data)
 }
 
 export async function getProjectCredentials(projectId: string, pageSize = 100): Promise<ProjectCredential[]> {
@@ -27,7 +30,7 @@ export async function getProjectCredentials(projectId: string, pageSize = 100): 
     url: `${API_URL}/projects/${projectId}/credentials?pageSize=${pageSize}`,
     headers,
   })
-  return data.data as ProjectCredential[]
+  return castArrayObjectDates<ProjectCredential>(data.data)
 }
 
 // Find a valid cert that we have the private key for

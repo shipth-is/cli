@@ -5,8 +5,7 @@ import {promises as fsAsync} from 'fs'
 import {getAuthedHeaders} from '@cli/api/index.js'
 
 import {API_URL} from '@cli/constants/index.js'
-// @ts-ignore
-import {CredentialsPlatform, CredentialsType} from './types.ts'
+import {CredentialsType, Platform} from '@cli/types.js'
 
 interface ImportTicket {
   url: string
@@ -31,7 +30,7 @@ export interface ImportCredentialProps {
   projectId?: string // Omit if importing a user certificate
   zipPath: string
   type: CredentialsType
-  platform: CredentialsPlatform
+  platform: Platform
 }
 
 export async function importCredential({projectId, zipPath, type, platform}: ImportCredentialProps) {

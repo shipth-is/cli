@@ -1,15 +1,13 @@
 import {Args, Command, Flags} from '@oclif/core'
 
-export default class GameIosApiKeyImport extends Command {
+export default class AppleApiKeyStatus extends Command {
   static override args = {
     file: Args.string({description: 'file to read'}),
   }
 
   static override description = 'describe the command here'
 
-  static override examples = [
-    '<%= config.bin %> <%= command.id %>',
-  ]
+  static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
     // flag with no value (-f, --force)
@@ -19,10 +17,12 @@ export default class GameIosApiKeyImport extends Command {
   }
 
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(GameIosApiKeyImport)
+    const {args, flags} = await this.parse(AppleApiKeyStatus)
 
     const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/game/ios/apiKey/import.ts`)
+    this.log(
+      `hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/game/ios/apiKey/status.ts`,
+    )
     if (args.file && flags.force) {
       this.log(`you input --force and --file: ${args.file}`)
     }

@@ -1,25 +1,3 @@
-import {Platform} from '@cli/types.js'
-
-export enum CredentialsType {
-  CERTIFICATE = 'CERTIFICATE',
-  KEY = 'KEY',
-}
-export interface UserCredential {
-  id: string
-  platform: Platform
-  type: CredentialsType
-  bucketName: string
-  key: string
-  createdAt: string
-  updatedAt: string
-  url: string
-  serialNumber: string
-}
-
-export interface ProjectCredential extends UserCredential {
-  identifier: string
-}
-
 interface baseCredentialContent {
   serialNumber: string
 }
