@@ -25,12 +25,11 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
   public async run(): Promise<void> {
     const {flags} = this
 
-    const appleCookies = await this.getAppleCookies()
-    if (appleCookies && !flags.force) {
+    const isLoggedIn = await this.hasValidAppleAuthState()
+    if (isLoggedIn && !flags.force) {
       throw new Error('You are already logged in to Apple. Use --force to re-authenticate.')
     }
 
-    // A stdout that we can silence when people enter passwords
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -43,8 +42,9 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
       return appleEmail
     }
 
-    // TODO;important - make it so it doesnt echo the password
+    // TODO: important! - make it so it doesn't echo the password
     const getApplePassword = async (): Promise<string> => {
+      console.warn('TODO: implement password masking - WARNING! your password will be shown below:')
       const applePassword = await rl.question('Please enter your Apple password: ')
       if (!applePassword) throw new Error('Password is required')
       return applePassword
@@ -67,7 +67,7 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
 
     await this.setAppleCookies(authState.cookies)
 
-    // TODO: run the status command?
+    await this.config.runCommand(`apple:status`)
 
     this.exit(0)
   }

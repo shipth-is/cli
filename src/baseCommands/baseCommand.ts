@@ -3,6 +3,7 @@ import fs from 'fs'
 import {SerializedCookieJar} from 'tough-cookie'
 import {Command, Flags, Interfaces} from '@oclif/core'
 
+import {Auth} from '@cli/apple/expo.js'
 import {AuthConfig, ProjectConfig} from '@cli/types.js'
 import {setAuthToken} from '@cli/api/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
@@ -119,6 +120,32 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
         'No shipthis config found. Please run `shipthis game create --name "Space Invaders"` to create a game.',
         {exit: 1},
       )
+    }
+  }
+
+  protected async refreshAppleAuthState(): Promise<any> {
+    const cookies = await this.getAppleCookies()
+
+    const rerunMessage = 'Please run shipthis apple login to authenticate with Apple.'
+
+    if (!cookies) throw new Error(`No Apple cookies found. ${rerunMessage}`)
+    const authState = await Auth.loginWithCookiesAsync(
+      {
+        cookies,
+      },
+      {},
+    )
+    if (!authState) throw new Error(`Failed to refresh Apple auth state. ${rerunMessage}`)
+    return authState
+  }
+
+  // Tests the apple cookies
+  protected async hasValidAppleAuthState(): Promise<boolean> {
+    try {
+      await this.refreshAppleAuthState()
+      return true
+    } catch (e) {
+      return false
     }
   }
 

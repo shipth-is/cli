@@ -1,11 +1,11 @@
+import {useEffect, useState} from 'react'
 import {Box, Text} from 'ink'
+import {DateTime} from 'luxon'
 import Spinner from 'ink-spinner'
 
 import {getJobStatusColor, getShortTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
 import {Job, JobStatus} from '@cli/types.js'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
-import {DateTime} from 'luxon'
-import {useEffect, useState} from 'react'
 
 interface JobStatusTableProps {
   projectId: string

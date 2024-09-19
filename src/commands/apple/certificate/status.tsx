@@ -1,7 +1,13 @@
-import {BaseAppleCommand} from '@cli/baseCommands/index.js'
+import {render, Box, Text} from 'ink'
 
+import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {Certificate, CertificateType} from '@cli/apple/expo.js'
-import {getUseableCert} from '@cli/api/credentials/index.js'
+import {getUserCredentials} from '@cli/api/credentials/index.js'
+
+import {App, NextSteps, Table} from '@cli/components/index.js'
+import {getShortUUID} from '@cli/utils/index.js'
+import {getShortDate} from '@cli/utils/dates.js'
+import {DateTime} from 'luxon'
 
 export default class AppleCertificateStatus extends BaseAppleCommand<typeof AppleCertificateStatus> {
   static override args = {}
@@ -14,7 +20,7 @@ export default class AppleCertificateStatus extends BaseAppleCommand<typeof Appl
   static override flags = {}
 
   public async run(): Promise<void> {
-    const authState = await this.refreshAuthState()
+    const authState = await this.refreshAppleAuthState()
 
     const ctx = authState.context
 
@@ -27,13 +33,46 @@ export default class AppleCertificateStatus extends BaseAppleCommand<typeof Appl
       },
     })
 
-    // Show a table of the apple ones?
+    // Get the ones in shipthis
+    const userCredentials = await getUserCredentials()
+    const getCanBeUsed = (cert: any) => {
+      if (cert.attributes.status != 'Issued') return false
+      return userCredentials.some((cred) => cred.serialNumber == cert.attributes.serialNumber)
+    }
 
-    // Find which of them (if any) are useable (we have the private key in the shipthis account)
-    const userCert = await getUseableCert(appleCerts)
+    // Format the data for the table
+    const appleCertTable = appleCerts.map((cert) => {
+      return {
+        id: getShortUUID(cert.id),
+        name: cert.attributes.name,
+        type: cert.attributes.certificateTypeName,
+        expires: getShortDate(DateTime.fromISO(cert.attributes.expirationDate)),
+        canBeUsed: getCanBeUsed(cert) ? 'YES' : 'NO',
+      }
+    })
 
-    // TODO: next steps - if they dont have a cert then create or import
+    const hasUseableCert = !appleCertTable.some((cert) => cert.canBeUsed == 'YES')
+    const steps = [!hasUseableCert && '$ shipthis apple certificate create'].filter(Boolean) as string[]
 
-    console.log('userCert', userCert)
+    render(
+      <App>
+        <Table
+          data={appleCertTable}
+          getTextStyles={(column, value) => {
+            if (column.key != 'canBeUsed') return
+            return {color: value == 'NO' ? 'red' : 'green'}
+          }}
+        />
+        {!hasUseableCert && (
+          <Box marginTop={1}>
+            <Text bold>
+              You do not have a usable apple certificate. To ship an iOS game, you will need a usable distribution
+              certificate
+            </Text>
+          </Box>
+        )}
+        <NextSteps steps={steps} />
+      </App>,
+    )
   }
 }

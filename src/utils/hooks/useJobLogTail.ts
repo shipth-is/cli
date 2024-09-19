@@ -35,13 +35,13 @@ function getSortedJobLogs(logs: JobLogEntry[]) {
 export function useJobLogTail(props: JobLogTailProps): JobLogTailResult {
   const [websocketLogs, setWebsocketLogs] = useState<JobLogEntry[]>([])
 
+  // Updates our state with logs received from the websocket
   const listener: WebSocketListener = {
     getPattern: () => `project.${props.projectId}:job.${props.jobId}:log`,
-    eventHandler: async (pattern: string, rawLogEntry: JobLogEntry) => {
+    eventHandler: async (pattern: string, rawLogEntry: any) => {
       setWebsocketLogs((prevLogs) => {
-        // We have to fix the dates
         const logEntry = castObjectDates<JobLogEntry>(rawLogEntry, ['sentAt', 'createdAt'])
-        return getSortedJobLogs([...prevLogs, logEntry])
+        return [...prevLogs, logEntry]
       })
     },
   }
@@ -55,17 +55,19 @@ export function useJobLogTail(props: JobLogTailProps): JobLogTailResult {
   })
 
   useEffect(() => {
+    // Reset the websocket data when we refetch
     setWebsocketLogs([])
   }, [props.jobId, props.projectId, props.length, props.isWatching, fetchedJobLogs])
 
   // We only use the first page of the infinite query
   const firstPage = fetchedJobLogs ? fetchedJobLogs?.pages[0].data : []
 
-  // Deduplicate logs by id
+  // Deduplicate merged logs by id
   const allLogs = [...firstPage, ...websocketLogs]
-  const allLogsById = arrayToDictionary(allLogs)
+  const allLogsById = arrayToDictionary<JobLogEntry>(allLogs)
+  const uniqueLogs = dictionaryToArray(allLogsById)
 
-  const data = getSortedJobLogs(dictionaryToArray(allLogsById)).slice(-props.length)
+  const data = getSortedJobLogs(uniqueLogs).slice(-props.length)
 
   return {
     isLoading,

@@ -13,7 +13,7 @@ export default class AppleStatus extends BaseAppleCommand<typeof AppleStatus> {
   static override flags = {}
 
   public async run(): Promise<void> {
-    const authState = await this.refreshAuthState()
+    const authState = await this.refreshAppleAuthState()
     const {session} = authState
 
     const statuses = {

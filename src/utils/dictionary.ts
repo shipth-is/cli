@@ -7,7 +7,7 @@
  *
  * @return {Object}
  */
-export function arrayToDictionary(array: any[], key = 'id') {
+export function arrayToDictionary<T>(array: any[], key: string = 'id'): {[key: string]: T} {
   return array.reduce((a, i) => {
     a[i[key]] = i
     return a
@@ -21,6 +21,6 @@ export function arrayToDictionary(array: any[], key = 'id') {
  *
  * @return {Object[]}
  */
-export function dictionaryToArray(dictionary: {[key: string]: any}) {
+export function dictionaryToArray<T>(dictionary: {[key: string]: T}): T[] {
   return Object.keys(dictionary).map((key) => dictionary[key])
 }

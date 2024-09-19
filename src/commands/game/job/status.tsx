@@ -41,23 +41,21 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
   public async run(): Promise<void> {
     // We run the getJob first to check the user has access
     const job = await this.getJob()
-
     const {lines, follow} = this.flags
 
-    // If the job is already completed or failed, we can exit early (when watching)
     const handleJobUpdate = (job: Job) => {
-      if (follow && [JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)) {
-        setTimeout(() => {
-          // Close after 2 seconds to ensure the last log lines are shown
-          process.exit(0)
-        }, 2000)
+      if (!follow) return
+      // Exit 2 seconds after completion to ensure the last log lines are shown
+      if ([JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)) {
+        const exitCode = job.status == JobStatus.FAILED ? 1 : 0
+        setTimeout(() => process.exit(exitCode), 2000)
       }
     }
 
     render(
       <App>
         <JobStatusTable jobId={job.id} projectId={job.project.id} isWatching={follow} onJobUpdate={handleJobUpdate} />
-        <JobLogTail jobId={job.id} projectId={job.project.id} length={lines} isWatching={follow} />
+        <JobLogTail jobId={job.id} projectId={job.project.id} isWatching={follow} length={lines} />
         <NextSteps steps={[]} />
       </App>,
     )

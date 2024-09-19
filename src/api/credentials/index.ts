@@ -10,23 +10,21 @@ export * from './types.js'
 export * from './upload.js'
 export * from './import.js'
 
-export async function getUserCredentials(): Promise<UserCredential[]> {
-  console.warn('only getting first 100 credentials')
+export async function getUserCredentials(pageSize = 100): Promise<UserCredential[]> {
   const headers = getAuthedHeaders()
   const {data} = await axios({
     method: 'get',
-    url: `${API_URL}/credentials?pageSize=100`,
+    url: `${API_URL}/credentials?pageSize=${pageSize}`,
     headers,
   })
   return data.data as UserCredential[]
 }
 
-export async function getProjectCredentials(projectId: string): Promise<ProjectCredential[]> {
-  console.warn('only getting first 100 credentials')
+export async function getProjectCredentials(projectId: string, pageSize = 100): Promise<ProjectCredential[]> {
   const headers = getAuthedHeaders()
   const {data} = await axios({
     method: 'get',
-    url: `${API_URL}/projects/${projectId}/credentials?pageSize=100`,
+    url: `${API_URL}/projects/${projectId}/credentials?pageSize=${pageSize}`,
     headers,
   })
   return data.data as ProjectCredential[]

@@ -17,30 +17,31 @@ export interface JobWatchingResult {
 }
 
 // Like useJob but also listens for job updates via websocket
-export function useJobWatching(props: JobWatchingProps): JobWatchingResult {
+export function useJobWatching({projectId, jobId, isWatching, onJobUpdate}: JobWatchingProps): JobWatchingResult {
   const [websocketJob, setWebsocketJob] = useState<Job | null>(null)
 
   const listener: WebSocketListener = {
-    getPattern: () => [`project.${props.projectId}:job:created`, `project.${props.projectId}:job:updated`],
-    eventHandler: async (pattern: string, rawJob: Job) => {
-      if (rawJob.id !== props.jobId) return
-      // We have to fix the dates
+    getPattern: () => [`project.${projectId}:job:created`, `project.${projectId}:job:updated`],
+    eventHandler: async (pattern: string, rawJob: any) => {
+      if (rawJob.id !== jobId) return
       const job = castObjectDates<Job>(rawJob)
       setWebsocketJob(job)
-      if (props.onJobUpdate) props.onJobUpdate(job)
+      if (onJobUpdate) onJobUpdate(job)
     },
   }
-  useWebSocket(props.isWatching ? [listener] : [])
+  useWebSocket(isWatching ? [listener] : [])
 
-  const {isLoading, data: job} = useJob({projectId: props.projectId, jobId: props.jobId})
+  const {isLoading, data: job} = useJob({
+    projectId,
+    jobId,
+  })
 
   useEffect(() => {
     setWebsocketJob(null)
-  }, [props.jobId, props.projectId, props.isWatching, job])
+  }, [jobId, projectId, isWatching, job])
 
-  const fetched = job ? job : null
-
-  const data = websocketJob ? websocketJob : fetched
+  const fetchedJob = job ? job : null
+  const data = websocketJob ? websocketJob : fetchedJob
 
   return {
     isLoading,
