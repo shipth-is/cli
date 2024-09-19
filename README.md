@@ -48,7 +48,7 @@ USAGE
 <!-- commands -->
 * [`shipthis apple apiKey create [FILE]`](#shipthis-apple-apikey-create-file)
 * [`shipthis apple apiKey import [FILE]`](#shipthis-apple-apikey-import-file)
-* [`shipthis apple apiKey status [FILE]`](#shipthis-apple-apikey-status-file)
+* [`shipthis apple apiKey status`](#shipthis-apple-apikey-status)
 * [`shipthis apple certificate create`](#shipthis-apple-certificate-create)
 * [`shipthis apple certificate export FILE`](#shipthis-apple-certificate-export-file)
 * [`shipthis apple certificate import FILE`](#shipthis-apple-certificate-import-file)
@@ -120,26 +120,25 @@ EXAMPLES
 
 _See code: [src/commands/apple/apiKey/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/import.ts)_
 
-## `shipthis apple apiKey status [FILE]`
+## `shipthis apple apiKey status`
 
-describe the command here
+Displays the status of the App Store Connect API Key in your Apple and Shipthis accounts. This key is used to automatically publish your games to the App Store.
 
 ```
 USAGE
-  $ shipthis apple apiKey status [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ shipthis apple apiKey status [-f]
 
 FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  -f, --noAppleAuth
 
 DESCRIPTION
-  describe the command here
+  Displays the status of the App Store Connect API Key in your Apple and Shipthis accounts. This key is used to
+  automatically publish your games to the App Store.
 
 EXAMPLES
   $ shipthis apple apiKey status
+
+  $ shipthis apple apiKey status --noAppleAuth
 ```
 
 _See code: [src/commands/apple/apiKey/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/status.ts)_

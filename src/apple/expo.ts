@@ -3,6 +3,6 @@ import * as expo from '@expo/apple-utils/build/index.js'
 
 // TODO: this is awful
 const defaultExport = expo.default
-const {App, Auth, BundleId, Certificate, CertificateType, Profile, ProfileType, Session} = defaultExport
+const {App, Auth, BundleId, Certificate, CertificateType, Profile, ProfileType, Session, ApiKey} = defaultExport
 
-export {App, Auth, BundleId, Certificate, CertificateType, Profile, ProfileType, Session}
+export {App, Auth, BundleId, Certificate, CertificateType, Profile, ProfileType, Session, ApiKey}
