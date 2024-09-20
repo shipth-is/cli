@@ -63,7 +63,7 @@ export default class AppleApiKeyStatus extends BaseAuthenticatedCommand<typeof A
 
       const getCanBeUsed = (key: any) => {
         if (!key.attributes.isActive) return false
-        return userCredentials.some((cred) => cred.serialNumber == key.id)
+        return userCredentials.some((cred) => cred.isActive && cred.serialNumber == key.id)
       }
 
       const inAppleTable = activeKeys.map((key) => {

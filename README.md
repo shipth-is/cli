@@ -46,8 +46,8 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`shipthis apple apiKey create [FILE]`](#shipthis-apple-apikey-create-file)
-* [`shipthis apple apiKey import [FILE]`](#shipthis-apple-apikey-import-file)
+* [`shipthis apple apiKey create`](#shipthis-apple-apikey-create)
+* [`shipthis apple apiKey import FILE`](#shipthis-apple-apikey-import-file)
 * [`shipthis apple apiKey status`](#shipthis-apple-apikey-status)
 * [`shipthis apple certificate create`](#shipthis-apple-certificate-create)
 * [`shipthis apple certificate export FILE`](#shipthis-apple-certificate-export-file)
@@ -72,50 +72,47 @@ USAGE
 * [`shipthis login`](#shipthis-login)
 * [`shipthis status`](#shipthis-status)
 
-## `shipthis apple apiKey create [FILE]`
+## `shipthis apple apiKey create`
 
-describe the command here
+Creates an App Store Connect API in your Apple Developer account and saves the private key in your shipthis account
 
 ```
 USAGE
-  $ shipthis apple apiKey create [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ shipthis apple apiKey create [-f]
 
 FLAGS
   -f, --force
-  -n, --name=<value>  name to print
 
 DESCRIPTION
-  describe the command here
+  Creates an App Store Connect API in your Apple Developer account and saves the private key in your shipthis account
 
 EXAMPLES
   $ shipthis apple apiKey create
+
+  $ shipthis apple apiKey create --force
 ```
 
 _See code: [src/commands/apple/apiKey/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/create.ts)_
 
-## `shipthis apple apiKey import [FILE]`
+## `shipthis apple apiKey import FILE`
 
-describe the command here
+Imports an App Store Connect API Key to your shipthis account
 
 ```
 USAGE
-  $ shipthis apple apiKey import [FILE] [-f] [-n <value>]
+  $ shipthis apple apiKey import FILE [-f]
 
 ARGUMENTS
-  FILE  file to read
+  FILE  Name of the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force
-  -n, --name=<value>  name to print
 
 DESCRIPTION
-  describe the command here
+  Imports an App Store Connect API Key to your shipthis account
 
 EXAMPLES
-  $ shipthis apple apiKey import
+  $ shipthis apple apiKey import userApiKey.zip
 ```
 
 _See code: [src/commands/apple/apiKey/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/import.ts)_

@@ -28,12 +28,10 @@ export const RunWithSpinner = ({
     })
   }, [])
 
-  return isInProgress ? (
+  return (
     <Box>
-      <Text>{msgInProgress}</Text>
-      <Spinner type={spinnerType} />
+      <Text>{isInProgress ? msgInProgress : msgComplete}</Text>
+      {isInProgress && <Spinner type={spinnerType} />}
     </Box>
-  ) : (
-    <Text>{msgComplete}</Text>
   )
 }

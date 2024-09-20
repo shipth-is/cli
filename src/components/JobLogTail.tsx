@@ -1,11 +1,9 @@
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {getShortTime} from '@cli/utils/dates.js'
-
-import {getMessageColor, getStageColor} from '@cli/utils/index.js'
-import {JobLogTailProps, useJobLogTail} from '@cli/utils/hooks/index.js'
+import {getMessageColor, getStageColor, getShortTime} from '@cli/utils/index.js'
 import {JobLogEntry} from '@cli/types.js'
+import {JobLogTailProps, useJobLogTail} from '@cli/utils/hooks/index.js'
 
 export const JobLogTail = (props: JobLogTailProps) => {
   const {isLoading, data} = useJobLogTail(props)

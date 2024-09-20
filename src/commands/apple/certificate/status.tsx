@@ -72,7 +72,7 @@ export default class AppleCertificateStatus extends BaseAuthenticatedCommand<typ
 
       const getCanBeUsed = (cert: any) => {
         if (cert.attributes.status != 'Issued') return false
-        return userCredentials.some((cred) => cred.serialNumber == cert.attributes.serialNumber)
+        return userCredentials.some((cred) => cred.isActive && cred.serialNumber == cert.attributes.serialNumber)
       }
 
       // Format the data for the table

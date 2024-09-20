@@ -1,6 +1,5 @@
 import {Flags} from '@oclif/core'
 import {render} from 'ink'
-import * as fs from 'fs'
 
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {getUserCredentials, uploadUserCredentials, UserCertificate_iOS} from '@cli/api/credentials/index.js'
