@@ -37,7 +37,7 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
 
     const createApiKey = async () => {
       const userKey = await ApiKey.createAsync(ctx, {
-        nickname: `Shipthis ${Math.floor(new Date().valueOf() / 1000)}`,
+        nickname: `ShipThis ${Math.floor(new Date().valueOf() / 1000)}`,
         allAppsVisible: true,
         roles: [UserRole.ADMIN],
         keyType: ApiKeyType.PUBLIC_API,

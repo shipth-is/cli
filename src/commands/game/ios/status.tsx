@@ -49,7 +49,7 @@ export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus>
 
     render(
       <App>
-        <StatusTable marginBottom={1} title="Shipthis game status" statuses={gameStatuses} />
+        <StatusTable marginBottom={1} title="ShipThis game status" statuses={gameStatuses} />
 
         <StatusTable
           marginBottom={1}

@@ -83,7 +83,7 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
         bundleId: bundleId.id,
         certificates: [validAppleCert.id],
         devices: [],
-        name: `Shipthis Profile for ${iosBundleId}`,
+        name: `ShipThis Profile for ${iosBundleId}`,
         profileType: AppleProfileType.IOS_APP_STORE,
       })
 

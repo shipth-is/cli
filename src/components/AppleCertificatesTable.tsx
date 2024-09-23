@@ -36,7 +36,7 @@ export const AppleCertificatesTable = ({ctx, ...boxProps}: Props) => {
         <>
           <Box marginLeft={2} marginBottom={1} flexDirection="column">
             <Text>{`You have ${certs.length} Distribution Certificates in your Apple account`}</Text>
-            <Text>{`${hasUsable ? 'One' : 'None'} of these can be used by shipthis`}</Text>
+            <Text>{`${hasUsable ? 'One' : 'None'} of these can be used by ShipThis`}</Text>
           </Box>
           <Table data={certs.map((cert) => getAppleCertificateSummary(cert, userCredentialsResponse.data))} />
           {!hasUsable && (

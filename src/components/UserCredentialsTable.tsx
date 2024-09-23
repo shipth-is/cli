@@ -22,7 +22,7 @@ export const UserCredentialsTable = ({credentialTypeName, queryProps, ...boxProp
         <Text>
           {hasActive
             ? `You have an active ${credentialTypeName} in your ShipThis account.`
-            : `You DO NOT have an active ${credentialTypeName} which shipthis can use.`}
+            : `You DO NOT have an active ${credentialTypeName} which ShipThis can use.`}
         </Text>
       </Box>
       {isLoading && <Spinner type="dots" />}

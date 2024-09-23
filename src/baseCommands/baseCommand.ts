@@ -117,7 +117,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
 
     if (!this.hasProjectConfig()) {
       this.error(
-        'No shipthis config found. Please run `shipthis game create --name "Space Invaders"` to create a game.',
+        'No ShipThis config found. Please run `shipthis game create --name "Space Invaders"` to create a game.',
         {exit: 1},
       )
     }
