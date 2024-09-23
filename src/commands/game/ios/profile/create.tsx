@@ -1,7 +1,6 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
-
-import {promises as readline} from 'node:readline'
+import axios from 'axios'
 
 import {App, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
@@ -9,22 +8,18 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {
   Certificate as AppleCertificate,
   CertificateType as AppleCertificateType,
-  App as AppleApp,
-  BundleId as AppleBundleId,
   Profile as AppleProfile,
   ProfileType as AppleProfileType,
 } from '@cli/apple/expo.js'
 import {
   getProjectCredentials,
   getUserCredentials,
-  getUserCredentialsContent,
   ProjectCertificate_iOS,
   uploadProjectCredentials,
   UserCertificate_iOS,
 } from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types.js'
 import {fetchBundleId} from '@cli/utils/index.js'
-import axios from 'axios'
 
 export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIosProfileCreate> {
   static override args = {}
@@ -94,7 +89,6 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
 
       // Save the profile as a project credential. In this case we include the
       // user credential in the content for the project credential. TODO: rethink??
-
       const {data: contents} = await axios({
         method: 'get',
         url: validCert.url,

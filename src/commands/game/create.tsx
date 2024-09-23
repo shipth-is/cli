@@ -5,6 +5,7 @@ import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {createProject} from '@cli/api/index.js'
 
 import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
+import {getGodotProjectName} from '@cli/utils/godot.js'
 
 export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCreate> {
   static override args = {}
@@ -32,9 +33,9 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
 
     const getName = async (): Promise<string> => {
       if (flags.name) return flags.name
-      const name = await rl.question('Please enter the name of the game: ')
-      if (!name) throw new Error('Game name is required')
-      return name
+      const suggested = getGodotProjectName() || 'My Awesome Game'
+      const name = await rl.question(`Please enter the name of the game, or press enter to use ${suggested}: `)
+      return name || suggested
     }
 
     const name = await getName()
