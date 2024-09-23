@@ -1,15 +1,8 @@
 import {Flags} from '@oclif/core'
-import {render, Box, Text} from 'ink'
-import {DateTime} from 'luxon'
+import {render} from 'ink'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {Certificate, CertificateType} from '@cli/apple/expo.js'
-import {getUserCredentials} from '@cli/api/credentials/index.js'
-
-import {App, NextSteps, Table} from '@cli/components/index.js'
-import {getShortUUID} from '@cli/utils/index.js'
-import {getShortDate} from '@cli/utils/dates.js'
-
+import {App, AppleCertificatesTable, NextSteps, UserCredentialsTable} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types.js'
 
 export default class AppleCertificateStatus extends BaseAuthenticatedCommand<typeof AppleCertificateStatus> {
@@ -32,110 +25,23 @@ export default class AppleCertificateStatus extends BaseAuthenticatedCommand<typ
 
     const showApple = !flags.noAppleAuth
 
-    // Get the credentials in shipthis
-    const userCredentials = await getUserCredentials()
-
-    const userAppleDistCredentials = userCredentials.filter(
-      (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
-    )
-
-    // Output for the table
-    const inShipThisTable = userAppleDistCredentials.map((cred) => {
-      return {
-        id: getShortUUID(cred.id),
-        type: cred.type,
-        serial: cred.serialNumber,
-        isActive: cred.isActive ? 'YES' : 'NO',
-        createdAt: getShortDate(cred.createdAt),
-      }
-    })
-
-    const hasUseableCertInShipthis = userAppleDistCredentials.length > 0
-    const steps = [!hasUseableCertInShipthis && '$ shipthis apple certificate create'].filter(Boolean) as string[]
-
-    // Apple content is optionally rendered
-    let AppleAccountOutput = null
+    let ctx = null
 
     if (showApple) {
       const authState = await this.refreshAppleAuthState()
-
-      const ctx = authState.context
-
-      // Get the certs from apple
-      const appleCerts = await Certificate.getAsync(ctx, {
-        query: {
-          filter: {
-            certificateType: [CertificateType.DISTRIBUTION, CertificateType.IOS_DISTRIBUTION],
-          },
-        },
-      })
-
-      const getCanBeUsed = (cert: any) => {
-        if (cert.attributes.status != 'Issued') return false
-        return userCredentials.some((cred) => cred.isActive && cred.serialNumber == cert.attributes.serialNumber)
-      }
-
-      // Format the data for the table
-      const inAppleTable = appleCerts.map((cert) => {
-        return {
-          id: getShortUUID(cert.id),
-          name: cert.attributes.name,
-          serial: cert.attributes.serialNumber,
-          expires: getShortDate(DateTime.fromISO(cert.attributes.expirationDate)),
-          canBeUsed: getCanBeUsed(cert) ? 'YES' : 'NO',
-        }
-      })
-
-      const hasUseableCertInApple = appleCerts.some(getCanBeUsed)
-
-      AppleAccountOutput = (
-        <Box flexDirection="column" marginBottom={1}>
-          <Text bold>IN YOUR APPLE ACCOUNT</Text>
-          <Box marginLeft={2} marginBottom={1} flexDirection="column">
-            <Text>{`You have ${appleCerts.length} certificates in your Apple account`}</Text>
-          </Box>
-
-          <Table
-            data={inAppleTable}
-            getTextStyles={(column, value) => {
-              if (column.key != 'canBeUsed') return
-              return {color: value == 'NO' ? 'red' : 'green'}
-            }}
-          />
-          {!hasUseableCertInApple && (
-            <Box marginTop={1}>
-              <Text bold>
-                You do not have a usable apple certificate. To ship an iOS game, you will need a usable distribution
-                certificate
-              </Text>
-            </Box>
-          )}
-        </Box>
-      )
+      ctx = authState.context
     }
 
     render(
       <App>
-        <Box flexDirection="column" marginBottom={1}>
-          <Text bold>IN YOUR SHIPTHIS ACCOUNT</Text>
-          <Box marginLeft={2} marginBottom={1} flexDirection="column">
-            <Text>
-              {hasUseableCertInShipthis
-                ? `You have an active Apple iOS Distribution Certificate in your shipthis account.`
-                : `You DO NOT have an active certificate which shipthis can use.`}
-            </Text>
-          </Box>
-          <Table
-            data={inShipThisTable}
-            getTextStyles={(column, value) => {
-              if (column.key != 'isActive') return
-              return {color: value == 'NO' ? 'red' : 'green'}
-            }}
-          />
-        </Box>
+        <UserCredentialsTable
+          credentialTypeName="Apple iOS Distribution Certificate"
+          queryProps={{type: CredentialsType.CERTIFICATE, platform: Platform.IOS}}
+        />
 
-        {AppleAccountOutput}
-        <NextSteps steps={steps} />
+        {showApple && <AppleCertificatesTable ctx={ctx} />}
+
+        <NextSteps steps={[]} />
       </App>,
     )
   }

@@ -4,13 +4,14 @@ import Spinner from 'ink-spinner'
 import {getMessageColor, getStageColor, getShortTime} from '@cli/utils/index.js'
 import {JobLogEntry} from '@cli/types.js'
 import {JobLogTailProps, useJobLogTail} from '@cli/utils/hooks/index.js'
+import {Title} from './Title.js'
 
 export const JobLogTail = (props: JobLogTailProps) => {
   const {isLoading, data} = useJobLogTail(props)
 
   return (
     <Box flexDirection="column">
-      <Text bold>JOB LOGS</Text>
+      <Title>Job Logs</Title>
       {isLoading && <Spinner type="dots" />}
       <Box flexDirection="column">
         {data.map((log: JobLogEntry) => {

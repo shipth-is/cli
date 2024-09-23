@@ -20,15 +20,7 @@ export interface JobLogTailResult {
 
 // When received from the server the logs are not guaranteed to be in order
 function getSortedJobLogs(logs: JobLogEntry[]) {
-  return logs.sort((a, b) => {
-    if (a.sentAt < b.sentAt) {
-      return -1
-    } else if (a.sentAt > b.sentAt) {
-      return 1
-    } else {
-      return 0
-    }
-  })
+  return logs.sort((a, b) => a.sentAt.toMillis() - b.sentAt.toMillis())
 }
 
 // Merges fetched job logs with those received from the websocket

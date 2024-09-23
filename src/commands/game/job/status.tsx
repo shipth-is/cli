@@ -48,7 +48,7 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
       // Exit 2 seconds after completion to ensure the last log lines are shown
       if ([JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)) {
         const exitCode = job.status == JobStatus.FAILED ? 1 : 0
-        setTimeout(() => process.exit(exitCode), 2000)
+        setTimeout(() => process.exit(exitCode), 5000)
       }
     }
 

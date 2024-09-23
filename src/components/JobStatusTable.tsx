@@ -6,6 +6,7 @@ import Spinner from 'ink-spinner'
 import {getJobStatusColor, getShortTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
 import {Job, JobStatus} from '@cli/types.js'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
+import {Title} from './Title.js'
 
 interface JobStatusTableProps {
   projectId: string
@@ -28,16 +29,11 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
   }, [])
 
   const isJobInProgress = job && ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
-
-  const runtime = !job
-    ? 'N/A'
-    : isJobInProgress
-    ? getShortTimeDelta(job.createdAt, time)
-    : getShortTimeDelta(job.createdAt, job.updatedAt)
+  const runtime = job ? getShortTimeDelta(job.createdAt, isJobInProgress ? time : job.updatedAt) : 'N/A'
 
   return (
     <Box flexDirection="column" marginBottom={1}>
-      <Text bold>JOB DETAILS</Text>
+      <Title>Job Details</Title>
       {isLoading && <Spinner type="dots" />}
       {job && (
         <Box flexDirection="column" marginLeft={2}>

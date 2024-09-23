@@ -61,7 +61,7 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
       <App>
         <Table
           data={data}
-          getTextStyles={(col, val) => {
+          getTextProps={(col, val) => {
             if (col.key !== 'status') return {}
             return {color: getJobStatusColor(val as JobStatus)}
           }}

@@ -1,6 +1,12 @@
 import {SerializedCookieJar} from 'tough-cookie'
 import {DateTime} from 'luxon'
 
+export type Scalar = string | number | boolean | null | undefined
+
+export type ScalarDict = {
+  [key: string]: Scalar
+}
+
 export interface Self {
   id: string
   email: string
@@ -117,6 +123,11 @@ export interface JobLogEntry {
 export interface CursorPaginatedResponse<T> {
   data: T[]
   nextCursor: string
+}
+
+export interface OffsetPaginatedResponse<T> {
+  data: T[]
+  pageCount: number
 }
 
 export enum CredentialsType {

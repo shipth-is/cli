@@ -58,7 +58,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     fs.unlinkSync(tmpZipFile)
 
     const [firstJob] = await startJobsFromUpload(uploadTicket.id)
-
+    // TODO: output how many jobs are started
+    // TODO: following multiple jobs?
     await this.config.runCommand(`game:job:status`, [firstJob.id, '--follow'])
   }
 }

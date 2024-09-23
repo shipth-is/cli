@@ -1,49 +1,33 @@
 // Table.tsx
 // From https://github.com/maticzav/ink-table/issues/268 and modified
 import React from 'react'
-import {Box, Text} from 'ink'
-
-type Scalar = string | number | boolean | null | undefined
-
-type ScalarDict = {
-  [key: string]: Scalar
-}
+import {Box, Text, TextProps} from 'ink'
+import {Scalar, ScalarDict} from '@cli/types.js'
 
 type Column = {
   key: string
   width: number
 }
 
-interface Styles {
-  color?: string
-  backgroundColor?: string
-  bold?: boolean
-  italic?: boolean
-  underline?: boolean
-  inverse?: boolean
-  strikethrough?: boolean
-  dimColor?: boolean
-}
-
-const BASE_HEADER_STYLES: Styles = {
+const BASE_HEADER_PROPS: TextProps = {
   color: 'blue',
   bold: true,
 }
 
-const BASE_TEXT_STYLES: Styles = {
+const BASE_TEXT_PROPS: TextProps = {
   color: 'white',
 }
 
-type ColumnStyles = {
-  [key: string]: Styles
+type ColumnTextProps = {
+  [key: string]: TextProps
 }
 
-type TableProps = {
+export type TableProps = {
   data: ScalarDict[]
   showHeaders?: boolean
-  headerStyles?: Styles
-  columnStyles?: ColumnStyles
-  getTextStyles?: (column: Column, value: Scalar) => Styles | undefined
+  headerTextProps?: TextProps
+  columnTextProps?: ColumnTextProps
+  getTextProps?: (column: Column, value: Scalar) => TextProps | undefined
 }
 
 // Helper function to generate headers from data
@@ -59,13 +43,13 @@ function generateHeaders(data: ScalarDict[]): ScalarDict {
   return headers
 }
 
-export const Table = ({data, showHeaders = true, headerStyles, columnStyles, getTextStyles}: TableProps) => {
+export const Table = ({data, showHeaders = true, headerTextProps, columnTextProps, getTextProps}: TableProps) => {
   // Determine columns and their widths
   const columns: Column[] = getColumns(data)
 
-  const fullHeaderStyles = {
-    ...BASE_HEADER_STYLES,
-    ...headerStyles,
+  const fullHeaderTextProps = {
+    ...BASE_HEADER_PROPS,
+    ...headerTextProps,
   }
 
   return (
@@ -74,7 +58,7 @@ export const Table = ({data, showHeaders = true, headerStyles, columnStyles, get
 
       {showHeaders && (
         <>
-          {renderRow(generateHeaders(data), columns, fullHeaderStyles)}
+          {renderRow(generateHeaders(data), columns, fullHeaderTextProps)}
           {renderRowSeparators(columns)}
         </>
       )}
@@ -82,7 +66,7 @@ export const Table = ({data, showHeaders = true, headerStyles, columnStyles, get
       {data.map((row, index) => (
         <React.Fragment key={`row-${index}`}>
           {index !== 0 && renderRowSeparators(columns)}
-          {renderRow(row, columns, BASE_TEXT_STYLES, columnStyles, getTextStyles)}
+          {renderRow(row, columns, BASE_TEXT_PROPS, columnTextProps, getTextProps)}
         </React.Fragment>
       ))}
       {renderFooterSeparators(columns)}
@@ -111,26 +95,41 @@ function getColumns(data: ScalarDict[]): Column[] {
 function renderRow(
   row: ScalarDict,
   columns: Column[],
-  baseCellTextStyles?: Styles,
-  columnStyles?: ColumnStyles,
-  getTextStyles?: (column: Column, value: Scalar) => Styles | undefined,
+  baseCellTextProps?: TextProps,
+  columnTextProps?: ColumnTextProps,
+  getTextProps?: (column: Column, value: Scalar) => TextProps | undefined,
 ) {
+  const getValue = (row: ScalarDict, column: Column) => {
+    const value = row[column.key]
+    if (typeof value === 'boolean') return value ? 'YES' : 'NO'
+    return value?.toString() || ''
+  }
+
+  const getTextPropsForCell = (row: ScalarDict, column: Column) => {
+    const {key} = column
+    const value = row[key]
+    const columnTextPropsForCell = columnTextProps?.[key] || {}
+    const valueBasedProps = typeof row[column.key] === 'boolean' ? {color: value == false ? 'red' : 'green'} : {}
+    const callbackBasedProps = getTextProps ? getTextProps(column, value) : {}
+    return {
+      ...baseCellTextProps,
+      ...columnTextPropsForCell,
+      ...valueBasedProps,
+      ...callbackBasedProps,
+    }
+  }
+
   return (
     <Box flexDirection="row">
       <Text>│</Text>
       {columns.map((column, index) => {
-        const columnStylesForCell = columnStyles?.[column.key]
-        const cellTextStyles = {
-          ...baseCellTextStyles,
-          ...columnStylesForCell,
-          ...(getTextStyles ? getTextStyles(column, row[column.key]) : {}),
-        }
+        const cellTextProps = getTextPropsForCell(row, column)
         return (
           <React.Fragment key={column.key}>
             {index !== 0 && <Text>│</Text>}
             {/* Add separator before each cell except the first one */}
             <Box width={column.width} justifyContent="center">
-              <Text {...cellTextStyles}>{row[column.key]?.toString() || ''}</Text>
+              <Text {...cellTextProps}>{getValue(row, column)}</Text>
             </Box>
           </React.Fragment>
         )

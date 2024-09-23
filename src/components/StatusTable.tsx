@@ -1,11 +1,12 @@
 import React from 'react'
 import {Box, Text} from 'ink'
 
+import {ScalarDict} from '@cli/types.js'
+import {Title} from './Title.js'
+
 export interface StatusTableProps extends React.ComponentPropsWithoutRef<typeof Box> {
   title: string
-  statuses: {
-    [key: string]: string | boolean
-  }
+  statuses: ScalarDict
   colors?: {
     [key: string]: string
   }
@@ -35,7 +36,7 @@ export const StatusTable = ({title, statuses, colors, ...rest}: StatusTableProps
 
   return (
     <Box flexDirection="column" {...rest}>
-      <Text bold>{title.toUpperCase()}</Text>
+      <Title>{title}</Title>
       <Box flexDirection="column" marginLeft={2}>
         <Box flexDirection="row">
           <Box flexDirection="column">
@@ -45,7 +46,7 @@ export const StatusTable = ({title, statuses, colors, ...rest}: StatusTableProps
               </Box>
             ))}
           </Box>
-          <Box width={20} flexDirection="column" alignItems="flex-end">
+          <Box width={50} flexDirection="column" alignItems="flex-end">
             {Object.entries(statuses).map(([key]) => (
               <Box key={key} flexDirection="row">
                 <Text color={getColor(key)}>{getText(key)}</Text>

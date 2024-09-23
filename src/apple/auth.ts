@@ -120,16 +120,22 @@ export async function getNewAuthState(
 
   const applePortalSessionService = new ApplePortalSessionService(cookieService, errors, httpClient, logger, prompter)
 
+  console.log('creating user session')
   const session = await applePortalSessionService.createUserSession({
     username,
     password,
   })
 
+  console.log('session', session)
+
   const cookieJar = new tough.CookieJar()
 
   const allRawCookies = session.userSessionCookie.split('; ')
 
+  console.log(JSON.stringify(allRawCookies, null, 2))
+
   const getCookieUrl = (name: string) => {
+    console.log('getCookieUrl name', name)
     if (name === 'myacinfo') return 'https://apple.com'
     if (name === 'dqsid') return 'https://appstoreconnect.apple.com'
     return 'https://idmsa.apple.com'
@@ -156,7 +162,10 @@ export async function getNewAuthState(
     cookies: hackedCookies,
   }
 
-  // TODO: re-implement this so it does not output anything?
+  // TODO: re-auth didnt work
+  console.log(JSON.stringify(fixed, null, 2))
+
+  console.log(['About to call expo func'])
   const authState = await Auth.loginWithCookiesAsync({
     cookies: fixed,
   })

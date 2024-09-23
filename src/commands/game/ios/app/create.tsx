@@ -1,0 +1,103 @@
+import {render} from 'ink'
+import {Flags} from '@oclif/core'
+
+import {promises as readline} from 'node:readline'
+
+import {App, RunWithSpinner} from '@cli/components/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {getGodotAppleBundleIdentifier} from '@cli/utils/index.js'
+
+import {App as AppleApp, BundleId as AppleBundleId} from '@cli/apple/expo.js'
+
+export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppCreate> {
+  static override args = {}
+
+  static override description =
+    'Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.'
+
+  static override examples = ['<%= config.bin %> <%= command.id %>']
+
+  static override flags = {
+    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
+    appName: Flags.string({char: 'n', description: 'The name of the App in the Apple Developer Portal'}),
+    bundleId: Flags.string({char: 'b', description: 'The BundleId in the Apple Developer Portal'}),
+  }
+
+  public async run(): Promise<void> {
+    const game = await this.getGame()
+    const authState = await this.refreshAppleAuthState()
+    const ctx = authState.context
+
+    const {flags} = this
+    const {appName, bundleId} = flags
+
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    })
+
+    const getAppName = async (): Promise<string> => {
+      if (appName) return appName
+      const suggestedName = game.name
+      const question = `Please enter the name of the App in the Apple Developer Portal, or press enter to use ${suggestedName}: `
+      const enteredName = await rl.question(question)
+      return enteredName || suggestedName
+    }
+
+    const getBundleIdentifier = async (): Promise<string> => {
+      if (bundleId) return bundleId
+      //TODO: autogenerate a bundle id from current user name and random words?
+      const suggestedBundleId = getGodotAppleBundleIdentifier() || 'com.example.app'
+      const question = `Please enter the BundleId in the Apple Developer Portal, or press enter to use ${suggestedBundleId}: `
+      const enteredBundleId = await rl.question(question)
+      return enteredBundleId || suggestedBundleId
+    }
+
+    const name = await getAppName()
+    const iosBundleId = await getBundleIdentifier()
+
+    const createApp = async () => {
+      this.log(`Checking for ${iosBundleId} in apple portal...`)
+
+      let bundleId = await AppleBundleId.findAsync(ctx, {identifier: iosBundleId})
+      if (!bundleId) {
+        this.log(`Creating BundleId ${iosBundleId} in apple portal...`)
+        bundleId = await AppleBundleId.createAsync(ctx, {
+          identifier: iosBundleId,
+          name,
+        })
+      }
+
+      // See if the app already exists
+      let app = await AppleApp.findAsync(ctx, {
+        bundleId: iosBundleId,
+      })
+
+      if (!app) {
+        this.log(`Creating App ${iosBundleId} in apple portal...`)
+        app = await AppleApp.createAsync(ctx, {
+          bundleId: iosBundleId,
+          name,
+          primaryLocale: 'en-US', // TODO
+        })
+      }
+    }
+
+    const handleComplete = async () => {
+      await this.config.runCommand('game:ios:app:sync', ['--gameId', game.id])
+      await this.config.runCommand('game:ios:app:status', ['--gameId', game.id])
+      process.exit(0)
+    }
+
+    render(
+      <App>
+        <RunWithSpinner
+          msgInProgress="Creating App and BundleId in the Apple Developer Portal"
+          msgComplete="App and BundleId created"
+          executeMethod={createApp}
+          onComplete={handleComplete}
+        />
+      </App>,
+    )
+  }
+}

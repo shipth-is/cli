@@ -1,6 +1,6 @@
 import {Args, Command, Flags} from '@oclif/core'
 
-export default class GameIosAppCreate extends Command {
+export default class GameIosProfileExport extends Command {
   static override args = {
     file: Args.string({description: 'file to read'}),
   }
@@ -19,10 +19,10 @@ export default class GameIosAppCreate extends Command {
   }
 
   public async run(): Promise<void> {
-    const {args, flags} = await this.parse(GameIosAppCreate)
+    const {args, flags} = await this.parse(GameIosProfileExport)
 
     const name = flags.name ?? 'world'
-    this.log(`hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/game/ios/app/create.ts`)
+    this.log(`hello ${name} from /home/david/work/shipthis.cc/oclif-cli/shipthis/src/commands/game/ios/profile/export.ts`)
     if (args.file && flags.force) {
       this.log(`you input --force and --file: ${args.file}`)
     }

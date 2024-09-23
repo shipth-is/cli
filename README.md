@@ -47,6 +47,7 @@ USAGE
 # Commands
 <!-- commands -->
 * [`shipthis apple apiKey create`](#shipthis-apple-apikey-create)
+* [`shipthis apple apiKey export FILE`](#shipthis-apple-apikey-export-file)
 * [`shipthis apple apiKey import FILE`](#shipthis-apple-apikey-import-file)
 * [`shipthis apple apiKey status`](#shipthis-apple-apikey-status)
 * [`shipthis apple certificate create`](#shipthis-apple-certificate-create)
@@ -57,12 +58,14 @@ USAGE
 * [`shipthis apple status`](#shipthis-apple-status)
 * [`shipthis game create`](#shipthis-game-create)
 * [`shipthis game export [GAMEID]`](#shipthis-game-export-gameid)
-* [`shipthis game ios app create [FILE]`](#shipthis-game-ios-app-create-file)
-* [`shipthis game ios app status [FILE]`](#shipthis-game-ios-app-status-file)
+* [`shipthis game ios app create`](#shipthis-game-ios-app-create)
+* [`shipthis game ios app status`](#shipthis-game-ios-app-status)
+* [`shipthis game ios app sync`](#shipthis-game-ios-app-sync)
 * [`shipthis game ios profile create [FILE]`](#shipthis-game-ios-profile-create-file)
+* [`shipthis game ios profile export [FILE]`](#shipthis-game-ios-profile-export-file)
 * [`shipthis game ios profile import [FILE]`](#shipthis-game-ios-profile-import-file)
-* [`shipthis game ios profile status [FILE]`](#shipthis-game-ios-profile-status-file)
-* [`shipthis game ios status [FILE]`](#shipthis-game-ios-status-file)
+* [`shipthis game ios profile status`](#shipthis-game-ios-profile-status)
+* [`shipthis game ios status`](#shipthis-game-ios-status)
 * [`shipthis game job list`](#shipthis-game-job-list)
 * [`shipthis game job status JOB_ID`](#shipthis-game-job-status-job_id)
 * [`shipthis game list`](#shipthis-game-list)
@@ -93,6 +96,29 @@ EXAMPLES
 ```
 
 _See code: [src/commands/apple/apiKey/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/create.ts)_
+
+## `shipthis apple apiKey export FILE`
+
+Saves the current App Store Connect API Key to a ZIP file
+
+```
+USAGE
+  $ shipthis apple apiKey export FILE [-f]
+
+ARGUMENTS
+  FILE  Name of the ZIP file to create
+
+FLAGS
+  -f, --force  Overwrite the file if it already exists
+
+DESCRIPTION
+  Saves the current App Store Connect API Key to a ZIP file
+
+EXAMPLES
+  $ shipthis apple apiKey export userApiKey.zip
+```
+
+_See code: [src/commands/apple/apiKey/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/export.ts)_
 
 ## `shipthis apple apiKey import FILE`
 
@@ -318,23 +344,22 @@ EXAMPLES
 
 _See code: [src/commands/game/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/export.ts)_
 
-## `shipthis game ios app create [FILE]`
+## `shipthis game ios app create`
 
-describe the command here
+Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
 ```
 USAGE
-  $ shipthis game ios app create [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ shipthis game ios app create [-g <value>] [-n <value>] [-b <value>]
 
 FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  -b, --bundleId=<value>  The BundleId in the Apple Developer Portal
+  -g, --gameId=<value>    The ID of the game
+  -n, --appName=<value>   The name of the App in the Apple Developer Portal
 
 DESCRIPTION
-  describe the command here
+  Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current
+  directory.
 
 EXAMPLES
   $ shipthis game ios app create
@@ -342,29 +367,46 @@ EXAMPLES
 
 _See code: [src/commands/game/ios/app/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/create.ts)_
 
-## `shipthis game ios app status [FILE]`
+## `shipthis game ios app status`
 
-describe the command here
+Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
 
 ```
 USAGE
-  $ shipthis game ios app status [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ shipthis game ios app status [-g <value>]
 
 FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  describe the command here
+  Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
 
 EXAMPLES
   $ shipthis game ios app status
 ```
 
 _See code: [src/commands/game/ios/app/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/status.ts)_
+
+## `shipthis game ios app sync`
+
+Synchronies the Apple App "BundleId" with the capabilities from the local project. If --gameId is not provided it will look in the current directory.
+
+```
+USAGE
+  $ shipthis game ios app sync [-g <value>]
+
+FLAGS
+  -g, --gameId=<value>  The ID of the game
+
+DESCRIPTION
+  Synchronies the Apple App "BundleId" with the capabilities from the local project. If --gameId is not provided it will
+  look in the current directory.
+
+EXAMPLES
+  $ shipthis game ios app sync
+```
+
+_See code: [src/commands/game/ios/app/sync.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/sync.ts)_
 
 ## `shipthis game ios profile create [FILE]`
 
@@ -390,6 +432,30 @@ EXAMPLES
 
 _See code: [src/commands/game/ios/profile/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/create.ts)_
 
+## `shipthis game ios profile export [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ shipthis game ios profile export [FILE] [-f] [-n <value>]
+
+ARGUMENTS
+  FILE  file to read
+
+FLAGS
+  -f, --force
+  -n, --name=<value>  name to print
+
+DESCRIPTION
+  describe the command here
+
+EXAMPLES
+  $ shipthis game ios profile export
+```
+
+_See code: [src/commands/game/ios/profile/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/export.ts)_
+
 ## `shipthis game ios profile import [FILE]`
 
 describe the command here
@@ -414,23 +480,19 @@ EXAMPLES
 
 _See code: [src/commands/game/ios/profile/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/import.ts)_
 
-## `shipthis game ios profile status [FILE]`
+## `shipthis game ios profile status`
 
-describe the command here
+Shows the Game iOS Profile Status. If --gameId is not provided it will look in the current directory.
 
 ```
 USAGE
-  $ shipthis game ios profile status [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ shipthis game ios profile status [-g <value>]
 
 FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  describe the command here
+  Shows the Game iOS Profile Status. If --gameId is not provided it will look in the current directory.
 
 EXAMPLES
   $ shipthis game ios profile status
@@ -438,26 +500,24 @@ EXAMPLES
 
 _See code: [src/commands/game/ios/profile/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/status.ts)_
 
-## `shipthis game ios status [FILE]`
+## `shipthis game ios status`
 
-describe the command here
+Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
 
 ```
 USAGE
-  $ shipthis game ios status [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ shipthis game ios status [-g <value>]
 
 FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  describe the command here
+  Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
 
 EXAMPLES
   $ shipthis game ios status
+
+  $ shipthis game ios status --gameId 0c179fc4
 ```
 
 _See code: [src/commands/game/ios/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/status.ts)_
