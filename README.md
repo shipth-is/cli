@@ -482,17 +482,19 @@ _See code: [src/commands/game/ios/profile/import.ts](https://github.com/oclif-cl
 
 ## `shipthis game ios profile status`
 
-Shows the Game iOS Profile Status. If --gameId is not provided it will look in the current directory.
+Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.
 
 ```
 USAGE
-  $ shipthis game ios profile status [-g <value>]
+  $ shipthis game ios profile status [-g <value>] [-f]
 
 FLAGS
+  -f, --noAppleAuth
   -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  Shows the Game iOS Profile Status. If --gameId is not provided it will look in the current directory.
+  Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current
+  directory.
 
 EXAMPLES
   $ shipthis game ios profile status

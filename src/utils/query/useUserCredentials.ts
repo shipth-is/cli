@@ -53,19 +53,17 @@ export const useUserCredentials = ({
   ...pageAndSortParams
 }: UserCredentialsQueryProps): UseQueryResult<UserCredentialsQueryResponse, AxiosError> => {
   const queryResult = useQuery<UserCredentialsQueryResponse, AxiosError>({
-    queryKey: cacheKeys.userCredentials(),
+    queryKey: cacheKeys.userCredentials(pageAndSortParams),
     queryFn: async () => queryUserCredentials(pageAndSortParams),
     select: (data) => {
       // The api doesn't support filtering by platform or type, so we do it here
-      if (platform || type) {
-        return {
-          ...data,
-          data: data.data.filter((credential) => {
-            return (!platform || credential.platform === platform) && (!type || credential.type === type)
-          }),
-        }
+      if (!(platform || type)) return data
+      return {
+        ...data,
+        data: data.data.filter((credential) => {
+          return (!platform || credential.platform === platform) && (!type || credential.type === type)
+        }),
       }
-      return data
     },
   })
   return queryResult

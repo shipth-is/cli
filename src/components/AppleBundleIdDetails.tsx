@@ -35,7 +35,7 @@ export const AppleBundleIdDetails = (props: AppleBundleIdQueryProps) => {
       {shouldSyncCapabilities && (
         <Box flexDirection="column">
           <Text bold>The capabilities are out of sync with the Apple Developer Portal.</Text>
-          <Text bold>Run `shipthis game ios app sync`</Text>
+          <Text bold>Run shipthis game ios app sync</Text>
         </Box>
       )}
     </>

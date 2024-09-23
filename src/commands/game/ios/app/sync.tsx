@@ -34,7 +34,7 @@ export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSyn
       if (!projectCapabilities) return this.error('Project capabilities not loaded')
 
       // TODO: any more which cant be edited?
-      // TODO: important - what if they have set some manually??
+      // TODO: important - what if they have set some manually?? (prompt for confirmation?)
       const unRemovable = ['IN_APP_PURCHASE']
       const toRemove = existing.filter((c) => !projectCapabilities.includes(c) && !unRemovable.includes(c))
       const toAdd = projectCapabilities.filter((c) => !existing.includes(c))

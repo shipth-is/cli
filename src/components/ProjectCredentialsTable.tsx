@@ -1,17 +1,17 @@
 import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {getUserCredentialSummary, UserCredentialsQueryProps, useUserCredentials} from '@cli/utils/index.js'
+import {getProjectCredentialSummary, ProjectCredentialsQueryProps, useProjectCredentials} from '@cli/utils/index.js'
 import {Table} from './Table.js'
 import {Title} from './Title.js'
 
 interface Props extends BoxProps {
   credentialTypeName: string
-  queryProps: UserCredentialsQueryProps
+  queryProps: ProjectCredentialsQueryProps
 }
 
-export const UserCredentialsTable = ({credentialTypeName, queryProps, ...boxProps}: Props) => {
-  const {isLoading, data} = useUserCredentials(queryProps)
+export const ProjectCredentialsTable = ({credentialTypeName, queryProps, ...boxProps}: Props) => {
+  const {isLoading, data} = useProjectCredentials(queryProps)
 
   const hasActive = data?.data.some((credential) => credential.isActive)
 
@@ -22,11 +22,11 @@ export const UserCredentialsTable = ({credentialTypeName, queryProps, ...boxProp
         <Text>
           {hasActive
             ? `You have an active ${credentialTypeName} in your ShipThis account.`
-            : `You DO NOT have an active ${credentialTypeName} which shipthis can use.`}
+            : `You DO NOT have an active ${credentialTypeName} which ShipThis can use.`}
         </Text>
       </Box>
       {isLoading && <Spinner type="dots" />}
-      {data && <Table data={data.data.map(getUserCredentialSummary)} />}
+      {data && <Table data={data.data.map(getProjectCredentialSummary)} />}
     </Box>
   )
 }

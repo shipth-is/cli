@@ -99,7 +99,7 @@ function renderRow(
   columnTextProps?: ColumnTextProps,
   getTextProps?: (column: Column, value: Scalar) => TextProps | undefined,
 ) {
-  const getValue = (row: ScalarDict, column: Column) => {
+  const getDisplayValue = (row: ScalarDict, column: Column) => {
     const value = row[column.key]
     if (typeof value === 'boolean') return value ? 'YES' : 'NO'
     return value?.toString() || ''
@@ -129,7 +129,7 @@ function renderRow(
             {index !== 0 && <Text>│</Text>}
             {/* Add separator before each cell except the first one */}
             <Box width={column.width} justifyContent="center">
-              <Text {...cellTextProps}>{getValue(row, column)}</Text>
+              <Text {...cellTextProps}>{getDisplayValue(row, column)}</Text>
             </Box>
           </React.Fragment>
         )
