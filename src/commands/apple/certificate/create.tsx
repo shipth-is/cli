@@ -11,7 +11,7 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
   static override args = {}
 
   static override description =
-    'Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your shipthis account'
+    'Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your ShipThis account'
 
   static override examples = ['<%= config.bin %> <%= command.id %>', '<%= config.bin %> <%= command.id %> --force']
 
@@ -52,14 +52,13 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
 
     const handleComplete = async () => {
       await this.config.runCommand(`apple:certificate:status`)
-      process.exit(0)
     }
 
     render(
       <App>
         <RunWithSpinner
           msgInProgress={`Creating certificate in the Apple Developer Portal...`}
-          msgComplete={`Certificate created and saved to shipthis`}
+          msgComplete={`Certificate created and saved to ShipThis`}
           executeMethod={createCert}
           onComplete={handleComplete}
         />

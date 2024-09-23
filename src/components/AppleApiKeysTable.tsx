@@ -32,7 +32,7 @@ export const AppleApiKeysTable = ({ctx, ...boxProps}: Props) => {
           {!hasUsable && (
             <Box marginTop={1}>
               <Text bold>
-                You do not have a usable App Store Connect API Keys. To ship an iOS game, you will need a usable App
+                You do not have a usable App Store Connect API Key. To ship an iOS game, you will need a usable App
                 Store Connect API Key.
               </Text>
             </Box>

@@ -1,6 +1,6 @@
 import {useQuery, UseQueryResult} from '@tanstack/react-query'
 
-import {App} from '@expo/app-store'
+import type {App} from '@expo/apple-utils'
 
 import {App as AppleApp} from '@cli/apple/expo.js'
 import {ScalarDict} from '@cli/types.js'

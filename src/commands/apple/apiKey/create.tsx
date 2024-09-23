@@ -11,7 +11,7 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
   static override args = {}
 
   static override description =
-    'Creates an App Store Connect API in your Apple Developer account and saves the private key in your shipthis account'
+    'Creates an App Store Connect API in your Apple Developer account and saves the private key in your ShipThis account'
 
   static override examples = ['<%= config.bin %> <%= command.id %>', '<%= config.bin %> <%= command.id %> --force']
 
@@ -65,14 +65,13 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
 
     const handleComplete = async () => {
       await this.config.runCommand(`apple:apiKey:status`)
-      process.exit(0)
     }
 
     render(
       <App>
         <RunWithSpinner
           msgInProgress={`Creating App Store Connect API in the Apple Developer Portal...`}
-          msgComplete={`App Store Connect API created and saved to shipthis`}
+          msgComplete={`App Store Connect API created and saved to ShipThis`}
           executeMethod={createApiKey}
           onComplete={handleComplete}
         />

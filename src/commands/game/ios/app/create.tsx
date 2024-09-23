@@ -86,7 +86,6 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
     const handleComplete = async () => {
       await this.config.runCommand('game:ios:app:sync', ['--gameId', game.id])
       await this.config.runCommand('game:ios:app:status', ['--gameId', game.id])
-      process.exit(0)
     }
 
     render(

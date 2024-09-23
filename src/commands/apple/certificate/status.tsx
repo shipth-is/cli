@@ -9,7 +9,7 @@ export default class AppleCertificateStatus extends BaseAuthenticatedCommand<typ
   static override args = {}
 
   static override description =
-    'Displays the status of the iOS Distribution certificates in your Apple and Shipthis accounts. These are used to sign all of your iOS apps.'
+    'Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign all of your iOS apps.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',

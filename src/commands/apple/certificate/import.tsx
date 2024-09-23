@@ -15,7 +15,7 @@ export default class AppleCertificateImport extends BaseAuthenticatedCommand<typ
     }),
   }
 
-  static override description = 'Imports an iOS Distribution Certificate to your shipthis account'
+  static override description = 'Imports an iOS Distribution Certificate to your ShipThis account'
 
   static override examples = ['<%= config.bin %> <%= command.id %> userCert.zip']
 
@@ -44,7 +44,6 @@ export default class AppleCertificateImport extends BaseAuthenticatedCommand<typ
 
     const handleComplete = async () => {
       await this.config.runCommand(`apple:certificate:status`, ['--noAppleAuth'])
-      process.exit(0)
     }
 
     render(

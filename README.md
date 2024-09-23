@@ -61,9 +61,9 @@ USAGE
 * [`shipthis game ios app create`](#shipthis-game-ios-app-create)
 * [`shipthis game ios app status`](#shipthis-game-ios-app-status)
 * [`shipthis game ios app sync`](#shipthis-game-ios-app-sync)
-* [`shipthis game ios profile create [FILE]`](#shipthis-game-ios-profile-create-file)
-* [`shipthis game ios profile export [FILE]`](#shipthis-game-ios-profile-export-file)
-* [`shipthis game ios profile import [FILE]`](#shipthis-game-ios-profile-import-file)
+* [`shipthis game ios profile create`](#shipthis-game-ios-profile-create)
+* [`shipthis game ios profile export FILE`](#shipthis-game-ios-profile-export-file)
+* [`shipthis game ios profile import FILE`](#shipthis-game-ios-profile-import-file)
 * [`shipthis game ios profile status`](#shipthis-game-ios-profile-status)
 * [`shipthis game ios status`](#shipthis-game-ios-status)
 * [`shipthis game job list`](#shipthis-game-job-list)
@@ -77,7 +77,7 @@ USAGE
 
 ## `shipthis apple apiKey create`
 
-Creates an App Store Connect API in your Apple Developer account and saves the private key in your shipthis account
+Creates an App Store Connect API in your Apple Developer account and saves the private key in your ShipThis account
 
 ```
 USAGE
@@ -87,7 +87,7 @@ FLAGS
   -f, --force
 
 DESCRIPTION
-  Creates an App Store Connect API in your Apple Developer account and saves the private key in your shipthis account
+  Creates an App Store Connect API in your Apple Developer account and saves the private key in your ShipThis account
 
 EXAMPLES
   $ shipthis apple apiKey create
@@ -122,7 +122,7 @@ _See code: [src/commands/apple/apiKey/export.ts](https://github.com/oclif-cli/sh
 
 ## `shipthis apple apiKey import FILE`
 
-Imports an App Store Connect API Key to your shipthis account
+Imports an App Store Connect API Key to your ShipThis account
 
 ```
 USAGE
@@ -135,7 +135,7 @@ FLAGS
   -f, --force
 
 DESCRIPTION
-  Imports an App Store Connect API Key to your shipthis account
+  Imports an App Store Connect API Key to your ShipThis account
 
 EXAMPLES
   $ shipthis apple apiKey import userApiKey.zip
@@ -145,7 +145,7 @@ _See code: [src/commands/apple/apiKey/import.ts](https://github.com/oclif-cli/sh
 
 ## `shipthis apple apiKey status`
 
-Displays the status of the App Store Connect API Key in your Apple and Shipthis accounts. This key is used to automatically publish your games to the App Store.
+Displays the status of the App Store Connect API Key in your Apple and ShipThis accounts. This key is used to automatically publish your games to the App Store.
 
 ```
 USAGE
@@ -155,7 +155,7 @@ FLAGS
   -f, --noAppleAuth
 
 DESCRIPTION
-  Displays the status of the App Store Connect API Key in your Apple and Shipthis accounts. This key is used to
+  Displays the status of the App Store Connect API Key in your Apple and ShipThis accounts. This key is used to
   automatically publish your games to the App Store.
 
 EXAMPLES
@@ -168,7 +168,7 @@ _See code: [src/commands/apple/apiKey/status.ts](https://github.com/oclif-cli/sh
 
 ## `shipthis apple certificate create`
 
-Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your shipthis account
+Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your ShipThis account
 
 ```
 USAGE
@@ -178,7 +178,7 @@ FLAGS
   -f, --force
 
 DESCRIPTION
-  Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your shipthis
+  Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your ShipThis
   account
 
 EXAMPLES
@@ -214,7 +214,7 @@ _See code: [src/commands/apple/certificate/export.ts](https://github.com/oclif-c
 
 ## `shipthis apple certificate import FILE`
 
-Imports an iOS Distribution Certificate to your shipthis account
+Imports an iOS Distribution Certificate to your ShipThis account
 
 ```
 USAGE
@@ -227,7 +227,7 @@ FLAGS
   -f, --force
 
 DESCRIPTION
-  Imports an iOS Distribution Certificate to your shipthis account
+  Imports an iOS Distribution Certificate to your ShipThis account
 
 EXAMPLES
   $ shipthis apple certificate import userCert.zip
@@ -237,7 +237,7 @@ _See code: [src/commands/apple/certificate/import.ts](https://github.com/oclif-c
 
 ## `shipthis apple certificate status`
 
-Displays the status of the iOS Distribution certificates in your Apple and Shipthis accounts. These are used to sign all of your iOS apps.
+Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign all of your iOS apps.
 
 ```
 USAGE
@@ -247,7 +247,7 @@ FLAGS
   -f, --noAppleAuth
 
 DESCRIPTION
-  Displays the status of the iOS Distribution certificates in your Apple and Shipthis accounts. These are used to sign
+  Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign
   all of your iOS apps.
 
 EXAMPLES
@@ -408,23 +408,21 @@ EXAMPLES
 
 _See code: [src/commands/game/ios/app/sync.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/sync.ts)_
 
-## `shipthis game ios profile create [FILE]`
+## `shipthis game ios profile create`
 
-describe the command here
+Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
 ```
 USAGE
-  $ shipthis game ios profile create [FILE] [-f] [-n <value>]
-
-ARGUMENTS
-  FILE  file to read
+  $ shipthis game ios profile create [-g <value>] [-f]
 
 FLAGS
   -f, --force
-  -n, --name=<value>  name to print
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  describe the command here
+  Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the
+  current directory.
 
 EXAMPLES
   $ shipthis game ios profile create
@@ -432,50 +430,50 @@ EXAMPLES
 
 _See code: [src/commands/game/ios/profile/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/create.ts)_
 
-## `shipthis game ios profile export [FILE]`
+## `shipthis game ios profile export FILE`
 
-describe the command here
+Saves the current Mobile Provisioning Profile to a ZIP file
 
 ```
 USAGE
-  $ shipthis game ios profile export [FILE] [-f] [-n <value>]
+  $ shipthis game ios profile export FILE [-g <value>] [-f]
 
 ARGUMENTS
-  FILE  file to read
+  FILE  Name of the ZIP file to create
 
 FLAGS
-  -f, --force
-  -n, --name=<value>  name to print
+  -f, --force           Overwrite the file if it already exists
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  describe the command here
+  Saves the current Mobile Provisioning Profile to a ZIP file
 
 EXAMPLES
-  $ shipthis game ios profile export
+  $ shipthis game ios profile export userProfile.zip
 ```
 
 _See code: [src/commands/game/ios/profile/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/export.ts)_
 
-## `shipthis game ios profile import [FILE]`
+## `shipthis game ios profile import FILE`
 
-describe the command here
+Imports an Mobile Provisioning Profile to your ShipThis account
 
 ```
 USAGE
-  $ shipthis game ios profile import [FILE] [-f] [-n <value>]
+  $ shipthis game ios profile import FILE [-g <value>] [-f]
 
 ARGUMENTS
-  FILE  file to read
+  FILE  Name of the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force
-  -n, --name=<value>  name to print
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  describe the command here
+  Imports an Mobile Provisioning Profile to your ShipThis account
 
 EXAMPLES
-  $ shipthis game ios profile import
+  $ shipthis game ios profile import profile.zip
 ```
 
 _See code: [src/commands/game/ios/profile/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/import.ts)_

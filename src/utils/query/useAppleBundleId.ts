@@ -1,5 +1,6 @@
 import {useQuery, UseQueryResult} from '@tanstack/react-query'
 
+import type {BundleId} from '@expo/apple-utils'
 import {BundleId as AppleBundleId, CapabilityType} from '@cli/apple/expo.js'
 
 import {getGodotProjectCapabilities, GODOT_CAPABILITIES} from '../godot.js'
@@ -12,7 +13,7 @@ export interface AppleBundleIdQueryProps {
 
 // TODO: fix the types
 export type AppleBundleIdQueryResponse = {
-  bundleId: any | null
+  bundleId: BundleId | null
   bundleIdSummary: ScalarDict | null // for display
   capabilities: any[] | null // list of capabilities in the bundleId
   capabilitiesTable: ScalarDict[] | null // capabilities in a table format
@@ -21,7 +22,7 @@ export type AppleBundleIdQueryResponse = {
 }
 
 // Tells us which capabilities are enabled the Apple BundleId
-export async function getBundleIdCapabilities(bundleId: any): Promise<any[]> {
+export async function getBundleIdCapabilities(bundleId: BundleId): Promise<any[]> {
   const current = await bundleId.getBundleIdCapabilitiesAsync()
 
   let existing = []

@@ -15,7 +15,7 @@ export default class AppleApiKeyImport extends BaseAuthenticatedCommand<typeof A
     }),
   }
 
-  static override description = 'Imports an App Store Connect API Key to your shipthis account'
+  static override description = 'Imports an App Store Connect API Key to your ShipThis account'
 
   static override examples = ['<%= config.bin %> <%= command.id %> userApiKey.zip']
 
@@ -44,7 +44,6 @@ export default class AppleApiKeyImport extends BaseAuthenticatedCommand<typeof A
 
     const handleComplete = async () => {
       await this.config.runCommand(`apple:apiKey:status`, ['--noAppleAuth'])
-      process.exit(0)
     }
 
     render(

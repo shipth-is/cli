@@ -1,5 +1,6 @@
 import {render, Box, Text} from 'ink'
 import {Flags} from '@oclif/core'
+import {DateTime} from 'luxon'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectJobs} from '@cli/api/index.js'
@@ -48,12 +49,13 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
     const jobListResponse = await getProjectJobs(game.id, params)
 
     const data = jobListResponse.data.map((job) => {
+      const inProgress = ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
       return {
         id: getShortUUID(job.id),
         platform: job.type,
         status: job.status,
         createdAt: getShortDateTime(job.createdAt),
-        runtime: getShortTimeDelta(job.createdAt, job.updatedAt),
+        runtime: getShortTimeDelta(job.createdAt, inProgress ? DateTime.now() : job.updatedAt),
       }
     })
 
