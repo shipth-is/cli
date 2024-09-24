@@ -88,20 +88,7 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
       }
 
       // Update the project with the iosBundleId
-      const projectUpdate: EditableProject = {
-        name: project.name,
-        details: {
-          ...project.details,
-          iosBundleId,
-        },
-      }
-      const updatedProject = await updateProject(game.id, projectUpdate)
-      // Update the project in our local config
-      const projectConfig = await this.getProjectConfig()
-      await this.setProjectConfig({
-        ...projectConfig,
-        project: updatedProject,
-      })
+      await this.updateGame({details: {...project.details, iosBundleId}})
 
       // TODO: if the bundleId is different in the export_presets.cfg, update it
     }

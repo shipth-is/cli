@@ -4,7 +4,7 @@ import {SerializedCookieJar} from 'tough-cookie'
 import {Command, Flags, Interfaces} from '@oclif/core'
 
 import {Auth} from '@cli/apple/expo.js'
-import {AuthConfig, ProjectConfig} from '@cli/types.js'
+import {AuthConfig, EditableProject, ProjectConfig} from '@cli/types.js'
 import {setAuthToken} from '@cli/api/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
 
@@ -107,6 +107,11 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   public async setProjectConfig(config: ProjectConfig): Promise<void> {
     const configPath = this.getProjectConfigPath()
     await fs.promises.writeFile(configPath, JSON.stringify(config, null, 2))
+  }
+
+  public async updateProjectConfig(update: Partial<ProjectConfig>): Promise<void> {
+    const config = await this.getProjectConfig()
+    await this.setProjectConfig({...config, ...update})
   }
 
   // Used in baseGameCommand and the other commands that need to ensure that the CWD is a Godot project

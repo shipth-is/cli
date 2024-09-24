@@ -90,6 +90,7 @@
     "./dist/commands/apple/certificate/import.js",
     "./dist/commands/apple/login.js",
     "./dist/commands/game/list.js",
+    "./dist/commands/game/buildNumber.js",
     "./dist/commands/game/ship.js",
     "./dist/commands/game/export.js",
     "./dist/commands/game/ios/app/create.js",

@@ -20,13 +20,16 @@ export interface AuthConfig {
   appleCookies?: SerializedCookieJar
 }
 
+export interface ProjectDetails {
+  iosBundleId?: string
+  androidPackageName?: string
+  buildNumber?: number
+}
+
 // What the POST/PUT endpoints accept for creating/updating a project
 export interface EditableProject {
   name: string
-  details?: {
-    iosBundleId?: string
-    androidPackageName?: string
-  }
+  details?: ProjectDetails
 }
 
 // What a project from the API looks like
