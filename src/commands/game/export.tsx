@@ -7,7 +7,7 @@ import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/con
 
 export default class GameExport extends BaseAuthenticatedCommand<typeof GameExport> {
   static override args = {
-    gameId: Args.string({description: 'The ID of the game to export (use "list" to get the ID)'}),
+    game_id: Args.string({description: 'The ID of the game to export (use "list" to get the ID)', required: true}),
   }
 
   static override description = 'Downloads the shipthis.json file for a given game into the current directory.'
@@ -24,10 +24,6 @@ export default class GameExport extends BaseAuthenticatedCommand<typeof GameExpo
   public async run(): Promise<void> {
     const {args} = this
 
-    if (!args.gameId) {
-      return this.error('Please provide a game ID.', {exit: 1})
-    }
-
     if (!isCWDGodotGame()) {
       return this.error('No Godot project detected. Please run this from a godot project directory.', {exit: 1})
     }
@@ -39,7 +35,7 @@ export default class GameExport extends BaseAuthenticatedCommand<typeof GameExpo
       )
     }
 
-    const project = await getProject(args.gameId)
+    const project = await getProject(args.game_id)
 
     await this.setProjectConfig({
       project,

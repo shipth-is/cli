@@ -149,5 +149,6 @@ export interface UserCredential {
 }
 
 export interface ProjectCredential extends UserCredential {
+  projectId: string
   identifier: string
 }

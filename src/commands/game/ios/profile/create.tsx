@@ -79,6 +79,7 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
       if (!validAppleCert) throw new Error('No valid apple certificates found')
 
       // Create the profile
+      // TODO: only one of these can exist per bundleId - if forcing, should/can we disable existing ones?
       const profile = await AppleProfile.createAsync(ctx, {
         bundleId: bundleId.id,
         certificates: [validAppleCert.id],

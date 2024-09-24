@@ -16,6 +16,22 @@ When you add or remove a command you will need to update the `"exports"` section
 find src/commands/ -type f | sed "s/src\([^\.]*\)\..*$/dist\1.js/g"
 ```
 
+# Zero to iOS shipping steps
+
+```
+shipthis login
+shipthis game create
+shipthis apple login
+shipthis apple apiKey create
+shipthis apple certificate create
+shipthis game ios app create
+shipthis game ios app sync
+shipthis game ios profile create
+shipthis game ship
+```
+
+
+
 # Introduction
 
 Mobile Game Shipping Tool
@@ -57,7 +73,7 @@ USAGE
 * [`shipthis apple login`](#shipthis-apple-login)
 * [`shipthis apple status`](#shipthis-apple-status)
 * [`shipthis game create`](#shipthis-game-create)
-* [`shipthis game export [GAMEID]`](#shipthis-game-export-gameid)
+* [`shipthis game export GAME_ID`](#shipthis-game-export-game_id)
 * [`shipthis game ios app create`](#shipthis-game-ios-app-create)
 * [`shipthis game ios app status`](#shipthis-game-ios-app-status)
 * [`shipthis game ios app sync`](#shipthis-game-ios-app-sync)
@@ -319,16 +335,16 @@ EXAMPLES
 
 _See code: [src/commands/game/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/create.ts)_
 
-## `shipthis game export [GAMEID]`
+## `shipthis game export GAME_ID`
 
 Downloads the shipthis.json file for a given game into the current directory.
 
 ```
 USAGE
-  $ shipthis game export [GAMEID] [-f]
+  $ shipthis game export GAME_ID [-f]
 
 ARGUMENTS
-  GAMEID  The ID of the game to export (use "list" to get the ID)
+  GAME_ID  The ID of the game to export (use "list" to get the ID)
 
 FLAGS
   -f, --force
