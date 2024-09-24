@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {API_URL} from '@cli/constants/index.js'
+import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
   EditableProject,
   Job,
@@ -113,4 +113,19 @@ export async function getJob(jobId: string, projectId: string): Promise<Job> {
   const opt = {headers}
   const {data} = await axios.get(`${API_URL}/projects/${projectId}/jobs/${jobId}`, opt)
   return castObjectDates<Job>(data)
+}
+
+// Returns a url with an OTP - when visited it authenticates the user
+export async function getSingleUseUrl(destination: string) {
+  // Call the API to generate an OTP
+  const headers = await getAuthedHeaders()
+  const {data} = await axios.post(`${API_URL}/me/otp`, {}, {headers})
+  // Convert data (otp and userId) and the destination into a query string
+  const queryString = Object.entries({...data, destination})
+    .map(([key, value]) => `${key}=${value}`)
+    .join('&')
+  // Build the url
+  const url = `${WEB_URL}exchange/?${queryString}`
+  // Caller can use the open() function to launch the browser
+  return url
 }

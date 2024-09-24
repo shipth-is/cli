@@ -42,6 +42,7 @@ Mobile Game Shipping Tool
 
 <!-- toc -->
 * [Develomnent Notes](#develomnent-notes)
+* [Zero to iOS shipping steps](#zero-to-ios-shipping-steps)
 * [Introduction](#introduction)
 * [Usage](#usage)
 * [Commands](#commands)
@@ -72,6 +73,7 @@ USAGE
 * [`shipthis apple certificate status`](#shipthis-apple-certificate-status)
 * [`shipthis apple login`](#shipthis-apple-login)
 * [`shipthis apple status`](#shipthis-apple-status)
+* [`shipthis dashboard`](#shipthis-dashboard)
 * [`shipthis game create`](#shipthis-game-create)
 * [`shipthis game export GAME_ID`](#shipthis-game-export-game_id)
 * [`shipthis game ios app create`](#shipthis-game-ios-app-create)
@@ -313,6 +315,23 @@ EXAMPLES
 ```
 
 _See code: [src/commands/apple/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/status.ts)_
+
+## `shipthis dashboard`
+
+Opens the web-browser to your ShipThis dashboard
+
+```
+USAGE
+  $ shipthis dashboard
+
+DESCRIPTION
+  Opens the web-browser to your ShipThis dashboard
+
+EXAMPLES
+  $ shipthis dashboard
+```
+
+_See code: [src/commands/dashboard.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/dashboard.ts)_
 
 ## `shipthis game create`
 
