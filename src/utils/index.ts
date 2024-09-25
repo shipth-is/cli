@@ -1,12 +1,14 @@
-import path from 'path'
+import crypto from 'crypto'
 import fs from 'fs'
 
 import {JobStage, JobStatus, LogLevel} from '@cli/types.js'
 
+export * from './hooks/index.js'
+export * from './query/index.js'
 export * from './dates.js'
 export * from './dictionary.js'
+export * from './git.js'
 export * from './godot.js'
-export * from './query/index.js'
 
 export function getShortUUID(originalUuid: string): string {
   // A short git commit hash is an abbreviation of the hash to the first 7 characters
@@ -51,4 +53,14 @@ export function getJobStatusColor(status: JobStatus) {
     case JobStatus.FAILED:
       return 'red'
   }
+}
+
+export async function getFileHash(filename: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const hash = crypto.createHash('sha256')
+    const rs = fs.createReadStream(filename)
+    rs.on('error', reject)
+    rs.on('data', (chunk) => hash.update(chunk))
+    rs.on('end', () => resolve(hash.digest('hex')))
+  })
 }

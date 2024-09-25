@@ -5,9 +5,10 @@ import fs from 'fs'
 import yazl from 'yazl'
 
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
-import {ProjectConfig} from '@cli/types.js'
 import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
+import {getCWDGitInfo, getFileHash} from '@cli/utils/index.js'
 import {getNewUploadTicket, startJobsFromUpload} from '@cli/api/index.js'
+import {ProjectConfig, UploadDetails} from '@cli/types.js'
 
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
   static override args = {}
@@ -55,9 +56,18 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       },
     })
 
+    // Tag the upload with some info
+    const gitInfo = await getCWDGitInfo()
+    const zipFileMd5 = await getFileHash(tmpZipFile)
+    const uploadDetails: UploadDetails = {
+      ...gitInfo,
+      zipFileMd5,
+    }
+
+    const [firstJob] = await startJobsFromUpload(uploadTicket.id, uploadDetails)
+
     fs.unlinkSync(tmpZipFile)
 
-    const [firstJob] = await startJobsFromUpload(uploadTicket.id)
     // TODO: output how many jobs are started
     // TODO: following multiple jobs?
     await this.config.runCommand(`game:job:status`, [firstJob.id, '--follow'])

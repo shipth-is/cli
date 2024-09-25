@@ -8,8 +8,6 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getGodotAppleBundleIdentifier} from '@cli/utils/index.js'
 
 import {App as AppleApp, BundleId as AppleBundleId} from '@cli/apple/expo.js'
-import {EditableProject} from '@cli/types.js'
-import {getProject, updateProject} from '@cli/api/index.js'
 
 export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppCreate> {
   static override args = {}
@@ -61,9 +59,7 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
     const createApp = async () => {
       this.log(`Checking for ${iosBundleId} in apple portal...`)
 
-      const project = await getProject(game.id)
-
-      // TODO: handling for app already existing in their own account or other accounts
+      // TODO: handling for app already existing
       let bundleId = await AppleBundleId.findAsync(ctx, {identifier: iosBundleId})
       if (!bundleId) {
         this.log(`Creating BundleId ${iosBundleId} in apple portal...`)
@@ -88,9 +84,9 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
       }
 
       // Update the project with the iosBundleId
-      await this.updateGame({details: {...project.details, iosBundleId}})
+      await this.updateGame({details: {...game.details, iosBundleId}})
 
-      // TODO: if the bundleId is different in the export_presets.cfg, update it
+      // TODO: if the bundleId or name are different in the export_presets.cfg, update it
     }
 
     const handleComplete = async () => {

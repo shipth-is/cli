@@ -2,7 +2,7 @@ import {render} from 'ink'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {App, Environment, NextSteps, StatusTable} from '@cli/components/index.js'
-import {isCWDGodotGame} from '@cli/utils/index.js'
+import {isCWDGitRepo, isCWDGodotGame} from '@cli/utils/index.js'
 import {AuthConfig} from '@cli/types.js'
 
 export default class Status extends BaseCommand<typeof Status> {
@@ -20,6 +20,7 @@ export default class Status extends BaseCommand<typeof Status> {
     const isLoggedIn = !!authConfig.shipThisUser
     const isGodotGame = isCWDGodotGame()
     const isShipThisConfigured = await this.hasProjectConfig()
+    const isGitRepo = await isCWDGitRepo()
 
     let steps = []
 
@@ -35,6 +36,7 @@ export default class Status extends BaseCommand<typeof Status> {
         'Logged in': isLoggedIn,
         'Godot project detected': isGodotGame,
         'ShipThis project configured': isShipThisConfigured,
+        'Git repository detected (not required)': isGitRepo,
       },
     }
 

@@ -24,6 +24,7 @@ export interface ProjectDetails {
   iosBundleId?: string
   androidPackageName?: string
   buildNumber?: number
+  semanticVersion?: string
 }
 
 // What the POST/PUT endpoints accept for creating/updating a project
@@ -79,6 +80,13 @@ export interface Upload {
   createdAt: DateTime
   updatedAt: DateTime
   url: string
+  details: UploadDetails
+}
+
+export type UploadDetails = {
+  gitCommitHash?: string
+  gitBranch?: string
+  zipFileMd5?: string
 }
 
 export enum JobStatus {
@@ -88,6 +96,8 @@ export enum JobStatus {
   FAILED = 'FAILED',
 }
 
+export type JobDetails = ProjectDetails & UploadDetails
+
 export interface Job {
   id: string
   project: Project
@@ -96,6 +106,7 @@ export interface Job {
   status: JobStatus
   createdAt: DateTime
   updatedAt: DateTime
+  details: JobDetails
 }
 
 export enum JobStage {

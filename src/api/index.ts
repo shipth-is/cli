@@ -8,6 +8,7 @@ import {
   Platform,
   Project,
   ProjectPlatformProgress,
+  UploadDetails,
   UploadTicket,
 } from '@cli/types.js'
 import {castArrayObjectDates, castObjectDates} from '@cli/utils/dates.js'
@@ -88,10 +89,10 @@ export async function getNewUploadTicket(projectId: string): Promise<UploadTicke
 }
 
 // Tells the backend to start running the jobs for an upload-ticket
-export async function startJobsFromUpload(uploadTicketId: string): Promise<Job[]> {
+export async function startJobsFromUpload(uploadTicketId: string, uploadDetails: UploadDetails): Promise<Job[]> {
   const headers = getAuthedHeaders()
   const opt = {headers}
-  const {data} = await axios.post(`${API_URL}/upload/start/${uploadTicketId}`, {}, opt)
+  const {data} = await axios.post(`${API_URL}/upload/start/${uploadTicketId}`, uploadDetails, opt)
   return castArrayObjectDates<Job>(data)
 }
 

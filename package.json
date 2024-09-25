@@ -21,6 +21,7 @@
     "ini": "^5.0.0",
     "ink": "^5.0.1",
     "ink-spinner": "^5.0.0",
+    "isomorphic-git": "^1.27.1",
     "jsonwebtoken": "^9.0.2",
     "luxon": "^3.5.0",
     "nativescript": "^8.8.2",
