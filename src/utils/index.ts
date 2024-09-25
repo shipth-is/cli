@@ -64,3 +64,13 @@ export async function getFileHash(filename: string): Promise<string> {
     rs.on('end', () => resolve(hash.digest('hex')))
   })
 }
+
+export function isValidSemVer(versionString: string): boolean {
+  // https://dev.to/receter/parsing-semver-in-javascript-with-the-official-regex-4e0e
+  const [semVer, major, minor, patch, prerelease, buildmetadata] =
+    versionString.match(
+      /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/,
+    ) ?? []
+
+  return !!semVer
+}

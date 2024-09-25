@@ -91,7 +91,6 @@
     "./dist/commands/apple/certificate/import.js",
     "./dist/commands/apple/login.js",
     "./dist/commands/game/list.js",
-    "./dist/commands/game/buildNumber.js",
     "./dist/commands/game/ship.js",
     "./dist/commands/game/export.js",
     "./dist/commands/game/ios/app/create.js",
@@ -106,6 +105,7 @@
     "./dist/commands/game/job/list.js",
     "./dist/commands/game/job/status.js",
     "./dist/commands/game/status.js",
+    "./dist/commands/game/version.js",
     "./dist/commands/status.js",
     "./dist/commands/dashboard.js",
     "./dist/commands/login.js"

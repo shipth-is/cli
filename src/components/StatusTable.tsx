@@ -29,9 +29,13 @@ export const StatusTable = ({title, statuses, colors, ...rest}: StatusTableProps
 
   // convert from dromedary case to a human readable label
   // This seems to do nothing to non-dromedary case strings??
+  // TODO: this is a hack
   const getLabel = (key: string) => {
     const words = key.split(/(?=[A-Z])/)
-    return words.map((word) => word[0].toUpperCase() + word.slice(1)).join(' ')
+    return words
+      .map((word) => word[0].toUpperCase() + word.slice(1))
+      .join(' ')
+      .replaceAll('  ', ' ')
   }
 
   return (
