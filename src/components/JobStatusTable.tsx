@@ -3,8 +3,8 @@ import {Box, Text} from 'ink'
 import {DateTime} from 'luxon'
 import Spinner from 'ink-spinner'
 
-import {getJobStatusColor, getShortTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
-import {Job, JobStatus} from '@cli/types.js'
+import {getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
+import {Job, JobStatus, Scalar} from '@cli/types.js'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
 import {Title} from './Title.js'
 
@@ -14,6 +14,33 @@ interface JobStatusTableProps {
   isWatching: boolean
   onJobUpdate?: (job: Job) => void
 }
+
+const DetailsRowLabel = ({label}: {label: string}) => (
+  <Box width={15}>
+    <Text>{`${label}: `}</Text>
+  </Box>
+)
+
+const DetailsRow = ({label, value}: {label: string; value: Scalar}) => {
+  return (
+    <Box flexDirection="row" alignItems="flex-end">
+      <DetailsRowLabel label={label} />
+      <Text bold>{value}</Text>
+    </Box>
+  )
+}
+
+const StatusValue = ({status, showSpinner}: {status: JobStatus; showSpinner: boolean}) => (
+  <>
+    <Text color={getJobStatusColor(status)}>{`${status}`}</Text>
+    {showSpinner && (
+      <>
+        <Text> </Text>
+        <Spinner type="dots" />
+      </>
+    )}
+  </>
+)
 
 export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobStatusTableProps) => {
   const {data: job, isLoading} = useJobWatching({projectId, jobId, isWatching, onJobUpdate})
@@ -29,28 +56,26 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
   }, [])
 
   const isJobInProgress = job && ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
-  const runtime = job ? getShortTimeDelta(job.createdAt, isJobInProgress ? time : job.updatedAt) : 'N/A'
+
+  const summary = job ? getJobSummary(job, time) : null
 
   return (
     <Box flexDirection="column" marginBottom={1}>
       <Title>Job Details</Title>
       {isLoading && <Spinner type="dots" />}
-      {job && (
+      {summary && job && (
         <Box flexDirection="column" marginLeft={2}>
-          <Text>{`ID: ${getShortUUID(job.id)}`}</Text>
+          <DetailsRow label="ID" value={summary.id} />
+          <DetailsRow label="Name" value={job.project.name} />
           <Box flexDirection="row">
-            <Text>{`Status: `}</Text>
-            <Text color={getJobStatusColor(job.status)}>{`${job.status}`}</Text>
-            {isWatching && isJobInProgress && (
-              <>
-                <Text> </Text>
-                <Spinner type="dots" />
-              </>
-            )}
+            <DetailsRowLabel label="Status" />
+            <StatusValue status={job.status} showSpinner={isWatching && !!isJobInProgress} />
           </Box>
-          <Text>{`Started At: ${getShortTime(job.createdAt)}`}</Text>
-          <Text>{`Ended At: ${job.status === JobStatus.COMPLETED ? getShortTime(job.updatedAt) : 'N/A'}`}</Text>
-          <Text>{`Runtime: ${runtime}`}</Text>
+          <DetailsRow label="Version" value={summary.version} />
+          <DetailsRow label="Git Info" value={summary.gitInfo} />
+          <DetailsRow label="Platform" value={summary.platform} />
+          <DetailsRow label="Started At" value={summary.createdAt} />
+          <DetailsRow label="Runtime" value={summary.runtime} />
         </Box>
       )}
     </Box>

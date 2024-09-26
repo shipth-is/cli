@@ -24,33 +24,23 @@ export default class GameVersion extends BaseGameCommand<typeof GameVersion> {
   }
 
   public async run(): Promise<void> {
+    const {setSemanticVersion, setBuildNumber} = this.flags
+
+    if (setSemanticVersion && !isValidSemVer(setSemanticVersion))
+      throw new Error(`Invalid semantic version: ${setSemanticVersion}`)
+
     let game = await this.getGame()
-    const {flags} = this
 
-    if (flags.setSemanticVersion) {
-      const newVersion = flags.setSemanticVersion
-
-      if (!isValidSemVer(newVersion)) {
-        throw new Error(`Invalid semantic version: ${newVersion}`)
-      }
-
-      game = await this.updateGame({
-        details: {
-          ...game.details,
-          semanticVersion: newVersion,
-        },
-      })
+    const update = {
+      details: {
+        ...game.details,
+        ...(setSemanticVersion && {semanticVersion: setSemanticVersion}),
+        ...(setBuildNumber && {buildNumber: setBuildNumber}),
+      },
     }
 
-    if (flags.setBuildNumber) {
-      const newBuildNumber = flags.setBuildNumber
-
-      game = await this.updateGame({
-        details: {
-          ...game.details,
-          buildNumber: newBuildNumber,
-        },
-      })
+    if (setSemanticVersion || setBuildNumber) {
+      game = await this.updateGame(update)
     }
 
     render(
