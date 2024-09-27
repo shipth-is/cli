@@ -1,7 +1,7 @@
 shipthis
 =================
 
-# Develomnent Notes
+# Development Notes
 
 To build and run locally:
 
