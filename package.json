@@ -96,6 +96,7 @@
     "./dist/commands/game/ios/app/create.js",
     "./dist/commands/game/ios/app/status.js",
     "./dist/commands/game/ios/app/sync.js",
+    "./dist/commands/game/ios/app/addTester.js",
     "./dist/commands/game/ios/status.js",
     "./dist/commands/game/ios/profile/export.js",
     "./dist/commands/game/ios/profile/create.js",

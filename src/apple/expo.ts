@@ -17,6 +17,7 @@ const {
   ProfileType,
   Session,
   UserRole,
+  BetaGroup,
 } = defaultExport
 
 export {
@@ -33,4 +34,5 @@ export {
   ProfileType,
   Session,
   UserRole,
+  BetaGroup,
 }

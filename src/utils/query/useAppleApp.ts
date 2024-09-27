@@ -15,7 +15,7 @@ export type AppleAppQueryResponse = {
   summary: ScalarDict | null
 }
 
-const queryFn = async ({ctx, iosBundleId}: AppleAppQueryProps) => {
+export const queryAppleApp = async ({ctx, iosBundleId}: AppleAppQueryProps) => {
   if (!iosBundleId) {
     return {app: null, summary: null}
   }
@@ -42,7 +42,7 @@ const queryFn = async ({ctx, iosBundleId}: AppleAppQueryProps) => {
 export const useAppleApp = (props: AppleAppQueryProps): UseQueryResult<AppleAppQueryResponse> => {
   const queryResult = useQuery<AppleAppQueryResponse>({
     queryKey: ['appleApp', props.iosBundleId],
-    queryFn: () => queryFn(props),
+    queryFn: () => queryAppleApp(props),
   })
 
   return queryResult
