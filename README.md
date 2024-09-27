@@ -41,7 +41,7 @@ Mobile Game Shipping Tool
 
 
 <!-- toc -->
-* [Develomnent Notes](#develomnent-notes)
+* [Development Notes](#development-notes)
 * [Zero to iOS shipping steps](#zero-to-ios-shipping-steps)
 * [Introduction](#introduction)
 * [Usage](#usage)
