@@ -75,7 +75,9 @@ USAGE
 * [`shipthis apple status`](#shipthis-apple-status)
 * [`shipthis dashboard`](#shipthis-dashboard)
 * [`shipthis game create`](#shipthis-game-create)
+* [`shipthis game details`](#shipthis-game-details)
 * [`shipthis game export GAME_ID`](#shipthis-game-export-game_id)
+* [`shipthis game ios app addTester`](#shipthis-game-ios-app-addtester)
 * [`shipthis game ios app create`](#shipthis-game-ios-app-create)
 * [`shipthis game ios app status`](#shipthis-game-ios-app-status)
 * [`shipthis game ios app sync`](#shipthis-game-ios-app-sync)
@@ -89,7 +91,6 @@ USAGE
 * [`shipthis game list`](#shipthis-game-list)
 * [`shipthis game ship`](#shipthis-game-ship)
 * [`shipthis game status`](#shipthis-game-status)
-* [`shipthis game version`](#shipthis-game-version)
 * [`shipthis help [COMMAND]`](#shipthis-help-command)
 * [`shipthis login`](#shipthis-login)
 * [`shipthis status`](#shipthis-status)
@@ -355,6 +356,38 @@ EXAMPLES
 
 _See code: [src/commands/game/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/create.ts)_
 
+## `shipthis game details`
+
+Shows and sets the details of a game. If --gameId is not provided it will look in the current directory.
+
+```
+USAGE
+  $ shipthis game details [-g <value>] [-f] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>] [-a
+    <value>]
+
+FLAGS
+  -a, --androidPackageName=<value>  Set the Android package name
+  -b, --buildNumber=<value>         Set the build number
+  -e, --gameEngine=<value>          Set the game engine
+  -f, --force                       Force the command to run
+  -g, --gameId=<value>              The ID of the game
+  -i, --iosBundleId=<value>         Set the iOS bundle ID
+  -s, --semanticVersion=<value>     Set the semantic version
+  -v, --gameEngineVersion=<value>   Set the game engine version
+
+DESCRIPTION
+  Shows and sets the details of a game. If --gameId is not provided it will look in the current directory.
+
+EXAMPLES
+  $ shipthis game details
+
+  $ shipthis game details --gameId 0c179fc4
+
+  $ shipthis game details --buildNumber 5 --semanticVersion 1.2.3
+```
+
+_See code: [src/commands/game/details.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/details.ts)_
+
 ## `shipthis game export GAME_ID`
 
 Downloads the shipthis.json file for a given game into the current directory.
@@ -379,6 +412,29 @@ EXAMPLES
 ```
 
 _See code: [src/commands/game/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/export.ts)_
+
+## `shipthis game ios app addTester`
+
+Adds a test user to the game in App Store Connect.
+
+```
+USAGE
+  $ shipthis game ios app addTester [-g <value>] [-e <value>] [-f <value>] [-l <value>]
+
+FLAGS
+  -e, --email=<value>      The email address of the tester
+  -f, --firstName=<value>  The first name of the tester
+  -g, --gameId=<value>     The ID of the game
+  -l, --lastName=<value>   The last name of the tester
+
+DESCRIPTION
+  Adds a test user to the game in App Store Connect.
+
+EXAMPLES
+  $ shipthis game ios app addTester
+```
+
+_See code: [src/commands/game/ios/app/addTester.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/addTester.ts)_
 
 ## `shipthis game ios app create`
 
@@ -681,33 +737,6 @@ EXAMPLES
 ```
 
 _See code: [src/commands/game/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/status.ts)_
-
-## `shipthis game version`
-
-Shows and sets the game semantic version and build number. If --gameId is not provided it will look in the current directory.
-
-```
-USAGE
-  $ shipthis game version [-g <value>] [-b <value>] [-s <value>]
-
-FLAGS
-  -b, --setBuildNumber=<value>      Set the build number
-  -g, --gameId=<value>              The ID of the game
-  -s, --setSemanticVersion=<value>  Set the semantic version
-
-DESCRIPTION
-  Shows and sets the game semantic version and build number. If --gameId is not provided it will look in the current
-  directory.
-
-EXAMPLES
-  $ shipthis game version
-
-  $ shipthis game version --gameId 0c179fc4
-
-  $ shipthis game version --setBuildNumber 5 --setSemanticVersion 1.2.3
-```
-
-_See code: [src/commands/game/version.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/version.ts)_
 
 ## `shipthis help [COMMAND]`
 

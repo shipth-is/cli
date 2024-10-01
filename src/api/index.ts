@@ -7,6 +7,7 @@ import {
   PageAndSortParams,
   Platform,
   Project,
+  ProjectDetails,
   ProjectPlatformProgress,
   UploadDetails,
   UploadTicket,
@@ -33,10 +34,15 @@ export function getAuthedHeaders() {
   }
 }
 
-export async function createProject(name: string): Promise<Project> {
+export interface CreateProjectProps {
+  name: string
+  details: ProjectDetails
+}
+
+export async function createProject(props: CreateProjectProps): Promise<Project> {
   const headers = getAuthedHeaders()
   const opt = {headers}
-  const {data} = await axios.post(`${API_URL}/projects`, {name}, opt)
+  const {data} = await axios.post(`${API_URL}/projects`, props, opt)
   return castObjectDates<Project>(data)
 }
 

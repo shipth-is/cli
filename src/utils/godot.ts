@@ -74,6 +74,20 @@ export function getGodotAppleBundleIdentifier(): string | null {
   }
 }
 
+// TODO: is there a more reliable way to get the Godot version?
+export function getGodotVersion(): string {
+  const projectGodotConfig = getGodotProjectConfig()
+  if ('config/features' in projectGodotConfig['application']) {
+    const features = projectGodotConfig['application']['config/features']
+    // config/features=PackedStringArray("4.3")
+    // config/features=PackedStringArray("4.2", "GL Compatibility")
+    const match = features.match(/"(\d+\.\d+)"/)
+    if (!match) throw new Error("Couldn't find Godot version in project.godot")
+    return match[1]
+  }
+  return '3.X'
+}
+
 export function getGodotExportPresets(platform: Platform) {
   const {warn} = console
 

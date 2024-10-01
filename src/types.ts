@@ -20,7 +20,13 @@ export interface AuthConfig {
   appleCookies?: SerializedCookieJar
 }
 
+export enum GameEngine {
+  GODOT = 'godot',
+}
+
 export interface ProjectDetails {
+  gameEngine?: GameEngine
+  gameEngineVersion?: string
   iosBundleId?: string
   androidPackageName?: string
   buildNumber?: number

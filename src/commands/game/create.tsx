@@ -5,7 +5,8 @@ import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {createProject} from '@cli/api/index.js'
 
 import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
-import {getGodotProjectName} from '@cli/utils/godot.js'
+import {getGodotProjectName, getGodotVersion, isCWDGodotGame} from '@cli/utils/godot.js'
+import {GameEngine, ProjectDetails} from '@cli/types.js'
 
 export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCreate> {
   static override args = {}
@@ -26,6 +27,10 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
       throw new Error('This directory already has a ShipThis project. Use --force to overwrite.')
     }
 
+    if (!isCWDGodotGame()) {
+      this.error('No Godot project detected. Please run this from a godot project directory.', {exit: 1})
+    }
+
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -37,9 +42,17 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
       const name = await rl.question(`Please enter the name of the game, or press enter to use ${suggested}: `)
       return name || suggested
     }
-
     const name = await getName()
-    const project = await createProject(name)
+
+    const gameEngine = GameEngine.GODOT
+    const gameEngineVersion = getGodotVersion()
+
+    const details: ProjectDetails = {
+      gameEngine,
+      gameEngineVersion,
+    }
+
+    const project = await createProject({name, details})
 
     await this.setProjectConfig({
       project,
