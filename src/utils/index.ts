@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 import fs from 'fs'
 
-import {JobStage, JobStatus, LogLevel} from '@cli/types.js'
+import {JobStage, JobStatus, LogLevel, ScalarDict} from '@cli/types.js'
 
 export * from './hooks/index.js'
 export * from './query/index.js'
@@ -73,4 +73,22 @@ export function isValidSemVer(versionString: string): boolean {
     ) ?? []
 
   return !!semVer
+}
+
+export function makeHumanReadable(rawObject: ScalarDict): ScalarDict {
+  // Make the keys human readable
+  const getLabel = (key: string) => {
+    const words = key.split(/(?=[A-Z])/)
+    return words
+      .map((word) => word[0].toUpperCase() + word.slice(1))
+      .join(' ')
+      .replaceAll('  ', ' ')
+  }
+
+  const withLabels = Object.entries(rawObject).reduce((acc: ScalarDict, [key, value]) => {
+    acc[getLabel(key)] = value
+    return acc
+  }, {})
+
+  return withLabels as ScalarDict
 }

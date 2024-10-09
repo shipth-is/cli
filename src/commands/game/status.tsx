@@ -5,7 +5,7 @@ import {App, NextSteps, StatusTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectPlatformProgress} from '@cli/api/index.js'
 import {Platform, ProjectPlatformProgress} from '@cli/types.js'
-import {getShortDate, getShortUUID} from '@cli/utils/index.js'
+import {getShortDate, getShortUUID, makeHumanReadable} from '@cli/utils/index.js'
 
 export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
   static override args = {}
@@ -37,7 +37,7 @@ export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
     const progressToStatuses = (progress: ProjectPlatformProgress) => {
       // Remove the 'platform' key as we have titles
       const {platform, ...rest} = progress
-      return rest as {[key: string]: string | boolean}
+      return makeHumanReadable(rest);
     }
 
     render(
@@ -46,12 +46,12 @@ export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
           marginBottom={1}
           title="Game Details"
           statuses={{
-            gameId: getShortUUID(game.id),
-            name: game.name,
-            version: `${game.details?.semanticVersion || '0.0.1'}`,
-            buildNumber: `${game.details?.buildNumber || 1}`,
-            createdAt: getShortDate(game.createdAt),
-            gameEngine: 'Godot',
+            'Game ID': getShortUUID(game.id),
+            Name: game.name,
+            Version: `${game.details?.semanticVersion || '0.0.1'}`,
+            'Build Number': `${game.details?.buildNumber || 1}`,
+            'Created At': getShortDate(game.createdAt),
+            'Game Engine': `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.3'}`,
           }}
         />
         <StatusTable marginBottom={1} title="iOS Status" statuses={progressToStatuses(iosPlatformStatus)} />

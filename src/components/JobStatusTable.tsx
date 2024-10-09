@@ -7,6 +7,7 @@ import {getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
 import {Job, JobStatus, Scalar} from '@cli/types.js'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
 import {Title} from './Title.js'
+import {StatusRow, StatusRowLabel} from './StatusTable.js'
 
 interface JobStatusTableProps {
   projectId: string
@@ -15,22 +16,7 @@ interface JobStatusTableProps {
   onJobUpdate?: (job: Job) => void
 }
 
-const DetailsRowLabel = ({label}: {label: string}) => (
-  <Box width={15}>
-    <Text>{`${label}: `}</Text>
-  </Box>
-)
-
-const DetailsRow = ({label, value}: {label: string; value: Scalar}) => {
-  return (
-    <Box flexDirection="row" alignItems="flex-end">
-      <DetailsRowLabel label={label} />
-      <Text bold>{value}</Text>
-    </Box>
-  )
-}
-
-const StatusValue = ({status, showSpinner}: {status: JobStatus; showSpinner: boolean}) => (
+const JobStatusSpinner = ({status, showSpinner}: {status: JobStatus; showSpinner: boolean}) => (
   <>
     <Text color={getJobStatusColor(status)}>{`${status}`}</Text>
     {showSpinner && (
@@ -65,17 +51,17 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
       {isLoading && <Spinner type="dots" />}
       {summary && job && (
         <Box flexDirection="column" marginLeft={2}>
-          <DetailsRow label="ID" value={summary.id} />
-          <DetailsRow label="Name" value={job.project.name} />
+          <StatusRow label="ID" value={summary.id} />
+          <StatusRow label="Name" value={job.project.name} />
           <Box flexDirection="row">
-            <DetailsRowLabel label="Status" />
-            <StatusValue status={job.status} showSpinner={isWatching && !!isJobInProgress} />
+            <StatusRowLabel label="Status" />
+            <JobStatusSpinner status={job.status} showSpinner={isWatching && !!isJobInProgress} />
           </Box>
-          <DetailsRow label="Version" value={summary.version} />
-          <DetailsRow label="Git Info" value={summary.gitInfo} />
-          <DetailsRow label="Platform" value={summary.platform} />
-          <DetailsRow label="Started At" value={summary.createdAt} />
-          <DetailsRow label="Runtime" value={summary.runtime} />
+          <StatusRow label="Version" value={summary.version} />
+          <StatusRow label="Git Info" value={summary.gitInfo} />
+          <StatusRow label="Platform" value={summary.platform} />
+          <StatusRow label="Started At" value={summary.createdAt} />
+          <StatusRow label="Runtime" value={summary.runtime} />
         </Box>
       )}
     </Box>

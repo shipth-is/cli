@@ -17,8 +17,8 @@ export default class AppleStatus extends BaseAppleCommand<typeof AppleStatus> {
     const {session} = authState
 
     const statuses = {
-      fullName: session.user.fullName,
-      providerName: session.provider.name,
+      'Full Name': session.user.fullName,
+      'Provider Name': session.provider.name,
     }
 
     // TODO: steps

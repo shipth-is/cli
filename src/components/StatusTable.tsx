@@ -1,6 +1,7 @@
 import React from 'react'
-import {Box, Text} from 'ink'
+import {Box, Text, TextProps} from 'ink'
 
+import {Job, JobStatus, Scalar} from '@cli/types.js'
 import {ScalarDict} from '@cli/types.js'
 import {Title} from './Title.js'
 
@@ -10,6 +11,33 @@ export interface StatusTableProps extends React.ComponentPropsWithoutRef<typeof 
   colors?: {
     [key: string]: string
   }
+}
+
+export const StatusRowLabel = ({label, width}: {label: string, width?: number}) => (
+  <Box width={width || 10} marginRight={2}>
+    <Text>{`${label}`}</Text>
+  </Box>
+)
+
+
+interface StatusRowProps extends TextProps {
+  label: string
+  labelWidth?: number
+  value: Scalar
+}
+
+export const StatusRow = ({
+  label,
+  labelWidth,
+  value,
+  ...textProps
+}: StatusRowProps ) => {
+  return (
+    <Box flexDirection="row" alignItems="flex-end">
+      <StatusRowLabel width={labelWidth}  label={label} />
+      <Text bold {...textProps}>{value}</Text>
+    </Box>
+  )
 }
 
 export const StatusTable = ({title, statuses, colors, ...rest}: StatusTableProps) => {
@@ -27,37 +55,16 @@ export const StatusTable = ({title, statuses, colors, ...rest}: StatusTableProps
     return value
   }
 
-  // convert from dromedary case to a human readable label
-  // This seems to do nothing to non-dromedary case strings??
-  // TODO: this is a hack
-  const getLabel = (key: string) => {
-    const words = key.split(/(?=[A-Z])/)
-    return words
-      .map((word) => word[0].toUpperCase() + word.slice(1))
-      .join(' ')
-      .replaceAll('  ', ' ')
-  }
+  const maxLabelLength = Math.max(...Object.keys(statuses).map((key) => key.length))
+  const labelWidth = Math.max(maxLabelLength, 10)
 
   return (
     <Box flexDirection="column" {...rest}>
       <Title>{title}</Title>
       <Box flexDirection="column" marginLeft={2}>
-        <Box flexDirection="row">
-          <Box flexDirection="column">
-            {Object.entries(statuses).map(([key]) => (
-              <Box key={key} flexDirection="row">
-                <Text>{getLabel(key)}</Text>
-              </Box>
-            ))}
-          </Box>
-          <Box width={50} flexDirection="column" alignItems="flex-end">
-            {Object.entries(statuses).map(([key]) => (
-              <Box key={key} flexDirection="row">
-                <Text color={getColor(key)}>{getText(key)}</Text>
-              </Box>
-            ))}
-          </Box>
-        </Box>
+        {Object.entries(statuses).map(([key, value]) => (
+          <StatusRow labelWidth={labelWidth} key={key} label={key} value={getText(key)} color={getColor(key)} />
+        ))}
       </Box>
     </Box>
   )

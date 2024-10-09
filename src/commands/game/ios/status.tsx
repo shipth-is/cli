@@ -5,7 +5,7 @@ import {App, AppleAppDetails, AppleBundleIdDetails, NextSteps, StatusTable} from
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectPlatformProgress} from '@cli/api/index.js'
 import {Platform, ProjectPlatformProgress} from '@cli/types.js'
-import {getShortDate, getShortUUID} from '@cli/utils/index.js'
+import {getShortDate, getShortUUID, makeHumanReadable} from '@cli/utils/index.js'
 
 export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus> {
   static override args = {}
@@ -41,7 +41,7 @@ export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus>
     const progressToStatuses = (progress: ProjectPlatformProgress) => {
       // Remove the 'platform' key as we have titles
       const {platform, ...rest} = progress
-      return rest as {[key: string]: string | boolean}
+      return makeHumanReadable(rest)
     }
 
     const authState = await this.refreshAppleAuthState()
