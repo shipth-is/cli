@@ -88,6 +88,7 @@ export function getGodotVersion(): string {
   return '3.X'
 }
 
+// TODO: any differences in the presets between v 3.X and 4.X?
 export function getGodotExportPresets(platform: Platform) {
   const {warn} = console
 

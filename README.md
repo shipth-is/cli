@@ -384,6 +384,8 @@ EXAMPLES
   $ shipthis game details --gameId 0c179fc4
 
   $ shipthis game details --buildNumber 5 --semanticVersion 1.2.3
+
+  $ shipthis game details --gameEngine godot --gameEngineVersion 4.2 --force
 ```
 
 _See code: [src/commands/game/details.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/details.ts)_

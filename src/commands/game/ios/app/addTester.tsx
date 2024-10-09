@@ -74,11 +74,14 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
 
       const groups = await BetaGroup.getAsync(ctx, {})
 
-      let shipThisGroup = groups.find((group) => group.attributes.name === TEST_GROUP_NAME)
+      let shipThisGroup = groups.find(
+        (group) => group.attributes.name === TEST_GROUP_NAME && group.attributes.isInternalGroup,
+      )
       if (!shipThisGroup) {
         shipThisGroup = await BetaGroup.createAsync(ctx, {
           id: app.id,
           name: TEST_GROUP_NAME,
+          isInternalGroup: true,
           publicLinkEnabled: false,
           publicLinkLimit: 1,
           publicLinkLimitEnabled: false,

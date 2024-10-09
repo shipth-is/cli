@@ -16,6 +16,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
     '<%= config.bin %> <%= command.id %>',
     '<%= config.bin %> <%= command.id %> --gameId 0c179fc4',
     '<%= config.bin %> <%= command.id %> --buildNumber 5 --semanticVersion 1.2.3',
+    '<%= config.bin %> <%= command.id %> --gameEngine godot --gameEngineVersion 4.2 --force',
   ]
 
   static override flags = {
