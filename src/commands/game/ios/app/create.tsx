@@ -1,11 +1,9 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {promises as readline} from 'node:readline'
-
 import {App, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {getGodotAppleBundleIdentifier} from '@cli/utils/index.js'
+import {getInput, getGodotAppleBundleIdentifier} from '@cli/utils/index.js'
 
 import {App as AppleApp, BundleId as AppleBundleId} from '@cli/apple/expo.js'
 
@@ -31,16 +29,11 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
     const {flags} = this
     const {appName, bundleId} = flags
 
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    })
-
     const getAppName = async (): Promise<string> => {
       if (appName) return appName
       const suggestedName = game.name
       const question = `Please enter the name of the App in the Apple Developer Portal, or press enter to use ${suggestedName}: `
-      const enteredName = await rl.question(question)
+      const enteredName = await getInput(question)
       return enteredName || suggestedName
     }
 
@@ -49,7 +42,7 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
       //TODO: autogenerate a bundle id from current user name and random words?
       const suggestedBundleId = game.details?.iosBundleId || getGodotAppleBundleIdentifier() || 'com.example.app'
       const question = `Please enter the BundleId in the Apple Developer Portal, or press enter to use ${suggestedBundleId}: `
-      const enteredBundleId = await rl.question(question)
+      const enteredBundleId = await getInput(question)
       return enteredBundleId || suggestedBundleId
     }
 

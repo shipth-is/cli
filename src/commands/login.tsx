@@ -1,11 +1,10 @@
 import axios from 'axios'
 import {Flags} from '@oclif/core'
 
-import {promises as readline} from 'node:readline'
-
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {API_URL} from '@cli/constants/index.js'
 import {AuthConfig} from '@cli/types.js'
+import {getInput} from '@cli/utils/index.js'
 
 export default class Login extends BaseCommand<typeof Login> {
   static override args = {}
@@ -34,14 +33,10 @@ export default class Login extends BaseCommand<typeof Login> {
         `You are already logged in as ${authConfig.shipThisUser.email} use --force to login as a different user or remove the auth file`,
       )
     }
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    })
 
     const getEmail = async (): Promise<string> => {
       if (flags.email) return flags.email
-      const email = await rl.question('Please enter your email address: ')
+      const email = await getInput('Please enter your email address: ')
       if (!email) throw new Error('Email address is required')
       return email
     }
@@ -53,7 +48,7 @@ export default class Login extends BaseCommand<typeof Login> {
     this.log('Please check your email for an email with an OTP.')
 
     const getOTP = async (): Promise<string> => {
-      const otp = await rl.question('Please enter the OTP: ')
+      const otp = await getInput('Please enter the OTP: ')
       if (!otp) throw new Error('OTP is required')
       return otp
     }

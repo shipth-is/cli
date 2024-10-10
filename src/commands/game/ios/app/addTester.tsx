@@ -1,12 +1,10 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {promises as readline} from 'node:readline'
-
 import {App, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {BetaGroup} from '@cli/apple/expo.js'
-import {queryAppleApp} from '@cli/utils/index.js'
+import {getInput, queryAppleApp} from '@cli/utils/index.js'
 
 const TEST_GROUP_NAME = 'ShipThis Test Group'
 
@@ -31,15 +29,11 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
 
     const {flags} = this
 
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-    })
 
     const getEmail = async (): Promise<string> => {
       if (flags.email) return flags.email
       const question = `Please enter the email address of the tester: `
-      const enteredEmail = await rl.question(question)
+      const enteredEmail = await getInput(question)
       if (!enteredEmail) {
         this.error('No email address provided')
       }
@@ -50,7 +44,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
       if (flags.firstName) return flags.firstName
       const suggestedName = 'John'
       const question = `Please enter the first name of the tester, or press enter to use ${suggestedName}: `
-      const enteredName = await rl.question(question)
+      const enteredName = await getInput(question)
       return enteredName || suggestedName
     }
 
@@ -58,7 +52,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
       if (flags.lastName) return flags.lastName
       const suggestedName = 'Doe'
       const question = `Please enter the last name of the tester, or press enter to use ${suggestedName}: `
-      const enteredName = await rl.question(question)
+      const enteredName = await getInput(question)
       return enteredName || suggestedName
     }
 
