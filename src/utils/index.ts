@@ -1,5 +1,7 @@
 import crypto from 'crypto'
 import fs from 'fs'
+import readlineSync from 'readline-sync'
+import {promises as readline} from 'node:readline'
 
 import {JobStage, JobStatus, LogLevel, ScalarDict} from '@cli/types.js'
 
@@ -91,4 +93,23 @@ export function makeHumanReadable(rawObject: ScalarDict): ScalarDict {
   }, {})
 
   return withLabels as ScalarDict
+}
+
+// Used when we don't want keyboard input to be visible
+export async function getMaskedInput(message: string): Promise<string> {
+  const password = readlineSync.question(message, {
+    hideEchoBack: true, // This will hide the input as the user types
+  })
+  return password
+}
+
+// Prompts and closes input so we can use the masked input before / after
+export async function getInput(message: string): Promise<string> {
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+  })
+  const answer = await rl.question(message)
+  rl.close()
+  return answer
 }
