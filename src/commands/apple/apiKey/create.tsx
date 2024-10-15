@@ -67,6 +67,11 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
       await this.config.runCommand(`apple:apiKey:status`)
     }
 
+    if (this.flags.quiet) {
+      await createApiKey()
+      return this.exit(0)
+    }
+
     render(
       <App>
         <RunWithSpinner

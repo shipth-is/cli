@@ -63,6 +63,5 @@ export default class Login extends BaseCommand<typeof Login> {
 
     // Run the status command
     await this.config.runCommand('status')
-    this.exit(0)
   }
 }

@@ -113,6 +113,11 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
       await this.config.runCommand('game:ios:profile:status', ['--gameId', game.id])
     }
 
+    if (this.flags.quiet) {
+      await createProfile()
+      return this.exit(0)
+    }
+
     render(
       <App>
         <RunWithSpinner

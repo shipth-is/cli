@@ -20,7 +20,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   ]
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
+    ...BaseGameCommand.flags,
     force: Flags.boolean({char: 'f', description: 'Force the command to run'}),
     buildNumber: Flags.integer({char: 'b', description: 'Set the build number'}),
     semanticVersion: Flags.string({char: 's', description: 'Set the semantic version'}),

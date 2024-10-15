@@ -6,6 +6,7 @@ import {getProjectCredentials} from '@cli/api/credentials/index.js'
 
 export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuthenticatedCommand<T> {
   static override flags = {
+    ...BaseAuthenticatedCommand.flags,
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
   }
 

@@ -58,6 +58,11 @@ export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSyn
       await this.config.runCommand('game:ios:app:status', ['--gameId', game.id])
     }
 
+    if (this.flags.quiet) {
+      await syncCapabilities()
+      return this.exit(0)
+    }
+
     render(
       <App>
         <RunWithSpinner

@@ -54,7 +54,7 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
       shippedFilesGlobs: DEFAULT_SHIPPED_FILES_GLOBS,
       ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
     })
+
     await this.config.runCommand('game:status')
-    this.exit(0)
   }
 }

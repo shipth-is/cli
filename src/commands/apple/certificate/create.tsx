@@ -54,6 +54,11 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
       await this.config.runCommand(`apple:certificate:status`)
     }
 
+    if (this.flags.quiet) {
+      await createCert()
+      return this.exit(0)
+    }
+
     render(
       <App>
         <RunWithSpinner

@@ -4,7 +4,7 @@ import {SerializedCookieJar} from 'tough-cookie'
 import {Command, Flags, Interfaces} from '@oclif/core'
 
 import {Auth} from '@cli/apple/expo.js'
-import {AuthConfig, EditableProject, ProjectConfig} from '@cli/types.js'
+import {AuthConfig, ProjectConfig} from '@cli/types.js'
 import {setAuthToken} from '@cli/api/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
 
@@ -16,7 +16,9 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   static enableJsonFlag = false
 
   // define flags that can be inherited by any command that extends BaseCommand
-  static baseFlags = {}
+  static baseFlags = {
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
+  }
 
   protected flags!: Flags<T>
   protected args!: Args<T>

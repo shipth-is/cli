@@ -1,12 +1,12 @@
 {
   "name": "shipthis",
-  "description": "Mobile Game Shipping Tool",
-  "version": "0.0.0",
+  "description": "Game Shipping Tool",
+  "version": "0.0.1",
   "author": "Hello Invent Ltd",
   "bin": {
     "shipthis": "./dist/bin/run.js"
   },
-  "bugs": "https://github.com/oclif-cli/shipthis/issues",
+  "bugs": "https://gitlab.com/shipthis.cc/shipthis-cli/-/issues",
   "dependencies": {
     "@expo/apple-utils": "^1.8.0",
     "@expo/json-file": "^8.3.3",
@@ -76,7 +76,7 @@
     "/dist",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/oclif-cli/shipthis",
+  "homepage": "https://gitlab.com/shipthis.cc/shipthis-cli",
   "keywords": [
     "oclif"
   ],
@@ -111,6 +111,7 @@
     "./dist/commands/game/job/status.js",
     "./dist/commands/game/status.js",
     "./dist/commands/game/details.js",
+    "./dist/commands/game/wizard.js",
     "./dist/commands/status.js",
     "./dist/commands/dashboard.js",
     "./dist/commands/login.js"

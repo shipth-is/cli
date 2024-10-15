@@ -89,6 +89,11 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
       process.exit(0)
     }
 
+    if (this.flags.quiet) {
+      await createApp()
+      return this.exit(0)
+    }
+
     render(
       <App>
         <RunWithSpinner

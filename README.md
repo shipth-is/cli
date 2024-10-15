@@ -54,7 +54,7 @@ $ npm install -g shipthis
 $ shipthis COMMAND
 running command...
 $ shipthis (--version)
-shipthis/0.0.0 linux-x64 node-v20.17.0
+shipthis/0.0.1 linux-x64 node-v20.17.0
 $ shipthis --help [COMMAND]
 USAGE
   $ shipthis COMMAND
@@ -91,6 +91,7 @@ USAGE
 * [`shipthis game list`](#shipthis-game-list)
 * [`shipthis game ship`](#shipthis-game-ship)
 * [`shipthis game status`](#shipthis-game-status)
+* [`shipthis game wizard`](#shipthis-game-wizard)
 * [`shipthis help [COMMAND]`](#shipthis-help-command)
 * [`shipthis login`](#shipthis-login)
 * [`shipthis status`](#shipthis-status)
@@ -101,10 +102,11 @@ Creates an App Store Connect API in your Apple Developer account and saves the p
 
 ```
 USAGE
-  $ shipthis apple apiKey create [-f]
+  $ shipthis apple apiKey create [-q] [-f]
 
 FLAGS
   -f, --force
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Creates an App Store Connect API in your Apple Developer account and saves the private key in your ShipThis account
@@ -115,7 +117,7 @@ EXAMPLES
   $ shipthis apple apiKey create --force
 ```
 
-_See code: [src/commands/apple/apiKey/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/create.ts)_
+_See code: [src/commands/apple/apiKey/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/apiKey/create.ts)_
 
 ## `shipthis apple apiKey export FILE`
 
@@ -123,13 +125,14 @@ Saves the current App Store Connect API Key to a ZIP file
 
 ```
 USAGE
-  $ shipthis apple apiKey export FILE [-f]
+  $ shipthis apple apiKey export FILE [-q] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
 
 FLAGS
   -f, --force  Overwrite the file if it already exists
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Saves the current App Store Connect API Key to a ZIP file
@@ -138,7 +141,7 @@ EXAMPLES
   $ shipthis apple apiKey export userApiKey.zip
 ```
 
-_See code: [src/commands/apple/apiKey/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/export.ts)_
+_See code: [src/commands/apple/apiKey/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/apiKey/export.ts)_
 
 ## `shipthis apple apiKey import FILE`
 
@@ -146,13 +149,14 @@ Imports an App Store Connect API Key to your ShipThis account
 
 ```
 USAGE
-  $ shipthis apple apiKey import FILE [-f]
+  $ shipthis apple apiKey import FILE [-q] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Imports an App Store Connect API Key to your ShipThis account
@@ -161,7 +165,7 @@ EXAMPLES
   $ shipthis apple apiKey import userApiKey.zip
 ```
 
-_See code: [src/commands/apple/apiKey/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/import.ts)_
+_See code: [src/commands/apple/apiKey/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/apiKey/import.ts)_
 
 ## `shipthis apple apiKey status`
 
@@ -169,10 +173,11 @@ Displays the status of the App Store Connect API Key in your Apple and ShipThis 
 
 ```
 USAGE
-  $ shipthis apple apiKey status [-f]
+  $ shipthis apple apiKey status [-q] [-f]
 
 FLAGS
   -f, --noAppleAuth
+  -q, --quiet        Avoid output except for interactions and errors
 
 DESCRIPTION
   Displays the status of the App Store Connect API Key in your Apple and ShipThis accounts. This key is used to
@@ -184,7 +189,7 @@ EXAMPLES
   $ shipthis apple apiKey status --noAppleAuth
 ```
 
-_See code: [src/commands/apple/apiKey/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/apiKey/status.ts)_
+_See code: [src/commands/apple/apiKey/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/apiKey/status.ts)_
 
 ## `shipthis apple certificate create`
 
@@ -192,10 +197,11 @@ Creates an iOS Distribution Certificate in your Apple Developer account and save
 
 ```
 USAGE
-  $ shipthis apple certificate create [-f]
+  $ shipthis apple certificate create [-q] [-f]
 
 FLAGS
   -f, --force
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your ShipThis
@@ -207,7 +213,7 @@ EXAMPLES
   $ shipthis apple certificate create --force
 ```
 
-_See code: [src/commands/apple/certificate/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/create.ts)_
+_See code: [src/commands/apple/certificate/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/certificate/create.ts)_
 
 ## `shipthis apple certificate export FILE`
 
@@ -215,13 +221,14 @@ Saves the current Apple Distribution Certificate to a ZIP file.
 
 ```
 USAGE
-  $ shipthis apple certificate export FILE [-f]
+  $ shipthis apple certificate export FILE [-q] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
 
 FLAGS
   -f, --force  Overwrite the file if it already exists
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Saves the current Apple Distribution Certificate to a ZIP file.
@@ -230,7 +237,7 @@ EXAMPLES
   $ shipthis apple certificate export userCert.zip
 ```
 
-_See code: [src/commands/apple/certificate/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/export.ts)_
+_See code: [src/commands/apple/certificate/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/certificate/export.ts)_
 
 ## `shipthis apple certificate import FILE`
 
@@ -238,13 +245,14 @@ Imports an iOS Distribution Certificate to your ShipThis account
 
 ```
 USAGE
-  $ shipthis apple certificate import FILE [-f]
+  $ shipthis apple certificate import FILE [-q] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Imports an iOS Distribution Certificate to your ShipThis account
@@ -253,7 +261,7 @@ EXAMPLES
   $ shipthis apple certificate import userCert.zip
 ```
 
-_See code: [src/commands/apple/certificate/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/import.ts)_
+_See code: [src/commands/apple/certificate/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/certificate/import.ts)_
 
 ## `shipthis apple certificate status`
 
@@ -261,10 +269,11 @@ Displays the status of the iOS Distribution certificates in your Apple and ShipT
 
 ```
 USAGE
-  $ shipthis apple certificate status [-f]
+  $ shipthis apple certificate status [-q] [-f]
 
 FLAGS
   -f, --noAppleAuth
+  -q, --quiet        Avoid output except for interactions and errors
 
 DESCRIPTION
   Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign
@@ -276,7 +285,7 @@ EXAMPLES
   $ shipthis apple certificate status --noAppleAuth
 ```
 
-_See code: [src/commands/apple/certificate/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/certificate/status.ts)_
+_See code: [src/commands/apple/certificate/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/certificate/status.ts)_
 
 ## `shipthis apple login`
 
@@ -284,11 +293,12 @@ Authenticate with Apple - saves the session to the auth file
 
 ```
 USAGE
-  $ shipthis apple login [-f] [-e <value>]
+  $ shipthis apple login [-q] [-f] [-e <value>]
 
 FLAGS
   -e, --appleEmail=<value>  Your Apple email address
   -f, --force
+  -q, --quiet               Avoid output except for interactions and errors
 
 DESCRIPTION
   Authenticate with Apple - saves the session to the auth file
@@ -299,7 +309,7 @@ EXAMPLES
   $ shipthis apple login --force --appleEmail me@email.nowhere
 ```
 
-_See code: [src/commands/apple/login.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/login.ts)_
+_See code: [src/commands/apple/login.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/login.ts)_
 
 ## `shipthis apple status`
 
@@ -307,7 +317,10 @@ Shows the status of the Apple authentication and integration
 
 ```
 USAGE
-  $ shipthis apple status
+  $ shipthis apple status [-q]
+
+FLAGS
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the status of the Apple authentication and integration
@@ -316,7 +329,7 @@ EXAMPLES
   $ shipthis apple status
 ```
 
-_See code: [src/commands/apple/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/apple/status.ts)_
+_See code: [src/commands/apple/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/apple/status.ts)_
 
 ## `shipthis dashboard`
 
@@ -324,7 +337,10 @@ Opens the web-browser to your ShipThis dashboard
 
 ```
 USAGE
-  $ shipthis dashboard
+  $ shipthis dashboard [-q]
+
+FLAGS
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Opens the web-browser to your ShipThis dashboard
@@ -333,7 +349,7 @@ EXAMPLES
   $ shipthis dashboard
 ```
 
-_See code: [src/commands/dashboard.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/dashboard.ts)_
+_See code: [src/commands/dashboard.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/dashboard.ts)_
 
 ## `shipthis game create`
 
@@ -341,11 +357,12 @@ Create a new game
 
 ```
 USAGE
-  $ shipthis game create [-f] [-n <value>]
+  $ shipthis game create [-q] [-f] [-n <value>]
 
 FLAGS
   -f, --force
   -n, --name=<value>  The name of the game
+  -q, --quiet         Avoid output except for interactions and errors
 
 DESCRIPTION
   Create a new game
@@ -354,7 +371,7 @@ EXAMPLES
   $ shipthis game create
 ```
 
-_See code: [src/commands/game/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/create.ts)_
+_See code: [src/commands/game/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/create.ts)_
 
 ## `shipthis game details`
 
@@ -362,8 +379,8 @@ Shows and sets the details of a game. If --gameId is not provided it will look i
 
 ```
 USAGE
-  $ shipthis game details [-g <value>] [-f] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>] [-a
-    <value>]
+  $ shipthis game details [-q] [-g <value>] [-f] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>]
+    [-a <value>]
 
 FLAGS
   -a, --androidPackageName=<value>  Set the Android package name
@@ -372,6 +389,7 @@ FLAGS
   -f, --force                       Force the command to run
   -g, --gameId=<value>              The ID of the game
   -i, --iosBundleId=<value>         Set the iOS bundle ID
+  -q, --quiet                       Avoid output except for interactions and errors
   -s, --semanticVersion=<value>     Set the semantic version
   -v, --gameEngineVersion=<value>   Set the game engine version
 
@@ -388,7 +406,7 @@ EXAMPLES
   $ shipthis game details --gameEngine godot --gameEngineVersion 4.2 --force
 ```
 
-_See code: [src/commands/game/details.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/details.ts)_
+_See code: [src/commands/game/details.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/details.ts)_
 
 ## `shipthis game export GAME_ID`
 
@@ -396,13 +414,14 @@ Downloads the shipthis.json file for a given game into the current directory.
 
 ```
 USAGE
-  $ shipthis game export GAME_ID [-f]
+  $ shipthis game export GAME_ID [-q] [-f]
 
 ARGUMENTS
   GAME_ID  The ID of the game to export (use "list" to get the ID)
 
 FLAGS
   -f, --force
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Downloads the shipthis.json file for a given game into the current directory.
@@ -413,7 +432,7 @@ EXAMPLES
   $ shipthis game export abcd1234 --force
 ```
 
-_See code: [src/commands/game/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/export.ts)_
+_See code: [src/commands/game/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/export.ts)_
 
 ## `shipthis game ios app addTester`
 
@@ -421,13 +440,14 @@ Adds a test user to the game in App Store Connect.
 
 ```
 USAGE
-  $ shipthis game ios app addTester [-g <value>] [-e <value>] [-f <value>] [-l <value>]
+  $ shipthis game ios app addTester [-q] [-g <value>] [-e <value>] [-f <value>] [-l <value>]
 
 FLAGS
   -e, --email=<value>      The email address of the tester
   -f, --firstName=<value>  The first name of the tester
   -g, --gameId=<value>     The ID of the game
   -l, --lastName=<value>   The last name of the tester
+  -q, --quiet              Avoid output except for interactions and errors
 
 DESCRIPTION
   Adds a test user to the game in App Store Connect.
@@ -436,7 +456,7 @@ EXAMPLES
   $ shipthis game ios app addTester
 ```
 
-_See code: [src/commands/game/ios/app/addTester.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/addTester.ts)_
+_See code: [src/commands/game/ios/app/addTester.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ios/app/addTester.ts)_
 
 ## `shipthis game ios app create`
 
@@ -444,12 +464,13 @@ Creates an App and BundleId in the Apple Developer Portal. If --gameId is not pr
 
 ```
 USAGE
-  $ shipthis game ios app create [-g <value>] [-n <value>] [-b <value>]
+  $ shipthis game ios app create [-q] [-g <value>] [-n <value>] [-b <value>]
 
 FLAGS
   -b, --bundleId=<value>  The BundleId in the Apple Developer Portal
   -g, --gameId=<value>    The ID of the game
   -n, --appName=<value>   The name of the App in the Apple Developer Portal
+  -q, --quiet             Avoid output except for interactions and errors
 
 DESCRIPTION
   Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current
@@ -459,7 +480,7 @@ EXAMPLES
   $ shipthis game ios app create
 ```
 
-_See code: [src/commands/game/ios/app/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/create.ts)_
+_See code: [src/commands/game/ios/app/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ios/app/create.ts)_
 
 ## `shipthis game ios app status`
 
@@ -467,10 +488,11 @@ Shows the Game iOS App status. If --gameId is not provided it will look in the c
 
 ```
 USAGE
-  $ shipthis game ios app status [-g <value>]
+  $ shipthis game ios app status [-q] [-g <value>]
 
 FLAGS
   -g, --gameId=<value>  The ID of the game
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
@@ -479,7 +501,7 @@ EXAMPLES
   $ shipthis game ios app status
 ```
 
-_See code: [src/commands/game/ios/app/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/status.ts)_
+_See code: [src/commands/game/ios/app/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ios/app/status.ts)_
 
 ## `shipthis game ios app sync`
 
@@ -487,10 +509,11 @@ Synchronies the Apple App "BundleId" with the capabilities from the local projec
 
 ```
 USAGE
-  $ shipthis game ios app sync [-g <value>]
+  $ shipthis game ios app sync [-q] [-g <value>]
 
 FLAGS
   -g, --gameId=<value>  The ID of the game
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Synchronies the Apple App "BundleId" with the capabilities from the local project. If --gameId is not provided it will
@@ -500,7 +523,7 @@ EXAMPLES
   $ shipthis game ios app sync
 ```
 
-_See code: [src/commands/game/ios/app/sync.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/app/sync.ts)_
+_See code: [src/commands/game/ios/app/sync.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ios/app/sync.ts)_
 
 ## `shipthis game ios profile create`
 
@@ -508,11 +531,12 @@ Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId
 
 ```
 USAGE
-  $ shipthis game ios profile create [-g <value>] [-f]
+  $ shipthis game ios profile create [-q] [-g <value>] [-f]
 
 FLAGS
   -f, --force
   -g, --gameId=<value>  The ID of the game
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the
@@ -522,7 +546,7 @@ EXAMPLES
   $ shipthis game ios profile create
 ```
 
-_See code: [src/commands/game/ios/profile/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/create.ts)_
+_See code: [src/commands/game/ios/profile/create.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ios/profile/create.ts)_
 
 ## `shipthis game ios profile export FILE`
 
@@ -530,7 +554,7 @@ Saves the current Mobile Provisioning Profile to a ZIP file
 
 ```
 USAGE
-  $ shipthis game ios profile export FILE [-g <value>] [-f]
+  $ shipthis game ios profile export FILE [-q] [-g <value>] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
@@ -538,6 +562,7 @@ ARGUMENTS
 FLAGS
   -f, --force           Overwrite the file if it already exists
   -g, --gameId=<value>  The ID of the game
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Saves the current Mobile Provisioning Profile to a ZIP file
@@ -546,7 +571,7 @@ EXAMPLES
   $ shipthis game ios profile export userProfile.zip
 ```
 
-_See code: [src/commands/game/ios/profile/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/export.ts)_
+_See code: [src/commands/game/ios/profile/export.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ios/profile/export.ts)_
 
 ## `shipthis game ios profile import FILE`
 
@@ -554,7 +579,7 @@ Imports an Mobile Provisioning Profile to your ShipThis account
 
 ```
 USAGE
-  $ shipthis game ios profile import FILE [-g <value>] [-f]
+  $ shipthis game ios profile import FILE [-q] [-g <value>] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
@@ -562,6 +587,7 @@ ARGUMENTS
 FLAGS
   -f, --force
   -g, --gameId=<value>  The ID of the game
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Imports an Mobile Provisioning Profile to your ShipThis account
@@ -570,7 +596,7 @@ EXAMPLES
   $ shipthis game ios profile import profile.zip
 ```
 
-_See code: [src/commands/game/ios/profile/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/import.ts)_
+_See code: [src/commands/game/ios/profile/import.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ios/profile/import.ts)_
 
 ## `shipthis game ios profile status`
 
@@ -578,11 +604,12 @@ Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provid
 
 ```
 USAGE
-  $ shipthis game ios profile status [-g <value>] [-f]
+  $ shipthis game ios profile status [-q] [-g <value>] [-f]
 
 FLAGS
   -f, --noAppleAuth
   -g, --gameId=<value>  The ID of the game
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current
@@ -592,7 +619,7 @@ EXAMPLES
   $ shipthis game ios profile status
 ```
 
-_See code: [src/commands/game/ios/profile/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/profile/status.ts)_
+_See code: [src/commands/game/ios/profile/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ios/profile/status.ts)_
 
 ## `shipthis game ios status`
 
@@ -600,10 +627,11 @@ Shows the Game iOS Platform status. If --gameId is not provided it will look in 
 
 ```
 USAGE
-  $ shipthis game ios status [-g <value>]
+  $ shipthis game ios status [-q] [-g <value>]
 
 FLAGS
   -g, --gameId=<value>  The ID of the game
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
@@ -614,7 +642,7 @@ EXAMPLES
   $ shipthis game ios status --gameId 0c179fc4
 ```
 
-_See code: [src/commands/game/ios/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ios/status.ts)_
+_See code: [src/commands/game/ios/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ios/status.ts)_
 
 ## `shipthis game job list`
 
@@ -622,13 +650,14 @@ Lists the jobs for a game. If --gameId is not provided it will look in the curre
 
 ```
 USAGE
-  $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
+  $ shipthis game job list [-q] [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
 
 FLAGS
   -g, --gameId=<value>      The ID of the game
   -o, --orderBy=<option>    [default: createdAt] The field to order by
                             <options: createdAt|updatedAt>
   -p, --pageNumber=<value>  The page number to show (starts at 0)
+  -q, --quiet               Avoid output except for interactions and errors
   -r, --order=<option>      [default: desc] The order to sort by
                             <options: asc|desc>
   -s, --pageSize=<value>    [default: 10] The number of items to show per page
@@ -642,7 +671,7 @@ EXAMPLES
   $ shipthis game job list --gameId 0c179fc4
 ```
 
-_See code: [src/commands/game/job/list.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/job/list.ts)_
+_See code: [src/commands/game/job/list.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/job/list.ts)_
 
 ## `shipthis game job status JOB_ID`
 
@@ -650,7 +679,7 @@ Shows the real-time status of a job.
 
 ```
 USAGE
-  $ shipthis game job status JOB_ID [-g <value>] [-n <value>] [-f]
+  $ shipthis game job status JOB_ID [-q] [-g <value>] [-n <value>] [-f]
 
 ARGUMENTS
   JOB_ID  The id of the job to get the status of
@@ -659,6 +688,7 @@ FLAGS
   -f, --follow          Follow the log in real-time
   -g, --gameId=<value>  The ID of the game
   -n, --lines=<value>   [default: 10] The number of lines to show
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the real-time status of a job.
@@ -671,7 +701,7 @@ EXAMPLES
   $ shipthis game job status --gameId 0c179fc4 --lines 20 --follow 4d32239e
 ```
 
-_See code: [src/commands/game/job/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/job/status.ts)_
+_See code: [src/commands/game/job/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/job/status.ts)_
 
 ## `shipthis game list`
 
@@ -679,12 +709,13 @@ Shows a list of all your games
 
 ```
 USAGE
-  $ shipthis game list [-p <value>] [-s <value>] [-o createdAt|updatedAt|name] [-r asc|desc]
+  $ shipthis game list [-q] [-p <value>] [-s <value>] [-o createdAt|updatedAt|name] [-r asc|desc]
 
 FLAGS
   -o, --orderBy=<option>    [default: createdAt] The field to order by
                             <options: createdAt|updatedAt|name>
   -p, --pageNumber=<value>  The page number to show (starts at 0)
+  -q, --quiet               Avoid output except for interactions and errors
   -r, --order=<option>      [default: desc] The order to sort by
                             <options: asc|desc>
   -s, --pageSize=<value>    [default: 10] The number of items to show per page
@@ -696,7 +727,7 @@ EXAMPLES
   $ shipthis game list
 ```
 
-_See code: [src/commands/game/list.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/list.ts)_
+_See code: [src/commands/game/list.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/list.ts)_
 
 ## `shipthis game ship`
 
@@ -704,10 +735,11 @@ Builds the app (for all platforms with valid credentials) and ships it to the st
 
 ```
 USAGE
-  $ shipthis game ship [-g <value>]
+  $ shipthis game ship [-q] [-g <value>]
 
 FLAGS
   -g, --gameId=<value>  The ID of the game
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Builds the app (for all platforms with valid credentials) and ships it to the stores
@@ -716,7 +748,7 @@ EXAMPLES
   $ shipthis game ship
 ```
 
-_See code: [src/commands/game/ship.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/ship.ts)_
+_See code: [src/commands/game/ship.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/ship.ts)_
 
 ## `shipthis game status`
 
@@ -724,10 +756,11 @@ Shows the Game status. If --gameId is not provided it will look in the current d
 
 ```
 USAGE
-  $ shipthis game status [-g <value>]
+  $ shipthis game status [-q] [-g <value>]
 
 FLAGS
   -g, --gameId=<value>  The ID of the game
+  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the Game status. If --gameId is not provided it will look in the current directory.
@@ -738,7 +771,28 @@ EXAMPLES
   $ shipthis game status --gameId 0c179fc4
 ```
 
-_See code: [src/commands/game/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/game/status.ts)_
+_See code: [src/commands/game/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/status.ts)_
+
+## `shipthis game wizard`
+
+Runs all the steps for the specific platform
+
+```
+USAGE
+  $ shipthis game wizard [-q] [-p <value>]
+
+FLAGS
+  -p, --platform=<value>  The platform to target
+  -q, --quiet             Avoid output except for interactions and errors
+
+DESCRIPTION
+  Runs all the steps for the specific platform
+
+EXAMPLES
+  $ shipthis game wizard
+```
+
+_See code: [src/commands/game/wizard.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/wizard.ts)_
 
 ## `shipthis help [COMMAND]`
 
@@ -766,11 +820,12 @@ Authenticate - will create a new account if one does not exist.
 
 ```
 USAGE
-  $ shipthis login [-f] [-e <value>]
+  $ shipthis login [-q] [-f] [-e <value>]
 
 FLAGS
   -e, --email=<value>  Your email address
   -f, --force
+  -q, --quiet          Avoid output except for interactions and errors
 
 DESCRIPTION
   Authenticate - will create a new account if one does not exist.
@@ -781,7 +836,7 @@ EXAMPLES
   $ shipthis login --force --email me@email.nowhere
 ```
 
-_See code: [src/commands/login.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/login.ts)_
+_See code: [src/commands/login.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/login.ts)_
 
 ## `shipthis status`
 
@@ -789,7 +844,10 @@ Displays the current overall status.
 
 ```
 USAGE
-  $ shipthis status
+  $ shipthis status [-q]
+
+FLAGS
+  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Displays the current overall status.
@@ -798,5 +856,5 @@ EXAMPLES
   $ shipthis status
 ```
 
-_See code: [src/commands/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.0/src/commands/status.ts)_
+_See code: [src/commands/status.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/status.ts)_
 <!-- commandsstop -->
