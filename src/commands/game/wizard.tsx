@@ -26,7 +26,7 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
     platform: Flags.string({
       char: 'p',
       description: 'The platform to run the wizard for',
-      options: ['ios', 'android'],
+      options: ['ios' /* TODO - android */],
       required: true,
     }),
   }
@@ -43,7 +43,7 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
     const projectConfig = await this.getProjectConfigSafe()
     const game = projectConfig.project
 
-    const isStepForced = (stepName: string) => flags.forceStep?.includes(stepName)
+    const isStepForced = (commandName: string) => flags.forceStep?.includes(commandName)
 
     // TODO: some duplication in the shouldRun logic and the commands themselves - perhaps we could refactor this
     const steps: Step[] = [
@@ -76,7 +76,7 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
         command: 'apple:certificate:create',
         args: ['--quiet'],
         shouldRun: async () => {
-          // TODO: this doesn't tell us if the key is valid or usable (since we don't query Apple for that here)
+          // TODO: this doesn't tell us if the certificate is valid or usable (since we don't query Apple for that here)
           const userCredentials = await getUserCredentials()
           const userAppleDistCredentials = userCredentials.filter(
             (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
@@ -90,14 +90,15 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
         shouldRun: async () => {
           if (!game) return true
           const hasBundleIdSet = !!game.details?.iosBundleId
-          if (!hasBundleIdSet) return true
           // Assume that this has run if the bundle id is set in the config
-          return false
+          // The command will check if it exists in Apple before creating it
+          return !hasBundleIdSet
         },
       },
       {
         command: 'game:ios:app:sync',
         args: ['--quiet'],
+        // Can always run this
         shouldRun: async () => true,
       },
       {
@@ -110,7 +111,6 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
           const projectAppleProfileCredentials = projectCredentials.filter(
             (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
           )
-
           return projectAppleProfileCredentials.length === 0
         },
       },

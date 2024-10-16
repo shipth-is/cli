@@ -25,19 +25,20 @@ export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
   public async run(): Promise<void> {
     const game = await this.getGame()
     const iosPlatformStatus = await getProjectPlatformProgress(game.id, Platform.IOS)
-    const androidPlatformStatus = await getProjectPlatformProgress(game.id, Platform.ANDROID)
 
-    // TODO: what if they have not yet connected to apple?
-    // TODO: what do do if they have credentials?
+    const {hasBundleSet, hasApiKeyForPlatform, hasCredentialsForPlatform} = iosPlatformStatus
+
     const steps = [
-      iosPlatformStatus.hasBundleSet == false && '$ shipthis game ios app create',
-      androidPlatformStatus.hasBundleSet == false && '$ shipthis game android setup',
+      hasBundleSet == false && '$ shipthis game ios app create',
+      hasApiKeyForPlatform == false && '$ shipthis apple apiKey create',
+      hasCredentialsForPlatform == false && '$ shipthis game ios profile create',
+      hasBundleSet && hasApiKeyForPlatform && hasCredentialsForPlatform && '$ shipthis game ship',
     ].filter(Boolean) as string[]
 
     const progressToStatuses = (progress: ProjectPlatformProgress) => {
       // Remove the 'platform' key as we have titles
       const {platform, ...rest} = progress
-      return makeHumanReadable(rest);
+      return makeHumanReadable(rest)
     }
 
     render(
@@ -54,8 +55,7 @@ export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
             'Game Engine': `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.3'}`,
           }}
         />
-        <StatusTable marginBottom={1} title="iOS Status" statuses={progressToStatuses(iosPlatformStatus)} />
-        <StatusTable marginBottom={1} title="Android Status" statuses={progressToStatuses(androidPlatformStatus)} />
+        <StatusTable title="iOS Status" statuses={progressToStatuses(iosPlatformStatus)} />
         <NextSteps steps={steps} />
       </App>,
     )
