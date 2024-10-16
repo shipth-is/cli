@@ -131,6 +131,18 @@
       },
       "game": {
         "description": "Commands related to Game Management"
+      },
+      "game:ios": {
+        "description": "Commands related to Game Management for the iOS platform"
+      },
+      "game:ios:app": {
+        "description": "Commands related to the App Store App related to this Game"
+      },
+      "game:ios:profile": {
+        "description": "Commands related to the App Store Provisioning Profiles for this Game"
+      },
+      "game:job": {
+        "description": "Commands related to Game building jobs"
       }
     }
   },

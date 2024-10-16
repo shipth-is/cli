@@ -28,9 +28,7 @@ export const JobLogTail = (props: JobLogTailProps) => {
                 <Text>{getShortTime(log.sentAt)}</Text>
               </Box>
               <Box marginLeft={1} overflow="hidden" height={1} marginRight={2}>
-                <TruncatedText wrap="truncate" color={messageColor}>
-                  {log.message.replaceAll(/[\r\n]/g, '')}
-                </TruncatedText>
+                <TruncatedText color={messageColor}>{log.message}</TruncatedText>
               </Box>
             </Box>
           )
