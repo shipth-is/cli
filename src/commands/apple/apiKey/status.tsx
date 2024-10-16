@@ -9,7 +9,7 @@ export default class AppleApiKeyStatus extends BaseAuthenticatedCommand<typeof A
   static override args = {}
 
   static override description =
-    'Displays the status of the App Store Connect API Key in your Apple and ShipThis accounts. This key is used to automatically publish your games to the App Store.'
+    'Displays the status of the App Store Connect API Keys in your Apple and ShipThis accounts. The API key is used to automatically publish your games to the App Store.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',

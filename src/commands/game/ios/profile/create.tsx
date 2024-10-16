@@ -30,6 +30,7 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     force: Flags.boolean({char: 'f'}),
   }
@@ -113,10 +114,7 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
       await this.config.runCommand('game:ios:profile:status', ['--gameId', game.id])
     }
 
-    if (this.flags.quiet) {
-      await createProfile()
-      return this.exit(0)
-    }
+    if (this.flags.quiet) return await createProfile()
 
     render(
       <App>

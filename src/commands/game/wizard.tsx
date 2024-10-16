@@ -1,6 +1,15 @@
 import {Flags} from '@oclif/core'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {isCWDGodotGame} from '@cli/utils/godot.js'
+import {getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
+import {CredentialsType, Platform} from '@cli/types.js'
+
+interface Step {
+  command: string
+  args: string[]
+  shouldRun: () => Promise<boolean>
+}
 
 export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWizard> {
   static override args = {}
@@ -10,24 +19,115 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    platform: Flags.string({char: 'p', description: 'The platform to target'}),
+    forceStep: Flags.string({
+      char: 'f',
+      description: 'Force a specific step to run. You can repeat this flag to force multiple steps.',
+    }),
+    platform: Flags.string({
+      char: 'p',
+      description: 'The platform to run the wizard for',
+      options: ['ios', 'android'],
+      required: true,
+    }),
   }
 
   public async run(): Promise<void> {
+    const {flags} = this
+
     // TODO: do something with the platform
 
-    const commands = [
-      'game:create',
-      'apple:login',
-      'apple:apiKey:create',
-      'apple:certificate:create',
-      'game:ios:app:create',
-      'game:ios:app:sync',
-      'game:ios:profile:create',
+    if (!isCWDGodotGame()) {
+      this.error('No Godot project detected. Please run this from a godot project directory.', {exit: 1})
+    }
+
+    const projectConfig = await this.getProjectConfigSafe()
+    const game = projectConfig.project
+
+    const isStepForced = (stepName: string) => flags.forceStep?.includes(stepName)
+
+    // TODO: some duplication in the shouldRun logic and the commands themselves - perhaps we could refactor this
+    const steps: Step[] = [
+      {
+        command: 'game:create',
+        args: ['--quiet'],
+        shouldRun: async () => !game,
+      },
+      {
+        command: 'apple:login',
+        args: ['--quiet'],
+        shouldRun: async () => {
+          const isLoggedIn = await this.hasValidAppleAuthState()
+          return !isLoggedIn
+        },
+      },
+      {
+        command: 'apple:apiKey:create',
+        args: ['--quiet'],
+        shouldRun: async () => {
+          // TODO: this doesn't tell us if the key is valid or usable (since we don't query Apple for that here)
+          const userCredentials = await getUserCredentials()
+          const userAppleApiKeyCredentials = userCredentials.filter(
+            (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.KEY,
+          )
+          return userAppleApiKeyCredentials.length === 0
+        },
+      },
+      {
+        command: 'apple:certificate:create',
+        args: ['--quiet'],
+        shouldRun: async () => {
+          // TODO: this doesn't tell us if the key is valid or usable (since we don't query Apple for that here)
+          const userCredentials = await getUserCredentials()
+          const userAppleDistCredentials = userCredentials.filter(
+            (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
+          )
+          return userAppleDistCredentials.length === 0
+        },
+      },
+      {
+        command: 'game:ios:app:create',
+        args: ['--quiet'],
+        shouldRun: async () => {
+          if (!game) return true
+          const hasBundleIdSet = !!game.details?.iosBundleId
+          if (!hasBundleIdSet) return true
+          // Assume that this has run if the bundle id is set in the config
+          return false
+        },
+      },
+      {
+        command: 'game:ios:app:sync',
+        args: ['--quiet'],
+        shouldRun: async () => true,
+      },
+      {
+        command: 'game:ios:profile:create',
+        args: ['--quiet'],
+        shouldRun: async () => {
+          // Again - should we call Apple here?
+          if (!game) return true
+          const projectCredentials = await getProjectCredentials(game.id)
+          const projectAppleProfileCredentials = projectCredentials.filter(
+            (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
+          )
+
+          return projectAppleProfileCredentials.length === 0
+        },
+      },
     ]
 
-    for (const command of commands) {
-      await this.config.runCommand(command, ['--quiet'])
+    for (const step of steps) {
+      const command = step.command
+      const willRun = isStepForced(command) || (await step.shouldRun())
+
+      if (!willRun) {
+        this.debug(`Skipping step: ${command}`)
+        continue
+      }
+
+      const args = [...step.args, ...(isStepForced(command) ? ['--force'] : [])]
+      this.debug(`Running step: ${command} with args: ${args.join(' ')}`)
+      await this.config.runCommand(command, args)
     }
 
     // We finish with the game status

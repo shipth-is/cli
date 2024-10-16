@@ -98,18 +98,19 @@ USAGE
 
 ## `shipthis apple apiKey create`
 
-Creates an App Store Connect API in your Apple Developer account and saves the private key in your ShipThis account
+Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account
 
 ```
 USAGE
-  $ shipthis apple apiKey create [-q] [-f]
+  $ shipthis apple apiKey create [-f] [-q]
 
 FLAGS
   -f, --force
   -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
-  Creates an App Store Connect API in your Apple Developer account and saves the private key in your ShipThis account
+  Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis
+  account
 
 EXAMPLES
   $ shipthis apple apiKey create
@@ -125,14 +126,13 @@ Saves the current App Store Connect API Key to a ZIP file
 
 ```
 USAGE
-  $ shipthis apple apiKey export FILE [-q] [-f]
+  $ shipthis apple apiKey export FILE [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
 
 FLAGS
   -f, --force  Overwrite the file if it already exists
-  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Saves the current App Store Connect API Key to a ZIP file
@@ -145,21 +145,20 @@ _See code: [src/commands/apple/apiKey/export.ts](https://github.com/oclif-cli/sh
 
 ## `shipthis apple apiKey import FILE`
 
-Imports an App Store Connect API Key to your ShipThis account
+Imports an App Store Connect API Key ZIP file into your ShipThis account
 
 ```
 USAGE
-  $ shipthis apple apiKey import FILE [-q] [-f]
+  $ shipthis apple apiKey import FILE [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force
-  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
-  Imports an App Store Connect API Key to your ShipThis account
+  Imports an App Store Connect API Key ZIP file into your ShipThis account
 
 EXAMPLES
   $ shipthis apple apiKey import userApiKey.zip
@@ -169,18 +168,17 @@ _See code: [src/commands/apple/apiKey/import.ts](https://github.com/oclif-cli/sh
 
 ## `shipthis apple apiKey status`
 
-Displays the status of the App Store Connect API Key in your Apple and ShipThis accounts. This key is used to automatically publish your games to the App Store.
+Displays the status of the App Store Connect API Keys in your Apple and ShipThis accounts. The API key is used to automatically publish your games to the App Store.
 
 ```
 USAGE
-  $ shipthis apple apiKey status [-q] [-f]
+  $ shipthis apple apiKey status [-f]
 
 FLAGS
   -f, --noAppleAuth
-  -q, --quiet        Avoid output except for interactions and errors
 
 DESCRIPTION
-  Displays the status of the App Store Connect API Key in your Apple and ShipThis accounts. This key is used to
+  Displays the status of the App Store Connect API Keys in your Apple and ShipThis accounts. The API key is used to
   automatically publish your games to the App Store.
 
 EXAMPLES
@@ -193,19 +191,19 @@ _See code: [src/commands/apple/apiKey/status.ts](https://github.com/oclif-cli/sh
 
 ## `shipthis apple certificate create`
 
-Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your ShipThis account
+Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
 
 ```
 USAGE
-  $ shipthis apple certificate create [-q] [-f]
+  $ shipthis apple certificate create [-f] [-q]
 
 FLAGS
   -f, --force
   -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
-  Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your ShipThis
-  account
+  Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your
+  ShipThis account
 
 EXAMPLES
   $ shipthis apple certificate create
@@ -221,14 +219,13 @@ Saves the current Apple Distribution Certificate to a ZIP file.
 
 ```
 USAGE
-  $ shipthis apple certificate export FILE [-q] [-f]
+  $ shipthis apple certificate export FILE [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
 
 FLAGS
   -f, --force  Overwrite the file if it already exists
-  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Saves the current Apple Distribution Certificate to a ZIP file.
@@ -245,14 +242,13 @@ Imports an iOS Distribution Certificate to your ShipThis account
 
 ```
 USAGE
-  $ shipthis apple certificate import FILE [-q] [-f]
+  $ shipthis apple certificate import FILE [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force
-  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Imports an iOS Distribution Certificate to your ShipThis account
@@ -269,11 +265,10 @@ Displays the status of the iOS Distribution certificates in your Apple and ShipT
 
 ```
 USAGE
-  $ shipthis apple certificate status [-q] [-f]
+  $ shipthis apple certificate status [-f]
 
 FLAGS
   -f, --noAppleAuth
-  -q, --quiet        Avoid output except for interactions and errors
 
 DESCRIPTION
   Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign
@@ -317,10 +312,7 @@ Shows the status of the Apple authentication and integration
 
 ```
 USAGE
-  $ shipthis apple status [-q]
-
-FLAGS
-  -q, --quiet  Avoid output except for interactions and errors
+  $ shipthis apple status
 
 DESCRIPTION
   Shows the status of the Apple authentication and integration
@@ -337,10 +329,7 @@ Opens the web-browser to your ShipThis dashboard
 
 ```
 USAGE
-  $ shipthis dashboard [-q]
-
-FLAGS
-  -q, --quiet  Avoid output except for interactions and errors
+  $ shipthis dashboard
 
 DESCRIPTION
   Opens the web-browser to your ShipThis dashboard
@@ -379,8 +368,8 @@ Shows and sets the details of a game. If --gameId is not provided it will look i
 
 ```
 USAGE
-  $ shipthis game details [-q] [-g <value>] [-f] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>]
-    [-a <value>]
+  $ shipthis game details [-g <value>] [-f] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>] [-a
+    <value>]
 
 FLAGS
   -a, --androidPackageName=<value>  Set the Android package name
@@ -389,7 +378,6 @@ FLAGS
   -f, --force                       Force the command to run
   -g, --gameId=<value>              The ID of the game
   -i, --iosBundleId=<value>         Set the iOS bundle ID
-  -q, --quiet                       Avoid output except for interactions and errors
   -s, --semanticVersion=<value>     Set the semantic version
   -v, --gameEngineVersion=<value>   Set the game engine version
 
@@ -414,14 +402,13 @@ Downloads the shipthis.json file for a given game into the current directory.
 
 ```
 USAGE
-  $ shipthis game export GAME_ID [-q] [-f]
+  $ shipthis game export GAME_ID [-f]
 
 ARGUMENTS
   GAME_ID  The ID of the game to export (use "list" to get the ID)
 
 FLAGS
   -f, --force
-  -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
   Downloads the shipthis.json file for a given game into the current directory.
@@ -440,14 +427,13 @@ Adds a test user to the game in App Store Connect.
 
 ```
 USAGE
-  $ shipthis game ios app addTester [-q] [-g <value>] [-e <value>] [-f <value>] [-l <value>]
+  $ shipthis game ios app addTester [-g <value>] [-e <value>] [-f <value>] [-l <value>]
 
 FLAGS
   -e, --email=<value>      The email address of the tester
   -f, --firstName=<value>  The first name of the tester
   -g, --gameId=<value>     The ID of the game
   -l, --lastName=<value>   The last name of the tester
-  -q, --quiet              Avoid output except for interactions and errors
 
 DESCRIPTION
   Adds a test user to the game in App Store Connect.
@@ -464,10 +450,11 @@ Creates an App and BundleId in the Apple Developer Portal. If --gameId is not pr
 
 ```
 USAGE
-  $ shipthis game ios app create [-q] [-g <value>] [-n <value>] [-b <value>]
+  $ shipthis game ios app create [-q] [-g <value>] [-n <value>] [-b <value>] [-f]
 
 FLAGS
   -b, --bundleId=<value>  The BundleId in the Apple Developer Portal
+  -f, --force
   -g, --gameId=<value>    The ID of the game
   -n, --appName=<value>   The name of the App in the Apple Developer Portal
   -q, --quiet             Avoid output except for interactions and errors
@@ -488,11 +475,10 @@ Shows the Game iOS App status. If --gameId is not provided it will look in the c
 
 ```
 USAGE
-  $ shipthis game ios app status [-q] [-g <value>]
+  $ shipthis game ios app status [-g <value>]
 
 FLAGS
   -g, --gameId=<value>  The ID of the game
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
@@ -509,9 +495,10 @@ Synchronies the Apple App "BundleId" with the capabilities from the local projec
 
 ```
 USAGE
-  $ shipthis game ios app sync [-q] [-g <value>]
+  $ shipthis game ios app sync [-q] [-g <value>] [-f]
 
 FLAGS
+  -f, --force
   -g, --gameId=<value>  The ID of the game
   -q, --quiet           Avoid output except for interactions and errors
 
@@ -554,7 +541,7 @@ Saves the current Mobile Provisioning Profile to a ZIP file
 
 ```
 USAGE
-  $ shipthis game ios profile export FILE [-q] [-g <value>] [-f]
+  $ shipthis game ios profile export FILE [-g <value>] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
@@ -562,7 +549,6 @@ ARGUMENTS
 FLAGS
   -f, --force           Overwrite the file if it already exists
   -g, --gameId=<value>  The ID of the game
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Saves the current Mobile Provisioning Profile to a ZIP file
@@ -579,7 +565,7 @@ Imports an Mobile Provisioning Profile to your ShipThis account
 
 ```
 USAGE
-  $ shipthis game ios profile import FILE [-q] [-g <value>] [-f]
+  $ shipthis game ios profile import FILE [-g <value>] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
@@ -587,7 +573,6 @@ ARGUMENTS
 FLAGS
   -f, --force
   -g, --gameId=<value>  The ID of the game
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Imports an Mobile Provisioning Profile to your ShipThis account
@@ -604,12 +589,11 @@ Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provid
 
 ```
 USAGE
-  $ shipthis game ios profile status [-q] [-g <value>] [-f]
+  $ shipthis game ios profile status [-g <value>] [-f]
 
 FLAGS
   -f, --noAppleAuth
   -g, --gameId=<value>  The ID of the game
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current
@@ -627,11 +611,10 @@ Shows the Game iOS Platform status. If --gameId is not provided it will look in 
 
 ```
 USAGE
-  $ shipthis game ios status [-q] [-g <value>]
+  $ shipthis game ios status [-g <value>]
 
 FLAGS
   -g, --gameId=<value>  The ID of the game
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
@@ -650,14 +633,13 @@ Lists the jobs for a game. If --gameId is not provided it will look in the curre
 
 ```
 USAGE
-  $ shipthis game job list [-q] [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
+  $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
 
 FLAGS
   -g, --gameId=<value>      The ID of the game
   -o, --orderBy=<option>    [default: createdAt] The field to order by
                             <options: createdAt|updatedAt>
   -p, --pageNumber=<value>  The page number to show (starts at 0)
-  -q, --quiet               Avoid output except for interactions and errors
   -r, --order=<option>      [default: desc] The order to sort by
                             <options: asc|desc>
   -s, --pageSize=<value>    [default: 10] The number of items to show per page
@@ -679,7 +661,7 @@ Shows the real-time status of a job.
 
 ```
 USAGE
-  $ shipthis game job status JOB_ID [-q] [-g <value>] [-n <value>] [-f]
+  $ shipthis game job status JOB_ID [-g <value>] [-n <value>] [-f]
 
 ARGUMENTS
   JOB_ID  The id of the job to get the status of
@@ -688,7 +670,6 @@ FLAGS
   -f, --follow          Follow the log in real-time
   -g, --gameId=<value>  The ID of the game
   -n, --lines=<value>   [default: 10] The number of lines to show
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the real-time status of a job.
@@ -709,13 +690,12 @@ Shows a list of all your games
 
 ```
 USAGE
-  $ shipthis game list [-q] [-p <value>] [-s <value>] [-o createdAt|updatedAt|name] [-r asc|desc]
+  $ shipthis game list [-p <value>] [-s <value>] [-o createdAt|updatedAt|name] [-r asc|desc]
 
 FLAGS
   -o, --orderBy=<option>    [default: createdAt] The field to order by
                             <options: createdAt|updatedAt|name>
   -p, --pageNumber=<value>  The page number to show (starts at 0)
-  -q, --quiet               Avoid output except for interactions and errors
   -r, --order=<option>      [default: desc] The order to sort by
                             <options: asc|desc>
   -s, --pageSize=<value>    [default: 10] The number of items to show per page
@@ -735,11 +715,10 @@ Builds the app (for all platforms with valid credentials) and ships it to the st
 
 ```
 USAGE
-  $ shipthis game ship [-q] [-g <value>]
+  $ shipthis game ship [-g <value>]
 
 FLAGS
   -g, --gameId=<value>  The ID of the game
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Builds the app (for all platforms with valid credentials) and ships it to the stores
@@ -756,11 +735,10 @@ Shows the Game status. If --gameId is not provided it will look in the current d
 
 ```
 USAGE
-  $ shipthis game status [-q] [-g <value>]
+  $ shipthis game status [-g <value>]
 
 FLAGS
   -g, --gameId=<value>  The ID of the game
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Shows the Game status. If --gameId is not provided it will look in the current directory.
@@ -779,11 +757,12 @@ Runs all the steps for the specific platform
 
 ```
 USAGE
-  $ shipthis game wizard [-q] [-p <value>]
+  $ shipthis game wizard -p ios|android [-f <value>]
 
 FLAGS
-  -p, --platform=<value>  The platform to target
-  -q, --quiet             Avoid output except for interactions and errors
+  -f, --forceStep=<value>  Force a specific step to run. You can repeat this flag to force multiple steps.
+  -p, --platform=<option>  (required) The platform to run the wizard for
+                           <options: ios|android>
 
 DESCRIPTION
   Runs all the steps for the specific platform
@@ -820,12 +799,11 @@ Authenticate - will create a new account if one does not exist.
 
 ```
 USAGE
-  $ shipthis login [-q] [-f] [-e <value>]
+  $ shipthis login [-f] [-e <value>]
 
 FLAGS
   -e, --email=<value>  Your email address
   -f, --force
-  -q, --quiet          Avoid output except for interactions and errors
 
 DESCRIPTION
   Authenticate - will create a new account if one does not exist.
@@ -844,10 +822,7 @@ Displays the current overall status.
 
 ```
 USAGE
-  $ shipthis status [-q]
-
-FLAGS
-  -q, --quiet  Avoid output except for interactions and errors
+  $ shipthis status
 
 DESCRIPTION
   Displays the current overall status.

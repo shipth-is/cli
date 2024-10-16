@@ -16,9 +16,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   static enableJsonFlag = false
 
   // define flags that can be inherited by any command that extends BaseCommand
-  static baseFlags = {
-    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
-  }
+  static baseFlags = {}
 
   protected flags!: Flags<T>
   protected args!: Args<T>
@@ -101,6 +99,11 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
 
   public async getProjectConfig(): Promise<ProjectConfig> {
     if (!this.hasProjectConfig()) throw new Error('No project config found')
+    return this.getProjectConfigSafe()
+  }
+
+  public async getProjectConfigSafe(): Promise<ProjectConfig> {
+    if (!this.hasProjectConfig()) return {}
     const configPath = this.getProjectConfigPath()
     const raw = await fs.promises.readFile(configPath, 'utf8')
     return JSON.parse(raw)

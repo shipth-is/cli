@@ -16,7 +16,9 @@ export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSyn
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
+    force: Flags.boolean({char: 'f'}), // not used but don't remove or the wizard breaks
   }
 
   public async run(): Promise<void> {
@@ -58,10 +60,7 @@ export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSyn
       await this.config.runCommand('game:ios:app:status', ['--gameId', game.id])
     }
 
-    if (this.flags.quiet) {
-      await syncCapabilities()
-      return this.exit(0)
-    }
+    if (this.flags.quiet) return await syncCapabilities()
 
     render(
       <App>

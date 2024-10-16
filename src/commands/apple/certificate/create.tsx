@@ -11,12 +11,13 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
   static override args = {}
 
   static override description =
-    'Creates an iOS Distribution Certificate in your Apple Developer account and saves the private key in your ShipThis account'
+    'Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account'
 
   static override examples = ['<%= config.bin %> <%= command.id %>', '<%= config.bin %> <%= command.id %> --force']
 
   static override flags = {
     force: Flags.boolean({char: 'f'}),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
   }
 
   public async run(): Promise<void> {
@@ -54,10 +55,7 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
       await this.config.runCommand(`apple:certificate:status`)
     }
 
-    if (this.flags.quiet) {
-      await createCert()
-      return this.exit(0)
-    }
+    if (this.flags.quiet) return await createCert()
 
     render(
       <App>

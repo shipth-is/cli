@@ -16,6 +16,7 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     force: Flags.boolean({char: 'f'}),
     name: Flags.string({char: 'n', description: 'The name of the game'}),
   }
@@ -55,6 +56,6 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
       ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
     })
 
-    await this.config.runCommand('game:status')
+    if (!flags.quiet) await this.config.runCommand('game:status')
   }
 }

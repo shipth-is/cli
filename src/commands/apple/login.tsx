@@ -15,6 +15,7 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
   ]
 
   static override flags = {
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     force: Flags.boolean({char: 'f'}),
     appleEmail: Flags.string({
       char: 'e',
@@ -63,6 +64,5 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
 
     if (!this.flags.quiet) await this.config.runCommand(`apple:status`)
 
-    this.exit(0)
   }
 }

@@ -15,7 +15,7 @@ export default class AppleApiKeyImport extends BaseAuthenticatedCommand<typeof A
     }),
   }
 
-  static override description = 'Imports an App Store Connect API Key to your ShipThis account'
+  static override description = 'Imports an App Store Connect API Key ZIP file into your ShipThis account'
 
   static override examples = ['<%= config.bin %> <%= command.id %> userApiKey.zip']
 

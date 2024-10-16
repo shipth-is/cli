@@ -11,12 +11,13 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
   static override args = {}
 
   static override description =
-    'Creates an App Store Connect API in your Apple Developer account and saves the private key in your ShipThis account'
+    'Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account'
 
   static override examples = ['<%= config.bin %> <%= command.id %>', '<%= config.bin %> <%= command.id %> --force']
 
   static override flags = {
     force: Flags.boolean({char: 'f'}),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
   }
 
   public async run(): Promise<void> {
@@ -67,10 +68,7 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
       await this.config.runCommand(`apple:apiKey:status`)
     }
 
-    if (this.flags.quiet) {
-      await createApiKey()
-      return this.exit(0)
-    }
+    if (this.flags.quiet) return await createApiKey()
 
     render(
       <App>
