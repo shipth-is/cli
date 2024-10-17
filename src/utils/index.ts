@@ -12,9 +12,11 @@ export * from './dictionary.js'
 export * from './git.js'
 export * from './godot.js'
 
+/**
+ * Works the same way that git short commits are generated.
+ * Used for most uuids on the backend where the short value should be unique within one users account.
+ */
 export function getShortUUID(originalUuid: string): string {
-  // A short git commit hash is an abbreviation of the hash to the first 7 characters
-  // It should be unique within the users account
   return originalUuid.slice(0, 8)
 }
 
@@ -67,8 +69,11 @@ export async function getFileHash(filename: string): Promise<string> {
   })
 }
 
+/**
+ * Validates a Semantic Version Number string.
+ * https://dev.to/receter/parsing-semver-in-javascript-with-the-official-regex-4e0e
+ */
 export function isValidSemVer(versionString: string): boolean {
-  // https://dev.to/receter/parsing-semver-in-javascript-with-the-official-regex-4e0e
   const [semVer, major, minor, patch, prerelease, buildmetadata] =
     versionString.match(
       /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/,
@@ -77,6 +82,13 @@ export function isValidSemVer(versionString: string): boolean {
   return !!semVer
 }
 
+/**
+ * Converts the keys of an object to a more human-readable format.
+ * This function takes an object with camelCase keys and transforms them into
+ * space-separated words with the first letter of each word capitalized.
+ * For example, 'someKey' becomes 'Some Key'. The function returns a new
+ * object with the transformed keys, while preserving the original values.
+ */
 export function makeHumanReadable(rawObject: ScalarDict): ScalarDict {
   // Make the keys human readable
   const getLabel = (key: string) => {
