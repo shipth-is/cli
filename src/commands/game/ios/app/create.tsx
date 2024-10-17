@@ -3,7 +3,7 @@ import {Flags} from '@oclif/core'
 
 import {App, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {getInput, getGodotAppleBundleIdentifier} from '@cli/utils/index.js'
+import {getInput, getGodotAppleBundleIdentifier, generatePackageName} from '@cli/utils/index.js'
 
 import {App as AppleApp, BundleId as AppleBundleId} from '@cli/apple/expo.js'
 
@@ -41,8 +41,9 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
 
     const getBundleIdentifier = async (): Promise<string> => {
       if (bundleId) return bundleId
-      // TODO: autogenerate a bundle id from current user name and random words - or the game name?
-      const suggestedBundleId = game.details?.iosBundleId || getGodotAppleBundleIdentifier() || 'com.example.app'
+      const generatedBundleId = generatePackageName(game.name)
+      const suggestedBundleId =
+        game.details?.iosBundleId || getGodotAppleBundleIdentifier() || generatedBundleId || 'com.example.game'
       const question = `Please enter the BundleId in the Apple Developer Portal, or press enter to use ${suggestedBundleId}: `
       const enteredBundleId = await getInput(question)
       return enteredBundleId || suggestedBundleId
