@@ -133,7 +133,7 @@ export interface JobLogEntry {
   id: string
   level: LogLevel
   stage: JobStage
-  jobId: string
+  jobId: Job['id']
   message: string
   details: object
   sentAt: DateTime
@@ -171,4 +171,15 @@ export interface UserCredential {
 export interface ProjectCredential extends UserCredential {
   projectId: string
   identifier: string
+}
+
+export interface Build {
+  id: string
+  jobId: Job['id'],
+  projectId: Project['id'],
+  platform: Platform,
+  details: ScalarDict,
+  createdAt: DateTime,
+  updatedAt: DateTime,
+  url: string,
 }

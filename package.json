@@ -85,33 +85,35 @@
   "type": "module",
   "exports": [
     "./dist/commands/apple/apiKey/export.js",
-    "./dist/commands/apple/apiKey/create.js",
     "./dist/commands/apple/apiKey/status.js",
+    "./dist/commands/apple/apiKey/create.js",
     "./dist/commands/apple/apiKey/import.js",
     "./dist/commands/apple/status.js",
-    "./dist/commands/apple/certificate/export.js",
-    "./dist/commands/apple/certificate/create.js",
-    "./dist/commands/apple/certificate/status.js",
-    "./dist/commands/apple/certificate/import.js",
     "./dist/commands/apple/login.js",
-    "./dist/commands/game/list.js",
-    "./dist/commands/game/ship.js",
+    "./dist/commands/apple/certificate/export.js",
+    "./dist/commands/apple/certificate/status.js",
+    "./dist/commands/apple/certificate/create.js",
+    "./dist/commands/apple/certificate/import.js",
     "./dist/commands/game/export.js",
-    "./dist/commands/game/ios/app/create.js",
-    "./dist/commands/game/ios/app/status.js",
+    "./dist/commands/game/ios/status.js",
     "./dist/commands/game/ios/app/sync.js",
     "./dist/commands/game/ios/app/addTester.js",
-    "./dist/commands/game/ios/status.js",
+    "./dist/commands/game/ios/app/status.js",
+    "./dist/commands/game/ios/app/create.js",
     "./dist/commands/game/ios/profile/export.js",
-    "./dist/commands/game/ios/profile/create.js",
     "./dist/commands/game/ios/profile/status.js",
+    "./dist/commands/game/ios/profile/create.js",
     "./dist/commands/game/ios/profile/import.js",
-    "./dist/commands/game/create.js",
-    "./dist/commands/game/job/list.js",
-    "./dist/commands/game/job/status.js",
     "./dist/commands/game/status.js",
-    "./dist/commands/game/details.js",
     "./dist/commands/game/wizard.js",
+    "./dist/commands/game/list.js",
+    "./dist/commands/game/details.js",
+    "./dist/commands/game/create.js",
+    "./dist/commands/game/build/list.js",
+    "./dist/commands/game/build/download.js",
+    "./dist/commands/game/job/status.js",
+    "./dist/commands/game/job/list.js",
+    "./dist/commands/game/ship.js",
     "./dist/commands/status.js",
     "./dist/commands/dashboard.js",
     "./dist/commands/login.js"
@@ -132,17 +134,20 @@
       "game": {
         "description": "Commands related to Game Management"
       },
+      "game:build": {
+        "description": "Commands related to builds for a specific game"
+      },
       "game:ios": {
-        "description": "Commands related to Game Management for the iOS platform"
+        "description": "Commands related to the iOS platform for a specific game"
       },
       "game:ios:app": {
-        "description": "Commands related to the App Store App related to this Game"
+        "description": "Commands related to the App Store App for a specific game"
       },
       "game:ios:profile": {
         "description": "Commands related to the App Store Provisioning Profiles for this Game"
       },
       "game:job": {
-        "description": "Commands related to Game building jobs"
+        "description": "Commands related to jobs for a specific game"
       }
     }
   },

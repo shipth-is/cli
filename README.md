@@ -74,6 +74,8 @@ USAGE
 * [`shipthis apple login`](#shipthis-apple-login)
 * [`shipthis apple status`](#shipthis-apple-status)
 * [`shipthis dashboard`](#shipthis-dashboard)
+* [`shipthis game build download BUILD_ID FILE`](#shipthis-game-build-download-build_id-file)
+* [`shipthis game build list`](#shipthis-game-build-list)
 * [`shipthis game create`](#shipthis-game-create)
 * [`shipthis game details`](#shipthis-game-details)
 * [`shipthis game export GAME_ID`](#shipthis-game-export-game_id)
@@ -339,6 +341,63 @@ EXAMPLES
 ```
 
 _See code: [src/commands/dashboard.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/dashboard.ts)_
+
+## `shipthis game build download BUILD_ID FILE`
+
+Downloads the given build artifact to the specified file
+
+```
+USAGE
+  $ shipthis game build download BUILD_ID FILE [-g <value>] [-f]
+
+ARGUMENTS
+  BUILD_ID  The ID of the build to download
+  FILE      Name of the file to output
+
+FLAGS
+  -f, --force           Overwrite the file if it already exists
+  -g, --gameId=<value>  The ID of the game
+
+DESCRIPTION
+  Downloads the given build artifact to the specified file
+
+EXAMPLES
+  $ shipthis game build download output.ipa
+
+  $ shipthis game build download output.apk
+```
+
+_See code: [src/commands/game/build/download.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/build/download.ts)_
+
+## `shipthis game build list`
+
+Lists the builds for successful jobs of a game.
+
+```
+USAGE
+  $ shipthis game build list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
+
+FLAGS
+  -g, --gameId=<value>      The ID of the game
+  -o, --orderBy=<option>    [default: createdAt] The field to order by
+                            <options: createdAt|updatedAt>
+  -p, --pageNumber=<value>  The page number to show (starts at 0)
+  -r, --order=<option>      [default: desc] The order to sort by
+                            <options: asc|desc>
+  -s, --pageSize=<value>    [default: 10] The number of items to show per page
+
+DESCRIPTION
+  Lists the builds for successful jobs of a game.
+
+EXAMPLES
+  $ shipthis game build list
+
+  $ shipthis game build list --gameId 0c179fc4
+
+  $ shipthis game build list --gameId 0c179fc4 --pageSize 20 --pageNumber 1
+```
+
+_See code: [src/commands/game/build/list.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/build/list.ts)_
 
 ## `shipthis game create`
 

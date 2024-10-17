@@ -4,8 +4,8 @@ import {DateTime} from 'luxon'
 
 import {cacheKeys} from '@cli/constants/index.js'
 import {getJob} from '@cli/api/index.js'
-import {Job, JobStatus, ScalarDict} from '@cli/types.js'
-import {getShortDateTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
+import {Job, JobStatus, Platform, ScalarDict} from '@cli/types.js'
+import {getPlatformName, getShortDateTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
 
 export interface JobQueryProps {
   projectId: string
@@ -22,7 +22,7 @@ export function getJobSummary(job: Job, timeNow: DateTime): ScalarDict {
     id: getShortUUID(job.id),
     version: `${semanticVersion} (${buildNumber})`,
     gitInfo: `${gitCommit} (${gitBranch})`,
-    platform: job.type,
+    platform: getPlatformName(job.type),
     status: job.status,
     createdAt: getShortDateTime(job.createdAt),
     runtime: getShortTimeDelta(job.createdAt, inProgress ? timeNow : job.updatedAt),

@@ -3,7 +3,7 @@ import fs from 'fs'
 import readlineSync from 'readline-sync'
 import {promises as readline} from 'node:readline'
 
-import {JobStage, JobStatus, LogLevel, ScalarDict} from '@cli/types.js'
+import {JobStage, JobStatus, LogLevel, Platform, ScalarDict} from '@cli/types.js'
 
 export * from './hooks/index.js'
 export * from './query/index.js'
@@ -106,6 +106,21 @@ export function makeHumanReadable(rawObject: ScalarDict): ScalarDict {
 
   return withLabels as ScalarDict
 }
+
+/**
+ * Converts a platform string to a human-readable name.
+ */
+export function getPlatformName(platform: string): string {
+  switch (platform) {
+    case Platform.IOS:
+      return 'iOS'
+    case Platform.ANDROID:
+      return 'Android'
+    default:
+      throw new Error(`Unknown platform: ${platform}`)
+  }
+}
+
 
 // Used when we don't want keyboard input to be visible
 export async function getMaskedInput(message: string): Promise<string> {

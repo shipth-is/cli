@@ -2,6 +2,7 @@ import axios from 'axios'
 
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
+  Build,
   EditableProject,
   Job,
   PageAndSortParams,
@@ -135,4 +136,13 @@ export async function getSingleUseUrl(destination: string) {
   const url = `${WEB_URL}exchange/?${queryString}`
   // Caller can use the open() function to launch the browser
   return url
+}
+
+
+// Returns a single build - used in the game:build:download command
+export async function getBuild(projectId: string, buildId: string): Promise<Build> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.get(`${API_URL}/projects/${projectId}/builds/${buildId}`, opt)
+  return castObjectDates<Build>(data)
 }

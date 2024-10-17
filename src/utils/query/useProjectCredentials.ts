@@ -15,7 +15,7 @@ import {castArrayObjectDates, getShortDate, getShortUUID} from '@cli/utils/index
 import {getAuthedHeaders} from '@cli/api/index.js'
 
 // Props used for the query itself
-interface FetchProps extends PageAndSortParams {
+export interface FetchProps extends PageAndSortParams {
   projectId: string
 }
 

@@ -41,10 +41,7 @@ export const useJobLogs = (
   props: JobLogsQueryProps,
 ): UseInfiniteQueryResult<InfiniteData<JobLogsQueryResponse>, AxiosError> => {
   const queryResult = useInfiniteQuery<JobLogsQueryResponse, AxiosError>({
-    queryKey: cacheKeys.jobLogs({
-      jobId: props.jobId,
-      projectId: props.projectId,
-    }),
+    queryKey: cacheKeys.jobLogs(props),
     queryFn: async ({pageParam}) => {
       return queryJobLogs({
         ...props,
