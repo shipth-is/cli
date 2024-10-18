@@ -4,7 +4,7 @@ import {DateTime} from 'luxon'
 
 import {cacheKeys} from '@cli/constants/index.js'
 import {getJob} from '@cli/api/index.js'
-import {Job, JobStatus, Platform, ScalarDict} from '@cli/types.js'
+import {Job, JobDetails, JobStatus, ScalarDict} from '@cli/types.js'
 import {getPlatformName, getShortDateTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
 
 export interface JobQueryProps {
@@ -12,16 +12,23 @@ export interface JobQueryProps {
   jobId: string
 }
 
-export function getJobSummary(job: Job, timeNow: DateTime): ScalarDict {
-  const inProgress = ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
-  const semanticVersion = job.details?.semanticVersion || 'N/A'
-  const buildNumber = job.details?.buildNumber || 'N/A'
-  const gitCommit = job.details?.gitCommitHash ? getShortUUID(job.details?.gitCommitHash) : 'N/A'
-  const gitBranch = job.details?.gitBranch || 'N/A'
+export function getJobDetailsSummary(jobDetails: JobDetails): ScalarDict {
+  const semanticVersion = jobDetails?.semanticVersion || 'N/A'
+  const buildNumber = jobDetails?.buildNumber || 'N/A'
+  const gitCommit = jobDetails?.gitCommitHash ? getShortUUID(jobDetails?.gitCommitHash) : 'N/A'
+  const gitBranch = jobDetails?.gitBranch || 'N/A'
   return {
-    id: getShortUUID(job.id),
     version: `${semanticVersion} (${buildNumber})`,
     gitInfo: `${gitCommit} (${gitBranch})`,
+  }
+}
+
+
+export function getJobSummary(job: Job, timeNow: DateTime): ScalarDict {
+  const inProgress = ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
+  return {
+    id: getShortUUID(job.id),
+    ...getJobDetailsSummary(job.details),
     platform: getPlatformName(job.type),
     status: job.status,
     createdAt: getShortDateTime(job.createdAt),

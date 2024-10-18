@@ -73,7 +73,6 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
             <StatusRow label="ID" value={buildSummary.id} />
             <StatusRow label="Platform" value={buildSummary.platform} />
             <StatusRow label="Type" value={buildSummary.type} />
-            <StatusRow label="Uploaded" value={buildSummary.uploadedAt} />
             <StatusRow label="CMD" value={buildSummary.cmd} />
           </Box>
         </Box>

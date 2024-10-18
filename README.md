@@ -362,9 +362,9 @@ DESCRIPTION
   Downloads the given build artifact to the specified file
 
 EXAMPLES
-  $ shipthis game build download output.ipa
+  $ shipthis game build download 7a3f5c92 output.ipa
 
-  $ shipthis game build download output.apk
+  $ shipthis game build download --gameId 0c179fc4 e4b9a3d7 output.apk
 ```
 
 _See code: [src/commands/game/build/download.ts](https://github.com/oclif-cli/shipthis/blob/v0.0.1/src/commands/game/build/download.ts)_

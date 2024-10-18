@@ -4,7 +4,13 @@ import {useQuery, UseQueryResult} from '@tanstack/react-query'
 import {OffsetPaginatedResponse, PageAndSortParams, ScalarDict, Build, Platform} from '@cli/types.js'
 
 import {API_URL, cacheKeys} from '@cli/constants/index.js'
-import {castArrayObjectDates, getPlatformName, getShortDateTime, getShortUUID} from '@cli/utils/index.js'
+import {
+  castArrayObjectDates,
+  getJobDetailsSummary,
+  getPlatformName,
+  getShortDateTime,
+  getShortUUID,
+} from '@cli/utils/index.js'
 import {getAuthedHeaders} from '@cli/api/index.js'
 
 export interface BuildsQueryProps extends PageAndSortParams {
@@ -33,9 +39,9 @@ export function getBuildSummary(build: Build): ScalarDict {
   const filename = build.platform == Platform.IOS ? 'output.ipa' : 'output.apk'
   return {
     id: getShortUUID(build.id),
+    ...getJobDetailsSummary(build.jobDetails),
     platform: getPlatformName(build.platform),
-    type: build.platform == Platform.IOS ? 'IPA' : 'APK',
-    uploadedAt: getShortDateTime(build.updatedAt),
+    createdAt: getShortDateTime(build.createdAt),
     cmd: `$ shipthis game build download ${getShortUUID(build.id)} ${filename}`,
   }
 }

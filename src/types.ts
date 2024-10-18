@@ -176,11 +176,14 @@ export interface ProjectCredential extends UserCredential {
 
 export interface Build {
   id: string
-  jobId: Job['id'],
-  projectId: Project['id'],
-  platform: Platform,
-  details: ScalarDict,
-  createdAt: DateTime,
-  updatedAt: DateTime,
-  url: string,
+  jobId: Job['id']
+  projectId: Project['id']
+  platform: Platform
+  details: ScalarDict
+  createdAt: DateTime
+  updatedAt: DateTime
+  url: string
+  // When we display the list of builds we want to show some details and
+  // we don't want to make a circular reference to the job
+  jobDetails: JobDetails
 }
