@@ -1,17 +1,31 @@
-const USE_LOCAL = process.env.NODE_ENV === 'local'
 
 export const DEFAULT_SHIPPED_FILES_GLOBS = ['**/*']
 export const DEFAULT_IGNORED_FILES_GLOBS = ['.git', '.gitignore', 'shipthis.json', 'shipthis-*.zip']
 
-// TODO: prod
-export const DEV_API_URL = 'https://api.develop.shipthis.cc/api/1.0.0'
-export const LOCAL_API_URL = 'https://easy-reliably-gull.ngrok-free.app/api/1.0.0'
-export const API_URL = USE_LOCAL ? LOCAL_API_URL : DEV_API_URL
+interface Backend {
+  apiUrl: string
+  wsUrl: string
+  webUrl: string
+}
 
-export const DEV_WS_URL = 'wss://ws.develop.shipthis.cc'
-export const LOCAL_WS_URL = 'wss://easy-reliably-gull.ngrok-free.app'
-export const WS_URL = USE_LOCAL ? LOCAL_WS_URL : DEV_WS_URL
+export const BACKENDS: Record<string, Backend> = {
+  dev: {
+    apiUrl: 'https://api.develop.shipthis.cc/api/1.0.0',
+    wsUrl: 'wss://ws.develop.shipthis.cc',
+    webUrl: 'https://develop.shipthis.cc/',
+  },
+  local: {
+    apiUrl: 'https://easy-reliably-gull.ngrok-free.app/api/1.0.0',
+    wsUrl: 'wss://easy-reliably-gull.ngrok-free.app',
+    webUrl: 'https://easy-reliably-gull.ngrok-free.app/',
+  },
+}
 
-export const DEV_WEB_URL = 'https://develop.shipthis.cc/'
-export const LOCAL_WEB_URL = 'https://easy-reliably-gull.ngrok-free.app/'
-export const WEB_URL = USE_LOCAL ? LOCAL_WEB_URL : DEV_WEB_URL
+export const BACKEND_ENV_VAR_NAME = 'SHIPTHIS_BACKEND'
+export const BACKEND_NAME = process.env[BACKEND_ENV_VAR_NAME] || 'dev'
+
+export const API_URL = BACKENDS[BACKEND_NAME].apiUrl
+export const WS_URL = BACKENDS[BACKEND_NAME].wsUrl
+export const WEB_URL = BACKENDS[BACKEND_NAME].webUrl
+
+

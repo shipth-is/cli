@@ -108,9 +108,9 @@ export function makeHumanReadable(rawObject: ScalarDict): ScalarDict {
 }
 
 /**
- * Converts a platform string to a human-readable name.
+ * Converts a platform to a human-readable name.
  */
-export function getPlatformName(platform: string): string {
+export function getPlatformName(platform: Platform): string {
   switch (platform) {
     case Platform.IOS:
       return 'iOS'
@@ -120,7 +120,6 @@ export function getPlatformName(platform: string): string {
       throw new Error(`Unknown platform: ${platform}`)
   }
 }
-
 
 // Used when we don't want keyboard input to be visible
 export async function getMaskedInput(message: string): Promise<string> {

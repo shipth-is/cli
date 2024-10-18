@@ -1,12 +1,23 @@
 import React from 'react'
 
-import {API_URL} from '@cli/constants/index.js'
-import {ListWithTitle} from './ListWithTitle.js'
+import {BACKEND_NAME, API_URL, WS_URL, WEB_URL} from '@cli/constants/index.js'
+import {StatusTable} from './StatusTable.js'
 
 // Shows some debugging when not in production
 export const Environment = () => {
-  const {NODE_ENV} = process.env
   // TODO: will this be set in prod? Maybe in prod it is empty?
-  if (NODE_ENV === 'production') return null
-  return <ListWithTitle title="Environment" listItems={[`NODE_ENV is ${NODE_ENV}`, `API_URL is ${API_URL}`]} />
+  if (process.env.NODE_ENV === 'production') return null
+
+  return (
+    <StatusTable
+      marginTop={1}
+      title="Environment"
+      statuses={{
+        Backend: BACKEND_NAME,
+        API_URL: API_URL,
+        WS_URL: WS_URL,
+        WEB_URL: WEB_URL,
+      }}
+    />
+  )
 }

@@ -17,8 +17,8 @@ export default class GameBuildDownload extends BaseGameCommand<typeof GameBuildD
   static override description = 'Downloads the given build artifact to the specified file'
 
   static override examples = [
-    '<%= config.bin %> <%= command.id %> output.ipa',
-    '<%= config.bin %> <%= command.id %> output.apk',
+    '<%= config.bin %> <%= command.id %> 7a3f5c92 output.ipa',
+    '<%= config.bin %> <%= command.id %> --gameId 0c179fc4 e4b9a3d7 output.apk',
   ]
 
   static override flags = {
