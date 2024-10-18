@@ -113,6 +113,7 @@ export interface Job {
   createdAt: DateTime
   updatedAt: DateTime
   details: JobDetails
+  build?: Build
 }
 
 export enum JobStage {

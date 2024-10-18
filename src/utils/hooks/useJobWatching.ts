@@ -2,7 +2,7 @@ import {Job} from '@cli/types.js'
 import {useJob} from '@cli/utils/query/useJob.js'
 import {useEffect, useState} from 'react'
 import {useWebSocket, WebSocketListener} from './useWebSocket.js'
-import {castObjectDates} from '@cli/utils/dates.js'
+import {castJobDates} from '@cli/utils/dates.js'
 
 export interface JobWatchingProps {
   projectId: string
@@ -24,7 +24,7 @@ export function useJobWatching({projectId, jobId, isWatching, onJobUpdate}: JobW
     getPattern: () => [`project.${projectId}:job:created`, `project.${projectId}:job:updated`],
     eventHandler: async (pattern: string, rawJob: any) => {
       if (rawJob.id !== jobId) return
-      const job = castObjectDates<Job>(rawJob)
+      const job = castJobDates(rawJob)
       setWebsocketJob(job)
       if (onJobUpdate) onJobUpdate(job)
     },

@@ -13,7 +13,7 @@ import {
   UploadDetails,
   UploadTicket,
 } from '@cli/types.js'
-import {castArrayObjectDates, castObjectDates} from '@cli/utils/dates.js'
+import {castArrayObjectDates, castJobDates, castObjectDates} from '@cli/utils/dates.js'
 
 export * from './credentials/index.js'
 
@@ -120,7 +120,8 @@ export async function getJob(jobId: string, projectId: string): Promise<Job> {
   const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.get(`${API_URL}/projects/${projectId}/jobs/${jobId}`, opt)
-  return castObjectDates<Job>(data)
+  // Special handling for dates on the jobs because of the "build"
+  return castJobDates(data)
 }
 
 // Returns a url with an OTP - when visited it authenticates the user
@@ -137,7 +138,6 @@ export async function getSingleUseUrl(destination: string) {
   // Caller can use the open() function to launch the browser
   return url
 }
-
 
 // Returns a single build - used in the game:build:download command
 export async function getBuild(projectId: string, buildId: string): Promise<Build> {

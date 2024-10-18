@@ -35,7 +35,7 @@ export function getBuildSummary(build: Build): ScalarDict {
     id: getShortUUID(build.id),
     platform: getPlatformName(build.platform),
     type: build.platform == Platform.IOS ? 'IPA' : 'APK',
-    createdAt: getShortDateTime(build.createdAt),
+    uploadedAt: getShortDateTime(build.updatedAt),
     cmd: `$ shipthis game build download ${getShortUUID(build.id)} ${filename}`,
   }
 }

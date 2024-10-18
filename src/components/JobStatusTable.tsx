@@ -3,7 +3,7 @@ import {Box, Text} from 'ink'
 import {DateTime} from 'luxon'
 import Spinner from 'ink-spinner'
 
-import {getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
+import {getBuildSummary, getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
 import {Job, JobStatus, Scalar} from '@cli/types.js'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
 import {Title} from './Title.js'
@@ -42,26 +42,40 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
   }, [])
 
   const isJobInProgress = job && ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
-
   const summary = job ? getJobSummary(job, time) : null
+  const buildSummary = job && job.build ? getBuildSummary(job.build) : null
 
   return (
-    <Box flexDirection="column" marginBottom={1}>
-      <Title>Job Details</Title>
-      {isLoading && <Spinner type="dots" />}
-      {summary && job && (
-        <Box flexDirection="column" marginLeft={2}>
-          <StatusRow label="ID" value={summary.id} />
-          <StatusRow label="Name" value={job.project.name} />
-          <Box flexDirection="row">
-            <StatusRowLabel label="Status" />
-            <JobStatusSpinner status={job.status} showSpinner={isWatching && !!isJobInProgress} />
+    <Box flexDirection="row">
+      <Box flexDirection="column" marginBottom={1}>
+        <Title>Job Details</Title>
+        {isLoading && <Spinner type="dots" />}
+        {summary && job && (
+          <Box flexDirection="column" marginLeft={2}>
+            <StatusRow label="ID" value={summary.id} />
+            <StatusRow label="Name" value={job.project.name} />
+            <Box flexDirection="row">
+              <StatusRowLabel label="Status" />
+              <JobStatusSpinner status={job.status} showSpinner={isWatching && !!isJobInProgress} />
+            </Box>
+            <StatusRow label="Version" value={summary.version} />
+            <StatusRow label="Git Info" value={summary.gitInfo} />
+            <StatusRow label="Platform" value={summary.platform} />
+            <StatusRow label="Started At" value={summary.createdAt} />
+            <StatusRow label="Runtime" value={summary.runtime} />
           </Box>
-          <StatusRow label="Version" value={summary.version} />
-          <StatusRow label="Git Info" value={summary.gitInfo} />
-          <StatusRow label="Platform" value={summary.platform} />
-          <StatusRow label="Started At" value={summary.createdAt} />
-          <StatusRow label="Runtime" value={summary.runtime} />
+        )}
+      </Box>
+      {buildSummary && (
+        <Box flexDirection="column" marginBottom={1} marginLeft={3} borderStyle="single" padding={1}>
+          <Title>Build Details</Title>
+          <Box flexDirection="column" marginLeft={2}>
+            <StatusRow label="ID" value={buildSummary.id} />
+            <StatusRow label="Platform" value={buildSummary.platform} />
+            <StatusRow label="Type" value={buildSummary.type} />
+            <StatusRow label="Uploaded" value={buildSummary.uploadedAt} />
+            <StatusRow label="CMD" value={buildSummary.cmd} />
+          </Box>
         </Box>
       )}
     </Box>

@@ -1,3 +1,4 @@
+import {Build, Job} from '@cli/types.js'
 import {DateTime, DateTimeFormatOptions} from 'luxon'
 
 export const DEFAULT_LOCALE = 'en-US'
@@ -25,6 +26,15 @@ export function castObjectDates<T>(apiObject: any, keys = ['createdAt', 'updated
  */
 export function castArrayObjectDates<T>(apiArray: any[], keys = ['createdAt', 'updatedAt']) {
   return apiArray.map((apiObject) => castObjectDates<T>(apiObject, keys))
+}
+
+/**
+ * Converts specific attributes of a Job object into DateTime instances. Note the case for the `build` attribute
+ * TODO: a more generic approach
+ */
+export function castJobDates(jobObject: any) {
+  if (jobObject.build) return castObjectDates<Job>({...jobObject, build: castObjectDates<Build>(jobObject.build)})
+  return castObjectDates<Job>(jobObject)
 }
 
 /**
