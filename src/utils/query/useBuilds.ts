@@ -1,7 +1,7 @@
 import axios, {AxiosError} from 'axios'
 import {useQuery, UseQueryResult} from '@tanstack/react-query'
 
-import {OffsetPaginatedResponse, PageAndSortParams, ScalarDict, Build, Platform} from '@cli/types.js'
+import {OffsetPaginatedResponse, PageAndSortParams, ScalarDict, Build, Platform} from '@cli/types'
 
 import {API_URL, cacheKeys} from '@cli/constants/index.js'
 import {

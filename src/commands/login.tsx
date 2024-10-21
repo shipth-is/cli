@@ -3,7 +3,7 @@ import {Flags} from '@oclif/core'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {API_URL} from '@cli/constants/index.js'
-import {AuthConfig} from '@cli/types.js'
+import {AuthConfig} from '@cli/types'
 import {getInput} from '@cli/utils/index.js'
 
 export default class Login extends BaseCommand<typeof Login> {

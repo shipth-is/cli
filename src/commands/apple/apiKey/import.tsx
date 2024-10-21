@@ -5,7 +5,7 @@ import * as fs from 'fs'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {getUserCredentials, importCredential} from '@cli/api/credentials/index.js'
 import {App, RunWithSpinner} from '@cli/components/index.js'
-import {CredentialsType, Platform} from '@cli/types.js'
+import {CredentialsType, Platform} from '@cli/types'
 
 export default class AppleApiKeyImport extends BaseAuthenticatedCommand<typeof AppleApiKeyImport> {
   static override args = {

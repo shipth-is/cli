@@ -5,7 +5,7 @@ import * as fs from 'fs'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {exportCredential, getProjectCredentials} from '@cli/api/credentials/index.js'
 import {App, RunWithSpinner} from '@cli/components/index.js'
-import {CredentialsType, Platform} from '@cli/types.js'
+import {CredentialsType, Platform} from '@cli/types'
 
 export default class GameIosProfileExport extends BaseGameCommand<typeof GameIosProfileExport> {
   static override args = {

@@ -4,7 +4,7 @@ import {render} from 'ink'
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {getUserCredentials, uploadUserCredentials, UserCertificate_iOS} from '@cli/api/credentials/index.js'
 import {App, RunWithSpinner} from '@cli/components/index.js'
-import {CredentialsType, Platform} from '@cli/types.js'
+import {CredentialsType, Platform} from '@cli/types'
 import {createCertificate, exportCertificate} from '@cli/apple/certificate.js'
 
 export default class AppleCertificateCreate extends BaseAppleCommand<typeof AppleCertificateCreate> {

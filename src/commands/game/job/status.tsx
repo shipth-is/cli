@@ -3,7 +3,7 @@ import {render} from 'ink'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {App, JobLogTail, JobStatusTable, NextSteps} from '@cli/components/index.js'
-import {Job, JobStatus} from '@cli/types.js'
+import {Job, JobStatus} from '@cli/types'
 import {getJob} from '@cli/api/index.js'
 
 export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus> {

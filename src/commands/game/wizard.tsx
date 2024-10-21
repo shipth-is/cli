@@ -3,7 +3,7 @@ import {Flags} from '@oclif/core'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
 import {getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
-import {CredentialsType, Platform} from '@cli/types.js'
+import {CredentialsType, Platform} from '@cli/types'
 
 interface Step {
   command: string

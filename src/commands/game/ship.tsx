@@ -8,7 +8,7 @@ import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
 import {getCWDGitInfo, getFileHash} from '@cli/utils/index.js'
 import {getNewUploadTicket, startJobsFromUpload} from '@cli/api/index.js'
-import {ProjectConfig, UploadDetails} from '@cli/types.js'
+import {ProjectConfig, UploadDetails} from '@cli/types'
 
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
   static override args = {}

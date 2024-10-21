@@ -1,4 +1,4 @@
-import {Job} from '@cli/types.js'
+import {Job} from '@cli/types'
 import {useJob} from '@cli/utils/query/useJob.js'
 import {useEffect, useState} from 'react'
 import {useWebSocket, WebSocketListener} from './useWebSocket.js'

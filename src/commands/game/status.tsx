@@ -4,7 +4,7 @@ import {Flags} from '@oclif/core'
 import {App, NextSteps, StatusTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectPlatformProgress} from '@cli/api/index.js'
-import {Platform, ProjectPlatformProgress} from '@cli/types.js'
+import {Platform, ProjectPlatformProgress} from '@cli/types'
 import {getShortDate, getShortUUID, makeHumanReadable} from '@cli/utils/index.js'
 
 export default class GameStatus extends BaseGameCommand<typeof GameStatus> {

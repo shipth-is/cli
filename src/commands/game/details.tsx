@@ -4,7 +4,7 @@ import {Flags} from '@oclif/core'
 import {App, StatusTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {isValidSemVer} from '@cli/utils/index.js'
-import {GameEngine} from '@cli/types.js'
+import {GameEngine} from '@cli/types'
 
 export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   static override args = {}

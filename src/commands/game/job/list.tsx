@@ -3,7 +3,7 @@ import {Flags} from '@oclif/core'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectJobs} from '@cli/api/index.js'
-import {JobStatus, PageAndSortParams} from '@cli/types.js'
+import {JobStatus, PageAndSortParams} from '@cli/types'
 
 import {App, Table} from '@cli/components/index.js'
 import {getJobStatusColor, getJobSummary} from '@cli/utils/index.js'

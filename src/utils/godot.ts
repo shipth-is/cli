@@ -3,7 +3,7 @@ import fs from 'fs'
 import {parse} from 'ini'
 import merge from 'deepmerge'
 
-import {Platform} from '@cli/types.js'
+import {Platform} from '@cli/types'
 import {CapabilityType} from '@cli/apple/expo.js'
 
 // Check if the current working directory is a Godot game

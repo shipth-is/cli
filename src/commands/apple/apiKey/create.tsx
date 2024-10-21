@@ -4,7 +4,7 @@ import {render} from 'ink'
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {getUserCredentials, uploadUserCredentials, UserKey_iOS} from '@cli/api/credentials/index.js'
 import {App, RunWithSpinner} from '@cli/components/index.js'
-import {CredentialsType, Platform} from '@cli/types.js'
+import {CredentialsType, Platform} from '@cli/types'
 import {ApiKey, ApiKeyType, UserRole} from '@cli/apple/expo.js'
 
 export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiKeyCreate> {

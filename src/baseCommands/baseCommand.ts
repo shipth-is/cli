@@ -4,7 +4,7 @@ import {SerializedCookieJar} from 'tough-cookie'
 import {Command, Flags, Interfaces} from '@oclif/core'
 
 import {Auth} from '@cli/apple/expo.js'
-import {AuthConfig, ProjectConfig} from '@cli/types.js'
+import {AuthConfig, ProjectConfig} from '@cli/types'
 import {setAuthToken} from '@cli/api/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
 

@@ -2,7 +2,7 @@ import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
 import {getMessageColor, getStageColor, getShortTime} from '@cli/utils/index.js'
-import {JobLogEntry} from '@cli/types.js'
+import {JobLogEntry} from '@cli/types'
 import {JobLogTailProps, useJobLogTail} from '@cli/utils/hooks/index.js'
 import {Title} from './Title.js'
 import {TruncatedText} from './TruncatedText.js'

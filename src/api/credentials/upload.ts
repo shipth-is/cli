@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {CredentialsType, Platform} from '@cli/types.js'
+import {CredentialsType, Platform} from '@cli/types'
 
 import {ProjectCertificate_Android, ProjectCertificate_iOS, UserCertificate_iOS, UserKey_iOS} from './types.js'
 

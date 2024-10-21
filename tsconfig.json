@@ -13,7 +13,7 @@
     "skipLibCheck": true,
     "paths": {
       "@cli/*": ["./src/*"],
-      "@cli/types": ["./src/types.d.ts"]
+      "@cli/types": ["./src/types/index.ts"]
     }
   },
   "include": ["./src/**/*", "./tsconfig.json"]

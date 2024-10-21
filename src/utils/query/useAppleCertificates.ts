@@ -4,7 +4,7 @@ import {useQuery, UseQueryResult} from '@tanstack/react-query'
 import type {Certificate as Cert} from '@expo/apple-utils'
 
 import {Certificate, CertificateType} from '@cli/apple/expo.js'
-import {ScalarDict, UserCredential} from '@cli/types.js'
+import {ScalarDict, UserCredential} from '@cli/types'
 import {getShortUUID, getShortDate} from '@cli/utils/index.js'
 
 export interface AppleCertificatesQueryProps {

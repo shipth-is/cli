@@ -3,7 +3,7 @@ import {Flags} from '@oclif/core'
 
 import {App, AppleProfilesTable, NextSteps, ProjectCredentialsTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {CredentialsType, Platform} from '@cli/types.js'
+import {CredentialsType, Platform} from '@cli/types'
 
 export default class GameIosProfileStatus extends BaseGameCommand<typeof GameIosProfileStatus> {
   static override args = {}

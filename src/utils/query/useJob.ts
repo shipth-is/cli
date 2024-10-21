@@ -4,7 +4,7 @@ import {DateTime} from 'luxon'
 
 import {cacheKeys} from '@cli/constants/index.js'
 import {getJob} from '@cli/api/index.js'
-import {Job, JobDetails, JobStatus, ScalarDict} from '@cli/types.js'
+import {Job, JobDetails, JobStatus, ScalarDict} from '@cli/types'
 import {getPlatformName, getShortDateTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
 
 export interface JobQueryProps {

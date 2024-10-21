@@ -2,7 +2,7 @@
 // From https://github.com/maticzav/ink-table/issues/268 and modified
 import React from 'react'
 import {Box, Text, TextProps} from 'ink'
-import {Scalar, ScalarDict} from '@cli/types.js'
+import {Scalar, ScalarDict} from '@cli/types'
 
 type Column = {
   key: string

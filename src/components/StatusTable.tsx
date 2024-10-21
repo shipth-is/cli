@@ -1,8 +1,7 @@
 import React from 'react'
 import {Box, Text, TextProps} from 'ink'
 
-import {Job, JobStatus, Scalar} from '@cli/types.js'
-import {ScalarDict} from '@cli/types.js'
+import {Scalar, ScalarDict} from '@cli/types'
 import {Title} from './Title.js'
 
 export interface StatusTableProps extends React.ComponentPropsWithoutRef<typeof Box> {

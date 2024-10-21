@@ -1,7 +1,7 @@
 import {Command, Flags} from '@oclif/core'
 import {BaseAuthenticatedCommand} from './baseAuthenticatedCommand.js'
 import {getProject, updateProject} from '@cli/api/index.js'
-import {EditableProject, Project, ProjectCredential} from '@cli/types.js'
+import {EditableProject, Project, ProjectCredential} from '@cli/types'
 import {getProjectCredentials} from '@cli/api/credentials/index.js'
 
 export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuthenticatedCommand<T> {

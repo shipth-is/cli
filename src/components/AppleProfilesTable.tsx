@@ -1,7 +1,7 @@
 import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {CredentialsType, Platform, Project} from '@cli/types.js'
+import {CredentialsType, Platform, Project} from '@cli/types'
 import {
   useProjectCredentials,
   getAppleProfileSummary,

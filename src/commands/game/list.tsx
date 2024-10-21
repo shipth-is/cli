@@ -2,7 +2,7 @@ import {render, Box, Text} from 'ink'
 import {Flags} from '@oclif/core'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {PageAndSortParams} from '@cli/types.js'
+import {PageAndSortParams} from '@cli/types'
 import {getProjects} from '@cli/api/index.js'
 
 import {App, Table} from '@cli/components/index.js'

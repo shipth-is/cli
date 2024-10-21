@@ -2,7 +2,7 @@ import {DateTime} from 'luxon'
 import {useQuery, UseQueryResult} from '@tanstack/react-query'
 
 import {ApiKey} from '@cli/apple/expo.js'
-import {ScalarDict, UserCredential} from '@cli/types.js'
+import {ScalarDict, UserCredential} from '@cli/types'
 import {getShortDate} from '@cli/utils/dates.js'
 
 export interface AppleApiKeysQueryProps {

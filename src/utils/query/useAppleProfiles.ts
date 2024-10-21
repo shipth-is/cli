@@ -5,7 +5,7 @@ import {useQuery, UseQueryResult} from '@tanstack/react-query'
 import {Profile, ProfileType} from '@cli/apple/expo.js'
 import {getShortDate} from '@cli/utils/index.js'
 
-import {Project, ProjectCredential, ScalarDict} from '@cli/types.js'
+import {Project, ProjectCredential, ScalarDict} from '@cli/types'
 
 export interface AppleProfilesQueryProps {
   ctx: any

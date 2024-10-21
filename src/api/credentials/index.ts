@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/constants/index.js'
-import {ProjectCredential, UserCredential} from '@cli/types.js'
+import {ProjectCredential, UserCredential} from '@cli/types'
 import {castArrayObjectDates} from '@cli/utils/dates.js'
 
 export * from './export.js'

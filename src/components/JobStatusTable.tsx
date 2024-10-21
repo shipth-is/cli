@@ -4,7 +4,7 @@ import {DateTime} from 'luxon'
 import Spinner from 'ink-spinner'
 
 import {getBuildSummary, getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
-import {Job, JobStatus, Scalar} from '@cli/types.js'
+import {Job, JobStatus, Scalar} from '@cli/types'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
 import {Title} from './Title.js'
 import {StatusRow, StatusRowLabel} from './StatusTable.js'

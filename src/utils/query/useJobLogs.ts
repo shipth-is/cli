@@ -5,7 +5,7 @@ import {castArrayObjectDates} from '@cli/utils/index.js'
 import {cacheKeys} from '@cli/constants/cacheKeys.js'
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/constants/index.js'
-import {CursorPaginatedResponse, JobLogEntry} from '@cli/types.js'
+import {CursorPaginatedResponse, JobLogEntry} from '@cli/types'
 
 export interface JobLogsQueryProps {
   projectId: string

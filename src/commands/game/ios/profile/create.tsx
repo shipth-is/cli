@@ -18,7 +18,7 @@ import {
   uploadProjectCredentials,
   UserCertificate_iOS,
 } from '@cli/api/index.js'
-import {CredentialsType, Platform} from '@cli/types.js'
+import {CredentialsType, Platform} from '@cli/types'
 import {fetchBundleId} from '@cli/utils/index.js'
 
 export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIosProfileCreate> {

@@ -3,7 +3,7 @@ import fs from 'fs'
 import readlineSync from 'readline-sync'
 import {promises as readline} from 'node:readline'
 
-import {JobStage, JobStatus, LogLevel, Platform, ScalarDict} from '@cli/types.js'
+import {JobStage, JobStatus, LogLevel, Platform, ScalarDict} from '@cli/types'
 
 export * from './hooks/index.js'
 export * from './query/index.js'

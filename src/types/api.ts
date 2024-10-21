@@ -1,4 +1,3 @@
-import {SerializedCookieJar} from 'tough-cookie'
 import {DateTime} from 'luxon'
 
 export type Scalar = string | number | boolean | null | undefined
@@ -15,9 +14,9 @@ export interface Self {
   jwt: string
 }
 
-export interface AuthConfig {
-  shipThisUser?: Self
-  appleCookies?: SerializedCookieJar
+export enum Platform {
+  IOS = 'IOS',
+  ANDROID = 'ANDROID',
 }
 
 export enum GameEngine {
@@ -46,31 +45,12 @@ export interface Project extends EditableProject {
   updatedAt: DateTime
 }
 
-// Structure of the JSON project config file
-export interface ProjectConfig {
-  project?: Project
-  shippedFilesGlobs?: string[]
-  ignoredFilesGlobs?: string[]
-}
-
-export enum Platform {
-  IOS = 'IOS',
-  ANDROID = 'ANDROID',
-}
-
 export interface ProjectPlatformProgress {
   platform: string
   hasBundleSet: boolean
   hasCredentialsForPlatform: boolean
   hasApiKeyForPlatform: boolean
   hasSuccessfulJobForPlatform: boolean
-}
-
-export interface PageAndSortParams {
-  pageNumber?: number
-  pageSize?: number
-  order?: 'asc' | 'desc'
-  orderBy?: 'createdAt' | 'updatedAt'
 }
 
 export interface UploadTicket {
@@ -186,4 +166,29 @@ export interface Build {
   // When we display the list of builds we want to show some details and
   // we don't want to make a circular reference to the job
   jobDetails: JobDetails
+}
+
+// URL params received by the Google Redirect destination
+export interface GoogleOAuthRedirectResponse {
+  code?: string
+  error?: string
+}
+
+// What we receive from /me/google/connect - tells us which page to redirect to
+export interface GoogleOAuthPersistTokenResponse {
+  projectId: string
+}
+
+// Response from /auth/google
+export interface GoogleAuthResponse {
+  url: string
+}
+
+export interface AndroidSetupStatus {
+  hasSignedIn: boolean
+  hasProject: boolean
+  hasServiceAccount: boolean
+  hasKey: boolean
+  hasUploadedKey: boolean
+  hasEnabledApi: boolean
 }

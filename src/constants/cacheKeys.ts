@@ -1,4 +1,4 @@
-import {PageAndSortParams} from '@cli/types.js'
+import {PageAndSortParams} from '@cli/types'
 import {BuildsQueryProps} from '@cli/utils/query/useBuilds.js'
 import {JobQueryProps} from '@cli/utils/query/useJob.js'
 import {JobLogsQueryProps} from '@cli/utils/query/useJobLogs.js'

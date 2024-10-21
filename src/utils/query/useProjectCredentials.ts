@@ -8,7 +8,7 @@ import {
   Platform,
   ScalarDict,
   ProjectCredential,
-} from '@cli/types.js'
+} from '@cli/types'
 
 import {API_URL, cacheKeys} from '@cli/constants/index.js'
 import {castArrayObjectDates, getShortDate, getShortUUID} from '@cli/utils/index.js'

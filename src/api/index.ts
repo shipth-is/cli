@@ -12,7 +12,7 @@ import {
   ProjectPlatformProgress,
   UploadDetails,
   UploadTicket,
-} from '@cli/types.js'
+} from '@cli/types'
 import {castArrayObjectDates, castJobDates, castObjectDates} from '@cli/utils/dates.js'
 
 export * from './credentials/index.js'

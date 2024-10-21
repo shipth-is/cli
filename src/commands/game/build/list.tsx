@@ -3,7 +3,7 @@ import {Flags} from '@oclif/core'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 
-import {PageAndSortParams} from '@cli/types.js'
+import {PageAndSortParams} from '@cli/types'
 
 import {App, BuildsTable} from '@cli/components/index.js'
 

@@ -5,7 +5,7 @@ import {createProject} from '@cli/api/index.js'
 
 import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
 import {getGodotProjectName, getGodotVersion, isCWDGodotGame} from '@cli/utils/godot.js'
-import {GameEngine, ProjectDetails} from '@cli/types.js'
+import {GameEngine, ProjectDetails} from '@cli/types'
 import {getInput} from '@cli/utils/index.js'
 
 export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCreate> {

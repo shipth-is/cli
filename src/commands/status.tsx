@@ -3,7 +3,7 @@ import {render} from 'ink'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {App, Environment, NextSteps, StatusTable} from '@cli/components/index.js'
 import {isCWDGitRepo, isCWDGodotGame} from '@cli/utils/index.js'
-import {AuthConfig} from '@cli/types.js'
+import {AuthConfig} from '@cli/types'
 
 export default class Status extends BaseCommand<typeof Status> {
   static override args = {}

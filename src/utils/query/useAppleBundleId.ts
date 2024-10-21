@@ -4,7 +4,7 @@ import type {BundleId} from '@expo/apple-utils'
 import {BundleId as AppleBundleId, CapabilityType} from '@cli/apple/expo.js'
 
 import {getGodotProjectCapabilities, GODOT_CAPABILITIES} from '../godot.js'
-import {Platform, ScalarDict} from '@cli/types.js'
+import {Platform, ScalarDict} from '@cli/types'
 
 export interface AppleBundleIdQueryProps {
   ctx: any
