@@ -54,7 +54,8 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
       return otp
     }
 
-    const authState = await getNewAuthState(appleEmail, applePassword, get2FA)
+    //const authState = await getNewAuthState(appleEmail, applePassword, get2FA)
+    const authState = await getNewAuthState(appleEmail, applePassword)
 
     if (!authState) {
       throw new Error('Failed to authenticate with Apple')

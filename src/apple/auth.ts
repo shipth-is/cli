@@ -98,7 +98,18 @@ class DefaultConfig implements Config.IStaticConfig {
   version = '1.0.0'
 }
 
-export async function getNewAuthState(
+// TODO: re-implement our own auth? or continue using expo?
+// TODO: test this again
+export async function getNewAuthState(username: string, password: string): Promise<any> {
+  const authState = await Auth.loginAsync({
+    username,
+    password,
+  })
+
+  return authState
+}
+
+export async function old_getNewAuthState(
   username: string,
   password: string,
   requestOtp: () => Promise<string>,
