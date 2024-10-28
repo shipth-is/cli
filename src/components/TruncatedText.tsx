@@ -30,7 +30,7 @@ export const TruncatedText = ({children, wrap, ...textPropsWithoutWrap}: Props) 
 
   return (
     <Box ref={ref as any}>
-      <Text {...textPropsWithoutWrap}>{getTruncated(children)}</Text>
+      <Text {...textPropsWithoutWrap}>{getTruncated(children) + '\x1b[0m'}</Text>
     </Box>
   )
 }
