@@ -10,6 +10,7 @@ import {
   Project,
   ProjectDetails,
   ProjectPlatformProgress,
+  Self,
   UploadDetails,
   UploadTicket,
 } from '@cli/types'
@@ -145,4 +146,20 @@ export async function getBuild(projectId: string, buildId: string): Promise<Buil
   const opt = {headers}
   const {data} = await axios.get(`${API_URL}/projects/${projectId}/builds/${buildId}`, opt)
   return castObjectDates<Build>(data)
+}
+
+// Returns the current user
+export async function getSelf(): Promise<Self> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.get(`${API_URL}/me`, opt)
+  return castObjectDates<Self>(data)
+}
+
+// Marks the current user as accepting the T&cs and privacy
+export async function acceptTerms(): Promise<Self> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.post(`${API_URL}/me/acceptTerms`, {}, opt)
+  return castObjectDates<Self>(data)
 }

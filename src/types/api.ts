@@ -6,11 +6,19 @@ export type ScalarDict = {
   [key: string]: Scalar
 }
 
+export interface UserDetails {
+  hasAcceptedTerms?: boolean
+}
+
 export interface Self {
   id: string
   email: string
+  details: UserDetails
   createdAt: DateTime
   updatedAt: DateTime
+}
+
+export type SelfWithJWT = Self & {
   jwt: string
 }
 

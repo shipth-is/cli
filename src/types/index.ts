@@ -1,10 +1,10 @@
 import {SerializedCookieJar} from 'tough-cookie'
 
-import {Project, Self} from './api.js'
+import {Project, SelfWithJWT} from './api.js'
 
 // Structure of the auth (~/.shipthis.auth.json) file
 export interface AuthConfig {
-  shipThisUser?: Self
+  shipThisUser?: SelfWithJWT
   appleCookies?: SerializedCookieJar
 }
 

@@ -5,6 +5,7 @@ import {BaseCommand} from '@cli/baseCommands/index.js'
 import {API_URL} from '@cli/constants/index.js'
 import {AuthConfig} from '@cli/types'
 import {getInput} from '@cli/utils/index.js'
+import {acceptTerms} from '@cli/api/index.js'
 
 export default class Login extends BaseCommand<typeof Login> {
   static override args = {}
@@ -56,6 +57,18 @@ export default class Login extends BaseCommand<typeof Login> {
     const otp = await getOTP()
 
     const {data: shipThisUser} = await axios.post(`${API_URL}/auth/email/verify`, {email, otp})
+
+    const getAcceptedTermsResponse = async (): Promise<boolean> => {
+      const accepted = await getInput('Do you accept the terms and conditions? (yes/no): ')
+      if (!accepted) throw new Error('Terms and conditions are required')
+      return accepted === 'yes'
+    }
+
+    if (!shipThisUser.details?.hasAcceptedTerms) {
+      const didAccept = await getAcceptedTermsResponse()
+      if (!didAccept) throw new Error('You must accept the terms and conditions to continue')
+      await acceptTerms()
+    }
 
     await this.setAuthConfig({shipThisUser})
 
