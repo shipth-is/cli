@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "author": "Hello Invent Ltd",
   "bin": {
-    "shipthis": "./dist/bin/run.js"
+    "shipthis": "./bin/run.js"
   },
   "bugs": "https://gitlab.com/shipthis.cc/shipthis-cli/-/issues",
   "dependencies": {
