@@ -38,6 +38,7 @@ USAGE
 * [`shipthis apple certificate export FILE`](#shipthis-apple-certificate-export-file)
 * [`shipthis apple certificate import FILE`](#shipthis-apple-certificate-import-file)
 * [`shipthis apple certificate status`](#shipthis-apple-certificate-status)
+* [`shipthis apple login`](#shipthis-apple-login)
 * [`shipthis apple status`](#shipthis-apple-status)
 * [`shipthis dashboard`](#shipthis-dashboard)
 * [`shipthis game build download BUILD_ID FILE`](#shipthis-game-build-download-build_id-file)
@@ -249,6 +250,30 @@ EXAMPLES
 ```
 
 _See code: [src/commands/apple/certificate/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.4/src/commands/apple/certificate/status.ts)_
+
+## `shipthis apple login`
+
+Authenticate with Apple - saves the session to the auth file
+
+```
+USAGE
+  $ shipthis apple login [-q] [-f] [-e <value>]
+
+FLAGS
+  -e, --appleEmail=<value>  Your Apple email address
+  -f, --force
+  -q, --quiet               Avoid output except for interactions and errors
+
+DESCRIPTION
+  Authenticate with Apple - saves the session to the auth file
+
+EXAMPLES
+  $ shipthis apple login
+
+  $ shipthis apple login --force --appleEmail me@email.nowhere
+```
+
+_See code: [src/commands/apple/login.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.4/src/commands/apple/login.ts)_
 
 ## `shipthis apple status`
 
