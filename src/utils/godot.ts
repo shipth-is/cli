@@ -85,7 +85,7 @@ export function getGodotVersion(): string {
     if (!match) throw new Error("Couldn't find Godot version in project.godot")
     return match[1]
   }
-  return '3.X'
+  return '3.6'
 }
 
 // TODO: any differences in the presets between v 3.X and 4.X?
