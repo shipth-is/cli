@@ -21,7 +21,7 @@ $ npm install -g shipthis
 $ shipthis COMMAND
 running command...
 $ shipthis (--version)
-shipthis/0.0.7 linux-x64 node-v20.17.0
+shipthis/0.0.8 linux-x64 node-v20.17.0
 $ shipthis --help [COMMAND]
 USAGE
   $ shipthis COMMAND
@@ -87,7 +87,7 @@ EXAMPLES
   $ shipthis apple apiKey create --force
 ```
 
-_See code: [src/commands/apple/apiKey/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/apiKey/create.ts)_
+_See code: [src/commands/apple/apiKey/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/apiKey/create.ts)_
 
 ## `shipthis apple apiKey export FILE`
 
@@ -110,7 +110,7 @@ EXAMPLES
   $ shipthis apple apiKey export userApiKey.zip
 ```
 
-_See code: [src/commands/apple/apiKey/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/apiKey/export.ts)_
+_See code: [src/commands/apple/apiKey/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/apiKey/export.ts)_
 
 ## `shipthis apple apiKey import FILE`
 
@@ -133,7 +133,7 @@ EXAMPLES
   $ shipthis apple apiKey import userApiKey.zip
 ```
 
-_See code: [src/commands/apple/apiKey/import.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/apiKey/import.ts)_
+_See code: [src/commands/apple/apiKey/import.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/apiKey/import.ts)_
 
 ## `shipthis apple apiKey status`
 
@@ -156,7 +156,7 @@ EXAMPLES
   $ shipthis apple apiKey status --noAppleAuth
 ```
 
-_See code: [src/commands/apple/apiKey/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/apiKey/status.ts)_
+_See code: [src/commands/apple/apiKey/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/apiKey/status.ts)_
 
 ## `shipthis apple certificate create`
 
@@ -180,7 +180,7 @@ EXAMPLES
   $ shipthis apple certificate create --force
 ```
 
-_See code: [src/commands/apple/certificate/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/certificate/create.ts)_
+_See code: [src/commands/apple/certificate/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/certificate/create.ts)_
 
 ## `shipthis apple certificate export FILE`
 
@@ -203,7 +203,7 @@ EXAMPLES
   $ shipthis apple certificate export userCert.zip
 ```
 
-_See code: [src/commands/apple/certificate/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/certificate/export.ts)_
+_See code: [src/commands/apple/certificate/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/certificate/export.ts)_
 
 ## `shipthis apple certificate import FILE`
 
@@ -226,7 +226,7 @@ EXAMPLES
   $ shipthis apple certificate import userCert.zip
 ```
 
-_See code: [src/commands/apple/certificate/import.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/certificate/import.ts)_
+_See code: [src/commands/apple/certificate/import.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/certificate/import.ts)_
 
 ## `shipthis apple certificate status`
 
@@ -249,7 +249,7 @@ EXAMPLES
   $ shipthis apple certificate status --noAppleAuth
 ```
 
-_See code: [src/commands/apple/certificate/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/certificate/status.ts)_
+_See code: [src/commands/apple/certificate/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/certificate/status.ts)_
 
 ## `shipthis apple login`
 
@@ -273,7 +273,7 @@ EXAMPLES
   $ shipthis apple login --force --appleEmail me@email.nowhere
 ```
 
-_See code: [src/commands/apple/login.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/login.ts)_
+_See code: [src/commands/apple/login.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/login.ts)_
 
 ## `shipthis apple status`
 
@@ -290,7 +290,7 @@ EXAMPLES
   $ shipthis apple status
 ```
 
-_See code: [src/commands/apple/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/apple/status.ts)_
+_See code: [src/commands/apple/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/status.ts)_
 
 ## `shipthis dashboard`
 
@@ -307,7 +307,7 @@ EXAMPLES
   $ shipthis dashboard
 ```
 
-_See code: [src/commands/dashboard.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/dashboard.ts)_
+_See code: [src/commands/dashboard.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/dashboard.ts)_
 
 ## `shipthis game build download BUILD_ID FILE`
 
@@ -334,7 +334,7 @@ EXAMPLES
   $ shipthis game build download --gameId 0c179fc4 e4b9a3d7 output.apk
 ```
 
-_See code: [src/commands/game/build/download.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/build/download.ts)_
+_See code: [src/commands/game/build/download.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/build/download.ts)_
 
 ## `shipthis game build list`
 
@@ -364,7 +364,7 @@ EXAMPLES
   $ shipthis game build list --gameId 0c179fc4 --pageSize 20 --pageNumber 1
 ```
 
-_See code: [src/commands/game/build/list.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/build/list.ts)_
+_See code: [src/commands/game/build/list.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/build/list.ts)_
 
 ## `shipthis game create`
 
@@ -386,7 +386,7 @@ EXAMPLES
   $ shipthis game create
 ```
 
-_See code: [src/commands/game/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/create.ts)_
+_See code: [src/commands/game/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/create.ts)_
 
 ## `shipthis game details`
 
@@ -420,7 +420,7 @@ EXAMPLES
   $ shipthis game details --gameEngine godot --gameEngineVersion 4.2 --force
 ```
 
-_See code: [src/commands/game/details.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/details.ts)_
+_See code: [src/commands/game/details.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/details.ts)_
 
 ## `shipthis game export GAME_ID`
 
@@ -445,7 +445,7 @@ EXAMPLES
   $ shipthis game export abcd1234 --force
 ```
 
-_See code: [src/commands/game/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/export.ts)_
+_See code: [src/commands/game/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/export.ts)_
 
 ## `shipthis game ios app addTester`
 
@@ -468,7 +468,7 @@ EXAMPLES
   $ shipthis game ios app addTester
 ```
 
-_See code: [src/commands/game/ios/app/addTester.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ios/app/addTester.ts)_
+_See code: [src/commands/game/ios/app/addTester.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/app/addTester.ts)_
 
 ## `shipthis game ios app create`
 
@@ -493,7 +493,7 @@ EXAMPLES
   $ shipthis game ios app create
 ```
 
-_See code: [src/commands/game/ios/app/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ios/app/create.ts)_
+_See code: [src/commands/game/ios/app/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/app/create.ts)_
 
 ## `shipthis game ios app status`
 
@@ -513,7 +513,7 @@ EXAMPLES
   $ shipthis game ios app status
 ```
 
-_See code: [src/commands/game/ios/app/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ios/app/status.ts)_
+_See code: [src/commands/game/ios/app/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/app/status.ts)_
 
 ## `shipthis game ios app sync`
 
@@ -536,7 +536,7 @@ EXAMPLES
   $ shipthis game ios app sync
 ```
 
-_See code: [src/commands/game/ios/app/sync.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ios/app/sync.ts)_
+_See code: [src/commands/game/ios/app/sync.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/app/sync.ts)_
 
 ## `shipthis game ios profile create`
 
@@ -559,7 +559,7 @@ EXAMPLES
   $ shipthis game ios profile create
 ```
 
-_See code: [src/commands/game/ios/profile/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ios/profile/create.ts)_
+_See code: [src/commands/game/ios/profile/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/profile/create.ts)_
 
 ## `shipthis game ios profile export FILE`
 
@@ -583,7 +583,7 @@ EXAMPLES
   $ shipthis game ios profile export userProfile.zip
 ```
 
-_See code: [src/commands/game/ios/profile/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ios/profile/export.ts)_
+_See code: [src/commands/game/ios/profile/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/profile/export.ts)_
 
 ## `shipthis game ios profile import FILE`
 
@@ -607,7 +607,7 @@ EXAMPLES
   $ shipthis game ios profile import profile.zip
 ```
 
-_See code: [src/commands/game/ios/profile/import.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ios/profile/import.ts)_
+_See code: [src/commands/game/ios/profile/import.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/profile/import.ts)_
 
 ## `shipthis game ios profile status`
 
@@ -629,7 +629,7 @@ EXAMPLES
   $ shipthis game ios profile status
 ```
 
-_See code: [src/commands/game/ios/profile/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ios/profile/status.ts)_
+_See code: [src/commands/game/ios/profile/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/profile/status.ts)_
 
 ## `shipthis game ios status`
 
@@ -651,7 +651,7 @@ EXAMPLES
   $ shipthis game ios status --gameId 0c179fc4
 ```
 
-_See code: [src/commands/game/ios/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ios/status.ts)_
+_See code: [src/commands/game/ios/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/status.ts)_
 
 ## `shipthis game job list`
 
@@ -679,7 +679,7 @@ EXAMPLES
   $ shipthis game job list --gameId 0c179fc4
 ```
 
-_See code: [src/commands/game/job/list.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/job/list.ts)_
+_See code: [src/commands/game/job/list.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/job/list.ts)_
 
 ## `shipthis game job status JOB_ID`
 
@@ -708,7 +708,7 @@ EXAMPLES
   $ shipthis game job status --gameId 0c179fc4 --lines 20 --follow 4d32239e
 ```
 
-_See code: [src/commands/game/job/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/job/status.ts)_
+_See code: [src/commands/game/job/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/job/status.ts)_
 
 ## `shipthis game list`
 
@@ -733,7 +733,7 @@ EXAMPLES
   $ shipthis game list
 ```
 
-_See code: [src/commands/game/list.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/list.ts)_
+_See code: [src/commands/game/list.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/list.ts)_
 
 ## `shipthis game ship`
 
@@ -753,7 +753,7 @@ EXAMPLES
   $ shipthis game ship
 ```
 
-_See code: [src/commands/game/ship.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/ship.ts)_
+_See code: [src/commands/game/ship.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ship.ts)_
 
 ## `shipthis game status`
 
@@ -775,7 +775,7 @@ EXAMPLES
   $ shipthis game status --gameId 0c179fc4
 ```
 
-_See code: [src/commands/game/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/status.ts)_
+_See code: [src/commands/game/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/status.ts)_
 
 ## `shipthis game wizard`
 
@@ -797,7 +797,7 @@ EXAMPLES
   $ shipthis game wizard
 ```
 
-_See code: [src/commands/game/wizard.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/game/wizard.ts)_
+_See code: [src/commands/game/wizard.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/wizard.ts)_
 
 ## `shipthis help [COMMAND]`
 
@@ -840,7 +840,7 @@ EXAMPLES
   $ shipthis login --force --email me@email.nowhere
 ```
 
-_See code: [src/commands/login.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/login.ts)_
+_See code: [src/commands/login.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/login.ts)_
 
 ## `shipthis status`
 
@@ -857,5 +857,5 @@ EXAMPLES
   $ shipthis status
 ```
 
-_See code: [src/commands/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.7/src/commands/status.ts)_
+_See code: [src/commands/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/status.ts)_
 <!-- commandsstop -->
