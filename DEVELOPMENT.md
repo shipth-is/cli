@@ -42,7 +42,7 @@ shipthis game ship
 Done manually at the moment because we have 2FA on the npm account.
 
 ```bash
-npm version patch
 npm run build
+npm version patch
 npm publish
 ```
