@@ -75,7 +75,7 @@
     "/dist",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://gitlab.com/shipthis.cc/shipthis-cli",
+  "homepage": "https://shipthis.cc",
   "keywords": [
     "oclif"
   ],
