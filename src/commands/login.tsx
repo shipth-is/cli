@@ -2,10 +2,13 @@ import axios from 'axios'
 import {Flags} from '@oclif/core'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
-import {API_URL} from '@cli/constants/index.js'
+import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {AuthConfig} from '@cli/types'
 import {getInput} from '@cli/utils/index.js'
-import {acceptTerms} from '@cli/api/index.js'
+import {acceptTerms, setAuthToken} from '@cli/api/index.js'
+
+const TERMS_URL = new URL('/terms', WEB_URL).href
+const PRIVACY_URL = new URL('/privacy', WEB_URL).href
 
 export default class Login extends BaseCommand<typeof Login> {
   static override args = {}
@@ -59,20 +62,26 @@ export default class Login extends BaseCommand<typeof Login> {
     const {data: shipThisUser} = await axios.post(`${API_URL}/auth/email/verify`, {email, otp})
 
     const getAcceptedTermsResponse = async (): Promise<boolean> => {
-      const accepted = await getInput('Do you accept the terms and conditions? (yes/no): ')
-      if (!accepted) throw new Error('Terms and conditions are required')
-      return accepted === 'yes'
-    }
-
-    if (!shipThisUser.details?.hasAcceptedTerms) {
-      const didAccept = await getAcceptedTermsResponse()
-      if (!didAccept) throw new Error('You must accept the terms and conditions to continue')
-      await acceptTerms()
+      console.log(
+        `Please review the following documents:\n\n${[
+          `- Privacy Policy: ${PRIVACY_URL}`,
+          `- Terms and Conditions: ${TERMS_URL}`,
+        ].join('\n')}\n`,
+      )
+      const accepted = await getInput('Do you accept the terms of these documents? (yes/no): ')
+      const answer = accepted.toLowerCase().trim().substring(0, 1)
+      return answer === 'y'
     }
 
     await this.setAuthConfig({shipThisUser})
-
+    setAuthToken(shipThisUser.jwt) // Apply the auth token - this is done in the baseCommand.init method
     this.log('You are now logged in as', shipThisUser.email)
+
+    if (!shipThisUser.details?.hasAcceptedTerms) {
+      const didAccept = await getAcceptedTermsResponse()
+      if (!didAccept) throw new Error('You must accept the terms to continue')
+      await acceptTerms()
+    }
 
     // Run the status command
     await this.config.runCommand('status')
