@@ -26,7 +26,7 @@ export default class Status extends BaseCommand<typeof Status> {
 
     if (!isLoggedIn) steps.push('$ shipthis login --email my.email@address.nowhere')
     if (!isGodotGame) steps.push('Run this command in a Godot project directory')
-    if (!isShipThisConfigured) steps.push('$ shipthis game create --name "My Awesome Game"')
+    if (!isShipThisConfigured) steps.push('$ shipthis game wizard --platform ios')
 
     if (steps.length === 0) steps = ['$ shipthis game status']
 
