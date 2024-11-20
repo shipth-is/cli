@@ -22,5 +22,3 @@ FLAGS
 DESCRIPTION
   Display help for shipthis.
 ```
-
-_See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v6.2.10/src/commands/help.ts)_

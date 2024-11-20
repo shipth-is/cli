@@ -32,8 +32,6 @@ EXAMPLES
   $ shipthis game job list --gameId 0c179fc4
 ```
 
-_See code: [src/commands/game/job/list.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/job/list.ts)_
-
 ## `shipthis game job status JOB_ID`
 
 Shows the real-time status of a job.
@@ -60,5 +58,3 @@ EXAMPLES
 
   $ shipthis game job status --gameId 0c179fc4 --lines 20 --follow 4d32239e
 ```
-
-_See code: [src/commands/game/job/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/job/status.ts)_

@@ -34,8 +34,6 @@ EXAMPLES
   $ shipthis game ios app addTester
 ```
 
-_See code: [src/commands/game/ios/app/addTester.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/app/addTester.ts)_
-
 ## `shipthis game ios app create`
 
 Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
@@ -59,8 +57,6 @@ EXAMPLES
   $ shipthis game ios app create
 ```
 
-_See code: [src/commands/game/ios/app/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/app/create.ts)_
-
 ## `shipthis game ios app status`
 
 Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
@@ -78,8 +74,6 @@ DESCRIPTION
 EXAMPLES
   $ shipthis game ios app status
 ```
-
-_See code: [src/commands/game/ios/app/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/app/status.ts)_
 
 ## `shipthis game ios app sync`
 
@@ -102,8 +96,6 @@ EXAMPLES
   $ shipthis game ios app sync
 ```
 
-_See code: [src/commands/game/ios/app/sync.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/app/sync.ts)_
-
 ## `shipthis game ios profile create`
 
 Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
@@ -124,8 +116,6 @@ DESCRIPTION
 EXAMPLES
   $ shipthis game ios profile create
 ```
-
-_See code: [src/commands/game/ios/profile/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/profile/create.ts)_
 
 ## `shipthis game ios profile export FILE`
 
@@ -149,8 +139,6 @@ EXAMPLES
   $ shipthis game ios profile export userProfile.zip
 ```
 
-_See code: [src/commands/game/ios/profile/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/profile/export.ts)_
-
 ## `shipthis game ios profile import FILE`
 
 Imports an Mobile Provisioning Profile to your ShipThis account
@@ -173,8 +161,6 @@ EXAMPLES
   $ shipthis game ios profile import profile.zip
 ```
 
-_See code: [src/commands/game/ios/profile/import.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/profile/import.ts)_
-
 ## `shipthis game ios profile status`
 
 Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.
@@ -195,8 +181,6 @@ EXAMPLES
   $ shipthis game ios profile status
 ```
 
-_See code: [src/commands/game/ios/profile/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/profile/status.ts)_
-
 ## `shipthis game ios status`
 
 Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
@@ -216,5 +200,3 @@ EXAMPLES
 
   $ shipthis game ios status --gameId 0c179fc4
 ```
-
-_See code: [src/commands/game/ios/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ios/status.ts)_

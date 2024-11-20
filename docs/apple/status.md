@@ -19,5 +19,3 @@ DESCRIPTION
 EXAMPLES
   $ shipthis apple status
 ```
-
-_See code: [src/commands/apple/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/status.ts)_

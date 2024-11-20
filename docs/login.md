@@ -25,5 +25,3 @@ EXAMPLES
 
   $ shipthis login --force --email me@email.nowhere
 ```
-
-_See code: [src/commands/login.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/login.ts)_

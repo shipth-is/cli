@@ -19,5 +19,3 @@ DESCRIPTION
 EXAMPLES
   $ shipthis dashboard
 ```
-
-_See code: [src/commands/dashboard.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/dashboard.ts)_

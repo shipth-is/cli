@@ -27,5 +27,3 @@ EXAMPLES
 
   $ shipthis game export abcd1234 --force
 ```
-
-_See code: [src/commands/game/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/export.ts)_

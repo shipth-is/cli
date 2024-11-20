@@ -31,8 +31,6 @@ EXAMPLES
   $ shipthis game build download --gameId 0c179fc4 e4b9a3d7 output.apk
 ```
 
-_See code: [src/commands/game/build/download.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/build/download.ts)_
-
 ## `shipthis game build list`
 
 Lists the builds for successful jobs of a game.
@@ -60,5 +58,3 @@ EXAMPLES
 
   $ shipthis game build list --gameId 0c179fc4 --pageSize 20 --pageNumber 1
 ```
-
-_See code: [src/commands/game/build/list.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/build/list.ts)_

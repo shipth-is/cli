@@ -24,5 +24,3 @@ DESCRIPTION
 EXAMPLES
   $ shipthis game create
 ```
-
-_See code: [src/commands/game/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/create.ts)_

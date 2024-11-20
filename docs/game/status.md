@@ -24,5 +24,3 @@ EXAMPLES
 
   $ shipthis game status --gameId 0c179fc4
 ```
-
-_See code: [src/commands/game/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/status.ts)_

@@ -36,5 +36,3 @@ EXAMPLES
 
   $ shipthis game details --gameEngine godot --gameEngineVersion 4.2 --force
 ```
-
-_See code: [src/commands/game/details.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/details.ts)_

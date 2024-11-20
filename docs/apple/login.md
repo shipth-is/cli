@@ -26,5 +26,3 @@ EXAMPLES
 
   $ shipthis apple login --force --appleEmail me@email.nowhere
 ```
-
-_See code: [src/commands/apple/login.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/login.ts)_

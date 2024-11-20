@@ -22,5 +22,3 @@ DESCRIPTION
 EXAMPLES
   $ shipthis game ship
 ```
-
-_See code: [src/commands/game/ship.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/ship.ts)_

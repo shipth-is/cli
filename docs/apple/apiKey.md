@@ -30,8 +30,6 @@ EXAMPLES
   $ shipthis apple apiKey create --force
 ```
 
-_See code: [src/commands/apple/apiKey/create.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/apiKey/create.ts)_
-
 ## `shipthis apple apiKey export FILE`
 
 Saves the current App Store Connect API Key to a ZIP file
@@ -52,8 +50,6 @@ DESCRIPTION
 EXAMPLES
   $ shipthis apple apiKey export userApiKey.zip
 ```
-
-_See code: [src/commands/apple/apiKey/export.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/apiKey/export.ts)_
 
 ## `shipthis apple apiKey import FILE`
 
@@ -76,8 +72,6 @@ EXAMPLES
   $ shipthis apple apiKey import userApiKey.zip
 ```
 
-_See code: [src/commands/apple/apiKey/import.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/apiKey/import.ts)_
-
 ## `shipthis apple apiKey status`
 
 Displays the status of the App Store Connect API Keys in your Apple and ShipThis accounts. The API key is used to automatically publish your games to the App Store.
@@ -98,5 +92,3 @@ EXAMPLES
 
   $ shipthis apple apiKey status --noAppleAuth
 ```
-
-_See code: [src/commands/apple/apiKey/status.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/apple/apiKey/status.ts)_

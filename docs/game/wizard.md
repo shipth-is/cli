@@ -24,5 +24,3 @@ DESCRIPTION
 EXAMPLES
   $ shipthis game wizard
 ```
-
-_See code: [src/commands/game/wizard.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/wizard.ts)_

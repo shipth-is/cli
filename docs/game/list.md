@@ -27,5 +27,3 @@ DESCRIPTION
 EXAMPLES
   $ shipthis game list
 ```
-
-_See code: [src/commands/game/list.ts](https://gitlab.com/shipthis.cc/shipthis-cli/blob/v0.0.8/src/commands/game/list.ts)_
