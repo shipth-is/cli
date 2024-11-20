@@ -13,7 +13,7 @@ const Config = require('@oclif/core').Config
 const FLAGS = {
   'dry-run': false,
   multi: true,
-  'nested-topics-depth': 2,
+  'nested-topics-depth': 3,
   'output-dir': 'docs',
   'plugin-directory': process.cwd(),
   'readme-path': 'README.md',
