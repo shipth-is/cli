@@ -19,7 +19,7 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
     force: Flags.boolean({char: 'f'}),
     appleEmail: Flags.string({
       char: 'e',
-      description: 'Your Apple email address',
+      description: 'Your Apple Developer email address',
     }),
   }
 
@@ -33,14 +33,14 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
 
     const getAppleEmail = async (): Promise<string> => {
       if (flags.appleEmail) return flags.appleEmail
-      const appleEmail = await getInput('Please enter your Apple email address: ')
+      const appleEmail = await getInput('Please enter your Apple Developer account email address: ')
       if (!appleEmail) throw new Error('Email address is required')
       return appleEmail
     }
 
     // This uses getMaskedInput so that it doesn't echo the password
     const getApplePassword = async (): Promise<string> => {
-      const applePassword = await getMaskedInput('Please enter your Apple password: ')
+      const applePassword = await getMaskedInput('Please enter your Apple Developer password: ')
       if (!applePassword) throw new Error('Password is required')
       return applePassword
     }
