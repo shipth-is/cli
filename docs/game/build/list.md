@@ -1,26 +1,17 @@
-`shipthis game:build:list`
-==========================
-
-Lists the builds for successful jobs of a game.
-
-* [`shipthis game build list`](#shipthis-game-build-list)
-
-## `shipthis game build list`
-
-Lists the builds for successful jobs of a game.
+# game build list
 
 ```
 USAGE
-  $ shipthis game build list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
+  $ shipthis game build list [-g &lt;value&gt;] [-p &lt;value&gt;] [-s &lt;value&gt;] [-o createdAt|updatedAt] [-r asc|desc]
 
 FLAGS
-  -g, --gameId=<value>      The ID of the game
-  -o, --orderBy=<option>    [default: createdAt] The field to order by
-                            <options: createdAt|updatedAt>
-  -p, --pageNumber=<value>  The page number to show (starts at 0)
-  -r, --order=<option>      [default: desc] The order to sort by
-                            <options: asc|desc>
-  -s, --pageSize=<value>    [default: 10] The number of items to show per page
+  -g, --gameId=&lt;value&gt;      The ID of the game
+  -o, --orderBy=&lt;option&gt;    [default: createdAt] The field to order by
+                            &lt;options: createdAt|updatedAt&gt;
+  -p, --pageNumber=&lt;value&gt;  The page number to show (starts at 0)
+  -r, --order=&lt;option&gt;      [default: desc] The order to sort by
+                            &lt;options: asc|desc&gt;
+  -s, --pageSize=&lt;value&gt;    [default: 10] The number of items to show per page
 
 DESCRIPTION
   Lists the builds for successful jobs of a game.

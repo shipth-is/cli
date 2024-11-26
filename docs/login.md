@@ -1,20 +1,11 @@
-`shipthis login`
-================
-
-Authenticate - will create a new account if one does not exist.
-
-* [`shipthis login`](#shipthis-login)
-
-## `shipthis login`
-
-Authenticate - will create a new account if one does not exist.
+# login
 
 ```
 USAGE
-  $ shipthis login [-f] [-e <value>]
+  $ shipthis login [-f] [-e &lt;value&gt;]
 
 FLAGS
-  -e, --email=<value>  Your email address
+  -e, --email=&lt;value&gt;  Your email address
   -f, --force
 
 DESCRIPTION

@@ -1,17 +1,8 @@
-`shipthis game:build:download`
-==============================
-
-Downloads the given build artifact to the specified file
-
-* [`shipthis game build download BUILD_ID FILE`](#shipthis-game-build-download-build_id-file)
-
-## `shipthis game build download BUILD_ID FILE`
-
-Downloads the given build artifact to the specified file
+# game build download
 
 ```
 USAGE
-  $ shipthis game build download BUILD_ID FILE [-g <value>] [-f]
+  $ shipthis game build download BUILD_ID FILE [-g &lt;value&gt;] [-f]
 
 ARGUMENTS
   BUILD_ID  The ID of the build to download
@@ -19,7 +10,7 @@ ARGUMENTS
 
 FLAGS
   -f, --force           Overwrite the file if it already exists
-  -g, --gameId=<value>  The ID of the game
+  -g, --gameId=&lt;value&gt;  The ID of the game
 
 DESCRIPTION
   Downloads the given build artifact to the specified file

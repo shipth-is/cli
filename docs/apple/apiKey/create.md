@@ -1,13 +1,4 @@
-`shipthis apple:apiKey:create`
-==============================
-
-Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account
-
-* [`shipthis apple apiKey create`](#shipthis-apple-apikey-create)
-
-## `shipthis apple apiKey create`
-
-Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account
+# apple apiKey create
 
 ```
 USAGE

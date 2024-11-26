@@ -1,13 +1,4 @@
-`shipthis help`
-===============
-
-Display help for shipthis.
-
-* [`shipthis help [COMMAND]`](#shipthis-help-command)
-
-## `shipthis help [COMMAND]`
-
-Display help for shipthis.
+# help
 
 ```
 USAGE

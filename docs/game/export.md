@@ -1,20 +1,11 @@
-`shipthis game:export`
-======================
-
-Downloads the shipthis.json file for a given game into the current directory.
-
-* [`shipthis game export GAME_ID`](#shipthis-game-export-game_id)
-
-## `shipthis game export GAME_ID`
-
-Downloads the shipthis.json file for a given game into the current directory.
+# game export
 
 ```
 USAGE
   $ shipthis game export GAME_ID [-f]
 
 ARGUMENTS
-  GAME_ID  The ID of the game to export (use "list" to get the ID)
+  GAME_ID  The ID of the game to export (use &#34;list&#34; to get the ID)
 
 FLAGS
   -f, --force

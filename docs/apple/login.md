@@ -1,20 +1,11 @@
-`shipthis apple:login`
-======================
-
-Authenticate with Apple - saves the session to the auth file
-
-* [`shipthis apple login`](#shipthis-apple-login)
-
-## `shipthis apple login`
-
-Authenticate with Apple - saves the session to the auth file
+# apple login
 
 ```
 USAGE
-  $ shipthis apple login [-q] [-f] [-e <value>]
+  $ shipthis apple login [-q] [-f] [-e &lt;value&gt;]
 
 FLAGS
-  -e, --appleEmail=<value>  Your Apple email address
+  -e, --appleEmail=&lt;value&gt;  Your Apple Developer email address
   -f, --force
   -q, --quiet               Avoid output except for interactions and errors
 

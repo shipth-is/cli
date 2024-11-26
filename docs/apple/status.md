@@ -1,13 +1,4 @@
-`shipthis apple:status`
-=======================
-
-Shows the status of the Apple authentication and integration
-
-* [`shipthis apple status`](#shipthis-apple-status)
-
-## `shipthis apple status`
-
-Shows the status of the Apple authentication and integration
+# apple status
 
 ```
 USAGE

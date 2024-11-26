@@ -1,13 +1,4 @@
-`shipthis apple:certificate:create`
-===================================
-
-Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
-
-* [`shipthis apple certificate create`](#shipthis-apple-certificate-create)
-
-## `shipthis apple certificate create`
-
-Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
+# apple certificate create
 
 ```
 USAGE

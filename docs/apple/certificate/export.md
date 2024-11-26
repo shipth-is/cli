@@ -1,13 +1,4 @@
-`shipthis apple:certificate:export`
-===================================
-
-Saves the current Apple Distribution Certificate to a ZIP file.
-
-* [`shipthis apple certificate export FILE`](#shipthis-apple-certificate-export-file)
-
-## `shipthis apple certificate export FILE`
-
-Saves the current Apple Distribution Certificate to a ZIP file.
+# apple certificate export
 
 ```
 USAGE

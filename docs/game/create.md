@@ -1,21 +1,12 @@
-`shipthis game:create`
-======================
-
-Create a new game
-
-* [`shipthis game create`](#shipthis-game-create)
-
-## `shipthis game create`
-
-Create a new game
+# game create
 
 ```
 USAGE
-  $ shipthis game create [-q] [-f] [-n <value>]
+  $ shipthis game create [-q] [-f] [-n &lt;value&gt;]
 
 FLAGS
   -f, --force
-  -n, --name=<value>  The name of the game
+  -n, --name=&lt;value&gt;  The name of the game
   -q, --quiet         Avoid output except for interactions and errors
 
 DESCRIPTION

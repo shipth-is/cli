@@ -1,13 +1,4 @@
-`shipthis dashboard`
-====================
-
-Opens the web-browser to your ShipThis dashboard
-
-* [`shipthis dashboard`](#shipthis-dashboard)
-
-## `shipthis dashboard`
-
-Opens the web-browser to your ShipThis dashboard
+# dashboard
 
 ```
 USAGE

@@ -1,13 +1,4 @@
-`shipthis apple:apiKey:export`
-==============================
-
-Saves the current App Store Connect API Key to a ZIP file
-
-* [`shipthis apple apiKey export FILE`](#shipthis-apple-apikey-export-file)
-
-## `shipthis apple apiKey export FILE`
-
-Saves the current App Store Connect API Key to a ZIP file
+# apple apiKey export
 
 ```
 USAGE

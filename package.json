@@ -41,6 +41,7 @@
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^4",
     "@types/chai": "^4",
+    "@types/ejs": "^3.1.5",
     "@types/fs-extra": "^11.0.4",
     "@types/ini": "^4.1.1",
     "@types/jsonwebtoken": "^9.0.6",
@@ -54,6 +55,7 @@
     "@types/tough-cookie": "^4.0.5",
     "@types/yazl": "^2.4.5",
     "chai": "^4",
+    "ejs": "^3.1.10",
     "eslint": "^8",
     "eslint-config-oclif": "^5",
     "eslint-config-oclif-typescript": "^3",
@@ -121,12 +123,16 @@
     "bin": "shipthis",
     "dirname": "shipthis",
     "commands": "./dist/commands",
+    "helpClass": "./dist/utils/help",
     "plugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-plugins"
     ],
     "topicSeparator": " ",
     "topics": {
+      "internal": {
+        "description": "Internal commands"
+      },
       "apple": {
         "description": "Commands related to Apple Developer Portal"
       },
@@ -159,7 +165,8 @@
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "npm run lint",
     "prepack": "oclif manifest && oclif readme",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\""
+    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "readme": "bin/dev.js  internal readme docs/ -D 2"
   },
   "types": "dist/index.d.ts"
 }

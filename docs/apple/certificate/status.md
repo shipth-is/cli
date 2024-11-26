@@ -1,13 +1,4 @@
-`shipthis apple:certificate:status`
-===================================
-
-Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign all of your iOS apps.
-
-* [`shipthis apple certificate status`](#shipthis-apple-certificate-status)
-
-## `shipthis apple certificate status`
-
-Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign all of your iOS apps.
+# apple certificate status
 
 ```
 USAGE

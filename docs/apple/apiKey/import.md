@@ -1,13 +1,4 @@
-`shipthis apple:apiKey:import`
-==============================
-
-Imports an App Store Connect API Key ZIP file into your ShipThis account
-
-* [`shipthis apple apiKey import FILE`](#shipthis-apple-apikey-import-file)
-
-## `shipthis apple apiKey import FILE`
-
-Imports an App Store Connect API Key ZIP file into your ShipThis account
+# apple apiKey import
 
 ```
 USAGE

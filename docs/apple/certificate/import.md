@@ -1,13 +1,4 @@
-`shipthis apple:certificate:import`
-===================================
-
-Imports an iOS Distribution Certificate to your ShipThis account
-
-* [`shipthis apple certificate import FILE`](#shipthis-apple-certificate-import-file)
-
-## `shipthis apple certificate import FILE`
-
-Imports an iOS Distribution Certificate to your ShipThis account
+# apple certificate import
 
 ```
 USAGE

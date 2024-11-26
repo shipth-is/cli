@@ -1,20 +1,11 @@
-`shipthis game:ios:status`
-==========================
-
-Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
-
-* [`shipthis game ios status`](#shipthis-game-ios-status)
-
-## `shipthis game ios status`
-
-Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
+# game ios status
 
 ```
 USAGE
-  $ shipthis game ios status [-g <value>]
+  $ shipthis game ios status [-g &lt;value&gt;]
 
 FLAGS
-  -g, --gameId=<value>  The ID of the game
+  -g, --gameId=&lt;value&gt;  The ID of the game
 
 DESCRIPTION
   Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.

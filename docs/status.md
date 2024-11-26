@@ -1,13 +1,4 @@
-`shipthis status`
-=================
-
-Displays the current overall status.
-
-* [`shipthis status`](#shipthis-status)
-
-## `shipthis status`
-
-Displays the current overall status.
+# status
 
 ```
 USAGE
