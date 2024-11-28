@@ -11,7 +11,7 @@ import {getInput} from '@cli/utils/index.js'
 export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCreate> {
   static override args = {}
 
-  static override description = 'Create a new game'
+  static override description = 'Create a new game in ShipThis.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 

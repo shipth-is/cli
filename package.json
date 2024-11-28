@@ -138,6 +138,12 @@
       "apple": {
         "description": "Commands related to Apple Developer Portal"
       },
+      "apple:apiKey": {
+        "description": "Commands related to App Store Connect API Keys"
+      },
+      "apple:certificate": {
+        "description": "Commands related to App Store Certificates"
+      },
       "game": {
         "description": "Commands related to Game Management"
       },

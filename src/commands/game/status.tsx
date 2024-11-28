@@ -10,8 +10,7 @@ import {getShortDate, getShortUUID, makeHumanReadable} from '@cli/utils/index.js
 export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
   static override args = {}
 
-  static override description =
-    'Shows the Game status. If --gameId is not provided it will look in the current directory.'
+  static override description = 'Shows the status of the current game.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',

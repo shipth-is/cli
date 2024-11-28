@@ -11,7 +11,7 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
   static override args = {}
 
   static override description =
-    'Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account'
+    'Creates an iOS Distribution Certificate in your Apple Developer account.\nSaves the certificate with the private key to your ShipThis account'
 
   static override examples = ['<%= config.bin %> <%= command.id %>', '<%= config.bin %> <%= command.id %> --force']
 

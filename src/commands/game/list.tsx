@@ -13,7 +13,7 @@ import {getShortDate} from '@cli/utils/dates.js'
 export default class GameList extends BaseAuthenticatedCommand<typeof GameList> {
   static override args = {}
 
-  static override description = 'Shows a list of all your games'
+  static override description = 'Shows a list of all your games.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 

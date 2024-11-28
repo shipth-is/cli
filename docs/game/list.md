@@ -2,7 +2,7 @@
 
 ## Description
 
-Shows a list of all your games
+Shows a list of all your games.
 
 ## Help Output
 
@@ -19,7 +19,7 @@ FLAGS
   -s, --pageSize=<value>    [default: 10] The number of items to show per page
 
 DESCRIPTION
-  Shows a list of all your games
+  Shows a list of all your games.
 
 EXAMPLES
   $ shipthis game list

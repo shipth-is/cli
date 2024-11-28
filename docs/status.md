@@ -1,8 +1,11 @@
 # status
 
+## Description
+
 Displays the current overall status.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis status

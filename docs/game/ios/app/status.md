@@ -2,7 +2,7 @@
 
 ## Description
 
-Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
+Shows the Game iOS App status. 
 
 ## Help Output
 
@@ -14,7 +14,7 @@ FLAGS
   -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
+  Shows the Game iOS App status.
 
 EXAMPLES
   $ shipthis game ios app status

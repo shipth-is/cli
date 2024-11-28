@@ -2,7 +2,8 @@
 
 ## Description
 
-Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
+Creates an iOS Distribution Certificate in your Apple Developer account.
+Saves the certificate with the private key to your ShipThis account
 
 ## Help Output
 
@@ -15,8 +16,8 @@ FLAGS
   -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
-  Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your
-  ShipThis account
+  Creates an iOS Distribution Certificate in your Apple Developer account.
+  Saves the certificate with the private key to your ShipThis account
 
 EXAMPLES
   $ shipthis apple certificate create

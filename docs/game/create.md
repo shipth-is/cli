@@ -2,7 +2,7 @@
 
 ## Description
 
-Create a new game
+Create a new game in ShipThis.
 
 ## Help Output
 
@@ -16,7 +16,7 @@ FLAGS
   -q, --quiet         Avoid output except for interactions and errors
 
 DESCRIPTION
-  Create a new game
+  Create a new game in ShipThis.
 
 EXAMPLES
   $ shipthis game create

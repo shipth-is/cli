@@ -7,8 +7,7 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 export default class GameIosAppStatus extends BaseGameCommand<typeof GameIosAppStatus> {
   static override args = {}
 
-  static override description =
-    'Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.'
+  static override description = 'Shows the Game iOS App status. '
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 

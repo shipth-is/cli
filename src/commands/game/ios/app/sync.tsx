@@ -10,8 +10,7 @@ import {CapabilityTypeOption} from '@cli/apple/expo.js'
 export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSync> {
   static override args = {}
 
-  static override description =
-    'Synchronies the Apple App "BundleId" with the capabilities from the local project. If --gameId is not provided it will look in the current directory.'
+  static override description = 'Synchronies the Apple App "BundleId" with the capabilities from the local project.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 

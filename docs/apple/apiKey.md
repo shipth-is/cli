@@ -1,6 +1,6 @@
 # apple apiKey
 
-Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account
+Commands related to App Store Connect API Keys
 
 
 ## Commands
@@ -10,7 +10,8 @@ Creates an App Store Connect API Key in your Apple Developer account and saves t
 
 #### Description
 
-Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account
+Creates an App Store Connect API Key in your Apple Developer account.
+Saves the private key in your ShipThis account.
 
 #### Help Output
 
@@ -23,8 +24,8 @@ FLAGS
   -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
-  Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis
-  account
+  Creates an App Store Connect API Key in your Apple Developer account.
+  Saves the private key in your ShipThis account.
 
 EXAMPLES
   $ shipthis apple apiKey create
@@ -86,7 +87,8 @@ EXAMPLES
 
 #### Description
 
-Displays the status of the App Store Connect API Keys in your Apple and ShipThis accounts. The API key is used to automatically publish your games to the App Store.
+Displays the status of App Store Connect API Keys in your Apple and ShipThis accounts.
+This API key is used to automatically publish your games to the App Store.
 
 #### Help Output
 
@@ -98,8 +100,8 @@ FLAGS
   -f, --noAppleAuth
 
 DESCRIPTION
-  Displays the status of the App Store Connect API Keys in your Apple and ShipThis accounts. The API key is used to
-  automatically publish your games to the App Store.
+  Displays the status of App Store Connect API Keys in your Apple and ShipThis accounts.
+  This API key is used to automatically publish your games to the App Store.
 
 EXAMPLES
   $ shipthis apple apiKey status

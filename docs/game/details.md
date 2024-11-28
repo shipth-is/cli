@@ -2,7 +2,7 @@
 
 ## Description
 
-Shows and sets the details of a game. If --gameId is not provided it will look in the current directory.
+Shows and sets the details of a game.
 
 ## Help Output
 
@@ -22,7 +22,7 @@ FLAGS
   -v, --gameEngineVersion=<value>   Set the game engine version
 
 DESCRIPTION
-  Shows and sets the details of a game. If --gameId is not provided it will look in the current directory.
+  Shows and sets the details of a game.
 
 EXAMPLES
   $ shipthis game details

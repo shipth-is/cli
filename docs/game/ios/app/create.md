@@ -2,7 +2,7 @@
 
 ## Description
 
-Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
+Creates an App and BundleId in the Apple Developer Portal.
 
 ## Help Output
 
@@ -18,8 +18,7 @@ FLAGS
   -q, --quiet             Avoid output except for interactions and errors
 
 DESCRIPTION
-  Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current
-  directory.
+  Creates an App and BundleId in the Apple Developer Portal.
 
 EXAMPLES
   $ shipthis game ios app create

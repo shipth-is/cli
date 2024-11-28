@@ -11,7 +11,7 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
   static override args = {}
 
   static override description =
-    'Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account'
+    'Creates an App Store Connect API Key in your Apple Developer account.\nSaves the private key in your ShipThis account.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>', '<%= config.bin %> <%= command.id %> --force']
 

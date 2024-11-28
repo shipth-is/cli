@@ -2,7 +2,8 @@
 
 ## Description
 
-Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign all of your iOS apps.
+Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts.
+These are used to sign all of your iOS apps.
 
 ## Help Output
 
@@ -14,8 +15,8 @@ FLAGS
   -f, --noAppleAuth
 
 DESCRIPTION
-  Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign
-  all of your iOS apps.
+  Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts.
+  These are used to sign all of your iOS apps.
 
 EXAMPLES
   $ shipthis apple certificate status

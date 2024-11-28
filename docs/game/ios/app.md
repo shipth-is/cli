@@ -35,7 +35,7 @@ EXAMPLES
 
 #### Description
 
-Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
+Creates an App and BundleId in the Apple Developer Portal.
 
 #### Help Output
 
@@ -51,8 +51,7 @@ FLAGS
   -q, --quiet             Avoid output except for interactions and errors
 
 DESCRIPTION
-  Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current
-  directory.
+  Creates an App and BundleId in the Apple Developer Portal.
 
 EXAMPLES
   $ shipthis game ios app create
@@ -62,7 +61,7 @@ EXAMPLES
 
 #### Description
 
-Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
+Shows the Game iOS App status. 
 
 #### Help Output
 
@@ -74,7 +73,7 @@ FLAGS
   -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
+  Shows the Game iOS App status.
 
 EXAMPLES
   $ shipthis game ios app status
@@ -84,7 +83,7 @@ EXAMPLES
 
 #### Description
 
-Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project. If --gameId is not provided it will look in the current directory.
+Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project.
 
 #### Help Output
 
@@ -98,8 +97,7 @@ FLAGS
   -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
-  Synchronies the Apple App "BundleId" with the capabilities from the local project. If --gameId is not provided it will
-  look in the current directory.
+  Synchronies the Apple App "BundleId" with the capabilities from the local project.
 
 EXAMPLES
   $ shipthis game ios app sync

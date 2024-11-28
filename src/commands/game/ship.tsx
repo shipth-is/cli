@@ -13,7 +13,7 @@ import {ProjectConfig, UploadDetails} from '@cli/types'
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
   static override args = {}
 
-  static override description = 'Builds the app (for all platforms with valid credentials) and ships it to the stores'
+  static override description = 'Builds the app (for all platforms with valid credentials) and ships it to the stores.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 

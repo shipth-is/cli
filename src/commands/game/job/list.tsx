@@ -12,8 +12,7 @@ import {DateTime} from 'luxon'
 export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
   static override args = {}
 
-  static override description =
-    'Lists the jobs for a game. If --gameId is not provided it will look in the current directory.'
+  static override description = 'Lists the jobs for a game.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',

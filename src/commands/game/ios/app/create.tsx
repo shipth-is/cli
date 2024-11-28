@@ -10,8 +10,7 @@ import {App as AppleApp, BundleId as AppleBundleId} from '@cli/apple/expo.js'
 export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppCreate> {
   static override args = {}
 
-  static override description =
-    'Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.'
+  static override description = 'Creates an App and BundleId in the Apple Developer Portal.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 

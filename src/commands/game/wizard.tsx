@@ -21,13 +21,14 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
   static override flags = {
     forceStep: Flags.string({
       char: 'f',
-      description: 'Force a specific step to run. You can repeat this flag to force multiple steps.',
+      description: 'Force a specific step to run.',
     }),
     platform: Flags.string({
       char: 'p',
       description: 'The platform to run the wizard for',
       options: ['ios' /* TODO - android */],
-      required: true,
+      required: false,
+      default: 'ios',
     }),
   }
 

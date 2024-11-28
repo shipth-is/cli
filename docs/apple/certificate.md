@@ -1,6 +1,6 @@
 # apple certificate
 
-Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
+Commands related to App Store Certificates
 
 
 ## Commands
@@ -10,7 +10,8 @@ Creates an iOS Distribution Certificate in your Apple Developer account and save
 
 #### Description
 
-Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
+Creates an iOS Distribution Certificate in your Apple Developer account.
+Saves the certificate with the private key to your ShipThis account
 
 #### Help Output
 
@@ -23,8 +24,8 @@ FLAGS
   -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
-  Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your
-  ShipThis account
+  Creates an iOS Distribution Certificate in your Apple Developer account.
+  Saves the certificate with the private key to your ShipThis account
 
 EXAMPLES
   $ shipthis apple certificate create
@@ -86,7 +87,8 @@ EXAMPLES
 
 #### Description
 
-Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign all of your iOS apps.
+Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts.
+These are used to sign all of your iOS apps.
 
 #### Help Output
 
@@ -98,8 +100,8 @@ FLAGS
   -f, --noAppleAuth
 
 DESCRIPTION
-  Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign
-  all of your iOS apps.
+  Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts.
+  These are used to sign all of your iOS apps.
 
 EXAMPLES
   $ shipthis apple certificate status

@@ -2,7 +2,7 @@
 
 ## Description
 
-Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project. If --gameId is not provided it will look in the current directory.
+Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project.
 
 ## Help Output
 
@@ -16,8 +16,7 @@ FLAGS
   -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
-  Synchronies the Apple App "BundleId" with the capabilities from the local project. If --gameId is not provided it will
-  look in the current directory.
+  Synchronies the Apple App "BundleId" with the capabilities from the local project.
 
 EXAMPLES
   $ shipthis game ios app sync

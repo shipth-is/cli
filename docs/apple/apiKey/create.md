@@ -2,7 +2,8 @@
 
 ## Description
 
-Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account
+Creates an App Store Connect API Key in your Apple Developer account.
+Saves the private key in your ShipThis account.
 
 ## Help Output
 
@@ -15,8 +16,8 @@ FLAGS
   -q, --quiet  Avoid output except for interactions and errors
 
 DESCRIPTION
-  Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis
-  account
+  Creates an App Store Connect API Key in your Apple Developer account.
+  Saves the private key in your ShipThis account.
 
 EXAMPLES
   $ shipthis apple apiKey create

@@ -9,8 +9,7 @@ import {GameEngine} from '@cli/types'
 export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   static override args = {}
 
-  static override description =
-    'Shows and sets the details of a game. If --gameId is not provided it will look in the current directory.'
+  static override description = 'Shows and sets the details of a game.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',

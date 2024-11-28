@@ -10,7 +10,7 @@ Commands related to jobs for a specific game
 
 #### Description
 
-Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
+Lists the jobs for a game.
 
 #### Help Output
 
@@ -28,7 +28,7 @@ FLAGS
   -s, --pageSize=<value>    [default: 10] The number of items to show per page
 
 DESCRIPTION
-  Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
+  Lists the jobs for a game.
 
 EXAMPLES
   $ shipthis game job list

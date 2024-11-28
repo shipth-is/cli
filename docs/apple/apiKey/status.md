@@ -2,7 +2,8 @@
 
 ## Description
 
-Displays the status of the App Store Connect API Keys in your Apple and ShipThis accounts. The API key is used to automatically publish your games to the App Store.
+Displays the status of App Store Connect API Keys in your Apple and ShipThis accounts.
+This API key is used to automatically publish your games to the App Store.
 
 ## Help Output
 
@@ -14,8 +15,8 @@ FLAGS
   -f, --noAppleAuth
 
 DESCRIPTION
-  Displays the status of the App Store Connect API Keys in your Apple and ShipThis accounts. The API key is used to
-  automatically publish your games to the App Store.
+  Displays the status of App Store Connect API Keys in your Apple and ShipThis accounts.
+  This API key is used to automatically publish your games to the App Store.
 
 EXAMPLES
   $ shipthis apple apiKey status

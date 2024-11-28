@@ -2,7 +2,7 @@
 
 ## Description
 
-Shows the Game status. If --gameId is not provided it will look in the current directory.
+Shows the status of the current game.
 
 ## Help Output
 
@@ -14,7 +14,7 @@ FLAGS
   -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  Shows the Game status. If --gameId is not provided it will look in the current directory.
+  Shows the status of the current game.
 
 EXAMPLES
   $ shipthis game status

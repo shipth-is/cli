@@ -14,7 +14,7 @@ const ROOT_TOPIC_FILENAME = 'README.md'
 
 // Used when we have separate files for the subtopics and commands
 const TOPIC_TEMPLATE = `
-# Topic: <%= topic.name.replaceAll(":", " ") %>
+# <%= topic.name.replaceAll(":", " ") %>
 
 <%= topic.description || "" %>
 
