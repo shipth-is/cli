@@ -1,5 +1,7 @@
 # game wizard
 
+## Description
+
 Runs all the steps for the specific platform
 
 ## Help Output

@@ -1,5 +1,7 @@
 # game create
 
+## Description
+
 Create a new game
 
 ## Help Output

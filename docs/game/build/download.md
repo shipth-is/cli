@@ -1,5 +1,7 @@
 # game build download
 
+## Description
+
 Downloads the given build artifact to the specified file
 
 ## Help Output

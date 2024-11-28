@@ -1,4 +1,4 @@
-# game:ios:profile
+# game ios profile
 
 Commands related to the App Store Provisioning Profiles for this Game
 
@@ -7,6 +7,8 @@ Commands related to the App Store Provisioning Profiles for this Game
 
 
 ### game ios profile create
+
+#### Description
 
 Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
@@ -30,6 +32,8 @@ EXAMPLES
 ```
 
 ### game ios profile export
+
+#### Description
 
 Saves the current Mobile Provisioning Profile to a ZIP file
 
@@ -55,6 +59,8 @@ EXAMPLES
 
 ### game ios profile import
 
+#### Description
+
 Imports an Mobile Provisioning Profile to your ShipThis account
 
 #### Help Output
@@ -78,6 +84,8 @@ EXAMPLES
 ```
 
 ### game ios profile status
+
+#### Description
 
 Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.
 

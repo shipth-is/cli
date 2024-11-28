@@ -1,4 +1,4 @@
-# apple:certificate
+# apple certificate
 
 Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
 
@@ -7,6 +7,8 @@ Creates an iOS Distribution Certificate in your Apple Developer account and save
 
 
 ### apple certificate create
+
+#### Description
 
 Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
 
@@ -32,6 +34,8 @@ EXAMPLES
 
 ### apple certificate export
 
+#### Description
+
 Saves the current Apple Distribution Certificate to a ZIP file.
 
 #### Help Output
@@ -55,6 +59,8 @@ EXAMPLES
 
 ### apple certificate import
 
+#### Description
+
 Imports an iOS Distribution Certificate to your ShipThis account
 
 #### Help Output
@@ -77,6 +83,8 @@ EXAMPLES
 ```
 
 ### apple certificate status
+
+#### Description
 
 Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign all of your iOS apps.
 

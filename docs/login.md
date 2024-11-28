@@ -1,8 +1,11 @@
 # login
 
+## Description
+
 Authenticate - will create a new account if one does not exist.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis login [-f] [-e <value>]

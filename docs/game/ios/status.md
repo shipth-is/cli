@@ -1,5 +1,7 @@
 # game ios status
 
+## Description
+
 Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
 
 ## Help Output

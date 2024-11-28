@@ -1,5 +1,7 @@
 # game build list
 
+## Description
+
 Lists the builds for successful jobs of a game.
 
 ## Help Output

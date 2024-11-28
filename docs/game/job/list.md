@@ -1,5 +1,7 @@
 # game job list
 
+## Description
+
 Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
 
 ## Help Output

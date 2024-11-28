@@ -1,4 +1,4 @@
-# game:ios:app
+# game ios app
 
 Commands related to the App Store App for a specific game
 
@@ -7,6 +7,8 @@ Commands related to the App Store App for a specific game
 
 
 ### game ios app addTester
+
+#### Description
 
 Adds a test user to the game in App Store Connect.
 
@@ -30,6 +32,8 @@ EXAMPLES
 ```
 
 ### game ios app create
+
+#### Description
 
 Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
@@ -56,6 +60,8 @@ EXAMPLES
 
 ### game ios app status
 
+#### Description
+
 Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
 
 #### Help Output
@@ -75,6 +81,8 @@ EXAMPLES
 ```
 
 ### game ios app sync
+
+#### Description
 
 Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project. If --gameId is not provided it will look in the current directory.
 

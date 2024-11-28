@@ -1,11 +1,11 @@
-# game:ios
+# game ios
 
 Commands related to the iOS platform for a specific game
 
 ## Topics
 
 
-# game:ios:app
+# game ios app
 
 Commands related to the App Store App for a specific game
 
@@ -14,6 +14,8 @@ Commands related to the App Store App for a specific game
 
 
 ### game ios app addTester
+
+#### Description
 
 Adds a test user to the game in App Store Connect.
 
@@ -37,6 +39,8 @@ EXAMPLES
 ```
 
 ### game ios app create
+
+#### Description
 
 Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
@@ -63,6 +67,8 @@ EXAMPLES
 
 ### game ios app status
 
+#### Description
+
 Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
 
 #### Help Output
@@ -82,6 +88,8 @@ EXAMPLES
 ```
 
 ### game ios app sync
+
+#### Description
 
 Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project. If --gameId is not provided it will look in the current directory.
 
@@ -105,7 +113,7 @@ EXAMPLES
 ```
 
 
-# game:ios:profile
+# game ios profile
 
 Commands related to the App Store Provisioning Profiles for this Game
 
@@ -114,6 +122,8 @@ Commands related to the App Store Provisioning Profiles for this Game
 
 
 ### game ios profile create
+
+#### Description
 
 Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
@@ -137,6 +147,8 @@ EXAMPLES
 ```
 
 ### game ios profile export
+
+#### Description
 
 Saves the current Mobile Provisioning Profile to a ZIP file
 
@@ -162,6 +174,8 @@ EXAMPLES
 
 ### game ios profile import
 
+#### Description
+
 Imports an Mobile Provisioning Profile to your ShipThis account
 
 #### Help Output
@@ -185,6 +199,8 @@ EXAMPLES
 ```
 
 ### game ios profile status
+
+#### Description
 
 Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.
 
@@ -211,6 +227,8 @@ EXAMPLES
 
 
 ### game ios status
+
+#### Description
 
 Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
 

@@ -1,5 +1,7 @@
 # game ios app addTester
 
+## Description
+
 Adds a test user to the game in App Store Connect.
 
 ## Help Output

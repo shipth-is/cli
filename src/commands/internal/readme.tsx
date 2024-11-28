@@ -14,7 +14,7 @@ const ROOT_TOPIC_FILENAME = 'README.md'
 
 // Used when we have separate files for the subtopics and commands
 const TOPIC_TEMPLATE = `
-# <%= topic.name %>
+# Topic: <%= topic.name.replaceAll(":", " ") %>
 
 <%= topic.description || "" %>
 
@@ -37,7 +37,7 @@ const TOPIC_TEMPLATE = `
 
 // Used when we include the subtopics and commands in the current file
 const TOPIC_TEMPLATE_INCLUDE = `
-# <%= topic.name %>
+# <%= topic.name.replaceAll(":", " ") %>
 
 <%= topic.description || "" %>
 
@@ -61,6 +61,8 @@ const TOPIC_TEMPLATE_INCLUDE = `
 const COMMAND_TEMPLATE = `
 # <%= command.id %>
 
+## Description
+
 <%= command.description || "" %>
 
 ## Help Output
@@ -73,6 +75,8 @@ const COMMAND_TEMPLATE = `
 // When we include the rendered command in-line in the topic file
 const COMMAND_TEMPLATE_INCLUDE = `
 ### <%= command.id %>
+
+#### Description
 
 <%= command.description || "" %>
 

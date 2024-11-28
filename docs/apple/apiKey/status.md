@@ -1,5 +1,7 @@
 # apple apiKey status
 
+## Description
+
 Displays the status of the App Store Connect API Keys in your Apple and ShipThis accounts. The API key is used to automatically publish your games to the App Store.
 
 ## Help Output

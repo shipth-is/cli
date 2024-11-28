@@ -1,5 +1,7 @@
 # apple certificate import
 
+## Description
+
 Imports an iOS Distribution Certificate to your ShipThis account
 
 ## Help Output

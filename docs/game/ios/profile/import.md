@@ -1,5 +1,7 @@
 # game ios profile import
 
+## Description
+
 Imports an Mobile Provisioning Profile to your ShipThis account
 
 ## Help Output

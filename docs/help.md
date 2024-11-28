@@ -1,8 +1,11 @@
 # help
 
+## Description
+
 Display help for &lt;%= config.bin %&gt;.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis help [COMMAND...] [-n]

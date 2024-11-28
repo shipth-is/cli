@@ -1,5 +1,7 @@
 # game job status
 
+## Description
+
 Shows the real-time status of a job.
 
 ## Help Output

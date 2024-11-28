@@ -1,5 +1,7 @@
 # game export
 
+## Description
+
 Downloads the shipthis.json file for a given game into the current directory.
 
 ## Help Output

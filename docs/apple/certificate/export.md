@@ -1,5 +1,7 @@
 # apple certificate export
 
+## Description
+
 Saves the current Apple Distribution Certificate to a ZIP file.
 
 ## Help Output

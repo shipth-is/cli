@@ -1,5 +1,7 @@
 # game list
 
+## Description
+
 Shows a list of all your games
 
 ## Help Output

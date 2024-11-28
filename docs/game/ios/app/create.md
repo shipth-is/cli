@@ -1,5 +1,7 @@
 # game ios app create
 
+## Description
+
 Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
 ## Help Output

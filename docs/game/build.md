@@ -1,4 +1,4 @@
-# game:build
+# game build
 
 Commands related to builds for a specific game
 
@@ -7,6 +7,8 @@ Commands related to builds for a specific game
 
 
 ### game build download
+
+#### Description
 
 Downloads the given build artifact to the specified file
 
@@ -34,6 +36,8 @@ EXAMPLES
 ```
 
 ### game build list
+
+#### Description
 
 Lists the builds for successful jobs of a game.
 

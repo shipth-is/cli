@@ -1,5 +1,7 @@
 # game ios profile create
 
+## Description
+
 Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
 ## Help Output

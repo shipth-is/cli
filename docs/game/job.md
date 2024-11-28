@@ -1,4 +1,4 @@
-# game:job
+# game job
 
 Commands related to jobs for a specific game
 
@@ -7,6 +7,8 @@ Commands related to jobs for a specific game
 
 
 ### game job list
+
+#### Description
 
 Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
 
@@ -35,6 +37,8 @@ EXAMPLES
 ```
 
 ### game job status
+
+#### Description
 
 Shows the real-time status of a job.
 

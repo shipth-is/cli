@@ -1,5 +1,7 @@
 # game details
 
+## Description
+
 Shows and sets the details of a game. If --gameId is not provided it will look in the current directory.
 
 ## Help Output
