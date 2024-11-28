@@ -1,5 +1,8 @@
 # apple status
 
+Shows the status of the Apple authentication and integration
+
+## Help Output
 ```
 USAGE
   $ shipthis apple status

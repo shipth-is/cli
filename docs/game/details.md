@@ -1,19 +1,22 @@
 # game details
 
+Shows and sets the details of a game. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game details [-g &lt;value&gt;] [-f] [-b &lt;value&gt;] [-s &lt;value&gt;] [-e &lt;value&gt;] [-v &lt;value&gt;] [-i &lt;value&gt;] [-a
-    &lt;value&gt;]
+  $ shipthis game details [-g <value>] [-f] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>] [-a
+    <value>]
 
 FLAGS
-  -a, --androidPackageName=&lt;value&gt;  Set the Android package name
-  -b, --buildNumber=&lt;value&gt;         Set the build number
-  -e, --gameEngine=&lt;value&gt;          Set the game engine
+  -a, --androidPackageName=<value>  Set the Android package name
+  -b, --buildNumber=<value>         Set the build number
+  -e, --gameEngine=<value>          Set the game engine
   -f, --force                       Force the command to run
-  -g, --gameId=&lt;value&gt;              The ID of the game
-  -i, --iosBundleId=&lt;value&gt;         Set the iOS bundle ID
-  -s, --semanticVersion=&lt;value&gt;     Set the semantic version
-  -v, --gameEngineVersion=&lt;value&gt;   Set the game engine version
+  -g, --gameId=<value>              The ID of the game
+  -i, --iosBundleId=<value>         Set the iOS bundle ID
+  -s, --semanticVersion=<value>     Set the semantic version
+  -v, --gameEngineVersion=<value>   Set the game engine version
 
 DESCRIPTION
   Shows and sets the details of a game. If --gameId is not provided it will look in the current directory.

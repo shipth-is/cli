@@ -7,13 +7,16 @@ Commands related to the App Store Provisioning Profiles for this Game
 
 # game ios profile create
 
+Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios profile create [-q] [-g &amp;lt;value&amp;gt;] [-f]
+  $ shipthis game ios profile create [-q] [-g <value>] [-f]
 
 FLAGS
   -f, --force
-  -g, --gameId=&amp;lt;value&amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
   -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
@@ -26,16 +29,19 @@ EXAMPLES
 
 # game ios profile export
 
+Saves the current Mobile Provisioning Profile to a ZIP file
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios profile export FILE [-g &amp;lt;value&amp;gt;] [-f]
+  $ shipthis game ios profile export FILE [-g <value>] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
 
 FLAGS
   -f, --force           Overwrite the file if it already exists
-  -g, --gameId=&amp;lt;value&amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Saves the current Mobile Provisioning Profile to a ZIP file
@@ -46,16 +52,19 @@ EXAMPLES
 
 # game ios profile import
 
+Imports an Mobile Provisioning Profile to your ShipThis account
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios profile import FILE [-g &amp;lt;value&amp;gt;] [-f]
+  $ shipthis game ios profile import FILE [-g <value>] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force
-  -g, --gameId=&amp;lt;value&amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Imports an Mobile Provisioning Profile to your ShipThis account
@@ -66,13 +75,16 @@ EXAMPLES
 
 # game ios profile status
 
+Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios profile status [-g &amp;lt;value&amp;gt;] [-f]
+  $ shipthis game ios profile status [-g <value>] [-f]
 
 FLAGS
   -f, --noAppleAuth
-  -g, --gameId=&amp;lt;value&amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current

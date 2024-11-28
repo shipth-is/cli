@@ -1,5 +1,8 @@
 # dashboard
 
+Opens the web-browser to your ShipThis dashboard
+
+## Help Output
 ```
 USAGE
   $ shipthis dashboard

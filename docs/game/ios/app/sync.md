@@ -1,16 +1,19 @@
 # game ios app sync
 
+Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios app sync [-q] [-g &lt;value&gt;] [-f]
+  $ shipthis game ios app sync [-q] [-g <value>] [-f]
 
 FLAGS
   -f, --force
-  -g, --gameId=&lt;value&gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
   -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
-  Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project. If --gameId is not provided it will
+  Synchronies the Apple App "BundleId" with the capabilities from the local project. If --gameId is not provided it will
   look in the current directory.
 
 EXAMPLES

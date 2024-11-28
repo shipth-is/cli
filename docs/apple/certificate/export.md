@@ -1,5 +1,8 @@
 # apple certificate export
 
+Saves the current Apple Distribution Certificate to a ZIP file.
+
+## Help Output
 ```
 USAGE
   $ shipthis apple certificate export FILE [-f]

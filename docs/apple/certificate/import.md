@@ -1,5 +1,8 @@
 # apple certificate import
 
+Imports an iOS Distribution Certificate to your ShipThis account
+
+## Help Output
 ```
 USAGE
   $ shipthis apple certificate import FILE [-f]

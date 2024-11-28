@@ -42,14 +42,14 @@ const TOPIC_TEMPLATE_INCLUDE = `
 <% if (subTopics && subTopics.length > 0) { -%>
 ## Topics
 <% subTopics.forEach(subTopic => { %>
-<%= subTopic.rendered %>
+<%- subTopic.rendered %>
 <% }) -%>
 <% } -%>
 
 <% if (commands && commands.length > 0) { -%>
 ## Commands
 <% commands.forEach(readmeCommand => { %>
-<%= readmeCommand.rendered %>
+<%- readmeCommand.rendered %>
 <% }) -%>
 <% } -%>
 `.trim()
@@ -57,8 +57,11 @@ const TOPIC_TEMPLATE_INCLUDE = `
 const COMMAND_TEMPLATE = `
 # <%= command.id %>
 
+<%= command.description || "" %>
+
+## Help Output
 \`\`\`
-<%= helpOutput %>
+<%- helpOutput %>
 \`\`\`
 `.trim() // Remove the leading newline
 
@@ -172,27 +175,39 @@ type WriteOutput = {
   overwritten: string[]
 }
 
-function writeTopic(topic: ReadmeTopic, outputDir: string, dryRun: boolean, overWrite: boolean): WriteOutput {
+function writeTopic(
+  topic: ReadmeTopic,
+  outputDir: string,
+  dryRun: boolean,
+  overWrite: boolean,
+  only: string | undefined,
+): WriteOutput {
   if (!topic.rendered) throw new Error(`Topic ${topic.topic.name} has not been rendered`)
 
   const makeFolderAndSave = (filePath: string, rendered: string) => {
+    if (dryRun) return
     const folder = path.dirname(filePath)
     fs.mkdirSync(folder, {recursive: true})
     fs.writeFileSync(filePath, rendered)
   }
 
+  const skipFile = (filePath: string) => only && !filePath.match(only)
+
   const writeOutput: WriteOutput = {created: [], overwritten: []}
   const filePath = path.join(outputDir, topic.filePath)
+  const exists = fs.existsSync(filePath)
 
-  const outputList = fs.existsSync(filePath) ? writeOutput.overwritten : writeOutput.created
-  outputList.push(filePath)
-  if (!dryRun) makeFolderAndSave(filePath, topic.rendered)
-
+  if (!skipFile(filePath)) {
+    const outputList = exists ? writeOutput.overwritten : writeOutput.created
+    outputList.push(filePath)
+    if (!exists || overWrite) makeFolderAndSave(filePath, topic.rendered)
+  }
   // We don't need to write the subtopics and commands if we are including them in the current file
-  //if (topic.includeTopicsAndCommands) return writeOutput
+  // TODO: the default oclif readme outputs them all but merges based on depth
+  // if (topic.includeTopicsAndCommands) return writeOutput
 
   for (const subTopic of topic.subTopics) {
-    const subWriteOutput = writeTopic(subTopic, outputDir, dryRun, overWrite)
+    const subWriteOutput = writeTopic(subTopic, outputDir, dryRun, overWrite, only)
     writeOutput.created.push(...subWriteOutput.created)
     writeOutput.overwritten.push(...subWriteOutput.overwritten)
   }
@@ -200,9 +215,13 @@ function writeTopic(topic: ReadmeTopic, outputDir: string, dryRun: boolean, over
   for (const command of topic.commands) {
     if (!command.rendered) throw new Error(`Command ${command.command.id} has not been rendered`)
     const filePath = path.join(outputDir, command.filePath)
-    const outputList = fs.existsSync(filePath) ? writeOutput.overwritten : writeOutput.created
-    outputList.push(filePath)
-    if (!dryRun) makeFolderAndSave(filePath, command.rendered)
+    const exists = fs.existsSync(filePath)
+
+    if (!skipFile(filePath)) {
+      const outputList = exists ? writeOutput.overwritten : writeOutput.created
+      outputList.push(filePath)
+      if (!exists || overWrite) makeFolderAndSave(filePath, command.rendered)
+    }
   }
 
   return writeOutput
@@ -218,14 +237,19 @@ export default class InternalReadme extends BaseCommand<typeof InternalReadme> {
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    dryRun: Flags.boolean({char: 'd', description: 'Do not write any files'}),
+    // By default do nothing
+    notDryRun: Flags.boolean({char: 'n', description: 'Set to actually write the files (will not overwrite)'}),
     overWrite: Flags.boolean({char: 'o', description: 'Overwrite existing files'}),
-    depth: Flags.integer({char: 'D', description: 'The depth of the topic tree to render as separate files'}),
+    depth: Flags.integer({char: 'd', description: 'The depth of the topic tree to render as separate files'}),
+    only: Flags.string({char: 'l', description: 'Glob pattern - will only write the files which match'}),
   }
 
   public async run(): Promise<void> {
     const {outputDir} = this.args
-    const {dryRun, overWrite, depth} = this.flags
+
+    const {notDryRun, overWrite, depth, only} = this.flags
+
+    const dryRun = !notDryRun
 
     // Build the topic tree
     const {commands, topics} = this.config
@@ -235,16 +259,14 @@ export default class InternalReadme extends BaseCommand<typeof InternalReadme> {
     const renderedTopicTree = renderTopic(topicTree[ROOT_TOPIC_NAME], this.config)
 
     if (dryRun) console.log('Dry-run mode: No files will be written.')
-    const writeOutput = writeTopic(renderedTopicTree, outputDir, dryRun, overWrite)
+    const writeOutput = writeTopic(renderedTopicTree, outputDir, dryRun, overWrite, only)
 
-    if (dryRun) console.log(`Would create the following files in ${outputDir}:`)
-    else if (writeOutput.created.length > 0) console.log(`Created the following files in ${outputDir}:`)
-
+    if (writeOutput.created.length > 0)
+      console.log(dryRun ? 'Would create the following files:' : 'Created the following files:')
     writeOutput.created.forEach((file) => console.log(`- ${file}`))
 
-    if (!dryRun && overWrite) {
-      console.log('Overwritten the following files:')
-      writeOutput.overwritten.forEach((file) => console.log(`- ${file}`))
-    }
+    if (writeOutput.overwritten.length > 0)
+      console.log(dryRun ? 'Would overwrite the following files:' : 'Overwritten the following files:')
+    writeOutput.overwritten.forEach((file) => console.log(`- ${file}`))
   }
 }

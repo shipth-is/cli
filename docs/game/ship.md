@@ -1,11 +1,14 @@
 # game ship
 
+Builds the app (for all platforms with valid credentials) and ships it to the stores
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ship [-g &lt;value&gt;]
+  $ shipthis game ship [-g <value>]
 
 FLAGS
-  -g, --gameId=&lt;value&gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Builds the app (for all platforms with valid credentials) and ships it to the stores

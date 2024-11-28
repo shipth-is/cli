@@ -1,14 +1,17 @@
 # game ios app addTester
 
+Adds a test user to the game in App Store Connect.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios app addTester [-g &lt;value&gt;] [-e &lt;value&gt;] [-f &lt;value&gt;] [-l &lt;value&gt;]
+  $ shipthis game ios app addTester [-g <value>] [-e <value>] [-f <value>] [-l <value>]
 
 FLAGS
-  -e, --email=&lt;value&gt;      The email address of the tester
-  -f, --firstName=&lt;value&gt;  The first name of the tester
-  -g, --gameId=&lt;value&gt;     The ID of the game
-  -l, --lastName=&lt;value&gt;   The last name of the tester
+  -e, --email=<value>      The email address of the tester
+  -f, --firstName=<value>  The first name of the tester
+  -g, --gameId=<value>     The ID of the game
+  -l, --lastName=<value>   The last name of the tester
 
 DESCRIPTION
   Adds a test user to the game in App Store Connect.

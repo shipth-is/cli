@@ -7,18 +7,21 @@ Commands related to jobs for a specific game
 
 # game job list
 
+Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game job list [-g &amp;lt;value&amp;gt;] [-p &amp;lt;value&amp;gt;] [-s &amp;lt;value&amp;gt;] [-o createdAt|updatedAt] [-r asc|desc]
+  $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
 
 FLAGS
-  -g, --gameId=&amp;lt;value&amp;gt;      The ID of the game
-  -o, --orderBy=&amp;lt;option&amp;gt;    [default: createdAt] The field to order by
-                            &amp;lt;options: createdAt|updatedAt&amp;gt;
-  -p, --pageNumber=&amp;lt;value&amp;gt;  The page number to show (starts at 0)
-  -r, --order=&amp;lt;option&amp;gt;      [default: desc] The order to sort by
-                            &amp;lt;options: asc|desc&amp;gt;
-  -s, --pageSize=&amp;lt;value&amp;gt;    [default: 10] The number of items to show per page
+  -g, --gameId=<value>      The ID of the game
+  -o, --orderBy=<option>    [default: createdAt] The field to order by
+                            <options: createdAt|updatedAt>
+  -p, --pageNumber=<value>  The page number to show (starts at 0)
+  -r, --order=<option>      [default: desc] The order to sort by
+                            <options: asc|desc>
+  -s, --pageSize=<value>    [default: 10] The number of items to show per page
 
 DESCRIPTION
   Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
@@ -31,17 +34,20 @@ EXAMPLES
 
 # game job status
 
+Shows the real-time status of a job.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game job status JOB_ID [-g &amp;lt;value&amp;gt;] [-n &amp;lt;value&amp;gt;] [-f]
+  $ shipthis game job status JOB_ID [-g <value>] [-n <value>] [-f]
 
 ARGUMENTS
   JOB_ID  The id of the job to get the status of
 
 FLAGS
   -f, --follow          Follow the log in real-time
-  -g, --gameId=&amp;lt;value&amp;gt;  The ID of the game
-  -n, --lines=&amp;lt;value&amp;gt;   [default: 10] The number of lines to show
+  -g, --gameId=<value>  The ID of the game
+  -n, --lines=<value>   [default: 10] The number of lines to show
 
 DESCRIPTION
   Shows the real-time status of a job.

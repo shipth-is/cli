@@ -1,12 +1,15 @@
 # game create
 
+Create a new game
+
+## Help Output
 ```
 USAGE
-  $ shipthis game create [-q] [-f] [-n &lt;value&gt;]
+  $ shipthis game create [-q] [-f] [-n <value>]
 
 FLAGS
   -f, --force
-  -n, --name=&lt;value&gt;  The name of the game
+  -n, --name=<value>  The name of the game
   -q, --quiet         Avoid output except for interactions and errors
 
 DESCRIPTION

@@ -1,11 +1,14 @@
 # login
 
+Authenticate - will create a new account if one does not exist.
+
+## Help Output
 ```
 USAGE
-  $ shipthis login [-f] [-e &lt;value&gt;]
+  $ shipthis login [-f] [-e <value>]
 
 FLAGS
-  -e, --email=&lt;value&gt;  Your email address
+  -e, --email=<value>  Your email address
   -f, --force
 
 DESCRIPTION

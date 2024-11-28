@@ -1,16 +1,19 @@
 # game job status
 
+Shows the real-time status of a job.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game job status JOB_ID [-g &lt;value&gt;] [-n &lt;value&gt;] [-f]
+  $ shipthis game job status JOB_ID [-g <value>] [-n <value>] [-f]
 
 ARGUMENTS
   JOB_ID  The id of the job to get the status of
 
 FLAGS
   -f, --follow          Follow the log in real-time
-  -g, --gameId=&lt;value&gt;  The ID of the game
-  -n, --lines=&lt;value&gt;   [default: 10] The number of lines to show
+  -g, --gameId=<value>  The ID of the game
+  -n, --lines=<value>   [default: 10] The number of lines to show
 
 DESCRIPTION
   Shows the real-time status of a job.

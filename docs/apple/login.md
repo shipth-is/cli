@@ -1,11 +1,14 @@
 # apple login
 
+Authenticate with Apple - saves the session to the auth file
+
+## Help Output
 ```
 USAGE
-  $ shipthis apple login [-q] [-f] [-e &lt;value&gt;]
+  $ shipthis apple login [-q] [-f] [-e <value>]
 
 FLAGS
-  -e, --appleEmail=&lt;value&gt;  Your Apple Developer email address
+  -e, --appleEmail=<value>  Your Apple Developer email address
   -f, --force
   -q, --quiet               Avoid output except for interactions and errors
 

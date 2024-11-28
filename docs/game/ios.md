@@ -13,15 +13,18 @@ Commands related to the App Store App for a specific game
 
 # game ios app addTester
 
+Adds a test user to the game in App Store Connect.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios app addTester [-g &amp;amp;lt;value&amp;amp;gt;] [-e &amp;amp;lt;value&amp;amp;gt;] [-f &amp;amp;lt;value&amp;amp;gt;] [-l &amp;amp;lt;value&amp;amp;gt;]
+  $ shipthis game ios app addTester [-g <value>] [-e <value>] [-f <value>] [-l <value>]
 
 FLAGS
-  -e, --email=&amp;amp;lt;value&amp;amp;gt;      The email address of the tester
-  -f, --firstName=&amp;amp;lt;value&amp;amp;gt;  The first name of the tester
-  -g, --gameId=&amp;amp;lt;value&amp;amp;gt;     The ID of the game
-  -l, --lastName=&amp;amp;lt;value&amp;amp;gt;   The last name of the tester
+  -e, --email=<value>      The email address of the tester
+  -f, --firstName=<value>  The first name of the tester
+  -g, --gameId=<value>     The ID of the game
+  -l, --lastName=<value>   The last name of the tester
 
 DESCRIPTION
   Adds a test user to the game in App Store Connect.
@@ -32,15 +35,18 @@ EXAMPLES
 
 # game ios app create
 
+Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios app create [-q] [-g &amp;amp;lt;value&amp;amp;gt;] [-n &amp;amp;lt;value&amp;amp;gt;] [-b &amp;amp;lt;value&amp;amp;gt;] [-f]
+  $ shipthis game ios app create [-q] [-g <value>] [-n <value>] [-b <value>] [-f]
 
 FLAGS
-  -b, --bundleId=&amp;amp;lt;value&amp;amp;gt;  The BundleId in the Apple Developer Portal
+  -b, --bundleId=<value>  The BundleId in the Apple Developer Portal
   -f, --force
-  -g, --gameId=&amp;amp;lt;value&amp;amp;gt;    The ID of the game
-  -n, --appName=&amp;amp;lt;value&amp;amp;gt;   The name of the App in the Apple Developer Portal
+  -g, --gameId=<value>    The ID of the game
+  -n, --appName=<value>   The name of the App in the Apple Developer Portal
   -q, --quiet             Avoid output except for interactions and errors
 
 DESCRIPTION
@@ -53,12 +59,15 @@ EXAMPLES
 
 # game ios app status
 
+Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios app status [-g &amp;amp;lt;value&amp;amp;gt;]
+  $ shipthis game ios app status [-g <value>]
 
 FLAGS
-  -g, --gameId=&amp;amp;lt;value&amp;amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
@@ -69,17 +78,20 @@ EXAMPLES
 
 # game ios app sync
 
+Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios app sync [-q] [-g &amp;amp;lt;value&amp;amp;gt;] [-f]
+  $ shipthis game ios app sync [-q] [-g <value>] [-f]
 
 FLAGS
   -f, --force
-  -g, --gameId=&amp;amp;lt;value&amp;amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
   -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
-  Synchronies the Apple App &amp;amp;#34;BundleId&amp;amp;#34; with the capabilities from the local project. If --gameId is not provided it will
+  Synchronies the Apple App "BundleId" with the capabilities from the local project. If --gameId is not provided it will
   look in the current directory.
 
 EXAMPLES
@@ -96,13 +108,16 @@ Commands related to the App Store Provisioning Profiles for this Game
 
 # game ios profile create
 
+Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios profile create [-q] [-g &amp;amp;lt;value&amp;amp;gt;] [-f]
+  $ shipthis game ios profile create [-q] [-g <value>] [-f]
 
 FLAGS
   -f, --force
-  -g, --gameId=&amp;amp;lt;value&amp;amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
   -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
@@ -115,16 +130,19 @@ EXAMPLES
 
 # game ios profile export
 
+Saves the current Mobile Provisioning Profile to a ZIP file
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios profile export FILE [-g &amp;amp;lt;value&amp;amp;gt;] [-f]
+  $ shipthis game ios profile export FILE [-g <value>] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
 
 FLAGS
   -f, --force           Overwrite the file if it already exists
-  -g, --gameId=&amp;amp;lt;value&amp;amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Saves the current Mobile Provisioning Profile to a ZIP file
@@ -135,16 +153,19 @@ EXAMPLES
 
 # game ios profile import
 
+Imports an Mobile Provisioning Profile to your ShipThis account
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios profile import FILE [-g &amp;amp;lt;value&amp;amp;gt;] [-f]
+  $ shipthis game ios profile import FILE [-g <value>] [-f]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force
-  -g, --gameId=&amp;amp;lt;value&amp;amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Imports an Mobile Provisioning Profile to your ShipThis account
@@ -155,13 +176,16 @@ EXAMPLES
 
 # game ios profile status
 
+Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios profile status [-g &amp;amp;lt;value&amp;amp;gt;] [-f]
+  $ shipthis game ios profile status [-g <value>] [-f]
 
 FLAGS
   -f, --noAppleAuth
-  -g, --gameId=&amp;amp;lt;value&amp;amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current
@@ -176,12 +200,15 @@ EXAMPLES
 
 # game ios status
 
+Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
+
+## Help Output
 ```
 USAGE
-  $ shipthis game ios status [-g &amp;lt;value&amp;gt;]
+  $ shipthis game ios status [-g <value>]
 
 FLAGS
-  -g, --gameId=&amp;lt;value&amp;gt;  The ID of the game
+  -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
   Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
