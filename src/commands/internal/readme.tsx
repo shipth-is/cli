@@ -96,10 +96,7 @@ function getTopicTree(topics: Topic[], commands: Command.Loadable[], separateFil
     },
   }
 
-  const topicsByName = topics.reduce((acc, topic) => {
-    acc[topic.name] = topic
-    return acc
-  }, {} as Record<string, Topic>)
+  const topicsByName = Object.fromEntries(topics.map((topic) => [topic.name, topic]))
 
   for (const topic of nonCommandTopics) {
     const topicPath = topic.name.split(':')

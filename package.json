@@ -75,6 +75,7 @@
   "files": [
     "/bin",
     "/dist",
+    "/docs",
     "/oclif.manifest.json"
   ],
   "homepage": "https://shipthis.cc",
