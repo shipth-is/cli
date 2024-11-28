@@ -1,7 +1,7 @@
 {
   "name": "shipthis",
   "description": "Game Shipping Tool",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "author": "Hello Invent Ltd",
   "bin": {
     "shipthis": "./bin/run.js"
