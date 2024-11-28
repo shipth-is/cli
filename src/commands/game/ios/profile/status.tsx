@@ -8,8 +8,7 @@ import {CredentialsType, Platform} from '@cli/types'
 export default class GameIosProfileStatus extends BaseGameCommand<typeof GameIosProfileStatus> {
   static override args = {}
 
-  static override description =
-    'Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.'
+  static override description = 'Shows the Game iOS Mobile Provisioning Profile Status.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 

@@ -2,7 +2,7 @@
 
 ## Description
 
-Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.
+Shows the Game iOS Mobile Provisioning Profile Status.
 
 ## Help Output
 
@@ -15,8 +15,7 @@ FLAGS
   -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current
-  directory.
+  Shows the Game iOS Mobile Provisioning Profile Status.
 
 EXAMPLES
   $ shipthis game ios profile status

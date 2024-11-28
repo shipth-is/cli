@@ -24,8 +24,7 @@ import {fetchBundleId} from '@cli/utils/index.js'
 export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIosProfileCreate> {
   static override args = {}
 
-  static override description =
-    'Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.'
+  static override description = 'Creates a Mobile Provisioning Profile in the Apple Developer Portal.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
