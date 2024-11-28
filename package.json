@@ -86,6 +86,7 @@
   "main": "dist/index.js",
   "type": "module",
   "exports": [
+    "./dist/utils/help.js",
     "./dist/commands/apple/apiKey/export.js",
     "./dist/commands/apple/apiKey/status.js",
     "./dist/commands/apple/apiKey/create.js",
