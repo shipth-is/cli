@@ -185,6 +185,11 @@ function writeTopic(
   if (!topic.rendered) throw new Error(`Topic ${topic.topic.name} has not been rendered`)
 
   const makeFolderAndSave = (filePath: string, rendered: string) => {
+    const exists = fs.existsSync(filePath)
+    const doWrite = !exists || overWrite
+    if (!doWrite) return
+    const outputList = exists ? writeOutput.overwritten : writeOutput.created
+    outputList.push(filePath)
     if (dryRun) return
     const folder = path.dirname(filePath)
     fs.mkdirSync(folder, {recursive: true})
@@ -195,13 +200,9 @@ function writeTopic(
 
   const writeOutput: WriteOutput = {created: [], overwritten: []}
   const filePath = path.join(outputDir, topic.filePath)
-  const exists = fs.existsSync(filePath)
 
-  if (!skipFile(filePath)) {
-    const outputList = exists ? writeOutput.overwritten : writeOutput.created
-    outputList.push(filePath)
-    if (!exists || overWrite) makeFolderAndSave(filePath, topic.rendered)
-  }
+  if (!skipFile(filePath)) makeFolderAndSave(filePath, topic.rendered)
+
   // We don't need to write the subtopics and commands if we are including them in the current file
   // TODO: the default oclif readme outputs them all but merges based on depth
   // if (topic.includeTopicsAndCommands) return writeOutput
@@ -215,13 +216,7 @@ function writeTopic(
   for (const command of topic.commands) {
     if (!command.rendered) throw new Error(`Command ${command.command.id} has not been rendered`)
     const filePath = path.join(outputDir, command.filePath)
-    const exists = fs.existsSync(filePath)
-
-    if (!skipFile(filePath)) {
-      const outputList = exists ? writeOutput.overwritten : writeOutput.created
-      outputList.push(filePath)
-      if (!exists || overWrite) makeFolderAndSave(filePath, command.rendered)
-    }
+    if (!skipFile(filePath)) makeFolderAndSave(filePath, command.rendered)
   }
 
   return writeOutput
