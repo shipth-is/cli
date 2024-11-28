@@ -3,6 +3,7 @@
 Builds the app (for all platforms with valid credentials) and ships it to the stores
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game ship [-g <value>]

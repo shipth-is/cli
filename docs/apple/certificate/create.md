@@ -3,6 +3,7 @@
 Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis apple certificate create [-f] [-q]

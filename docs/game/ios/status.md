@@ -3,6 +3,7 @@
 Shows the Game iOS Platform status. If --gameId is not provided it will look in the current directory.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game ios status [-g <value>]

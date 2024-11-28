@@ -20,6 +20,7 @@ const TOPIC_TEMPLATE = `
 
 <% if (subTopics && subTopics.length > 0) { -%>
 ## Topics
+
 <% subTopics.forEach(subTopic => { -%>
 - [<%= subTopic.topic.name %>](<%= subTopic.filePath %>)
 <% }) -%>
@@ -27,6 +28,7 @@ const TOPIC_TEMPLATE = `
 
 <% if (commands && commands.length > 0) { -%>
 ## Commands
+
 <% commands.forEach(readmeCommand => { -%>
 - [<%= readmeCommand.command.id %>](<%= readmeCommand.filePath %>)
 <% }) -%>
@@ -41,6 +43,7 @@ const TOPIC_TEMPLATE_INCLUDE = `
 
 <% if (subTopics && subTopics.length > 0) { -%>
 ## Topics
+
 <% subTopics.forEach(subTopic => { %>
 <%- subTopic.rendered %>
 <% }) -%>
@@ -48,8 +51,9 @@ const TOPIC_TEMPLATE_INCLUDE = `
 
 <% if (commands && commands.length > 0) { -%>
 ## Commands
+
 <% commands.forEach(readmeCommand => { %>
-<%- readmeCommand.rendered %>
+<%- readmeCommand.renderedForInclude %>
 <% }) -%>
 <% } -%>
 `.trim()
@@ -60,6 +64,20 @@ const COMMAND_TEMPLATE = `
 <%= command.description || "" %>
 
 ## Help Output
+
+\`\`\`
+<%- helpOutput %>
+\`\`\`
+`.trim() // Remove the leading newline
+
+// When we include the rendered command in-line in the topic file
+const COMMAND_TEMPLATE_INCLUDE = `
+### <%= command.id %>
+
+<%= command.description || "" %>
+
+#### Help Output
+
 \`\`\`
 <%- helpOutput %>
 \`\`\`
@@ -79,7 +97,8 @@ type TopicTree = Record<string, ReadmeTopic>
 interface ReadmeCommand {
   command: Command.Loadable
   filePath: string
-  rendered?: string
+  renderedForInclude?: string
+  renderedForFile?: string
 }
 
 // This is ugly...
@@ -148,10 +167,8 @@ function getTopicTree(topics: Topic[], commands: Command.Loadable[], separateFil
 function renderTopic(readmeTopic: ReadmeTopic, config: Config): ReadmeTopic {
   const renderedSubTopics = readmeTopic.subTopics.map((subTopic) => renderTopic(subTopic, config))
   const renderedCommands = readmeTopic.commands.map((readmeCommand) => renderCommand(readmeCommand, config))
-
-  const template = readmeTopic.includeTopicsAndCommands ? TOPIC_TEMPLATE_INCLUDE : TOPIC_TEMPLATE
-
-  const rendered = ejs.render(template, {
+  const topicTemplate = readmeTopic.includeTopicsAndCommands ? TOPIC_TEMPLATE_INCLUDE : TOPIC_TEMPLATE
+  const rendered = ejs.render(topicTemplate, {
     topic: readmeTopic.topic,
     subTopics: renderedSubTopics,
     commands: renderedCommands,
@@ -166,8 +183,9 @@ function renderCommand(readmeCommand: ReadmeCommand, config: Config): ReadmeComm
   const help = new CustomHelp(config, {maxWidth: columns, stripAnsi: true})
   const helpOutput = help.exposedFormatCommand(readmeCommand.command)
   // Insert into our template
-  const rendered = ejs.render(COMMAND_TEMPLATE, {command: readmeCommand.command, helpOutput})
-  return {...readmeCommand, rendered}
+  const renderedForInclude = ejs.render(COMMAND_TEMPLATE_INCLUDE, {command: readmeCommand.command, helpOutput})
+  const renderedForFile = ejs.render(COMMAND_TEMPLATE, {command: readmeCommand.command, helpOutput})
+  return {...readmeCommand, renderedForFile, renderedForInclude}
 }
 
 type WriteOutput = {
@@ -186,11 +204,11 @@ function writeTopic(
 
   const makeFolderAndSave = (filePath: string, rendered: string) => {
     const exists = fs.existsSync(filePath)
-    const doWrite = !exists || overWrite
-    if (!doWrite) return
     const outputList = exists ? writeOutput.overwritten : writeOutput.created
     outputList.push(filePath)
-    if (dryRun) return
+    const doWrite = !exists || overWrite
+    // console.log({filePath, exists, dryRun, doWrite})
+    if (!doWrite || dryRun) return
     const folder = path.dirname(filePath)
     fs.mkdirSync(folder, {recursive: true})
     fs.writeFileSync(filePath, rendered)
@@ -214,9 +232,9 @@ function writeTopic(
   }
 
   for (const command of topic.commands) {
-    if (!command.rendered) throw new Error(`Command ${command.command.id} has not been rendered`)
+    if (!command.renderedForFile) throw new Error(`Command ${command.command.id} has not been rendered`)
     const filePath = path.join(outputDir, command.filePath)
-    if (!skipFile(filePath)) makeFolderAndSave(filePath, command.rendered)
+    if (!skipFile(filePath)) makeFolderAndSave(filePath, command.renderedForFile)
   }
 
   return writeOutput
@@ -261,7 +279,7 @@ export default class InternalReadme extends BaseCommand<typeof InternalReadme> {
     writeOutput.created.forEach((file) => console.log(`- ${file}`))
 
     if (writeOutput.overwritten.length > 0)
-      console.log(dryRun ? 'Would overwrite the following files:' : 'Overwritten the following files:')
+      console.log(notDryRun && overWrite ? 'Overwritten the following files:' : 'Would overwrite the following files:')
     writeOutput.overwritten.forEach((file) => console.log(`- ${file}`))
   }
 }

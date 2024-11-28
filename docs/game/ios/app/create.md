@@ -3,6 +3,7 @@
 Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game ios app create [-q] [-g <value>] [-n <value>] [-b <value>] [-f]

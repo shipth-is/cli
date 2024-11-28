@@ -3,6 +3,7 @@
 Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis apple apiKey create [-f] [-q]

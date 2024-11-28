@@ -3,6 +3,7 @@
 Shows a list of all your games
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game list [-p <value>] [-s <value>] [-o createdAt|updatedAt|name] [-r asc|desc]

@@ -3,6 +3,7 @@
 Imports an Mobile Provisioning Profile to your ShipThis account
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game ios profile import FILE [-g <value>] [-f]

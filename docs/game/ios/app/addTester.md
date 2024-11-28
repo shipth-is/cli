@@ -3,6 +3,7 @@
 Adds a test user to the game in App Store Connect.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game ios app addTester [-g <value>] [-e <value>] [-f <value>] [-l <value>]

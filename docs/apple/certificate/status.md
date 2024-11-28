@@ -3,6 +3,7 @@
 Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign all of your iOS apps.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis apple certificate status [-f]

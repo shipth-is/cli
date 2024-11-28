@@ -5,11 +5,13 @@ Commands related to builds for a specific game
 
 ## Commands
 
-# game build download
+
+### game build download
 
 Downloads the given build artifact to the specified file
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game build download BUILD_ID FILE [-g <value>] [-f]
@@ -31,11 +33,12 @@ EXAMPLES
   $ shipthis game build download --gameId 0c179fc4 e4b9a3d7 output.apk
 ```
 
-# game build list
+### game build list
 
 Lists the builds for successful jobs of a game.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game build list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]

@@ -3,6 +3,7 @@
 Downloads the shipthis.json file for a given game into the current directory.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game export GAME_ID [-f]

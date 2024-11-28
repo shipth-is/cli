@@ -5,11 +5,13 @@ Creates an iOS Distribution Certificate in your Apple Developer account and save
 
 ## Commands
 
-# apple certificate create
+
+### apple certificate create
 
 Creates an iOS Distribution Certificate in your Apple Developer account and saves it with the private key to your ShipThis account
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis apple certificate create [-f] [-q]
@@ -28,11 +30,12 @@ EXAMPLES
   $ shipthis apple certificate create --force
 ```
 
-# apple certificate export
+### apple certificate export
 
 Saves the current Apple Distribution Certificate to a ZIP file.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis apple certificate export FILE [-f]
@@ -50,11 +53,12 @@ EXAMPLES
   $ shipthis apple certificate export userCert.zip
 ```
 
-# apple certificate import
+### apple certificate import
 
 Imports an iOS Distribution Certificate to your ShipThis account
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis apple certificate import FILE [-f]
@@ -72,11 +76,12 @@ EXAMPLES
   $ shipthis apple certificate import userCert.zip
 ```
 
-# apple certificate status
+### apple certificate status
 
 Displays the status of the iOS Distribution certificates in your Apple and ShipThis accounts. These are used to sign all of your iOS apps.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis apple certificate status [-f]

@@ -3,6 +3,7 @@
 Downloads the given build artifact to the specified file
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game build download BUILD_ID FILE [-g <value>] [-f]

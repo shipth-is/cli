@@ -3,6 +3,7 @@
 Create a new game
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game create [-q] [-f] [-n <value>]

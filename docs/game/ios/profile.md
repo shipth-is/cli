@@ -5,11 +5,13 @@ Commands related to the App Store Provisioning Profiles for this Game
 
 ## Commands
 
-# game ios profile create
+
+### game ios profile create
 
 Creates a Mobile Provisioning Profile in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game ios profile create [-q] [-g <value>] [-f]
@@ -27,11 +29,12 @@ EXAMPLES
   $ shipthis game ios profile create
 ```
 
-# game ios profile export
+### game ios profile export
 
 Saves the current Mobile Provisioning Profile to a ZIP file
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game ios profile export FILE [-g <value>] [-f]
@@ -50,11 +53,12 @@ EXAMPLES
   $ shipthis game ios profile export userProfile.zip
 ```
 
-# game ios profile import
+### game ios profile import
 
 Imports an Mobile Provisioning Profile to your ShipThis account
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game ios profile import FILE [-g <value>] [-f]
@@ -73,11 +77,12 @@ EXAMPLES
   $ shipthis game ios profile import profile.zip
 ```
 
-# game ios profile status
+### game ios profile status
 
 Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game ios profile status [-g <value>] [-f]

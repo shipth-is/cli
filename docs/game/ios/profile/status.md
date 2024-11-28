@@ -3,6 +3,7 @@
 Shows the Game iOS Mobile Provisioning Profile Status. If --gameId is not provided it will look in the current directory.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game ios profile status [-g <value>] [-f]

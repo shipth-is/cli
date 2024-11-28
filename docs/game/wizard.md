@@ -3,6 +3,7 @@
 Runs all the steps for the specific platform
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game wizard -p ios [-f <value>]

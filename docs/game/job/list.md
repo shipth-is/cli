@@ -3,6 +3,7 @@
 Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]

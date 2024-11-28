@@ -3,6 +3,7 @@
 Lists the builds for successful jobs of a game.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game build list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]

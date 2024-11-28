@@ -5,11 +5,13 @@ Commands related to the App Store App for a specific game
 
 ## Commands
 
-# game ios app addTester
+
+### game ios app addTester
 
 Adds a test user to the game in App Store Connect.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game ios app addTester [-g <value>] [-e <value>] [-f <value>] [-l <value>]
@@ -27,11 +29,12 @@ EXAMPLES
   $ shipthis game ios app addTester
 ```
 
-# game ios app create
+### game ios app create
 
 Creates an App and BundleId in the Apple Developer Portal. If --gameId is not provided it will look in the current directory.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game ios app create [-q] [-g <value>] [-n <value>] [-b <value>] [-f]
@@ -51,11 +54,12 @@ EXAMPLES
   $ shipthis game ios app create
 ```
 
-# game ios app status
+### game ios app status
 
 Shows the Game iOS App status. If --gameId is not provided it will look in the current directory.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game ios app status [-g <value>]
@@ -70,11 +74,12 @@ EXAMPLES
   $ shipthis game ios app status
 ```
 
-# game ios app sync
+### game ios app sync
 
 Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project. If --gameId is not provided it will look in the current directory.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game ios app sync [-q] [-g <value>] [-f]

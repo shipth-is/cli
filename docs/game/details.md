@@ -3,6 +3,7 @@
 Shows and sets the details of a game. If --gameId is not provided it will look in the current directory.
 
 ## Help Output
+
 ```
 USAGE
   $ shipthis game details [-g <value>] [-f] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>] [-a

@@ -5,11 +5,13 @@ Commands related to jobs for a specific game
 
 ## Commands
 
-# game job list
+
+### game job list
 
 Lists the jobs for a game. If --gameId is not provided it will look in the current directory.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
@@ -32,11 +34,12 @@ EXAMPLES
   $ shipthis game job list --gameId 0c179fc4
 ```
 
-# game job status
+### game job status
 
 Shows the real-time status of a job.
 
-## Help Output
+#### Help Output
+
 ```
 USAGE
   $ shipthis game job status JOB_ID [-g <value>] [-n <value>] [-f]
