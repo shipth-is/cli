@@ -1,9 +1,17 @@
 # apple login
 
-Authenticate with Apple - saves the session to the auth file
+## Description
+
+Authenticate with Apple - saves the session to the auth file.
+
+## Example
+
+[![asciicast](https://asciinema.org/a/CsYDuIS5hfO20CBS5OHbi6VUc.svg)](https://asciinema.org/a/CsYDuIS5hfO20CBS5OHbi6VUc)
+
 
 ## Help Output
-```
+
+```bash
 USAGE
   $ shipthis apple login [-q] [-f] [-e <value>]
 

@@ -33,7 +33,7 @@ USAGE
 <!-- commands -->
 # Command Topics
 
-* [`shipthis apple`](docs/apple.md) - Commands related to Apple Developer Portal
+* [`shipthis apple`](./docs/apple.md) - Commands related to Apple Developer Portal
 * [`shipthis apple apiKey`](docs/apple/apiKey.md) - Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account
 * [`shipthis apple apiKey create`](docs/apple/apiKey/create.md) - Creates an App Store Connect API Key in your Apple Developer account and saves the private key in your ShipThis account
 * [`shipthis apple apiKey export`](docs/apple/apiKey/export.md) - Saves the current App Store Connect API Key to a ZIP file

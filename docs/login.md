@@ -4,6 +4,10 @@
 
 Authenticate - will create a new account if one does not exist.
 
+## Example
+
+[![asciicast](https://asciinema.org/a/sbE3KOpIzgh72lLVdZEXlQZFd.svg)](https://asciinema.org/a/sbE3KOpIzgh72lLVdZEXlQZFd)
+
 ## Help Output
 
 ```
