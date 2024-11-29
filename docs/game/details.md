@@ -1,5 +1,9 @@
 # game details
 
+## Example
+
+[![asciicast](https://asciinema.org/a/5eIVmJYQ6MxDAlFVoVKXhGkYr.svg)](https://asciinema.org/a/5eIVmJYQ6MxDAlFVoVKXhGkYr)
+
 ## Description
 
 Shows and sets the details of a game.

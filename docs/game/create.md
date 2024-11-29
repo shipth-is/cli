@@ -1,5 +1,9 @@
 # game create
 
+## Example
+
+[![asciicast](https://asciinema.org/a/Oxf8qnYoVViPNVA40EXKBWG36.svg)](https://asciinema.org/a/Oxf8qnYoVViPNVA40EXKBWG36)
+
 ## Description
 
 Create a new game in ShipThis.

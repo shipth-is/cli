@@ -6,7 +6,7 @@ Authenticate - will create a new account if one does not exist.
 
 ## Example
 
-[![asciicast](https://asciinema.org/a/sbE3KOpIzgh72lLVdZEXlQZFd.svg)](https://asciinema.org/a/sbE3KOpIzgh72lLVdZEXlQZFd)
+[![asciicast](https://asciinema.org/a/jPd9Mqafw98hEj4KEtkZod3ny.svg)](https://asciinema.org/a/jPd9Mqafw98hEj4KEtkZod3ny)
 
 ## Help Output
 

@@ -2,7 +2,7 @@
 
 ## Example
 
-[![asciicast](https://asciinema.org/a/zK1v4E15evLKt5NYidnlGZSim.svg)](https://asciinema.org/a/zK1v4E15evLKt5NYidnlGZSim)
+[![asciicast](https://asciinema.org/a/GsqLxzyvFApORKUDfJl5DsNo7.svg)](https://asciinema.org/a/GsqLxzyvFApORKUDfJl5DsNo7)
 
 ## Description
 
