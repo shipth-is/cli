@@ -1,9 +1,5 @@
 # status
 
-## Example
-
-[![asciicast](https://asciinema.org/a/GsqLxzyvFApORKUDfJl5DsNo7.svg)](https://asciinema.org/a/GsqLxzyvFApORKUDfJl5DsNo7)
-
 ## Description
 
 Displays the current overall status.
@@ -18,6 +14,10 @@ Displays the current overall status.
 - **Git repository detected (not required)**
   - Will be "YES" if ShipThis detects that there is an active git project
   - ShipThis will tag your uploads with the current git information (branch and commit hash)
+
+## Example
+
+[![asciicast](https://asciinema.org/a/GsqLxzyvFApORKUDfJl5DsNo7.svg)](https://asciinema.org/a/GsqLxzyvFApORKUDfJl5DsNo7)
 
 ## Help Output
 

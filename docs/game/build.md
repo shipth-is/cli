@@ -1,10 +1,15 @@
-# game build
+# Topic: Game Build
 
-Commands related to builds for a specific game
+Commands in the Game Build topic are prefixed `shipthis game build`. They relate
+to managing completed builds of your game.
 
+ShipThis allows you to list and download your builds.
+
+## Example 
+
+[![asciicast](https://asciinema.org/a/m2i3bOvZHUpQXFWtYXc7UnaKQ.svg)](https://asciinema.org/a/m2i3bOvZHUpQXFWtYXc7UnaKQ)
 
 ## Commands
-
 
 ### game build download
 

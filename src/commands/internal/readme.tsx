@@ -139,7 +139,7 @@ function getTopicTree(topics: Topic[], commands: Command.Loadable[], separateFil
           topic: topicsByName[name],
           subTopics: [],
           commands: [],
-          filePath: `${path.join(...name.split(':'))}.md`,
+          filePath: `${path.join(...name.split(':'))}`,
           includeTopicsAndCommands,
         }
         currentParent.subTopics.push(newSubTopic)
@@ -161,7 +161,7 @@ function getTopicTree(topics: Topic[], commands: Command.Loadable[], separateFil
       if (!subTopic) throw new Error('Could not find topic for command: ' + command.id)
       currentParent = subTopic
     }
-    currentParent.commands.push({command, filePath: `${path.join(...command.id.split(':'))}.md`})
+    currentParent.commands.push({command, filePath: `${path.join(...command.id.split(':'))}`})
   }
 
   return topicTree

@@ -6,7 +6,7 @@ Authenticate with Apple - saves the session to the auth file.
 
 ## Example
 
-[![asciicast](https://asciinema.org/a/CsYDuIS5hfO20CBS5OHbi6VUc.svg)](https://asciinema.org/a/CsYDuIS5hfO20CBS5OHbi6VUc)
+[![asciicast](https://asciinema.org/a/h2wLhEFVy8mLA5dE6hb1gHDyD.svg)](https://asciinema.org/a/h2wLhEFVy8mLA5dE6hb1gHDyD)
 
 
 ## Help Output
