@@ -1,4 +1,4 @@
-# ShipThis CLI
+# ShipThis CLI Reference
 
 ## Introduction
 
@@ -6,7 +6,56 @@ ShipThis is a platform that helps you manage shipping your [Godot](https://godot
 
 This is all done with an easy to use command line tool called `shipthis`.
 
-You can discover **ShipThis in less than 5 minutes** via our [Quick Start Guide](https://shipthis.cc/docs/quickstart).
+## Quickstart
+
+Let's discover **ShipThis in less than 5 minutes**.
+
+### Getting Started
+
+ShipThis is a platform that helps you manage shipping your [Godot](https://godotengine.org/) games to the App Store.
+
+#### What you'll need
+
+- A Godot game
+- [Node.js](https://nodejs.org/en/download/) version 18.0 or above:
+  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+- An [Apple Developer](https://developer.apple.com) account
+
+### 1. Install ShipThis
+
+    ShipThis can be installed as a package via the [NPM package manager](https://www.npmjs.com/). Run the following at the command line:
+
+```
+npm install -g shipthis
+```
+
+### 2. Create an account
+
+Set up an account with ShipThis by logging in for the first time using the [`shipthis login`](https://shipthis.cc/docs/reference/login) command.
+
+```
+shipthis login
+```
+
+### 3. Configure your game
+
+Set up your ShipThis configuration using the built in [wizard](https://shipthis.cc/docs/wizard):
+
+```
+shipthis game wizard
+```
+
+### 4. Ship
+
+Now you can publish your game to TestFlight with the [`shipthis game ship`](https://shipthis.cc/docs/reference/game/ship) command:
+
+```
+shipthis game ship
+```
+
+Once you are happy with the build you can submit it to Apple using [App Store
+Connect](https://appstoreconnect.apple.com/).
+
 
 ## Topics
 
@@ -19,3 +68,4 @@ You can discover **ShipThis in less than 5 minutes** via our [Quick Start Guide]
 - [login](https://shipthis.cc/docs/reference/login) - Signin or create a new account
 - [status](https://shipthis.cc/docs/reference/status) - Display your overall ShipThis account status
 - [help](https://shipthis.cc/docs/reference/help) - Display help for a specific topic or command
+
