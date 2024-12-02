@@ -24,6 +24,8 @@ these commands. To do that please run the following commands first:
 
 ## Example
 
+[![asciicast](https://asciinema.org/a/Zm53VNoKQx2n0Qrj0UMLIDHHZ.svg)](https://asciinema.org/a/Zm53VNoKQx2n0Qrj0UMLIDHHZ)
+
 ## Commands
 
 ### `apple certificate create`
