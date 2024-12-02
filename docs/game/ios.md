@@ -1,4 +1,4 @@
-# Topic: Game iOS
+# Topic: `game ios`
 
 Commands in the Game iOS topic are prefixed `shipthis game ios`. They relate to
 managing the iOS platform configuration for the game in the current directory.
@@ -10,7 +10,6 @@ these commands. To do that please run the following commands first:
 - [`shipthis login`](/docs/reference/login)
 - [`shipthis apple login`](/docs/reference/apple/login)
 :::
-
 
 ## Topics
 

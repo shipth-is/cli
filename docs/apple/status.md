@@ -1,4 +1,4 @@
-# apple status
+# Command: `apple status`
 
 ## Description
 

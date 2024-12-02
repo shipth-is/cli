@@ -1,4 +1,4 @@
-# status
+# Command: `status`
 
 ## Description
 

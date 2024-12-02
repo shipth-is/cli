@@ -1,4 +1,4 @@
-# help
+# Command: `help`
 
 ## Description
 

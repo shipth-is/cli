@@ -1,4 +1,4 @@
-# game details
+# Command: `game details`
 
 ## Description
 

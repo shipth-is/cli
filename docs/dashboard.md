@@ -1,4 +1,4 @@
-# dashboard
+# Command: `dashboard`
 
 ## Description
 

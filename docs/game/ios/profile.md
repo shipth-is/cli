@@ -1,4 +1,4 @@
-# game ios profile
+# Topic: `game ios profile`
 
 Commands related to the App Store Provisioning Profiles for this Game
 

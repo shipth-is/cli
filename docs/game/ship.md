@@ -1,4 +1,4 @@
-# game ship
+# Command: `game ship`
 
 ## Description
 

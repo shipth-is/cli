@@ -1,6 +1,6 @@
-# Game Commands
+# Topic: `game`
 
-Commands in the Game topic are prefixed `shipthis game`. They relate to configuring
+Commands in the game topic are prefixed `shipthis game`. They relate to configuring
 the specific game in the current working directory.
 
 You will need to be authenticated against ShipThis (by running [`shipthis login`](login)) before running the Game commands.

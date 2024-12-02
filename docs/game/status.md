@@ -1,4 +1,4 @@
-# game status
+# Command: `game status`
 
 ## Description
 

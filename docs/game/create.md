@@ -1,4 +1,4 @@
-# game create
+# Command: `game create`
 
 ## Description
 
@@ -7,7 +7,7 @@ Creates a new game in your [ShipThis account](https://shipthis.cc/games).
 It will read the name of your game from your `project.godot` file. You will be
 prompted to confirm this name, or you can specify one with the `--name` flag. 
 
-If there is already a ShipThis game config file (`shithis.json`) in the current
+If there is already a ShipThis game config file (`shipthis.json`) in the current
 directory then you will need to use the `--force` flag to create a new game and
 overwrite this file with the config for the new game.
 

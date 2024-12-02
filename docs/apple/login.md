@@ -1,4 +1,4 @@
-# apple login
+# Command: `apple login`
 
 ## Description
 

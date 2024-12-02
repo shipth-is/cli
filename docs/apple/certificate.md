@@ -1,4 +1,4 @@
-# apple certificate
+# Topic: `apple certificate`
 
 Commands related to App Store Certificates
 

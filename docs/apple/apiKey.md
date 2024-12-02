@@ -1,4 +1,4 @@
-# apple apiKey
+# Topic: `apple apiKey`
 
 Commands related to App Store Connect API Keys
 

@@ -1,4 +1,4 @@
-# Topic: Game Build
+# Topic: `game build`
 
 Commands in the Game Build topic are prefixed `shipthis game build`. They relate
 to managing completed builds of your game.

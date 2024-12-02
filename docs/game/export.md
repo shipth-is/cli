@@ -1,4 +1,4 @@
-# game export
+# Command: `game export`
 
 ## Description
 

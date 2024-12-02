@@ -1,4 +1,4 @@
-# login
+# Command: `login`
 
 ## Description
 

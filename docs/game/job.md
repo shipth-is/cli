@@ -1,4 +1,4 @@
-# game job
+# Topic: `game job`
 
 Commands related to jobs for a specific game
 

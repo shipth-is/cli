@@ -1,4 +1,4 @@
-# game wizard
+# Command: `game wizard`
 
 ## Description
 
