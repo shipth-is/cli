@@ -28,7 +28,9 @@ export const AppleApiKeysTable = ({ctx, ...boxProps}: Props) => {
             <Text>{`You have ${keys.length} App Store Connect API Keys in your Apple account`}</Text>
             <Text>{`${hasUsable ? 'One' : 'None'} of these can be used by ShipThis`}</Text>
           </Box>
-          <Table data={keys.map((key) => getAppleApiKeySummary(key, userCredentialsResponse.data))} />
+          {keys.length > 0 && (
+            <Table data={keys.map((key) => getAppleApiKeySummary(key, userCredentialsResponse.data))} />
+          )}
           {!hasUsable && (
             <Box marginTop={1}>
               <Text bold>

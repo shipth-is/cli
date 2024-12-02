@@ -2,6 +2,11 @@
 
 ## Description
 
+:::tip
+We recommend configuring your game using the [`shipthis game wizard`](/docs/reference/game/wizard).
+The `shipthis game create` command is the first step run by the wizard
+:::
+
 Creates a new game in your [ShipThis account](https://shipthis.cc/games).
 
 It will read the name of your game from your `project.godot` file. You will be
