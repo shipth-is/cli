@@ -49,7 +49,10 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
 
     render(
       <App>
-        <Table data={data} />
+        {gameListResponse.data.length === 0 && params.pageNumber == 0 && (
+          <Text>No games found. Create one now with $ shipthis game wizard</Text>
+        )}
+        {gameListResponse.data.length > 0 && <Table data={data} />}
         {gameListResponse.pageCount > 1 && (
           <Box marginTop={1} flexDirection="column">
             <Text>{`Showing page ${flags.pageNumber + 1} of ${gameListResponse.pageCount}.`}</Text>
