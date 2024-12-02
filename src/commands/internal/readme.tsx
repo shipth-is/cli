@@ -74,7 +74,7 @@ const COMMAND_TEMPLATE = `
 
 // When we include the rendered command in-line in the topic file
 const COMMAND_TEMPLATE_INCLUDE = `
-### <%= command.id %>
+### \`<%= command.id %>\`
 
 #### Description
 
