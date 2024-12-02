@@ -1,9 +1,15 @@
 # Topic: `apple apiKey`
 
+## Description
+
 Commands in the apple apiKey topic are prefixed `shipthis apple apiKey`. These commands relate to App Store Connect API Keys.
 
 - You can view the App Store Connect API Keys in the [Apple Developer Portal](https://appstoreconnect.apple.com/access/integrations/api).
 - You can view the keys which ShipThis can use in the [ShipThis Dashboard](https://shipthis.cc/credentials)
+
+:::info
+An **App Store Connect API key** is used to authenticate and authorize automated interactions with Apple's App Store Connect API, enabling tasks like managing app metadata, TestFlight, and sales reports.
+:::
 
 :::tip
 You will need to be authenticated against ShipThis and Apple before you can use
@@ -11,17 +17,16 @@ these commands. To do that please run the following commands first:
 
 - [`shipthis login`](/docs/reference/login)
 - [`shipthis apple login`](/docs/reference/apple/login)
+
 :::
 
 ## Example
 
-
-
+[![asciicast](https://asciinema.org/a/PsCq8H4NowWSiGGMLraosAh9a.svg)](https://asciinema.org/a/PsCq8H4NowWSiGGMLraosAh9a)
 
 ## Commands
 
-
-### apple apiKey create
+### `apple apiKey create`
 
 #### Description
 
@@ -48,7 +53,7 @@ EXAMPLES
   $ shipthis apple apiKey create --force
 ```
 
-### apple apiKey export
+### `apple apiKey export`
 
 #### Description
 
@@ -73,7 +78,7 @@ EXAMPLES
   $ shipthis apple apiKey export userApiKey.zip
 ```
 
-### apple apiKey import
+### `apple apiKey import`
 
 #### Description
 
@@ -98,7 +103,7 @@ EXAMPLES
   $ shipthis apple apiKey import userApiKey.zip
 ```
 
-### apple apiKey status
+### `apple apiKey status`
 
 #### Description
 

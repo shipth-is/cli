@@ -1,12 +1,32 @@
 # Topic: `apple certificate`
 
-Commands related to App Store Certificates
+## Description
 
+Commands in the apple certificate topic are prefixed `shipthis apple certificate`.
+These commands relate to iOS Distribution Certificates within your Apple Developer account.
+
+- You can view the Distribution Certificates in the [Apple Developer Portal](https://developer.apple.com/account/resources/certificates/list).
+- You can more about Certificates in the [Apple Documentation](https://developer.apple.com/help/account/create-certificates/certificates-overview/).
+- You can view the Certificates which ShipThis uses in the [ShipThis Dashboard](https://shipthis.cc/credentials).
+
+:::info
+An **iOS Distribution Certificate** is used to authenticate and authorize the distribution of iOS apps, ensuring they are signed and trusted for installation on devices or submission to the App Store.
+:::
+
+:::tip
+You will need to be authenticated against ShipThis and Apple before you can use
+these commands. To do that please run the following commands first:
+
+- [`shipthis login`](/docs/reference/login)
+- [`shipthis apple login`](/docs/reference/apple/login)
+
+:::
+
+## Example
 
 ## Commands
 
-
-### apple certificate create
+### `apple certificate create`
 
 #### Description
 
@@ -33,7 +53,7 @@ EXAMPLES
   $ shipthis apple certificate create --force
 ```
 
-### apple certificate export
+### `apple certificate export`
 
 #### Description
 
@@ -58,7 +78,7 @@ EXAMPLES
   $ shipthis apple certificate export userCert.zip
 ```
 
-### apple certificate import
+### `apple certificate import`
 
 #### Description
 
@@ -83,7 +103,7 @@ EXAMPLES
   $ shipthis apple certificate import userCert.zip
 ```
 
-### apple certificate status
+### `apple certificate status`
 
 #### Description
 
