@@ -1,6 +1,6 @@
 # Apple Commands
 
-Commands in the Apple topic are prefixed `shithis apple`. They relate to linking your ShipThis account with your Apple Developer Account. You need to be authenticated against ShipThis (by running `shipthis login`) before running the Apple commands.
+Commands in the Apple topic are prefixed `shithis apple`. They relate to linking your ShipThis account with your Apple Developer Account. You need to be authenticated against ShipThis (by running [`shipthis login`](/docs/reference/login)) before running the Apple commands.
 
 ## Status
 

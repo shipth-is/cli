@@ -2,7 +2,7 @@
 
 ## Description
 
-Display help for &lt;%= config.bin %&gt;.
+Display help for shipthis.
 
 ## Help Output
 

@@ -8,8 +8,8 @@ You will need to be authenticated against ShipThis (by running [`shipthis login`
 ## Topics
 
 - [game build](/docs/reference/game/build)
-- [game ios](/docs/reference/game//ios)
-- [game job](/docs/reference/game//job)
+- [game ios](/docs/reference/game/ios)
+- [game job](/docs/reference/game/job)
 
 ## Commands
 

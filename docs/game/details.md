@@ -1,12 +1,29 @@
 # game details
 
+## Description
+
+Shows and sets the details of the current game.
+
+If you run the command without any flags it will show the details of the current
+game.
+
+You can edit any of the values using the appropriate flag. After changing the
+value, it will output all the values again.
+
+The following fields can only be changed if you have the `--force` flag set:
+
+- `--gameEngine` - Change the Game Engine (currently only "godot" is supported)
+- `--gameEngineVersion` - Change the version of the Game Engine (currently only 3.6 and 4.3 are supported)
+- `--iosBundleId` - iOS Bundle ID
+- `--androidPackageName` Android Package Name (not currently used)
+
+:::tip
+After changing these values, you will need to trigger a new build of your game with [`shipthis game ship`](/docs/reference/game/ship)
+:::
+
 ## Example
 
 [![asciicast](https://asciinema.org/a/5eIVmJYQ6MxDAlFVoVKXhGkYr.svg)](https://asciinema.org/a/5eIVmJYQ6MxDAlFVoVKXhGkYr)
-
-## Description
-
-Shows and sets the details of a game.
 
 ## Help Output
 
