@@ -80,7 +80,11 @@
   ],
   "homepage": "https://shipthis.cc",
   "keywords": [
-    "oclif"
+    "godot",
+    "apple",
+    "ios",
+    "mobile",
+    "game"
   ],
   "license": "MIT",
   "main": "dist/index.js",

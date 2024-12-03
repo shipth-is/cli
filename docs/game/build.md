@@ -17,7 +17,7 @@ your game code. It should not be confused with the command [`shipthis game ship`
 
 ## Commands
 
-### Command: `game build download`
+### `game build download`
 
 #### Description
 
@@ -46,7 +46,7 @@ EXAMPLES
   $ shipthis game build download --gameId 0c179fc4 e4b9a3d7 output.apk
 ```
 
-### Command: `game build list`
+### `game build list`
 
 #### Description
 
