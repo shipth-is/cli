@@ -1,8 +1,8 @@
 <h1 align="center">
   <a href="https://shipthis.cc">
     <picture>
-      <source height="56" width="260" media="(prefers-color-scheme: dark)" srcset="https://shipthis.cc/logo_darkmode.svg">
-      <img height="56" width="260" alt="ShipThis" src="https://shipthis.cc/logo_normal.svg">
+    <source height="56" width="260" srcset="https://shipthis.cc/logo_darkmode.svg">
+      <img height="56" width="260" alt="ShipThis" src="https://shipthis.cc/logo_darkmode.svg" ></img>
     </picture>
   </a>
   <br>
@@ -78,27 +78,3 @@ Re-run the `shipthis game ship` command each time you want to build a new releas
 - [login](https://shipthis.cc/docs/reference/login) - Signin or create a new account
 - [status](https://shipthis.cc/docs/reference/status) - Display your overall ShipThis account status
 - [help](https://shipthis.cc/docs/reference/help) - Display help for a specific topic or command
-
-@octocat :+1: This PR looks great - it's ready to merge! :shipit:
-
-> [!NOTE]  
-> Highlights information that users should take into account, even when skimming.
-
-> [!TIP]
-> Optional information to help a user be more successful.
-
-> [!IMPORTANT]  
-> Crucial information necessary for users to succeed.
-
-> [!WARNING]  
-> Critical content demanding immediate user attention due to potential risks.
-
-> [!CAUTION]
-> Negative potential consequences of an action.
-
-<details>
-  <summary>📚 Test</summary>
-
-# This is a test
-
-</details>
