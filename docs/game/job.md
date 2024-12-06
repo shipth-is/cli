@@ -2,6 +2,20 @@
 
 Commands in the `game job` topic are prefixed `shipthis game job`. They relate to jobs for a specific game (generally in the currently directory).
 
+:::info
+A **job** is a set of work done to create a new build of your game. You can create a new job by running the command:
+
+- [`shipthis game ship`](/docs/reference/game/ship)
+
+Running the [ship command](/docs/reference/game/ship) will create a new job, and then automatically run the [`shipthis game job status`](/docs/reference/game/job#game-job-status) command with the `--follow` flag set so that you can watch the build in **real-time**.
+
+**You can also watch and view jobs within the [ShipThis Dashboard](/dashboard).**
+:::
+
+## Example
+
+[![asciicast](https://asciinema.org/a/25NfXdtyEYt1E3wm6caBxxoTK.svg)](https://asciinema.org/a/25NfXdtyEYt1E3wm6caBxxoTK#shipthis-col120row32)
+
 ## Commands
 
 ### `game job list`

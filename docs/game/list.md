@@ -4,6 +4,10 @@
 
 Shows a list of all your games.
 
+## Example
+
+[![asciicast](https://asciinema.org/a/9SXrAF0ehxF7pDPu1PfKQF4q8.svg)](https://asciinema.org/a/9SXrAF0ehxF7pDPu1PfKQF4q8#shipthis-col120row32)
+
 ## Help Output
 
 ```
