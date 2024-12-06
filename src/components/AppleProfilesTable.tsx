@@ -10,6 +10,7 @@ import {
 } from '@cli/utils/index.js'
 import {Title} from './Title.js'
 import {Table} from './Table.js'
+import {NextSteps} from './NextSteps.js'
 
 interface Props extends BoxProps {
   ctx: any
@@ -22,23 +23,27 @@ export const AppleProfilesTable = ({ctx, project, ...boxProps}: Props) => {
     platform: Platform.IOS,
     type: CredentialsType.CERTIFICATE,
   })
-  const {data: certs, isLoading} = useAppleProfiles({ctx})
+  const {data: profiles, isLoading} = useAppleProfiles({ctx})
 
   const hasUsable =
-    certs && credentialsResponse && certs.some((cert) => canAppleProfileBeUsed(cert, project, credentialsResponse.data))
+    profiles &&
+    credentialsResponse &&
+    profiles.some((cert) => canAppleProfileBeUsed(cert, project, credentialsResponse.data))
 
   return (
     <Box flexDirection="column" marginBottom={1} {...boxProps}>
       <Title>Mobile Provisioning Profiles in your Apple account</Title>
       {isLoading && <Spinner type="dots" />}
 
-      {certs && credentialsResponse && (
+      {profiles && credentialsResponse && (
         <>
           <Box marginLeft={2} marginBottom={1} flexDirection="column">
-            <Text>{`You have ${certs.length} Mobile Provisioning Profiles in your Apple account`}</Text>
+            <Text>{`You have ${profiles.length} Mobile Provisioning Profiles in your Apple account`}</Text>
             <Text>{`${hasUsable ? 'One' : 'None'} of these can be used by ShipThis`}</Text>
           </Box>
-          <Table data={certs.map((cert) => getAppleProfileSummary(cert, project, credentialsResponse.data))} />
+          {profiles.length > 0 && (
+            <Table data={profiles.map((cert) => getAppleProfileSummary(cert, project, credentialsResponse.data))} />
+          )}
           {!hasUsable && (
             <Box marginTop={1}>
               <Text bold>
@@ -49,6 +54,7 @@ export const AppleProfilesTable = ({ctx, project, ...boxProps}: Props) => {
           )}
         </>
       )}
+      {profiles && !hasUsable && <NextSteps steps={['shipthis game ios profile create']} />}
     </Box>
   )
 }

@@ -1,13 +1,13 @@
 # Topic: `game ios app`
 
-Commands in the `game ios app` topic are prefixed `shipthis game ios app`. They relate to the App Store App and BundleId for for a specific game (generally in the currently directory).
+Commands in the `game ios app` topic are prefixed `shipthis game ios app`. They relate to the App Store App and BundleId for a specific game (generally in the currently directory).
 
 :::info
 An **App Store App** is the public-facing application available in the App Store. It includes metadata like descriptions, screenshots, and submission details, representing the final product users download.
 
 A **Bundle ID** is a unique identifier for your app within Apple’s ecosystem. It connects your app to services, certificates, and provisioning profiles, ensuring it can be built, run, and managed correctly.
 
-**You can view the registered Bundle IDs (Identifiers) and their associated capabilities in the [Apple Developer Portal](https://developer.apple.com/account/resources/identifiers/list)**
+**You can view the registered Bundle IDs (Identifiers) and their associated capabilities in the [Apple Developer Portal](https://developer.apple.com/account/resources/identifiers/list).**
 
 :::
 

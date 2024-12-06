@@ -26,7 +26,7 @@ export const ProjectCredentialsTable = ({credentialTypeName, queryProps, ...boxP
         </Text>
       </Box>
       {isLoading && <Spinner type="dots" />}
-      {data && <Table data={data.data.map(getProjectCredentialSummary)} />}
+      {data && data.data.length > 0 && <Table data={data.data.map(getProjectCredentialSummary)} />}
     </Box>
   )
 }

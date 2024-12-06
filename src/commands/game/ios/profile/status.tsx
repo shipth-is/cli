@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, AppleProfilesTable, NextSteps, ProjectCredentialsTable} from '@cli/components/index.js'
+import {App, AppleProfilesTable, ProjectCredentialsTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
@@ -37,8 +37,6 @@ export default class GameIosProfileStatus extends BaseGameCommand<typeof GameIos
         />
 
         {showApple && <AppleProfilesTable ctx={ctx} project={game} />}
-
-        <NextSteps steps={[]} />
       </App>,
     )
   }

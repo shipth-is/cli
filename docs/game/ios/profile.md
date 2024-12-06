@@ -1,16 +1,39 @@
 # Topic: `game ios profile`
 
-Commands related to the App Store Provisioning Profiles for this Game
+Commands in the `game ios profile` topic are prefixed `shipthis game ios profile`. They relate to the App Store Mobile Provisioning Profiles for a specific game (generally in the currently directory).
 
+:::info
+A **Provisioning Profile** authorizes your app to run on devices and access Apple services. It is a digitally signed XML file issued by Apple that combines your App ID, developer certificate, entitlements, and device identifiers. It’s essential for development and distribution.
+
+**You can view the registered Profiles in the [Apple Developer Portal](https://developer.apple.com/account/resources/profiles/list).**
+
+ShipThis
+:::
+
+:::tip
+You will need to be authenticated against ShipThis and Apple before you can use
+these commands. To do that please run the following commands first:
+
+- [`shipthis login`](/docs/reference/login)
+- [`shipthis apple login`](/docs/reference/apple/login)
+
+:::
 
 ## Commands
 
-
-### game ios profile create
+### `game ios profile create`
 
 #### Description
 
 Creates a Mobile Provisioning Profile in the Apple Developer Portal.
+
+:::tip
+You will need a valid iOS Distribution Certificate before you can create a
+Provisioning profile. To do that please run:
+
+- [`shipthis apple certificate create`](/docs/reference/apple/certificate#apple-certificate-create)
+
+:::
 
 #### Help Output
 
@@ -30,7 +53,7 @@ EXAMPLES
   $ shipthis game ios profile create
 ```
 
-### game ios profile export
+### `game ios profile export`
 
 #### Description
 
@@ -56,7 +79,7 @@ EXAMPLES
   $ shipthis game ios profile export userProfile.zip
 ```
 
-### game ios profile import
+### `game ios profile import`
 
 #### Description
 
@@ -82,7 +105,7 @@ EXAMPLES
   $ shipthis game ios profile import profile.zip
 ```
 
-### game ios profile status
+### `game ios profile status`
 
 #### Description
 

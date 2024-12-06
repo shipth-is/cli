@@ -2,7 +2,7 @@ import {Flags} from '@oclif/core'
 import {render} from 'ink'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {App, AppleCertificatesTable, NextSteps, UserCredentialsTable} from '@cli/components/index.js'
+import {App, AppleCertificatesTable, UserCredentialsTable} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class AppleCertificateStatus extends BaseAuthenticatedCommand<typeof AppleCertificateStatus> {
@@ -40,8 +40,6 @@ export default class AppleCertificateStatus extends BaseAuthenticatedCommand<typ
         />
 
         {showApple && <AppleCertificatesTable ctx={ctx} />}
-
-        <NextSteps steps={[]} />
       </App>,
     )
   }

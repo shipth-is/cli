@@ -4,6 +4,12 @@
 
 Authenticate - will create a new account if one does not exist.
 
+:::info
+ShipThis is a cloud build command-line tool. To enable this, you need to create
+an account. There is also a [web dashboard](/dashboard) where you can view details
+of your games.
+:::
+
 ## Example
 
 [![asciicast](https://asciinema.org/a/jPd9Mqafw98hEj4KEtkZod3ny.svg)](https://asciinema.org/a/jPd9Mqafw98hEj4KEtkZod3ny)
