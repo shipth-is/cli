@@ -19,6 +19,10 @@ these commands. To do that please run the following commands first:
 
 :::
 
+## Example
+
+[![asciicast](https://asciinema.org/a/1CNdfgPwSmxBVrgqxC9xXLnkm.svg)](https://asciinema.org/a/1CNdfgPwSmxBVrgqxC9xXLnkm#shipthis-col120row32)
+
 ## Commands
 
 ### `game ios profile create`
