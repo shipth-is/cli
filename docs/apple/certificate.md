@@ -11,6 +11,8 @@ These commands relate to iOS Distribution Certificates within your Apple Develop
 
 :::info
 An **iOS Distribution Certificate** is used to authenticate and authorize the distribution of iOS apps, ensuring they are signed and trusted for installation on devices or submission to the App Store.
+
+**ShipThis uses this certificate on our cloud-build servers when compiling new builds of your game.**
 :::
 
 :::tip

@@ -1,6 +1,6 @@
 {
   "name": "shipthis",
-  "description": "Game Shipping Tool",
+  "description": "A command line tool which manages releasing your Godot games to the iOS App Store.",
   "version": "0.0.32",
   "author": "Hello Invent Ltd",
   "bin": {
@@ -146,10 +146,10 @@
         "description": "Commands related to App Store Connect API Keys"
       },
       "apple:certificate": {
-        "description": "Commands related to App Store Certificates"
+        "description": "Commands related to iOS Distribution Certificates"
       },
       "game": {
-        "description": "Commands related to Game Management"
+        "description": "Commands related to configuring a specific game"
       },
       "game:build": {
         "description": "Commands related to builds for a specific game"
@@ -158,10 +158,10 @@
         "description": "Commands related to the iOS platform for a specific game"
       },
       "game:ios:app": {
-        "description": "Commands related to the App Store App for a specific game"
+        "description": "Commands related to the App Store App and BundleId for a specific game"
       },
       "game:ios:profile": {
-        "description": "Commands related to the App Store Provisioning Profiles for this Game"
+        "description": "Commands related to the App Store Mobile Provisioning Profiles for a specific game"
       },
       "game:job": {
         "description": "Commands related to jobs for a specific game"

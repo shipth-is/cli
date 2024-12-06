@@ -1,7 +1,8 @@
 # Topic: `game ios`
 
-Commands in the Game iOS topic are prefixed `shipthis game ios`. They relate to
-managing the iOS platform configuration for the game in the current directory.
+Commands in the `game ios` topic are prefixed `shipthis game ios`. They relate to
+managing the iOS platform configuration for a specific game (generally in the
+currently directory).
 
 :::tip Info
 You will need to be authenticated against ShipThis and Apple before you can use

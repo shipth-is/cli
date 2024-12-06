@@ -1,12 +1,10 @@
 # Topic: `game job`
 
-Commands related to jobs for a specific game
-
+Commands in the `game job` topic are prefixed `shipthis game job`. They relate to jobs for a specific game (generally in the currently directory).
 
 ## Commands
 
-
-### game job list
+### `game job list`
 
 #### Description
 
@@ -36,7 +34,7 @@ EXAMPLES
   $ shipthis game job list --gameId 0c179fc4
 ```
 
-### game job status
+### `game job status`
 
 #### Description
 

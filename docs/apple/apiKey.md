@@ -9,6 +9,8 @@ Commands in the apple apiKey topic are prefixed `shipthis apple apiKey`. These c
 
 :::info
 An **App Store Connect API key** is used to authenticate and authorize automated interactions with Apple's App Store Connect API, enabling tasks like managing app metadata, TestFlight, and sales reports.
+
+**ShipThis uses one of these keys to automatically upload new builds of your games.**
 :::
 
 :::tip

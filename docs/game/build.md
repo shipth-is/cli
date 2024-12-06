@@ -13,7 +13,7 @@ your game code. It should not be confused with the command [`shipthis game ship`
 
 ## Example
 
-[![asciicast](https://asciinema.org/a/m2i3bOvZHUpQXFWtYXc7UnaKQ.svg)](https://asciinema.org/a/m2i3bOvZHUpQXFWtYXc7UnaKQ)
+[![asciicast](https://asciinema.org/a/m2i3bOvZHUpQXFWtYXc7UnaKQ.svg)](https://asciinema.org/a/m2i3bOvZHUpQXFWtYXc7UnaKQ#shipthis-col160row32)
 
 ## Commands
 

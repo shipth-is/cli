@@ -4,6 +4,10 @@
 
 Downloads the shipthis.json file for a given game into the current directory.
 
+## Example
+
+[![asciicast](https://asciinema.org/a/kAclG6bghhwuXWP4E5NUssAfA.svg)](https://asciinema.org/a/kAclG6bghhwuXWP4E5NUssAfA#shipthis-col100row32)
+
 ## Help Output
 
 ```
