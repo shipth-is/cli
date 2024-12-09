@@ -1,7 +1,7 @@
 {
   "name": "shipthis",
   "description": "A command line tool which manages releasing your Godot games to the iOS App Store.",
-  "version": "0.0.37",
+  "version": "0.0.38",
   "author": "Hello Invent Ltd",
   "bin": {
     "shipthis": "./bin/run.js"
