@@ -6,8 +6,8 @@ Authenticate - will create a new account if one does not exist.
 
 :::info
 ShipThis is a cloud build command-line tool. To enable this, you need to create
-an account. There is also a [web dashboard](/dashboard) where you can view details
-of your games.
+an account. There is also a [web dashboard](https://shipthis.cc/dashboard) where
+you can view details of your games.
 :::
 
 ## Example
@@ -16,7 +16,7 @@ of your games.
 
 ## Help Output
 
-```
+```bash
 USAGE
   $ shipthis login [-f] [-e <value>]
 

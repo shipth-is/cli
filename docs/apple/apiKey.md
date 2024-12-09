@@ -24,7 +24,7 @@ these commands. To do that please run the following commands first:
 
 ## Example
 
-[![asciicast](https://asciinema.org/a/PsCq8H4NowWSiGGMLraosAh9a.svg)](https://asciinema.org/a/PsCq8H4NowWSiGGMLraosAh9a)
+[![asciicast](https://asciinema.org/a/PsCq8H4NowWSiGGMLraosAh9a.svg)](https://asciinema.org/a/PsCq8H4NowWSiGGMLraosAh9a#shipthis-col120row32)
 
 ## Commands
 

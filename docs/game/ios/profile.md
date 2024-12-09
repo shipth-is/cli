@@ -7,7 +7,6 @@ A **Provisioning Profile** authorizes your app to run on devices and access Appl
 
 **You can view the registered Profiles in the [Apple Developer Portal](https://developer.apple.com/account/resources/profiles/list).**
 
-ShipThis
 :::
 
 :::tip
