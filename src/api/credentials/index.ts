@@ -29,20 +29,3 @@ export async function getProjectCredentials(projectId: string, pageSize = 100): 
   })
   return castArrayObjectDates<ProjectCredential>(data.data)
 }
-
-// Tells us if we need to create/upload a keystore for a project
-// TODO: rename as is Android specific?
-export async function getHasKeystore(projectId: string) {
-  const headers = getAuthedHeaders()
-  try {
-    await axios.get(`${API_URL}/projects/${projectId}/credentials/android/certificate`, {
-      headers,
-    })
-    return true
-  } catch (e: any) {
-    if (e.response?.status === 404) {
-      return false
-    }
-    throw e
-  }
-}
