@@ -7,7 +7,7 @@ import {getProjectCredentials, importCredential} from '@cli/api/credentials/inde
 import {App, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
-export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof GameAndroidKeyStoreImport> {
+export default class GameAndroidApiKeyImport extends BaseGameCommand<typeof GameAndroidApiKeyImport> {
   static override args = {
     file: Args.string({
       description: 'Name of the ZIP file to import (must be in the same format as the export)',
@@ -15,7 +15,8 @@ export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof Ga
     }),
   }
 
-  static override description = 'Imports an Android Keystore to your ShipThis account for the specified game.'
+  static override description =
+    'Imports an Android Service Account API Key to your ShipThis account for the specified game.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
@@ -36,28 +37,28 @@ export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof Ga
     }
 
     const projectCredentials = await getProjectCredentials(game.id)
-    const hasKeystore = projectCredentials.some(
-      (cred) => cred.platform == Platform.ANDROID && cred.isActive && cred.type == CredentialsType.CERTIFICATE,
+    const hasAndroidApiKey = projectCredentials.some(
+      (cred) => cred.platform == Platform.ANDROID && cred.isActive && cred.type == CredentialsType.KEY,
     )
 
-    if (hasKeystore && !force) {
-      this.error('A Keystore is already set on this game. Use --force to overwrite it.')
+    if (hasAndroidApiKey && !force) {
+      this.error('An Android API Key is already set on this game. Use --force to overwrite it.')
     }
 
     const handleComplete = async () => {
-      await this.config.runCommand(`game:android:keyStore:status`, ['--gameId', game.id])
+      await this.config.runCommand(`game:android:apiKey:status`, ['--gameId', game.id])
     }
 
     render(
       <App>
         <RunWithSpinner
-          msgInProgress={`Importing Android Keystore from ${file}...`}
-          msgComplete={`Android Keystore imported from ${file}`}
+          msgInProgress={`Importing Android Service Account API Key from ${file}...`}
+          msgComplete={`Android Android Service Account API Key imported from ${file}`}
           executeMethod={() =>
             importCredential({
               projectId: game.id,
               zipPath: file,
-              type: CredentialsType.CERTIFICATE,
+              type: CredentialsType.KEY,
               platform: Platform.ANDROID,
             })
           }

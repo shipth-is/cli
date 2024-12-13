@@ -36,7 +36,8 @@ export default class GameAndroidApiKeyCreate extends BaseGameCommand<typeof Game
     }
 
     const createApiKey = async () => {
-      const url = await getSingleUseUrl(`/games/${game.id}/?showAndroid=1`)
+      // TODO: this does not create the key they have to click buttons!
+      const url = await getSingleUseUrl(`/games/${game.id}/android`)
       await open(url)
     }
 

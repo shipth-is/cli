@@ -7,12 +7,12 @@ import {exportCredential, getProjectCredentials} from '@cli/api/credentials/inde
 import {App, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
-export default class GameAndroidKeyStoreExport extends BaseGameCommand<typeof GameAndroidKeyStoreExport> {
+export default class GameAndroidApiKeyExport extends BaseGameCommand<typeof GameAndroidApiKeyExport> {
   static override args = {
     file: Args.string({description: 'Name of the ZIP file to create', required: true}),
   }
 
-  static override description = 'Saves the current Android Keystore to a ZIP file'
+  static override description = 'Saves the current Android Service Account API Key to a ZIP file'
 
   static override examples = ['<%= config.bin %> <%= command.id %> keyStore.zip']
 
@@ -34,24 +34,24 @@ export default class GameAndroidKeyStoreExport extends BaseGameCommand<typeof Ga
     }
 
     const projectCredentials = await getProjectCredentials(game.id)
-    const projectAndroidKeyStoreCreds = projectCredentials.filter(
-      (cred) => cred.platform == Platform.ANDROID && cred.type == CredentialsType.CERTIFICATE && cred.isActive,
+    const projectAndroidApiKeyCreds = projectCredentials.filter(
+      (cred) => cred.platform == Platform.ANDROID && cred.type == CredentialsType.KEY && cred.isActive,
     )
 
-    if (projectAndroidKeyStoreCreds.length === 0) {
-      this.error('No Android Keystore found which can be exported.')
+    if (projectAndroidApiKeyCreds.length === 0) {
+      this.error('No Android Service Account API Key found which can be exported.')
     }
 
-    const [keyStore] = projectAndroidKeyStoreCreds
+    const [apiKey] = projectAndroidApiKeyCreds
 
     const handleComplete = async () => process.exit(0)
 
     render(
       <App>
         <RunWithSpinner
-          msgInProgress={`Exporting Android Keystore to ${file}...`}
-          msgComplete={`Android Keystore exported to ${file}`}
-          executeMethod={() => exportCredential({zipPath: file, credentialId: keyStore.id, projectId: game.id})}
+          msgInProgress={`Exporting Android Service Account API Key to ${file}...`}
+          msgComplete={`Android Service Account API Key exported to ${file}`}
+          executeMethod={() => exportCredential({zipPath: file, credentialId: apiKey.id, projectId: game.id})}
           onComplete={handleComplete}
         />
       </App>,
