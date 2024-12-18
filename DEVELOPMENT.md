@@ -7,6 +7,13 @@ npm run build
 npm link
 ```
 
+## To use your own backend
+
+```bash
+export SHIPTHIS_DOMAIN=my-custom-domain.com
+shipthis login
+```
+
 ## When you add a command
 
 When you add or remove a command you will need to update the `"exports"` section in the `package.json` file using:
@@ -19,22 +26,6 @@ find src/commands/ -type f | sed "s/src\([^\.]*\)\..*$/dist\1.js/g"
 
 ```bash
 source shipthis/bin/alias.sh
-```
-
-## Zero to iOS shipping steps
-
-This is what the wizard now does:
-
-```bash
-shipthis login
-shipthis game create
-shipthis apple login
-shipthis apple apiKey create
-shipthis apple certificate create
-shipthis game ios app create
-shipthis game ios app sync
-shipthis game ios profile create
-shipthis game ship
 ```
 
 ## Releasing a new version

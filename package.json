@@ -80,6 +80,7 @@
   ],
   "homepage": "https://shipthis.cc",
   "keywords": [
+    "cli",
     "godot",
     "apple",
     "ios",
