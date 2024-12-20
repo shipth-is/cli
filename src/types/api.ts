@@ -8,6 +8,7 @@ export type ScalarDict = {
 
 export interface UserDetails {
   hasAcceptedTerms?: boolean
+  source?: string
 }
 
 export interface Self {

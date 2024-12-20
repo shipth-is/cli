@@ -59,7 +59,8 @@ export default class Login extends BaseCommand<typeof Login> {
 
     const otp = await getOTP()
 
-    const {data: shipThisUser} = await axios.post(`${API_URL}/auth/email/verify`, {email, otp})
+    const source = `shipthis-cli-${this.config.version}`
+    const {data: shipThisUser} = await axios.post(`${API_URL}/auth/email/verify`, {email, otp, source})
 
     const getAcceptedTermsResponse = async (): Promise<boolean> => {
       console.log(
