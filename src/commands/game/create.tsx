@@ -1,6 +1,6 @@
 import {Flags} from '@oclif/core'
 
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {BaseAuthenticatedCommand, DetailsFlags} from '@cli/baseCommands/index.js'
 import {createProject} from '@cli/api/index.js'
 
 import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
@@ -19,12 +19,15 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
     quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     force: Flags.boolean({char: 'f'}),
     name: Flags.string({char: 'n', description: 'The name of the game'}),
+    ...DetailsFlags,
   }
 
   public async run(): Promise<void> {
     const {flags} = this
 
-    if (this.hasProjectConfig() && !flags.force) {
+    const {quiet, force, name: flagName, ...details} = flags
+
+    if (this.hasProjectConfig() && !force) {
       throw new Error('This directory already has a ShipThis project. Use --force to overwrite.')
     }
 
@@ -33,22 +36,24 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
     }
 
     const getName = async (): Promise<string> => {
-      if (flags.name) return flags.name
+      if (flagName) return flagName
       const suggested = getGodotProjectName() || 'My Awesome Game'
-      const name = await getInput(`Please enter the name of the game, or press enter to use ${suggested}: `)
-      return name || suggested
+      const entered = await getInput(`Please enter the name of the game, or press enter to use ${suggested}: `)
+      return entered || suggested
     }
+
     const name = await getName()
 
     const gameEngine = GameEngine.GODOT
     const gameEngineVersion = getGodotVersion()
 
-    const details: ProjectDetails = {
+    const projectDetails: ProjectDetails = {
+      ...details,
       gameEngine,
       gameEngineVersion,
     }
 
-    const project = await createProject({name, details})
+    const project = await createProject({name, details: projectDetails})
 
     await this.setProjectConfig({
       project,

@@ -74,6 +74,17 @@ export function getGodotAppleBundleIdentifier(): string | null {
   }
 }
 
+// TODO: not used?
+export function getGodotAndroidPackageName(): string | null {
+  try {
+    const preset = getGodotExportPresets(Platform.ANDROID)
+    return (preset.options as any)['package/unique_name']
+  } catch (e) {
+    console.log(e)
+    return null
+  }
+}
+
 // TODO: is there a more reliable way to get the Godot version?
 export function getGodotVersion(): string {
   const projectGodotConfig = getGodotProjectConfig()

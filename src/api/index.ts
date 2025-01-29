@@ -4,6 +4,7 @@ import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
   Build,
   EditableProject,
+  GoogleAuthResponse,
   Job,
   PageAndSortParams,
   Platform,
@@ -132,7 +133,7 @@ export async function getSingleUseUrl(destination: string) {
   const {data} = await axios.post(`${API_URL}/me/otp`, {}, {headers})
   // Convert data (otp and userId) and the destination into a query string
   const queryString = Object.entries({...data, destination})
-    .map(([key, value]) => `${key}=${value}`)
+    .map(([key, value]) => `${key}=${encodeURIComponent(`${value}`)}`)
     .join('&')
   // Build the url
   const url = `${WEB_URL}exchange/?${queryString}`
@@ -162,4 +163,15 @@ export async function acceptTerms(): Promise<Self> {
   const opt = {headers}
   const {data} = await axios.post(`${API_URL}/me/acceptTerms`, {}, opt)
   return castObjectDates<Self>(data)
+}
+
+export async function getGoogleAuthUrl(projectId: string): Promise<string> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const web = encodeURIComponent(new URL('/google/redirect/', WEB_URL).href)
+  const url = `${API_URL}/projects/${projectId}/credentials/android/key/connect`
+  const {data} = await axios.get(`${url}?redirectUri=${web}`, opt)
+  const response = data as GoogleAuthResponse
+  // We want them to be logged in
+  return await getSingleUseUrl(response.url)
 }

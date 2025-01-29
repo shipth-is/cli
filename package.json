@@ -151,6 +151,9 @@
       "game": {
         "description": "Commands related to configuring a specific game"
       },
+      "game:android": {
+        "description": "Commands related to the Android platform for a specific game"
+      },
       "game:build": {
         "description": "Commands related to builds for a specific game"
       },

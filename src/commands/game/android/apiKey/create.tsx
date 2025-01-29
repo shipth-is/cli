@@ -21,6 +21,7 @@ export default class GameAndroidApiKeyCreate extends BaseGameCommand<typeof Game
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     force: Flags.boolean({char: 'f'}),
+    androidPackageName: Flags.string({char: 'p', description: 'The Android package name'}),
   }
 
   public async run(): Promise<void> {
@@ -35,10 +36,27 @@ export default class GameAndroidApiKeyCreate extends BaseGameCommand<typeof Game
       this.error('An API Key is already set on this game. Use --force to overwrite it.')
     }
 
+    /**
+    const getBundleIdentifier = async (): Promise<string> => {
+      if (bundleId) return bundleId
+      const generatedBundleId = generatePackageName(game.name)
+      const suggestedBundleId =
+        game.details?.iosBundleId || getGodotAppleBundleIdentifier() || generatedBundleId || 'com.example.game'
+      const question = `Please enter the BundleId in the Apple Developer Portal, or press enter to use ${suggestedBundleId}: `
+      const enteredBundleId = await getInput(question)
+      return enteredBundleId || suggestedBundleId
+    }
+    */
+
+    const {androidPackageName} = this.flags
+
+    const getAndroidPackageName = async (): Promise<string> => {
+      if (androidPackageName) return androidPackageName
+      //const suggested = 'com.
+    }
+
     const createApiKey = async () => {
-      // TODO: this does not create the key they have to click buttons!
-      const url = await getSingleUseUrl(`/games/${game.id}/android`)
-      await open(url)
+      // Test
     }
 
     const handleComplete = async () => {
