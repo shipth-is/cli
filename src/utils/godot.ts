@@ -74,7 +74,6 @@ export function getGodotAppleBundleIdentifier(): string | null {
   }
 }
 
-// TODO: not used?
 export function getGodotAndroidPackageName(): string | null {
   try {
     const preset = getGodotExportPresets(Platform.ANDROID)

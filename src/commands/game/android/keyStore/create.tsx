@@ -3,12 +3,12 @@ import {Flags} from '@oclif/core'
 import axios from 'axios'
 
 import {App, RunWithSpinner} from '@cli/components/index.js'
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getAuthedHeaders, getProjectCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
 import {API_URL} from '@cli/constants/index.js'
 
-export default class GameAndroidKeyStoreCreate extends BaseGameCommand<typeof GameAndroidKeyStoreCreate> {
+export default class GameAndroidKeyStoreCreate extends BaseGameAndroidCommand<typeof GameAndroidKeyStoreCreate> {
   static override args = {}
 
   static override description = 'Creates a new Android Keystore for a game'

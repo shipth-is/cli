@@ -4,7 +4,7 @@ import open from 'open'
 
 import {App, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {getProjectCredentials, getSingleUseUrl} from '@cli/api/index.js'
+import {getProjectCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
 
 export default class GameAndroidApiKeyCreate extends BaseGameCommand<typeof GameAndroidApiKeyCreate> {

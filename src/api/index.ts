@@ -137,8 +137,17 @@ export async function getSingleUseUrl(destination: string) {
     .join('&')
   // Build the url
   const url = `${WEB_URL}exchange/?${queryString}`
+  // Shorten the url so that the QR code is smaller
+  const {data: shortenData} = await axios.post(
+    `${API_URL}/me/shorten`,
+    {
+      url,
+    },
+    {headers},
+  )
+  const fullUrl = new URL(shortenData.path, API_URL).href
   // Caller can use the open() function to launch the browser
-  return url
+  return fullUrl
 }
 
 // Returns a single build - used in the game:build:download command

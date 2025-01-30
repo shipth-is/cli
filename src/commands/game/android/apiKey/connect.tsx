@@ -1,10 +1,12 @@
 import {Flags} from '@oclif/core'
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getGoogleAuthUrl} from '@cli/api/index.js'
+
+import qrcode from 'qrcode-terminal'
 
 import open from 'open'
 
-export default class GameAndroidApiKeyConnect extends BaseGameCommand<typeof GameAndroidApiKeyConnect> {
+export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typeof GameAndroidApiKeyConnect> {
   static override args = {}
 
   static override description = 'describe the command here'
@@ -17,8 +19,9 @@ export default class GameAndroidApiKeyConnect extends BaseGameCommand<typeof Gam
 
   public async run(): Promise<void> {
     const game = await this.getGame()
-
-    const authUrl = await getGoogleAuthUrl(game.id)
-    await open(authUrl)
+    const qrCodeLink = await getGoogleAuthUrl(game.id)
+    qrcode.generate(qrCodeLink, {small: true})
+    // TODO: ask user to press space to open link in the browser
+    // We will make a new link, because they may visit both? (they are single use)
   }
 }

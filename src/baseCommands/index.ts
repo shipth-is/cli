@@ -1,7 +1,8 @@
+export * from './baseAppleCommand.js'
 export * from './baseAuthenticatedCommand.js'
 export * from './baseCommand.js'
+export * from './baseGameAndroidCommand.js'
 export * from './baseGameCommand.js'
-export * from './baseAppleCommand.js'
 
 import {Flags} from '@oclif/core'
 
