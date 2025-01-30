@@ -1,6 +1,6 @@
 import {Flags} from '@oclif/core'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
-import {getGoogleAuthUrl} from '@cli/api/index.js'
+import {getGoogleAuthUrl, getSingleUseUrl} from '@cli/api/index.js'
 
 import qrcode from 'qrcode-terminal'
 
@@ -15,13 +15,24 @@ export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typ
 
   static override flags = {
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
+    desktop: Flags.boolean({char: 'd', description: 'Open the link in the desktop browser'}),
+    helpPage: Flags.boolean({
+      char: 'h',
+      description: 'Open the interstitial help page first rather than the Google OAuth page',
+    }),
   }
 
   public async run(): Promise<void> {
     const game = await this.getGame()
-    const qrCodeLink = await getGoogleAuthUrl(game.id)
-    qrcode.generate(qrCodeLink, {small: true})
-    // TODO: ask user to press space to open link in the browser
-    // We will make a new link, because they may visit both? (they are single use)
+    const {desktop, helpPage} = this.flags
+    const helpPagePath = '/docs/android#2-connect-shipthis-with-google'
+    const url = helpPage ? await getSingleUseUrl(helpPagePath) : await getGoogleAuthUrl(game.id)
+    if (desktop) {
+      await open(url)
+    } else {
+      qrcode.generate(url, {small: true})
+      // TODO: ask user to press space to open link in the browser
+      // We will make a new link, because they may visit both? (they are single use)
+    }
   }
 }

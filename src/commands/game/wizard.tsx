@@ -131,14 +131,9 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
       },
       {
         command: 'game:android:apiKey:connect',
-        args: [],
+        args: ['--helpPage'],
         shouldRun: async () => {
-          if (!game) return true
-          const projectCredentials = await getProjectCredentials(game.id)
-          const hasApiKey = projectCredentials.some(
-            (cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type == CredentialsType.KEY,
-          )
-          return !hasApiKey
+          return true
         },
       },
     ]
