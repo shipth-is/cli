@@ -1,4 +1,6 @@
 import axios from 'axios'
+import CryptoJS from 'crypto-js'
+import {v4 as uuid} from 'uuid'
 
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
@@ -137,17 +139,41 @@ export async function getSingleUseUrl(destination: string) {
     .join('&')
   // Build the url
   const url = `${WEB_URL}exchange/?${queryString}`
+  return url
+}
+
+// Builds a URL that sends the user the login-OTP when visited and shows the form.
+// This makes sure that they have freshly authed.
+// We use this to display a QR code..
+export async function getShortAuthRequiredUrl(destination: string) {
+  // We encrypt their email address in the URL to obfuscate it
+  const {email} = await getSelf()
+  // We include a random key
+  const key = uuid()
+  // With a little salt
+  const salt = 'Na (s) + 1/2 Cl₂ (g) → NaCl (s)'
+  const fullKey = `${key}${salt}`
+  const token = CryptoJS.AES.encrypt(email, fullKey).toString()
+  // The frontend will decrypt the email and use it to send the OTP
+  const params = {
+    key,
+    token,
+    destination,
+  }
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(`${value}`)}`)
+    .join('&')
+  const url = `${WEB_URL}login/?${queryString}`
+  const headers = await getAuthedHeaders()
   // Shorten the url so that the QR code is smaller
-  const {data: shortenData} = await axios.post(
+  const {data} = await axios.post(
     `${API_URL}/me/shorten`,
     {
       url,
     },
     {headers},
   )
-  const fullUrl = new URL(shortenData.path, API_URL).href
-  // Caller can use the open() function to launch the browser
-  return fullUrl
+  return data.url
 }
 
 // Returns a single build - used in the game:build:download command

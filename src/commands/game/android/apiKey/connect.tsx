@@ -1,6 +1,6 @@
 import {Flags} from '@oclif/core'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
-import {getGoogleAuthUrl, getSingleUseUrl} from '@cli/api/index.js'
+import {getGoogleAuthUrl, getShortAuthRequiredUrl, getSingleUseUrl} from '@cli/api/index.js'
 
 import qrcode from 'qrcode-terminal'
 
@@ -25,8 +25,12 @@ export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typ
   public async run(): Promise<void> {
     const game = await this.getGame()
     const {desktop, helpPage} = this.flags
-    const helpPagePath = '/docs/android#2-connect-shipthis-with-google'
-    const url = helpPage ? await getSingleUseUrl(helpPagePath) : await getGoogleAuthUrl(game.id)
+    // TODO: will this change?
+    const helpPagePath = `/docs/android?gameId=${game.id}#2-connect-shipthis-with-google`
+    //const url = helpPage ? await getSingleUseUrl(helpPagePath) : await getGoogleAuthUrl(game.id)
+
+    const url = await getShortAuthRequiredUrl(helpPagePath)
+
     if (desktop) {
       await open(url)
     } else {
