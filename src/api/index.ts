@@ -7,6 +7,7 @@ import {
   Build,
   EditableProject,
   GoogleAuthResponse,
+  GoogleStatusResponse,
   Job,
   PageAndSortParams,
   Platform,
@@ -208,5 +209,12 @@ export async function getGoogleAuthUrl(projectId: string): Promise<string> {
   const {data} = await axios.get(`${url}?redirectUri=${web}`, opt)
   const response = data as GoogleAuthResponse
   // We want them to be logged in
-  return await getSingleUseUrl(response.url)
+  return await getShortAuthRequiredUrl(response.url)
+}
+
+export async function getGoogleStatus(): Promise<GoogleStatusResponse> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.get(`${API_URL}/me/google/status`, opt)
+  return data as GoogleStatusResponse
 }

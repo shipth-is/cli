@@ -2,7 +2,7 @@ import {Args, Flags} from '@oclif/core'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
-import {getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
+import {getGoogleStatus, getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 interface Step {
@@ -133,7 +133,8 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
         command: 'game:android:apiKey:connect',
         args: ['--helpPage'],
         shouldRun: async () => {
-          return true
+          const googleStatus = await getGoogleStatus()
+          return !googleStatus.isAuthenticated
         },
       },
     ]

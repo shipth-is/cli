@@ -1,6 +1,6 @@
 import {Flags} from '@oclif/core'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
-import {getGoogleAuthUrl, getShortAuthRequiredUrl, getSingleUseUrl} from '@cli/api/index.js'
+import {getGoogleAuthUrl, getGoogleStatus, getShortAuthRequiredUrl} from '@cli/api/index.js'
 
 import qrcode from 'qrcode-terminal'
 
@@ -20,23 +20,27 @@ export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typ
       char: 'h',
       description: 'Open the interstitial help page first rather than the Google OAuth page',
     }),
+    force: Flags.boolean({char: 'f'}),
   }
 
   public async run(): Promise<void> {
     const game = await this.getGame()
-    const {desktop, helpPage} = this.flags
+    const {desktop, helpPage, force} = this.flags
+
+    const googleStatus = await getGoogleStatus()
+
+    if (googleStatus.isAuthenticated && !force) {
+      throw new Error('You are already authenticated with Google. Use --force to re-authenticate.')
+    }
+
     // TODO: will this change?
     const helpPagePath = `/docs/android?gameId=${game.id}#2-connect-shipthis-with-google`
-    //const url = helpPage ? await getSingleUseUrl(helpPagePath) : await getGoogleAuthUrl(game.id)
-
-    const url = await getShortAuthRequiredUrl(helpPagePath)
+    const url = helpPage ? await getShortAuthRequiredUrl(helpPagePath) : await getGoogleAuthUrl(game.id)
 
     if (desktop) {
       await open(url)
     } else {
       qrcode.generate(url, {small: true})
-      // TODO: ask user to press space to open link in the browser
-      // We will make a new link, because they may visit both? (they are single use)
     }
   }
 }
