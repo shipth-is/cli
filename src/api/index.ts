@@ -143,11 +143,11 @@ export async function getSingleUseUrl(destination: string) {
   return url
 }
 
-// Builds a URL that sends the user the login-OTP when visited and shows the form.
-// This makes sure that they have freshly authed.
-// We use this to display a QR code..
+// Builds a URL that emails the user the login-OTP when visited and shows the form.
+// Auth is checked and they are redirected.
 export async function getShortAuthRequiredUrl(destination: string) {
   // We encrypt their email address in the URL to obfuscate it
+  // The frontend will decrypt the email and use it to send the OTP
   const {email} = await getSelf()
   // We include a random key
   const key = uuid()
@@ -155,7 +155,6 @@ export async function getShortAuthRequiredUrl(destination: string) {
   const salt = 'Na (s) + 1/2 Cl₂ (g) → NaCl (s)'
   const fullKey = `${key}${salt}`
   const token = CryptoJS.AES.encrypt(email, fullKey).toString()
-  // The frontend will decrypt the email and use it to send the OTP
   const params = {
     key,
     token,

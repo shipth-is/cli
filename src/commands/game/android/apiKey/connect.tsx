@@ -9,7 +9,8 @@ import open from 'open'
 export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typeof GameAndroidApiKeyConnect> {
   static override args = {}
 
-  static override description = 'describe the command here'
+  static override description =
+    'Connects ShipThis with Google for managing Service Account API Keys for an Android game'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
