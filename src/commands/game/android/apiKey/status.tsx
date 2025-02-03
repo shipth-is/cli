@@ -1,9 +1,26 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, ProjectCredentialsTable} from '@cli/components/index.js'
+import {App, ProjectCredentialsTable, Table, Title} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
+import {fetchKeyTestResult, KeyTestError, KeyTestStatus} from '@cli/utils/query/useAndroidServiceAccountTestResult.js'
+
+function niceError(keyError: KeyTestError | undefined): string | undefined {
+  if (!keyError) return undefined
+  switch (keyError) {
+    case KeyTestError.NO_SERVICE_ACCOUNT_KEY:
+      return 'Service Account API Key not found in your account'
+    case KeyTestError.NO_PACKAGE_NAME:
+      return 'Android Package Name has not been set'
+    case KeyTestError.APP_NOT_FOUND:
+      return 'Application not found in Google Play Console'
+    case KeyTestError.NOT_INVITED:
+      return 'Service Account has not been invited to Google Play'
+    default:
+      throw new Error(`Unknown error: ${keyError}`)
+  }
+}
 
 export default class GameAndroidApiKeyStatus extends BaseGameCommand<typeof GameAndroidApiKeyStatus> {
   static override args = {}
@@ -22,6 +39,8 @@ export default class GameAndroidApiKeyStatus extends BaseGameCommand<typeof Game
   public async run(): Promise<void> {
     const game = await this.getGame()
 
+    const testResult = await fetchKeyTestResult({projectId: game.id})
+
     render(
       <App>
         <ProjectCredentialsTable
@@ -31,6 +50,16 @@ export default class GameAndroidApiKeyStatus extends BaseGameCommand<typeof Game
             type: CredentialsType.KEY,
             platform: Platform.ANDROID,
           }}
+        />
+        <Title>Android Service Account API Key Test Result</Title>
+        <Table
+          data={[
+            {
+              'Key Works?': testResult.status == KeyTestStatus.SUCCESS,
+              ...testResult,
+              error: niceError(testResult.error),
+            },
+          ]}
         />
       </App>,
     )
