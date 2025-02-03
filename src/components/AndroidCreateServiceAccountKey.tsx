@@ -22,7 +22,7 @@ function statusToDict(status: SetupStatus): ScalarDict {
   }
 }
 
-export const CreateAndroidServiceAccountKey = ({projectId, onError, onComplete}: Props) => {
+export const AndroidCreateServiceAccountKey = ({projectId, onError, onComplete}: Props) => {
   const {handleStart, setupStatus, isCreating, hasServiceAccountKey} = useAndroidServiceAccount({
     projectId,
     onError,

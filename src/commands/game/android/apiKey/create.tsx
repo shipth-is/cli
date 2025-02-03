@@ -1,12 +1,10 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App} from '@cli/components/index.js'
+import {AndroidCreateServiceAccountKey, App} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getGoogleStatus, getProjectCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
-import {CreateAndroidServiceAccountKey} from '@cli/components/CreateAndroidServiceAccountKey.js'
-
 export default class GameAndroidApiKeyCreate extends BaseGameCommand<typeof GameAndroidApiKeyCreate> {
   static override args = {}
 
@@ -27,6 +25,7 @@ export default class GameAndroidApiKeyCreate extends BaseGameCommand<typeof Game
   public async run(): Promise<void> {
     const game = await this.getGame()
 
+    // TODO: waitForAuth
     const {force, waitForAuth} = this.flags
 
     const projectCredentials = await getProjectCredentials(game.id)
@@ -45,14 +44,13 @@ export default class GameAndroidApiKeyCreate extends BaseGameCommand<typeof Game
 
     render(
       <App>
-        <CreateAndroidServiceAccountKey
+        <AndroidCreateServiceAccountKey
           projectId={game.id}
           onComplete={async function (): Promise<void> {
-            console.log('done')
             process.exit(0)
           }}
           onError={function (error: Error): void {
-            throw new Error('Function not implemented.')
+            throw error
           }}
         />
       </App>,
