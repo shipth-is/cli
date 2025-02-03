@@ -1,10 +1,9 @@
+import qrcode from 'qrcode-terminal'
+import open from 'open'
 import {Flags} from '@oclif/core'
+
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getGoogleAuthUrl, getGoogleStatus, getShortAuthRequiredUrl} from '@cli/api/index.js'
-
-import qrcode from 'qrcode-terminal'
-
-import open from 'open'
 
 export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typeof GameAndroidApiKeyConnect> {
   static override args = {}
@@ -17,6 +16,7 @@ export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typ
   static override flags = {
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     desktop: Flags.boolean({char: 'd', description: 'Open the link in the desktop browser'}),
+    mobile: Flags.boolean({char: 'm', description: 'Display a QR code for mobile authentication'}),
     helpPage: Flags.boolean({
       char: 'h',
       description: 'Open the interstitial help page first rather than the Google OAuth page',
@@ -26,7 +26,7 @@ export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typ
 
   public async run(): Promise<void> {
     const game = await this.getGame()
-    const {desktop, helpPage, force} = this.flags
+    const {desktop, mobile, helpPage, force} = this.flags
 
     const googleStatus = await getGoogleStatus()
 
@@ -40,8 +40,22 @@ export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typ
 
     if (desktop) {
       await open(url)
-    } else {
-      qrcode.generate(url, {small: true})
+      return
     }
+    if (mobile) {
+      qrcode.generate(url, {small: true})
+      return
+    }
+
+    console.log('Scan the QR code below to connect ShipThis with Google (you will be asked to enter an OTP):')
+    qrcode.generate(url, {small: true})
+    console.log('Press any key to open the link in your browser...')
+    process.stdin.setRawMode(true)
+    process.stdin.resume()
+    process.stdin.once('data', async () => {
+      process.stdin.setRawMode(false)
+      process.stdin.pause()
+      await open(url)
+    })
   }
 }
