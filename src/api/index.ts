@@ -217,3 +217,20 @@ export async function getGoogleStatus(): Promise<GoogleStatusResponse> {
   const {data} = await axios.get(`${API_URL}/me/google/status`, opt)
   return data as GoogleStatusResponse
 }
+
+export async function inviteServiceAccount(projectId: string, developerId: string) {
+  try {
+    const headers = getAuthedHeaders()
+    const {data} = await axios.post(
+      `${API_URL}/projects/${projectId}/credentials/android/key/invite/`,
+      {developerId},
+      {
+        headers,
+      },
+    )
+    return data
+  } catch (error) {
+    console.error('inviteServiceAccount Error', error)
+    throw error
+  }
+}

@@ -2,10 +2,10 @@ import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
 import {AndroidCreateServiceAccountKey, App} from '@cli/components/index.js'
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getGoogleStatus, getProjectCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
-export default class GameAndroidApiKeyCreate extends BaseGameCommand<typeof GameAndroidApiKeyCreate> {
+export default class GameAndroidApiKeyCreate extends BaseGameAndroidCommand<typeof GameAndroidApiKeyCreate> {
   static override args = {}
 
   static override description = 'Creates a new Android Service Account API Key for a game'

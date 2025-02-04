@@ -4,6 +4,7 @@ import {Flags} from '@oclif/core'
 
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getGoogleAuthUrl, getGoogleStatus, getShortAuthRequiredUrl} from '@cli/api/index.js'
+import {getInput} from '@cli/utils/index.js'
 
 export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typeof GameAndroidApiKeyConnect> {
   static override args = {}
@@ -49,13 +50,8 @@ export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typ
 
     console.log('Scan the QR code below to connect ShipThis with Google (you will be asked to enter an OTP):')
     qrcode.generate(url, {small: true})
-    console.log('Press any key to open the link in your browser...')
-    process.stdin.setRawMode(true)
-    process.stdin.resume()
-    process.stdin.once('data', async () => {
-      process.stdin.setRawMode(false)
-      process.stdin.pause()
-      await open(url)
-    })
+
+    const entered = await getInput(`Would you like to open the page in your desktop browser? (y/n): `)
+    if (entered.toLowerCase() === 'y') await open(url)
   }
 }

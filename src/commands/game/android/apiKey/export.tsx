@@ -2,12 +2,12 @@ import {Flags, Args} from '@oclif/core'
 import {render} from 'ink'
 import * as fs from 'fs'
 
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {exportCredential, getProjectCredentials} from '@cli/api/credentials/index.js'
 import {App, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
-export default class GameAndroidApiKeyExport extends BaseGameCommand<typeof GameAndroidApiKeyExport> {
+export default class GameAndroidApiKeyExport extends BaseGameAndroidCommand<typeof GameAndroidApiKeyExport> {
   static override args = {
     file: Args.string({description: 'Name of the ZIP file to create', required: true}),
   }

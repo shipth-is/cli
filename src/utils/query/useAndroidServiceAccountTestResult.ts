@@ -17,6 +17,17 @@ export enum KeyTestError {
   NOT_INVITED = 'not_invited',
 }
 
+export const KeyTestErrorMessage: Record<KeyTestError, string> = {
+  [KeyTestError.NO_SERVICE_ACCOUNT_KEY]: 'Service Account API Key not found in your account',
+  [KeyTestError.NO_PACKAGE_NAME]: 'Android Package Name has not been set',
+  [KeyTestError.APP_NOT_FOUND]: 'Application not found in Google Play Console',
+  [KeyTestError.NOT_INVITED]: 'Service Account has not been invited to Google Play',
+}
+
+export function niceError(keyError: KeyTestError | undefined): string | undefined {
+  return keyError ? KeyTestErrorMessage[keyError] : undefined
+}
+
 export interface KeyTestResult {
   status: KeyTestStatus
   error?: KeyTestError
