@@ -137,6 +137,28 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
           return !googleStatus.isAuthenticated
         },
       },
+      {
+        command: 'game:android:apiKey:create',
+        args: ['--waitForAuth'],
+        shouldRun: async () => {
+          if (!game) return true
+          const projectCredentials = await getProjectCredentials(game.id)
+          const hasAndroidApiKey = projectCredentials.some(
+            (cred) => cred.platform == Platform.ANDROID && cred.isActive && cred.type == CredentialsType.KEY,
+          )
+          return !hasAndroidApiKey
+        },
+      },
+      // TODO:
+      // - detect if the app exists in google play
+      // - if app does not exist in google play and if we have apiKey and keyStore and 0 existing builds then run shipthis game ship
+      {
+        command: 'game:android:apiKey:invite',
+        args: ['--prompt', '--waitForGoogleApp', '--waitForAuth'],
+        shouldRun: async () => {
+          return true
+        },
+      },
     ]
 
     const steps = args.platform === Platform.IOS ? iosSteps : androidSteps

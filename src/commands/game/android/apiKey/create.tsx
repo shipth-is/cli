@@ -3,7 +3,7 @@ import {Flags} from '@oclif/core'
 
 import {AndroidCreateServiceAccountKey, App} from '@cli/components/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
-import {getGoogleStatus, getProjectCredentials} from '@cli/api/index.js'
+import {getProjectCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
 export default class GameAndroidApiKeyCreate extends BaseGameAndroidCommand<typeof GameAndroidApiKeyCreate> {
   static override args = {}
@@ -16,17 +16,17 @@ export default class GameAndroidApiKeyCreate extends BaseGameAndroidCommand<type
   ]
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
-    //quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
+    ...BaseGameAndroidCommand.flags,
+    waitForAuth: Flags.boolean({char: 'w', description: 'Wait for Google Authentication (10 mins).'}),
     force: Flags.boolean({char: 'f'}),
-    waitForAuth: Flags.boolean({char: 'p', description: 'Waits for Google Auth to be completed'}),
   }
 
   public async run(): Promise<void> {
     const game = await this.getGame()
 
-    // TODO: waitForAuth
     const {force, waitForAuth} = this.flags
+
+    this.checkGoogleAuth(waitForAuth)
 
     const projectCredentials = await getProjectCredentials(game.id)
     const hasApiKey = projectCredentials.some(
@@ -35,11 +35,6 @@ export default class GameAndroidApiKeyCreate extends BaseGameAndroidCommand<type
 
     if (hasApiKey && !force) {
       this.error('An API Key is already set on this game. Use --force to overwrite it.')
-    }
-
-    const {isAuthenticated} = await getGoogleStatus()
-    if (!isAuthenticated) {
-      this.error('You must connect to Google first. Run `shipthis game android apiKey connect`', {exit: 1})
     }
 
     render(
