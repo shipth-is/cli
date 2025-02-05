@@ -4,6 +4,7 @@ import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
 import {getGoogleStatus, getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+import {queryBuilds, fetchKeyTestResult, KeyTestError} from '@cli/utils/index.js'
 
 interface Step {
   command: string
@@ -149,9 +150,28 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
           return !hasAndroidApiKey
         },
       },
-      // TODO:
-      // - detect if the app exists in google play
-      // - if app does not exist in google play and if we have apiKey and keyStore and 0 existing builds then run shipthis game ship
+      {
+        command: 'game:ship',
+        args: ['--quiet'],
+        shouldRun: async () => {
+          if (!game) return true
+          // If the google app is found then they don't need an initial build
+          const testResult = await fetchKeyTestResult({projectId: game.id})
+          const isAppFound = testResult.error === KeyTestError.APP_NOT_FOUND
+          const projectCredentials = await getProjectCredentials(game.id)
+          // We can only make a build if we have the key store and the api key
+          const hasAndroidApiKey = projectCredentials.some(
+            (cred) => cred.platform == Platform.ANDROID && cred.isActive && cred.type == CredentialsType.KEY,
+          )
+          const hasKeyStore = projectCredentials.some(
+            (cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type == CredentialsType.CERTIFICATE,
+          )
+          // No need to run this if we have a build already
+          const buildsResponse = await queryBuilds({projectId: game.id, pageNumber: 0})
+          const hasBuild = buildsResponse.data.length > 0
+          return !isAppFound && hasAndroidApiKey && hasKeyStore && !hasBuild
+        },
+      },
       {
         command: 'game:android:apiKey:invite',
         args: ['--prompt', '--waitForGoogleApp', '--waitForAuth'],

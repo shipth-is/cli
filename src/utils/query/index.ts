@@ -1,5 +1,6 @@
 export * from './queryClient.js'
 export * from './useAndroidServiceAccountSetupStatus.js'
+export * from './useAndroidServiceAccountTestResult.js'
 export * from './useAppleApiKeys.js'
 export * from './useAppleApp.js'
 export * from './useAppleBundleId.js'
