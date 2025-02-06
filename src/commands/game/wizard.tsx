@@ -19,7 +19,7 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
 
   static override description = 'Runs all the steps for the specific platform'
 
-  static override examples = ['<%= config.bin %> <%= command.id %>']
+  static override examples = ['<%= config.bin %> <%= command.id %> ios', '<%= config.bin %> <%= command.id %> android']
 
   static override flags = {
     forceStep: Flags.string({
