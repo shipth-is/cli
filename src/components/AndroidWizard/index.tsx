@@ -8,16 +8,18 @@ import {BaseCommand} from '@cli/baseCommands/index.js'
 import {getStatusFlags, getStepInitialStatus, Step, StepProps, Steps, StepStatus} from './utils.js'
 import {EditableProject} from '@cli/types/api.js'
 import {CreateGame} from './CreateGame.js'
+import {CreateKeystore} from './CreateKeystore.js'
+import {ConnectGoogle} from './ConnectGoogle.js'
 
 interface Props {
   command: BaseCommand<any> // Needs the oclif command context for project dir etc
 }
 
 const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
-  gameDetails: GameInfoForm,
+  gameInfo: GameInfoForm,
   createGame: CreateGame,
-  createKeystore: () => <Text>TODO</Text>,
-  connectGoogle: () => <Text>TODO</Text>,
+  createKeystore: CreateKeystore,
+  connectGoogle: ConnectGoogle,
   createServiceAccount: () => <Text>TODO</Text>,
   createInitialBuild: () => <Text>TODO</Text>,
   createGooglePlayGame: () => <Text>TODO</Text>,
@@ -50,7 +52,7 @@ export const AndroidWizard = ({command}: Props) => {
   }, [])
 
   const handleStepComplete = (gameInfo?: EditableProject) => {
-    if (currentStep == 'gameDetails' && gameInfo) {
+    if (currentStep == 'gameInfo' && gameInfo) {
       // TODO; wtf is this
       setStepStatuses([
         StepStatus.SUCCESS,

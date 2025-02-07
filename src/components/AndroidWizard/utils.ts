@@ -13,7 +13,7 @@ export enum StepStatus {
 }
 
 export const Steps = [
-  'gameDetails',
+  'gameInfo',
   'createGame',
   'createKeystore',
   'connectGoogle',
@@ -39,7 +39,7 @@ export const getStepInitialStatus = (
   statusFlags: StatusFlags,
 ): StepStatus.SUCCESS | StepStatus.PENDING | StepStatus.WARN => {
   const base: any = {
-    gameDetails: statusFlags.hasGameName && statusFlags.hasAndroidPackageName,
+    gameInfo: statusFlags.hasGameName && statusFlags.hasAndroidPackageName,
     createGame: statusFlags.hasShipThisProject,
     createKeystore: statusFlags.hasAndroidKeystore,
     createServiceAccount: statusFlags.hasServiceAccountKey,
