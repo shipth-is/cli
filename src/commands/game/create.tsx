@@ -18,7 +18,6 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
   static override flags = {
     quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     force: Flags.boolean({char: 'f'}),
-    name: Flags.string({char: 'n', description: 'The name of the game'}),
     ...DetailsFlags,
   }
 

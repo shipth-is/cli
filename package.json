@@ -10,6 +10,7 @@
   "dependencies": {
     "@expo/apple-utils": "2.0.3",
     "@expo/json-file": "^8.3.3",
+    "@inkjs/ui": "^2.0.0",
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
     "@tanstack/react-query": "^5.56.2",
@@ -187,5 +188,8 @@
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
     "readme": "bin/dev.js internal readme docs/ -d 2 --notDryRun # does not overwrite existing files"
   },
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "overrides": {
+    "cli-spinners": "2.9.2"
+  }
 }

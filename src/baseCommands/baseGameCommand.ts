@@ -27,13 +27,6 @@ export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuth
     }
   }
 
-  protected async getGameCredentials(): Promise<ProjectCredential[]> {
-    const {project} = await this.getProjectConfig()
-    if (!project) throw new Error('No project')
-    const projectCredentials = await getProjectCredentials(project.id)
-    return projectCredentials
-  }
-
   protected async updateGame(update: Partial<EditableProject>): Promise<Project> {
     const project = await this.getGame()
     const projectUpdate: EditableProject = {

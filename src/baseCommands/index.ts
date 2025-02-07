@@ -7,6 +7,7 @@ export * from './baseGameCommand.js'
 import {Flags} from '@oclif/core'
 
 export const DetailsFlags = {
+  name: Flags.string({char: 'n', description: 'The name of the game'}),
   buildNumber: Flags.integer({char: 'b', description: 'Set the build number'}),
   semanticVersion: Flags.string({char: 's', description: 'Set the semantic version'}),
   gameEngine: Flags.string({char: 'e', description: 'Set the game engine'}),
