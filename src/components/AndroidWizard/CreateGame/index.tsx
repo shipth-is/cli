@@ -3,7 +3,7 @@ import {useContext, useEffect, useState} from 'react'
 import Spinner from 'ink-spinner'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {createProject, getProject} from '@cli/api/index.js'
+import {createProject} from '@cli/api/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/config.js'
 import {EditableProject, GameEngine, Project} from '@cli/types/api.js'
 import {getGodotVersion} from '@cli/utils/godot.js'
@@ -25,14 +25,14 @@ const getGameInfo = (flagValues: Record<string, string>, project?: Project) => {
   return gameInfo
 }
 
-// This step creates the gme if it does not exist.
+// This step creates the game if it does not exist.
 // It also makes sure the androidPackageName is set, even if the game exists
 export const CreateGame = (props: StepProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
   const [gameInfo, setGameInfo] = useState<EditableProject | null>(null)
   const [showForm, setShowForm] = useState(false)
   const {command} = useContext(CommandContext)
-  const {setGameId} = useContext(GameContext)
+  const {setGameId, game} = useContext(GameContext)
 
   // Populate the form with the game info (if game already exists)
   const handleLoad = async () => {
@@ -46,9 +46,7 @@ export const CreateGame = (props: StepProps): JSX.Element => {
       setGameInfo(gameInfo)
       return
     }
-    const gameId = projectConfig.project.id
-    const project = await getProject(gameId)
-    const gameInfo = getGameInfo(flagValues, project)
+    const gameInfo = getGameInfo(flagValues, game || undefined)
     setGameInfo(gameInfo)
     setShowForm(true)
     setIsLoading(false)

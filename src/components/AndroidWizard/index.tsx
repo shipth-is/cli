@@ -3,13 +3,13 @@ import {Box, Text} from 'ink'
 import {Title} from '../Title.js'
 
 import {StepStatusTable} from './StepStatusTable.js'
-import {BaseCommand} from '@cli/baseCommands/index.js'
+
 import {getStatusFlags, getStepInitialStatus, Step, StepProps, Steps, StepStatus} from './utils.js'
 
 import {CreateGame} from './CreateGame/index.js'
 import {CreateKeystore} from './CreateKeystore.js'
 import {ConnectGoogle} from './ConnectGoogle/index.js'
-import {CommandContext, GameContext, GameProvider} from '../context/index.js'
+import {CommandContext, GameProvider} from '../context/index.js'
 
 const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   createGame: CreateGame,
@@ -23,7 +23,6 @@ const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
 
 export const AndroidWizard = () => {
   const {command} = React.useContext(CommandContext)
-  const {setGameId, setGame} = React.useContext(GameContext)
 
   const [currentStep, setCurrentStep] = useState<Step | null>(null)
   const [stepStatuses, setStepStatuses] = useState<null | StepStatus[]>(null)

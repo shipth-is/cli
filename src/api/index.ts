@@ -200,9 +200,11 @@ export async function acceptTerms(): Promise<Self> {
   return castObjectDates<Self>(data)
 }
 
+// Makes a url for the OAuth-flow which starts at the Google hosted auth page
 export async function getGoogleAuthUrl(projectId: string): Promise<string> {
   const headers = getAuthedHeaders()
   const opt = {headers}
+  // We redirect to a fixed place (not passing id here - cant add a value)
   const web = encodeURIComponent(new URL('/google/redirect/', WEB_URL).href)
   const url = `${API_URL}/projects/${projectId}/credentials/android/key/connect`
   const {data} = await axios.get(`${url}?redirectUri=${web}`, opt)
