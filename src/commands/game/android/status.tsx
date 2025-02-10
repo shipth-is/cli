@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, NextSteps, StatusTable} from '@cli/components/index.js'
+import {Command, NextSteps, StatusTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectPlatformProgress} from '@cli/api/index.js'
 import {Platform, ProjectPlatformProgress} from '@cli/types'
@@ -44,7 +44,7 @@ export default class GameAndroidStatus extends BaseGameCommand<typeof GameAndroi
     }
 
     render(
-      <App>
+      <Command command={this}>
         <StatusTable marginBottom={1} title="ShipThis game status" statuses={gameStatuses} />
         <StatusTable
           marginBottom={1}
@@ -52,7 +52,7 @@ export default class GameAndroidStatus extends BaseGameCommand<typeof GameAndroi
           statuses={progressToStatuses(platformStatus)}
         />
         <NextSteps steps={steps} />
-      </App>,
+      </Command>,
     )
   }
 }

@@ -1,5 +1,5 @@
 import {Box} from 'ink'
-import {useEffect, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import Spinner from 'ink-spinner'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
@@ -7,6 +7,7 @@ import {createProject, getProject} from '@cli/api/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/config.js'
 import {EditableProject, GameEngine, Project} from '@cli/types/api.js'
 import {getGodotVersion} from '@cli/utils/godot.js'
+import {CommandContext, GameContext} from '@cli/components/context/index.js'
 
 import {StepProps} from '../utils.js'
 import {GameInfoForm} from './GameInfoForm.js'
@@ -30,10 +31,12 @@ export const CreateGame = (props: StepProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
   const [gameInfo, setGameInfo] = useState<EditableProject | null>(null)
   const [showForm, setShowForm] = useState(false)
+  const {command} = useContext(CommandContext)
+  const {setGameId} = useContext(GameContext)
 
   // Populate the form with the game info (if game already exists)
   const handleLoad = async () => {
-    const {command} = props
+    if (!command) return
     const flagValues = command.getDetailsFlagsValues()
     const projectConfig = await command.getProjectConfigSafe()
     if (!projectConfig.project) {
@@ -52,19 +55,21 @@ export const CreateGame = (props: StepProps): JSX.Element => {
   }
 
   useEffect(() => {
-    const load = async () => await handleLoad()
-    load()
+    handleLoad()
   }, [])
 
   const handleGameInfoSubmit = async (gameInfo: EditableProject) => {
+    if (!command) return
+    // TODO: error handling and props.onError
     setShowForm(false)
     setIsLoading(true)
 
-    const isNew = !(await props.command.getProjectConfigSafe()).project
+    const isNew = !(await command.getProjectConfigSafe()).project
 
     // If the game already exists, update the game info (set androidPackageName)
     if (!isNew) {
-      const cmd = props.command as BaseGameCommand<any>
+      // TODO
+      const cmd = command as BaseGameCommand<any>
       await cmd.updateGame(gameInfo)
       return props.onComplete()
     }
@@ -76,12 +81,14 @@ export const CreateGame = (props: StepProps): JSX.Element => {
       gameEngineVersion: getGodotVersion(),
     }
     const project = await createProject({name, details: projectDetails})
-    await props.command.setProjectConfig({
+    await command.setProjectConfig({
       project,
       shippedFilesGlobs: DEFAULT_SHIPPED_FILES_GLOBS,
       ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
     })
 
+    // Update the context value for the other components in the wizard
+    setGameId(project.id)
     props.onComplete()
   }
 

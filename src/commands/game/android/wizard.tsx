@@ -2,7 +2,7 @@ import {Flags} from '@oclif/core'
 import {render, Box, Text} from 'ink'
 
 import {BaseAuthenticatedCommand, DetailsFlags} from '@cli/baseCommands/index.js'
-import {App} from '@cli/components/index.js'
+import {Command} from '@cli/components/index.js'
 
 import {AndroidWizard} from '@cli/components/AndroidWizard/index.js'
 
@@ -19,9 +19,9 @@ export default class GameAndroidWizard extends BaseAuthenticatedCommand<typeof G
 
   public async run(): Promise<void> {
     render(
-      <App>
-        <AndroidWizard command={this} />
-      </App>,
+      <Command command={this}>
+        <AndroidWizard />
+      </Command>,
     )
   }
 }

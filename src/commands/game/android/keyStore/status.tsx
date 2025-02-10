@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, ProjectCredentialsTable} from '@cli/components/index.js'
+import {Command, ProjectCredentialsTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
 
@@ -23,7 +23,7 @@ export default class GameAndroidKeyStoreStatus extends BaseGameCommand<typeof Ga
     const game = await this.getGame()
 
     render(
-      <App>
+      <Command>
         <ProjectCredentialsTable
           credentialTypeName="Android Keystore"
           queryProps={{
@@ -32,7 +32,7 @@ export default class GameAndroidKeyStoreStatus extends BaseGameCommand<typeof Ga
             platform: Platform.ANDROID,
           }}
         />
-      </App>,
+      </Command>,
     )
   }
 }

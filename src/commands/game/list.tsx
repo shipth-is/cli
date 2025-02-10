@@ -5,7 +5,7 @@ import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {PageAndSortParams} from '@cli/types'
 import {getProjects} from '@cli/api/index.js'
 
-import {App, Table} from '@cli/components/index.js'
+import {Command, Table} from '@cli/components/index.js'
 import {getShortUUID} from '@cli/utils/index.js'
 import {getShortDate} from '@cli/utils/dates.js'
 
@@ -48,7 +48,7 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
     })
 
     render(
-      <App>
+      <Command command={this}>
         {gameListResponse.data.length === 0 && params.pageNumber == 0 && (
           <Text>No games found. Create one now with $ shipthis game wizard</Text>
         )}
@@ -59,7 +59,7 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
             <Text>Use the --pageNumber parameter to see other pages.</Text>
           </Box>
         )}
-      </App>,
+      </Command>,
     )
   }
 }

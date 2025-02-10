@@ -5,7 +5,6 @@ import Spinner from 'ink-spinner'
 import {Step, Steps, StepStatus} from './utils.js'
 
 const StepLabels: Record<Step, string> = {
-  gameInfo: 'Confirm game and package name',
   createGame: 'Create game in ShipThis',
   createKeystore: 'Create an Android Keystore',
   connectGoogle: 'Connect ShipThis with Google',

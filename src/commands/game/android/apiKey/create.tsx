@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {AndroidCreateServiceAccountKey, App} from '@cli/components/index.js'
+import {AndroidCreateServiceAccountKey, Command} from '@cli/components/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getProjectCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
@@ -38,7 +38,7 @@ export default class GameAndroidApiKeyCreate extends BaseGameAndroidCommand<type
     }
 
     render(
-      <App>
+      <Command>
         <AndroidCreateServiceAccountKey
           projectId={game.id}
           onComplete={async function (): Promise<void> {
@@ -48,7 +48,7 @@ export default class GameAndroidApiKeyCreate extends BaseGameAndroidCommand<type
             throw error
           }}
         />
-      </App>,
+      </Command>,
     )
   }
 }

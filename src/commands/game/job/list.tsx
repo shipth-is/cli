@@ -5,7 +5,7 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectJobs} from '@cli/api/index.js'
 import {JobStatus, PageAndSortParams} from '@cli/types'
 
-import {App, Table} from '@cli/components/index.js'
+import {Command, Table} from '@cli/components/index.js'
 import {getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
 import {DateTime} from 'luxon'
 
@@ -49,7 +49,7 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
     const data = jobListResponse.data.map((j) => getJobSummary(j, DateTime.now()))
 
     render(
-      <App>
+      <Command command={this}>
         <Table
           data={data}
           getTextProps={(col, val) => {
@@ -63,7 +63,7 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
             <Text>Use the --pageNumber parameter to see other pages.</Text>
           </Box>
         )}
-      </App>,
+      </Command>,
     )
   }
 }

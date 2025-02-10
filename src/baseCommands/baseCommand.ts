@@ -52,6 +52,11 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return super.finally(_)
   }
 
+  // Exposing it to the react components using the CommandContext
+  public getFlags(): Flags<T> {
+    return this.flags
+  }
+
   private getAuthConfigPath(): string {
     // Hidden file in the user's home directory
     return path.join(this.config.home, '.shipthis.auth.json')
@@ -189,5 +194,14 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
       if (this.flags[key]) values[key] = this.flags[key]
     }
     return values
+  }
+
+  public async getGameId(): Promise<string> {
+    const {flags} = this
+    if (flags.gameId) return flags.gameId
+    this.ensureWeAreInAProjectDir()
+    const {project} = await this.getProjectConfig()
+    if (!project) throw new Error('No project')
+    return project.id
   }
 }

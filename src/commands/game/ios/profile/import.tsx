@@ -4,7 +4,7 @@ import * as fs from 'fs'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectCredentials, importCredential} from '@cli/api/credentials/index.js'
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class GameIosProfileImport extends BaseGameCommand<typeof GameIosProfileImport> {
@@ -50,7 +50,7 @@ export default class GameIosProfileImport extends BaseGameCommand<typeof GameIos
     }
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Importing Mobile Provisioning Profile from ${file}...`}
           msgComplete={`Mobile Provisioning Profile imported from ${file}`}
@@ -64,7 +64,7 @@ export default class GameIosProfileImport extends BaseGameCommand<typeof GameIos
           }
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

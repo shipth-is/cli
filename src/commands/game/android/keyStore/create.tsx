@@ -2,7 +2,7 @@ import {render} from 'ink'
 import {Flags} from '@oclif/core'
 import axios from 'axios'
 
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getAuthedHeaders, getProjectCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
@@ -51,14 +51,14 @@ export default class GameAndroidKeyStoreCreate extends BaseGameAndroidCommand<ty
     if (this.flags.quiet) return await createKeystore()
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress="Creating a new Android Keystore..."
           msgComplete="Android Keystore created"
           executeMethod={createKeystore}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

@@ -4,7 +4,7 @@ import * as fs from 'fs'
 
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {exportCredential, getProjectCredentials} from '@cli/api/credentials/index.js'
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class GameAndroidApiKeyExport extends BaseGameAndroidCommand<typeof GameAndroidApiKeyExport> {
@@ -47,14 +47,14 @@ export default class GameAndroidApiKeyExport extends BaseGameAndroidCommand<type
     const handleComplete = async () => process.exit(0)
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Exporting Android Service Account API Key to ${file}...`}
           msgComplete={`Android Service Account API Key exported to ${file}`}
           executeMethod={() => exportCredential({zipPath: file, credentialId: apiKey.id, projectId: game.id})}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

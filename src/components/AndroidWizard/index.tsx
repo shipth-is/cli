@@ -8,11 +8,8 @@ import {getStatusFlags, getStepInitialStatus, Step, StepProps, Steps, StepStatus
 
 import {CreateGame} from './CreateGame/index.js'
 import {CreateKeystore} from './CreateKeystore.js'
-import {ConnectGoogle} from './ConnectGoogle.js'
-
-interface Props {
-  command: BaseCommand<any> // We need the oclif command context for project dir etc
-}
+import {ConnectGoogle} from './ConnectGoogle/index.js'
+import {CommandContext, GameContext, GameProvider} from '../context/index.js'
 
 const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   createGame: CreateGame,
@@ -24,31 +21,36 @@ const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   inviteServiceAccount: () => <Text>TODO</Text>,
 }
 
-export const AndroidWizard = ({command}: Props) => {
+export const AndroidWizard = () => {
+  const {command} = React.useContext(CommandContext)
+  const {setGameId, setGame} = React.useContext(GameContext)
+
   const [currentStep, setCurrentStep] = useState<Step | null>(null)
   const [stepStatuses, setStepStatuses] = useState<null | StepStatus[]>(null)
 
-  const setInitialStatus = async () => {
+  const determineStep = async () => {
+    if (!command) return
     const statusFlags = await getStatusFlags(command)
     const initStatuses = Steps.map((step) => getStepInitialStatus(step, statusFlags))
     // Find the first step that is PENDING
     const firstPending = initStatuses.findIndex((status) => status === StepStatus.PENDING)
     const pendingStep = firstPending === -1 ? null : Steps[firstPending]
-    setCurrentStep(pendingStep)
+
     // Set the first step to running (it will start on mount of the component for it
     const withPending: StepStatus[] = initStatuses.map((status, index) => {
       if (index === firstPending) return StepStatus.RUNNING
       return status
     })
+    setCurrentStep(pendingStep)
     setStepStatuses(withPending)
   }
 
   useEffect(() => {
-    setInitialStatus()
-  }, [])
+    determineStep()
+  }, [command])
 
   const handleStepComplete = () => {
-    setInitialStatus()
+    determineStep()
   }
 
   const handleStepError = (error: Error) => {
@@ -58,14 +60,14 @@ export const AndroidWizard = ({command}: Props) => {
   const StepInterface = currentStep ? stepComponentMap[currentStep] : null
 
   return (
-    <>
+    <GameProvider>
       <Box flexDirection="column">
         <Box marginBottom={1}>
           <Title>ShipThis Android Wizard</Title>
         </Box>
         {stepStatuses && <StepStatusTable stepStatuses={stepStatuses} />}
       </Box>
-      {StepInterface && <StepInterface command={command} onComplete={handleStepComplete} onError={handleStepError} />}
-    </>
+      {StepInterface && <StepInterface onComplete={handleStepComplete} onError={handleStepError} />}
+    </GameProvider>
   )
 }

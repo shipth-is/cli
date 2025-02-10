@@ -26,7 +26,6 @@ export type Step = (typeof Steps)[number]
 
 // The UI components for each step have these props
 export interface StepProps {
-  command: BaseCommand<any>
   onComplete: () => void
   onError: (error: Error) => void
 }

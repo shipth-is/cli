@@ -11,14 +11,8 @@ export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuth
 
   public async getGame(): Promise<Project> {
     try {
-      const {flags} = this
-      if (flags.gameId) {
-        return await getProject(flags.gameId) // this should work with the short id too
-      }
-      this.ensureWeAreInAProjectDir()
-      const {project} = await this.getProjectConfig()
-      if (!project) throw new Error('No project')
-      return await getProject(project.id)
+      const gameId = await this.getGameId()
+      return await getProject(gameId)
     } catch (e: any) {
       if (e?.response?.status === 404) {
         this.error('Game not found - please check you have access')

@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, StatusTable} from '@cli/components/index.js'
+import {Command, StatusTable} from '@cli/components/index.js'
 import {BaseGameCommand, DetailsFlags} from '@cli/baseCommands/index.js'
 import {isValidSemVer} from '@cli/utils/index.js'
 import {GameEngine} from '@cli/types'
@@ -58,7 +58,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
     }
 
     render(
-      <App>
+      <Command command={this}>
         <StatusTable
           title="Game Details"
           statuses={{
@@ -70,7 +70,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
             'Build Number': game.details?.buildNumber || 1,
           }}
         />
-      </App>,
+      </Command>,
     )
     return
   }

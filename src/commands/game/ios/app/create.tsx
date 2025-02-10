@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getInput, getGodotAppleBundleIdentifier, generatePackageName} from '@cli/utils/index.js'
 
@@ -94,14 +94,14 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
     if (this.flags.quiet) return await createApp()
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress="Creating App and BundleId in the Apple Developer Portal"
           msgComplete="App and BundleId created"
           executeMethod={createApp}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

@@ -4,7 +4,7 @@ import * as fs from 'fs'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {exportCredential, getProjectCredentials} from '@cli/api/credentials/index.js'
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class GameIosProfileExport extends BaseGameCommand<typeof GameIosProfileExport> {
@@ -47,14 +47,14 @@ export default class GameIosProfileExport extends BaseGameCommand<typeof GameIos
     const handleComplete = async () => process.exit(0)
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Exporting Mobile Provisioning Profile to ${file}...`}
           msgComplete={`Mobile Provisioning Profile exported to ${file}`}
           executeMethod={() => exportCredential({zipPath: file, credentialId: profile.id, projectId: game.id})}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

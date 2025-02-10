@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, ProjectCredentialsTable, Table, Title} from '@cli/components/index.js'
+import {Command, ProjectCredentialsTable, Table, Title} from '@cli/components/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
 import {fetchKeyTestResult, niceError, KeyTestStatus} from '@cli/utils/query/useAndroidServiceAccountTestResult.js'
@@ -26,7 +26,7 @@ export default class GameAndroidApiKeyStatus extends BaseGameAndroidCommand<type
     const testResult = await fetchKeyTestResult({projectId: game.id})
     // TODO: next steps
     render(
-      <App>
+      <Command command={this}>
         <ProjectCredentialsTable
           credentialTypeName="Android Service Account API Key"
           queryProps={{
@@ -45,7 +45,7 @@ export default class GameAndroidApiKeyStatus extends BaseGameAndroidCommand<type
             },
           ]}
         />
-      </App>,
+      </Command>,
     )
   }
 }

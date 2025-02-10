@@ -4,7 +4,7 @@ import * as fs from 'fs'
 
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getProjectCredentials, importCredential} from '@cli/api/credentials/index.js'
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<typeof GameAndroidApiKeyImport> {
@@ -50,7 +50,7 @@ export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<type
     }
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Importing Android Service Account API Key from ${file}...`}
           msgComplete={`Android Android Service Account API Key imported from ${file}`}
@@ -64,7 +64,7 @@ export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<type
           }
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

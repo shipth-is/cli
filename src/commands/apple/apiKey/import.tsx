@@ -4,7 +4,7 @@ import * as fs from 'fs'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {getUserCredentials, importCredential} from '@cli/api/credentials/index.js'
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class AppleApiKeyImport extends BaseAuthenticatedCommand<typeof AppleApiKeyImport> {
@@ -47,14 +47,14 @@ export default class AppleApiKeyImport extends BaseAuthenticatedCommand<typeof A
     }
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Importing App Store Connect API from ${file}...`}
           msgComplete={`App Store Connect API imported from ${file}`}
           executeMethod={() => importCredential({zipPath: file, type: CredentialsType.KEY, platform: Platform.IOS})}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

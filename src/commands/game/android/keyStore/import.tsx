@@ -4,7 +4,7 @@ import * as fs from 'fs'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectCredentials, importCredential} from '@cli/api/credentials/index.js'
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof GameAndroidKeyStoreImport> {
@@ -49,7 +49,7 @@ export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof Ga
     }
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Importing Android Keystore from ${file}...`}
           msgComplete={`Android Keystore imported from ${file}`}
@@ -63,7 +63,7 @@ export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof Ga
           }
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }
