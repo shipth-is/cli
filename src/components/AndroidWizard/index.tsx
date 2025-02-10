@@ -2,21 +2,19 @@ import React, {useEffect, useState} from 'react'
 import {Box, Text} from 'ink'
 import {Title} from '../Title.js'
 
-import {GameInfoForm} from './GameInfoForm.js'
 import {StepStatusTable} from './StepStatusTable.js'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {getStatusFlags, getStepInitialStatus, Step, StepProps, Steps, StepStatus} from './utils.js'
-import {EditableProject} from '@cli/types/api.js'
-import {CreateGame} from './CreateGame.js'
+
+import {CreateGame} from './CreateGame/index.js'
 import {CreateKeystore} from './CreateKeystore.js'
 import {ConnectGoogle} from './ConnectGoogle.js'
 
 interface Props {
-  command: BaseCommand<any> // Needs the oclif command context for project dir etc
+  command: BaseCommand<any> // We need the oclif command context for project dir etc
 }
 
 const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
-  gameInfo: GameInfoForm,
   createGame: CreateGame,
   createKeystore: CreateKeystore,
   connectGoogle: ConnectGoogle,
@@ -29,8 +27,6 @@ const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
 export const AndroidWizard = ({command}: Props) => {
   const [currentStep, setCurrentStep] = useState<Step | null>(null)
   const [stepStatuses, setStepStatuses] = useState<null | StepStatus[]>(null)
-
-  const [gameInfo, setGameInfo] = useState<EditableProject | undefined>(undefined)
 
   const setInitialStatus = async () => {
     const statusFlags = await getStatusFlags(command)
@@ -51,22 +47,7 @@ export const AndroidWizard = ({command}: Props) => {
     setInitialStatus()
   }, [])
 
-  const handleStepComplete = (gameInfo?: EditableProject) => {
-    if (currentStep == 'gameInfo' && gameInfo) {
-      // TODO; wtf is this
-      setStepStatuses([
-        StepStatus.SUCCESS,
-        StepStatus.RUNNING,
-        StepStatus.PENDING,
-        StepStatus.PENDING,
-        StepStatus.PENDING,
-        StepStatus.PENDING,
-        StepStatus.PENDING,
-      ])
-      setGameInfo(gameInfo)
-      setCurrentStep('createGame')
-      return
-    }
+  const handleStepComplete = () => {
     setInitialStatus()
   }
 
@@ -84,14 +65,7 @@ export const AndroidWizard = ({command}: Props) => {
         </Box>
         {stepStatuses && <StepStatusTable stepStatuses={stepStatuses} />}
       </Box>
-      {StepInterface && (
-        <StepInterface
-          gameInfo={gameInfo}
-          command={command}
-          onComplete={handleStepComplete}
-          onError={handleStepError}
-        />
-      )}
+      {StepInterface && <StepInterface command={command} onComplete={handleStepComplete} onError={handleStepError} />}
     </>
   )
 }

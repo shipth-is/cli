@@ -1,8 +1,7 @@
 import {Command, Flags} from '@oclif/core'
 import {BaseAuthenticatedCommand} from './baseAuthenticatedCommand.js'
 import {getProject, updateProject} from '@cli/api/index.js'
-import {EditableProject, Project, ProjectCredential} from '@cli/types'
-import {getProjectCredentials} from '@cli/api/credentials/index.js'
+import {EditableProject, Project} from '@cli/types'
 
 export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuthenticatedCommand<T> {
   static override flags = {
@@ -10,7 +9,7 @@ export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuth
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
   }
 
-  protected async getGame(): Promise<Project> {
+  public async getGame(): Promise<Project> {
     try {
       const {flags} = this
       if (flags.gameId) {
@@ -27,7 +26,7 @@ export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuth
     }
   }
 
-  protected async updateGame(update: Partial<EditableProject>): Promise<Project> {
+  public async updateGame(update: Partial<EditableProject>): Promise<Project> {
     const project = await this.getGame()
     const projectUpdate: EditableProject = {
       ...project,

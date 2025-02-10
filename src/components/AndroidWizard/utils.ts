@@ -1,7 +1,7 @@
 import {getGoogleStatus, getProject, getProjectCredentials} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/baseCommand.js'
 
-import {CredentialsType, EditableProject, Platform} from '@cli/types/index.js'
+import {CredentialsType, Platform} from '@cli/types/index.js'
 import {fetchKeyTestResult, KeyTestError, KeyTestStatus, queryBuilds} from '@cli/utils/index.js'
 
 export enum StepStatus {
@@ -13,7 +13,6 @@ export enum StepStatus {
 }
 
 export const Steps = [
-  'gameInfo',
   'createGame',
   'createKeystore',
   'connectGoogle',
@@ -27,9 +26,8 @@ export type Step = (typeof Steps)[number]
 
 // The UI components for each step have these props
 export interface StepProps {
-  gameInfo?: EditableProject
   command: BaseCommand<any>
-  onComplete: (gameInfo?: EditableProject) => void
+  onComplete: () => void
   onError: (error: Error) => void
 }
 
