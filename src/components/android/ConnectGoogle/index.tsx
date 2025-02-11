@@ -3,24 +3,21 @@ import open from 'open'
 import {useContext} from 'react'
 
 import {GameContext} from '@cli/components/context/index.js'
-
-import {StepProps} from '../utils.js'
+import {useGoogleStatusWatching} from '@cli/utils/hooks/index.js'
+import {GoogleStatusResponse} from '@cli/types/api.js'
+import {StepProps} from '@cli/components/index.js'
 
 import {getConnectUrl, GoogleAuthQRCode} from './GoogleAuthQRCode.js'
-import {useGoogleStatusWatching} from '@cli/utils/hooks/useGoogleStatusWatching.js'
-import {GoogleStatusResponse} from '@cli/types/api.js'
 
 export const ConnectGoogle = (props: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)
 
-  const handleGoogleStatusUpdate = async (status: GoogleStatusResponse) => {
-    if (status.isAuthenticated) return props.onComplete()
-  }
-
   useGoogleStatusWatching({
     projectId: gameId,
     isWatching: true,
-    onGoogleStatusUpdate: handleGoogleStatusUpdate,
+    onGoogleStatusUpdate: (status: GoogleStatusResponse) => {
+      if (status.isAuthenticated) return props.onComplete()
+    },
   })
 
   useInput(async (input) => {

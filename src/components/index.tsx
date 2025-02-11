@@ -1,21 +1,19 @@
-export * from './AndroidCreateServiceAccountKey.js'
-export * from './AppleApiKeysTable.js'
-export * from './AppleAppDetails.js'
-export * from './AppleBundleIdDetails.js'
-export * from './AppleCertificatesTable.js'
-export * from './AppleProfilesTable.js'
-export * from './BuildsTable.js'
+export * from './android/index.js'
+export * from './apple/index.js'
+export * from './common/index.js'
 export * from './context/index.js'
-export * from './Environment.js'
+export * from './wrappers/index.js'
+
+//export * from './android/AndroidCreateServiceAccountKey.js'
+
+export * from './BuildsTable.js'
 export * from './JobLogTail.js'
 export * from './JobStatusTable.js'
-export * from './ListWithTitle.js'
-export * from './NextSteps.js'
 export * from './ProjectCredentialsTable.js'
-export * from './RunWithSpinner.js'
-export * from './StatusTable.js'
-export * from './Table.js'
-export * from './Title.js'
-export * from './TruncatedText.js'
 export * from './UserCredentialsTable.js'
-export * from './wrappers/index.js'
+
+// The UI components for each step have these props
+export interface StepProps {
+  onComplete: () => void
+  onError: (error: Error) => void
+}

@@ -2,8 +2,8 @@ import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
 import {getBuildSummary, BuildsQueryProps, useBuilds} from '@cli/utils/index.js'
-import {Table} from './Table.js'
-import {Title} from './Title.js'
+import {Table} from './common/Table.js'
+import {Title} from './common/Title.js'
 
 interface Props extends BoxProps {
   queryProps: BuildsQueryProps

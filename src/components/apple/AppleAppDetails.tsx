@@ -2,8 +2,7 @@ import {Box} from 'ink'
 import Spinner from 'ink-spinner'
 
 import {AppleAppQueryProps, useAppleApp} from '@cli/utils/query/index.js'
-import {Title} from './Title.js'
-import {Table} from './Table.js'
+import {Title, Table} from '@cli/components/common/index.js'
 
 export const AppleAppDetails = (props: AppleAppQueryProps) => {
   const {data, isLoading} = useAppleApp(props)

@@ -4,7 +4,7 @@ import {render, Box, Text} from 'ink'
 import {BaseAuthenticatedCommand, DetailsFlags} from '@cli/baseCommands/index.js'
 import {Command} from '@cli/components/index.js'
 
-import {AndroidWizard} from '@cli/components/AndroidWizard/index.js'
+import {AndroidWizard} from '@cli/components/android/AndroidWizard/index.js'
 
 export default class GameAndroidWizard extends BaseAuthenticatedCommand<typeof GameAndroidWizard> {
   static override args = {}

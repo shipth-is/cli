@@ -8,9 +8,7 @@ import {
   useAppleCertificates,
   canAppleCertificateBeUsed,
 } from '@cli/utils/index.js'
-import {Title} from './Title.js'
-import {Table} from './Table.js'
-import {NextSteps} from './NextSteps.js'
+import {Title, Table, NextSteps} from '@cli/components/common/index.js'
 
 interface Props extends BoxProps {
   ctx: any

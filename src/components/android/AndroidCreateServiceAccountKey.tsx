@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react'
 
 import {useAndroidServiceAccount} from '@cli/utils/hooks/index.js'
-import {StatusTable} from './StatusTable.js'
+import {StatusTable} from '../common/StatusTable.js'
 import {ScalarDict, AndroidServiceAccountSetupStatus as SetupStatus} from '@cli/types/api.js'
 
 interface Props {

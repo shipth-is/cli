@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react'
 import {Box, Text} from 'ink'
-import {Title} from '../Title.js'
+
+import {StepProps, Title} from '@cli/components/index.js'
+import {CommandContext, GameProvider} from '@cli/components/context/index.js'
+
+import {CreateGame} from '../CreateGame/index.js'
+import {CreateKeystore} from '../CreateKeystore.js'
+import {ConnectGoogle} from '../ConnectGoogle/index.js'
 
 import {StepStatusTable} from './StepStatusTable.js'
-
-import {getStatusFlags, getStepInitialStatus, Step, StepProps, Steps, StepStatus} from './utils.js'
-
-import {CreateGame} from './CreateGame/index.js'
-import {CreateKeystore} from './CreateKeystore.js'
-import {ConnectGoogle} from './ConnectGoogle/index.js'
-import {CommandContext, GameProvider} from '../context/index.js'
+import {getStatusFlags, getStepInitialStatus, Step, Steps, StepStatus} from './utils.js'
 
 const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   createGame: CreateGame,

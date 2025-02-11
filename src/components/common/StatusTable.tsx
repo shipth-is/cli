@@ -12,12 +12,11 @@ export interface StatusTableProps extends React.ComponentPropsWithoutRef<typeof 
   }
 }
 
-export const StatusRowLabel = ({label, width}: {label: string, width?: number}) => (
+export const StatusRowLabel = ({label, width}: {label: string; width?: number}) => (
   <Box width={width || 10} marginRight={2}>
     <Text>{`${label}`}</Text>
   </Box>
 )
-
 
 interface StatusRowProps extends TextProps {
   label: string
@@ -25,16 +24,13 @@ interface StatusRowProps extends TextProps {
   value: Scalar
 }
 
-export const StatusRow = ({
-  label,
-  labelWidth,
-  value,
-  ...textProps
-}: StatusRowProps ) => {
+export const StatusRow = ({label, labelWidth, value, ...textProps}: StatusRowProps) => {
   return (
     <Box flexDirection="row" alignItems="flex-end">
-      <StatusRowLabel width={labelWidth}  label={label} />
-      <Text bold {...textProps}>{value}</Text>
+      <StatusRowLabel width={labelWidth} label={label} />
+      <Text bold {...textProps}>
+        {value}
+      </Text>
     </Box>
   )
 }
