@@ -12,6 +12,7 @@ export async function getConnectUrl(gameId: string, helpPage: boolean): Promise<
 
 interface GoogleAuthQRCodeProps {
   gameId: string
+  // Decides if we go to the page with the connect button or directly to google
   helpPage: boolean
 }
 

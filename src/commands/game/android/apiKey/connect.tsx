@@ -1,10 +1,9 @@
-import qrcode from 'qrcode-terminal'
-import open from 'open'
+import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
-import {getGoogleAuthUrl, getGoogleStatus, getShortAuthRequiredUrl} from '@cli/api/index.js'
-import {getInput} from '@cli/utils/index.js'
+import {getGoogleStatus} from '@cli/api/index.js'
+import {ConnectGoogle, CommandGame} from '@cli/components/index.js'
 
 export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typeof GameAndroidApiKeyConnect> {
   static override args = {}
@@ -15,43 +14,21 @@ export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typ
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
-    desktop: Flags.boolean({char: 'd', description: 'Open the link in the desktop browser'}),
-    mobile: Flags.boolean({char: 'm', description: 'Display a QR code for mobile authentication'}),
-    helpPage: Flags.boolean({
-      char: 'h',
-      description: 'Open the interstitial help page first rather than the Google OAuth page',
-    }),
+    ...BaseGameAndroidCommand.flags,
     force: Flags.boolean({char: 'f'}),
   }
 
   public async run(): Promise<void> {
-    const game = await this.getGame()
-    const {desktop, mobile, helpPage, force} = this.flags
-
     const googleStatus = await getGoogleStatus()
 
-    if (googleStatus.isAuthenticated && !force) {
+    if (googleStatus.isAuthenticated && !this.flags.force) {
       throw new Error('You are already authenticated with Google. Use --force to re-authenticate.')
     }
 
-    // TODO: will this change?
-    const helpPagePath = `/docs/android?gameId=${game.id}#2-connect-shipthis-with-google`
-    const url = helpPage ? await getShortAuthRequiredUrl(helpPagePath) : await getGoogleAuthUrl(game.id)
-
-    if (desktop) {
-      await open(url)
-      return
-    }
-    if (mobile) {
-      qrcode.generate(url, {small: true})
-      return
-    }
-
-    console.log('Scan the QR code below to connect ShipThis with Google (you will be asked to enter an OTP):')
-    qrcode.generate(url, {small: true})
-
-    const entered = await getInput(`Would you like to open the page in your desktop browser? (y/n): `)
-    if (entered.toLowerCase() === 'y') await open(url)
+    render(
+      <CommandGame command={this}>
+        <ConnectGoogle helpPage={!this.flags.force} onComplete={() => process.exit(0)} onError={(e) => this.error(e)} />
+      </CommandGame>,
+    )
   }
 }

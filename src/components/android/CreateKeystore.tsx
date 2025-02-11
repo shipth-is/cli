@@ -1,31 +1,36 @@
 import {Box} from 'ink'
 import axios from 'axios'
 import {useContext} from 'react'
+import {useQueryClient} from '@tanstack/react-query'
 
-import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/constants/config.js'
-
+import {cacheKeys} from '@cli/constants/cacheKeys.js'
 import {GameContext, StepProps, RunWithSpinner} from '@cli/components/index.js'
+import {getAuthedHeaders} from '@cli/api/index.js'
 
-export const CreateKeystore = (props: StepProps): JSX.Element => {
+export const CreateKeystore = ({onComplete, onError, ...boxProps}: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)
-
+  const queryClient = useQueryClient()
   const handleCreate = async () => {
-    // This is v simple
-    if (!gameId) throw new Error('No command found')
-    const headers = await getAuthedHeaders()
-    await axios.post(`${API_URL}/projects/${gameId}/credentials/android/certificate`, null, {
-      headers,
-    })
+    try {
+      if (!gameId) throw new Error('No game')
+      const headers = await getAuthedHeaders()
+      await axios.post(`${API_URL}/projects/${gameId}/credentials/android/certificate`, null, {
+        headers,
+      })
+      queryClient.invalidateQueries({queryKey: cacheKeys.projectCredentials({projectId: gameId, pageNumber: 0})})
+    } catch (err) {
+      onError(err as Error)
+    }
   }
 
   return (
-    <Box flexDirection="column" gap={1} borderStyle="single" margin={1}>
+    <Box flexDirection="column" gap={1} {...boxProps}>
       <RunWithSpinner
         executeMethod={handleCreate}
-        msgInProgress="Creating keystore..."
-        msgComplete="Keystore created!"
-        onComplete={props.onComplete}
+        msgInProgress="Creating Keystore..."
+        msgComplete="Keystore created"
+        onComplete={onComplete}
       />
     </Box>
   )

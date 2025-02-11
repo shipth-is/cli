@@ -9,14 +9,25 @@ import {StepProps} from '@cli/components/index.js'
 
 import {getConnectUrl, GoogleAuthQRCode} from './GoogleAuthQRCode.js'
 
-export const ConnectGoogle = (props: StepProps): JSX.Element => {
+interface Props extends StepProps {
+  helpPage?: boolean
+}
+// Wrapper pattern again to make sure hook has the gameId
+export const ConnectGoogle = (props: Props): JSX.Element => {
   const {gameId} = useContext(GameContext)
+  return <>{gameId && <ConnectForGame gameId={gameId} {...props} />}</>
+}
 
+interface ConnectWithGameProps extends Props {
+  gameId: string
+}
+
+const ConnectForGame = ({onComplete, onError, helpPage, gameId, ...boxProps}: ConnectWithGameProps): JSX.Element => {
   useGoogleStatusWatching({
     projectId: gameId,
     isWatching: true,
     onGoogleStatusUpdate: (status: GoogleStatusResponse) => {
-      if (status.isAuthenticated) return props.onComplete()
+      if (status.isAuthenticated) return onComplete()
     },
   })
 
@@ -28,9 +39,9 @@ export const ConnectGoogle = (props: StepProps): JSX.Element => {
   })
 
   return (
-    <Box flexDirection="column" gap={1} borderStyle="single" margin={1}>
+    <Box flexDirection="column" gap={1} {...boxProps}>
       <Text>Scan the QR code below to connect your Google account to ShipThis:</Text>
-      {gameId && <GoogleAuthQRCode gameId={gameId} helpPage={true} />}
+      {gameId && <GoogleAuthQRCode gameId={gameId} helpPage={!!helpPage} />}
       <Text>Or press D to sign-in using your browser</Text>
     </Box>
   )

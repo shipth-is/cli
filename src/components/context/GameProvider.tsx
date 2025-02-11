@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
 
 import {Project} from '@cli/types/api.js'
-import {CommandContext} from './CommandProvider.js'
 import {getProject} from '@cli/api/index.js'
+
+import {CommandContext} from './CommandProvider.js'
 
 export type GameContextType = {
   gameId: string | null
