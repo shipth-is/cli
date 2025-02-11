@@ -24,12 +24,6 @@ export const Steps = [
 
 export type Step = (typeof Steps)[number]
 
-// The UI components for each step have these props
-export interface StepProps {
-  onComplete: () => void
-  onError: (error: Error) => void
-}
-
 // We apply what is running / failed over this
 export const getStepInitialStatus = (
   step: Step,
