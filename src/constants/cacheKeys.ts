@@ -7,11 +7,12 @@ import {StatusQueryProps} from '@cli/utils/query/useAndroidServiceAccountSetupSt
 import {TestQueryProps} from '@cli/utils/query/useAndroidServiceAccountTestResult.js'
 
 export const cacheKeys = {
+  androidKeyTestResult: (props: TestQueryProps) => ['androidKeyTestResult', ...Object.values(props)],
+  androidSetupStatus: (props: StatusQueryProps) => ['androidSetupStatus', ...Object.values(props)],
+  builds: (props: BuildsQueryProps) => ['builds', ...Object.values(props)],
+  googleStatus: () => ['googleStatus'],
   job: (props: JobQueryProps) => ['job', ...Object.values(props)],
   jobLogs: (props: JobLogsQueryProps) => ['jobLogs', ...Object.values(props)],
-  userCredentials: (props: PageAndSortParams) => ['userCredentials', ...Object.values(props)],
   projectCredentials: (props: FetchProps) => ['projectCredentials', ...Object.values(props)],
-  builds: (props: BuildsQueryProps) => ['builds', ...Object.values(props)],
-  androidSetupStatus: (props: StatusQueryProps) => ['androidSetupStatus', ...Object.values(props)],
-  androidKeyTestResult: (props: TestQueryProps) => ['androidKeyTestResult', ...Object.values(props)],
+  userCredentials: (props: PageAndSortParams) => ['userCredentials', ...Object.values(props)],
 }

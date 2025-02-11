@@ -209,7 +209,8 @@ export interface AndroidServiceAccountSetupStatus {
 
 export interface GoogleStatusResponse {
   isAuthenticated: boolean
-  isOrg: boolean
+  projectId?: string
+  isOrg?: boolean
   orgName?: string
   orgCreatedAt?: string
 }
