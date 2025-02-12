@@ -20,7 +20,7 @@ export default class GameAndroidWizard extends BaseAuthenticatedCommand<typeof G
   public async run(): Promise<void> {
     render(
       <Command command={this}>
-        <AndroidWizard />
+        <AndroidWizard onComplete={() => process.exit(0)} onError={(e) => this.error(e)} />
       </Command>,
     )
   }

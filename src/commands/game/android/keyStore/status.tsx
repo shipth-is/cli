@@ -16,14 +16,14 @@ export default class GameAndroidKeyStoreStatus extends BaseGameCommand<typeof Ga
   ]
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
+    ...BaseGameCommand.flags,
   }
 
   public async run(): Promise<void> {
     const game = await this.getGame()
 
     render(
-      <Command>
+      <Command command={this}>
         <ProjectCredentialsTable
           credentialTypeName="Android Keystore"
           queryProps={{

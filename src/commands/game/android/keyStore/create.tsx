@@ -1,12 +1,10 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
-import axios from 'axios'
 
-import {Command, RunWithSpinner} from '@cli/components/index.js'
+import {CommandGame, CreateKeystore} from '@cli/components/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
-import {getAuthedHeaders, getProjectCredentials} from '@cli/api/index.js'
+import {getProjectCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
-import {API_URL} from '@cli/constants/index.js'
 
 export default class GameAndroidKeyStoreCreate extends BaseGameAndroidCommand<typeof GameAndroidKeyStoreCreate> {
   static override args = {}
@@ -19,8 +17,7 @@ export default class GameAndroidKeyStoreCreate extends BaseGameAndroidCommand<ty
   ]
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
-    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
+    ...BaseGameAndroidCommand.flags,
     force: Flags.boolean({char: 'f'}),
   }
 
@@ -36,29 +33,10 @@ export default class GameAndroidKeyStoreCreate extends BaseGameAndroidCommand<ty
       this.error('A Keystore is already set on this game. Use --force to overwrite it.')
     }
 
-    const createKeystore = async () => {
-      // This is v simple
-      const headers = await getAuthedHeaders()
-      await axios.post(`${API_URL}/projects/${game.id}/credentials/android/certificate`, null, {
-        headers,
-      })
-    }
-
-    const handleComplete = async () => {
-      return
-    }
-
-    if (this.flags.quiet) return await createKeystore()
-
     render(
-      <Command command={this}>
-        <RunWithSpinner
-          msgInProgress="Creating a new Android Keystore..."
-          msgComplete="Android Keystore created"
-          executeMethod={createKeystore}
-          onComplete={handleComplete}
-        />
-      </Command>,
+      <CommandGame command={this}>
+        <CreateKeystore onComplete={() => process.exit(0)} onError={(e) => this.error(e)} />
+      </CommandGame>,
     )
   }
 }

@@ -23,12 +23,13 @@ const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   inviteServiceAccount: () => <Text>TODO</Text>,
 }
 
-export const AndroidWizard = () => {
+export const AndroidWizard = (props: StepProps) => {
   const {command} = React.useContext(CommandContext)
 
   const [currentStep, setCurrentStep] = useState<Step | null>(null)
   const [stepStatuses, setStepStatuses] = useState<null | StepStatus[]>(null)
 
+  // Returns true if all steps are complete
   const determineStep = async () => {
     if (!command) return
     const statusFlags = await getStatusFlags(command)
@@ -43,18 +44,18 @@ export const AndroidWizard = () => {
     })
     setCurrentStep(pendingStep)
     setStepStatuses(withPending)
+    return firstPending === -1
   }
 
   useEffect(() => {
-    determineStep()
+    determineStep().then((isAllDone) => {
+      if (isAllDone) props.onComplete()
+    })
   }, [command])
 
-  const handleStepComplete = () => {
-    determineStep()
-  }
-
-  const handleStepError = (error: Error) => {
-    // TODO
+  const handleStepComplete = async () => {
+    const isAllDone = await determineStep()
+    if (isAllDone) props.onComplete()
   }
 
   const StepInterface = currentStep ? stepComponentMap[currentStep] : null
@@ -70,7 +71,7 @@ export const AndroidWizard = () => {
       {StepInterface && (
         <StepInterface
           onComplete={handleStepComplete}
-          onError={handleStepError}
+          onError={props.onError}
           margin={1}
           borderStyle="single"
           padding={1}

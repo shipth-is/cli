@@ -213,6 +213,13 @@ export async function getGoogleAuthUrl(projectId: string): Promise<string> {
   return await getShortAuthRequiredUrl(response.url)
 }
 
+// Deletes the current user's Google connection token
+export async function disconnectGoogle(): Promise<void> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  await axios.delete(`${API_URL}/me/google/connect`, opt)
+}
+
 export async function getGoogleStatus(): Promise<GoogleStatusResponse> {
   const headers = getAuthedHeaders()
   const opt = {headers}
