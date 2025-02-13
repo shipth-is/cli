@@ -127,6 +127,7 @@ export interface JobLogEntry {
   details: object
   sentAt: DateTime
   createdAt: DateTime
+  progress?: number // When we receive via the WebSocket
 }
 
 export interface CursorPaginatedResponse<T> {

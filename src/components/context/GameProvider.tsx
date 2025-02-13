@@ -9,14 +9,12 @@ export type GameContextType = {
   gameId: string | null
   game: Project | null
   setGameId: (gameId: string) => void
-  setGame: (game: Project) => void
 }
 
 export const GameContext = React.createContext<GameContextType>({
   gameId: null,
   game: null,
   setGameId: (gameId: string) => {},
-  setGame: (game: Project) => {},
 })
 
 interface Props {
@@ -31,8 +29,9 @@ export const GameProvider = ({children}: Props) => {
 
   const handleLoad = async () => {
     if (command) {
-      const gameId = await command.getGameId()
-      setGameId(gameId)
+      // Gives the id from the project config file or the --gameId flag
+      const commandGameId = await command.getGameId()
+      if (commandGameId) setGameId(commandGameId)
     }
   }
 
@@ -53,5 +52,5 @@ export const GameProvider = ({children}: Props) => {
     handleLoad()
   }, [command])
 
-  return <GameContext.Provider value={{gameId, game, setGameId, setGame}}>{children}</GameContext.Provider>
+  return <GameContext.Provider value={{gameId, game, setGameId}}>{children}</GameContext.Provider>
 }

@@ -196,12 +196,11 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return values
   }
 
-  public async getGameId(): Promise<string> {
+  public async getGameId(): Promise<string | null> {
     const {flags} = this
     if (flags.gameId) return flags.gameId
-    this.ensureWeAreInAProjectDir()
-    const {project} = await this.getProjectConfig()
-    if (!project) throw new Error('No project')
+    const {project} = await this.getProjectConfigSafe()
+    if (!project) return null
     return project.id
   }
 }

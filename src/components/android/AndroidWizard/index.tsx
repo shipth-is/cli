@@ -9,6 +9,7 @@ import {CreateGame} from '@cli/components/android/CreateGame/index.js'
 import {CreateKeystore} from '@cli/components/android/CreateKeystore.js'
 import {ConnectGoogle} from '@cli/components/android/ConnectGoogle/index.js'
 import {CreateServiceAccountKey} from '@cli/components/android/CreateServiceAccountKey/index.js'
+import {CreateInitialBuild} from '@cli/components/android/CreateInitialBuild/index.js'
 
 import {StepStatusTable} from './StepStatusTable.js'
 import {getStatusFlags, getStepInitialStatus, Step, Steps, StepStatus} from './utils.js'
@@ -18,7 +19,7 @@ const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   createKeystore: CreateKeystore,
   connectGoogle: ConnectGoogle,
   createServiceAccount: CreateServiceAccountKey,
-  createInitialBuild: () => <Text>TODO</Text>,
+  createInitialBuild: CreateInitialBuild,
   createGooglePlayGame: () => <Text>TODO</Text>,
   inviteServiceAccount: () => <Text>TODO</Text>,
 }
