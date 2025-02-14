@@ -1,6 +1,7 @@
 export * from './AndroidWizard/index.js'
 export * from './ConnectGoogle/index.js'
 export * from './CreateGame/index.js'
+export * from './CreateGooglePlayGame.js'
 export * from './CreateInitialBuild/index.js'
 export * from './CreateKeystore.js'
 export * from './CreateServiceAccountKey/index.js'
