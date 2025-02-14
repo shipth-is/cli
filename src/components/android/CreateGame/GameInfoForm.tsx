@@ -1,19 +1,9 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import {Box, Text} from 'ink'
-import {Alert, TextInput, TextInputProps} from '@inkjs/ui'
+import {Alert} from '@inkjs/ui'
 
 import {EditableProject} from '@cli/types/api.js'
-
-interface TextInputWithLabelProps extends TextInputProps {
-  label: string
-}
-
-const TextInputWithLabel = ({label, ...rest}: TextInputWithLabelProps) => (
-  <Box flexDirection="row" gap={1}>
-    <Text>{label}</Text>
-    <TextInput {...rest} />
-  </Box>
-)
+import {FormTextInput} from '@cli/components/index.js'
 
 interface Props {
   gameInfo: EditableProject
@@ -22,8 +12,9 @@ interface Props {
 
 export const GameInfoForm = ({gameInfo, onSubmit}: Props): JSX.Element => {
   const [activeInput, setActiveInput] = useState('name')
-  const [name, setName] = useState(gameInfo.name)
   const [error, setError] = useState<string | null>(null)
+
+  const [name, setName] = useState(gameInfo.name)
   const [androidPackageName, setAndroidPackageName] = useState(gameInfo?.details?.androidPackageName)
 
   // Go to next input when name is submitted
@@ -60,7 +51,7 @@ export const GameInfoForm = ({gameInfo, onSubmit}: Props): JSX.Element => {
       <Text bold>Please confirm the following information about your game</Text>
       {error && <Alert variant="error">{error}</Alert>}
       <Box flexDirection="column" marginLeft={1}>
-        <TextInputWithLabel
+        <FormTextInput
           label="Game name:"
           isDisabled={activeInput !== 'name'}
           defaultValue={name}
@@ -69,7 +60,7 @@ export const GameInfoForm = ({gameInfo, onSubmit}: Props): JSX.Element => {
           onSubmit={handleSubmitName}
         />
 
-        <TextInputWithLabel
+        <FormTextInput
           label="Android package name :"
           isDisabled={activeInput !== 'androidPackageName'}
           defaultValue={androidPackageName}

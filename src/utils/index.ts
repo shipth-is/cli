@@ -11,6 +11,7 @@ export * from './dates.js'
 export * from './dictionary.js'
 export * from './git.js'
 export * from './godot.js'
+export * from './help.js'
 
 /**
  * Works the same way that git short commits are generated.

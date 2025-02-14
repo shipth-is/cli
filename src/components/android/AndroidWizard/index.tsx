@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Box, Text} from 'ink'
+import {Box} from 'ink'
 
 import {StepProps, Title} from '@cli/components/index.js'
 import {CommandContext, GameProvider} from '@cli/components/context/index.js'
@@ -11,6 +11,7 @@ import {ConnectGoogle} from '@cli/components/android/ConnectGoogle/index.js'
 import {CreateServiceAccountKey} from '@cli/components/android/CreateServiceAccountKey/index.js'
 import {CreateInitialBuild} from '@cli/components/android/CreateInitialBuild/index.js'
 import {CreateGooglePlayGame} from '@cli/components/android/CreateGooglePlayGame.js'
+import {InviteServiceAccount} from '@cli/components/android/InviteServiceAccount/index.js'
 
 import {StepStatusTable} from './StepStatusTable.js'
 import {getStatusFlags, getStepInitialStatus, Step, Steps, StepStatus} from './utils.js'
@@ -22,7 +23,7 @@ const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   createServiceAccount: CreateServiceAccountKey,
   createInitialBuild: CreateInitialBuild,
   createGooglePlayGame: CreateGooglePlayGame,
-  inviteServiceAccount: () => <Text>TODO</Text>,
+  inviteServiceAccount: InviteServiceAccount,
 }
 
 export const AndroidWizard = (props: StepProps) => {
