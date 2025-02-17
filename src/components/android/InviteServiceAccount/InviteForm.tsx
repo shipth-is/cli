@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {Box, Text} from 'ink'
+import {Box} from 'ink'
 import {Alert} from '@inkjs/ui'
 
 import {FormTextInput} from '@cli/components/index.js'
@@ -18,7 +18,7 @@ export const InviteForm = ({onSubmit}: Props): JSX.Element => {
     // numeric only, between 10 and 20 digits
     const idRegEx = /^\d{10,20}$/
     if (!idRegEx.test(`${accountId}`)) {
-      setError('Please enter a valid developer ID')
+      setError('Please enter a valid Google Play Account ID (10-20 digits)')
       return
     }
     return onSubmit(accountId)
@@ -26,16 +26,16 @@ export const InviteForm = ({onSubmit}: Props): JSX.Element => {
 
   return (
     <>
-      <Text bold>Please enter your Google Play Account ID</Text>
-      {error && <Alert variant="error">{error}</Alert>}
       <Box flexDirection="column" marginLeft={1}>
         <FormTextInput
-          label="Google Play Account ID:"
+          label="Please enter your Google Play Account ID:"
+          labelProps={{bold: true}}
           defaultValue={accountId}
           placeholder="e.g. 8110853839480950872"
           onChange={setAccountId}
           onSubmit={handleSubmitAccountId}
         />
+        {error && <Alert variant="error">{error}</Alert>}
       </Box>
     </>
   )

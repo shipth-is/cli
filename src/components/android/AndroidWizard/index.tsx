@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import {Box} from 'ink'
 
-import {StepProps, Title} from '@cli/components/index.js'
+import {Markdown, StepProps, Title} from '@cli/components/index.js'
 import {CommandContext, GameProvider} from '@cli/components/context/index.js'
+import {scriptDir} from '@cli/utils/index.js'
+import {WEB_URL} from '@cli/constants/config.js'
 
 // Avoid circular imports here - import the components directly
 import {CreateGame} from '@cli/components/android/CreateGame/index.js'
@@ -26,11 +28,16 @@ const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   inviteServiceAccount: InviteServiceAccount,
 }
 
+const __dirname = scriptDir(import.meta)
+const ON_COMPLETE_DELAY_MS = 1000
+
 export const AndroidWizard = (props: StepProps) => {
   const {command} = React.useContext(CommandContext)
 
   const [currentStep, setCurrentStep] = useState<Step | null>(null)
   const [stepStatuses, setStepStatuses] = useState<null | StepStatus[]>(null)
+
+  const [showSuccess, setShowSuccess] = useState(false)
 
   // Returns true if all steps are complete
   const determineStep = async () => {
@@ -47,21 +54,23 @@ export const AndroidWizard = (props: StepProps) => {
     })
     setCurrentStep(pendingStep)
     setStepStatuses(withPending)
-    return firstPending === -1
+    const isAllDone = firstPending === -1
+    setShowSuccess(isAllDone)
+    if (isAllDone) setTimeout(props.onComplete, ON_COMPLETE_DELAY_MS)
   }
 
   useEffect(() => {
-    determineStep().then((isAllDone) => {
-      if (isAllDone) props.onComplete()
-    })
+    determineStep().catch(props.onError)
   }, [command])
 
-  const handleStepComplete = async () => {
-    const isAllDone = await determineStep()
-    if (isAllDone) props.onComplete()
-  }
+  const handleStepComplete = () => determineStep().catch(props.onError)
 
   const StepInterface = currentStep ? stepComponentMap[currentStep] : null
+
+  const templateVars = {
+    iosSetupURL: new URL('/docs/ios', WEB_URL).toString(),
+    docsURL: new URL('/docs', WEB_URL).toString(),
+  }
 
   return (
     <GameProvider>
@@ -79,6 +88,11 @@ export const AndroidWizard = (props: StepProps) => {
           borderStyle="single"
           padding={1}
         />
+      )}
+      {showSuccess && (
+        <Box marginTop={1}>
+          <Markdown path={`${__dirname}/success.md`} templateVars={templateVars} />
+        </Box>
       )}
     </GameProvider>
   )
