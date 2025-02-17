@@ -29,7 +29,7 @@ const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
 }
 
 const __dirname = scriptDir(import.meta)
-const ON_COMPLETE_DELAY_MS = 1000
+const ON_COMPLETE_DELAY_MS = 500
 
 export const AndroidWizard = (props: StepProps) => {
   const {command} = React.useContext(CommandContext)

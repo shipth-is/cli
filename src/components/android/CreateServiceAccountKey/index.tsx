@@ -1,8 +1,8 @@
 import {Box, Text} from 'ink'
-import {useContext, useEffect} from 'react'
+import {useContext, useEffect, useState} from 'react'
 import Spinner from 'ink-spinner'
 
-import {GameContext, StepProps} from '@cli/components/index.js'
+import {GameContext, ProgressSpinner, StepProps} from '@cli/components/index.js'
 import {useAndroidServiceAccount} from '@cli/utils/index.js'
 
 import {SetupStatusTable} from './SetupStatusTable.js'
@@ -18,6 +18,8 @@ interface CreateForGameProps extends StepProps {
 }
 
 const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGameProps) => {
+  const [didStart, setDidStart] = useState(false)
+
   const {handleStart, setupStatus, isCreating} = useAndroidServiceAccount({
     projectId: gameId,
     onError,
@@ -25,7 +27,7 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
   })
 
   useEffect(() => {
-    handleStart()
+    handleStart().then(() => setDidStart(true))
   }, [gameId])
 
   return (
@@ -35,7 +37,8 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
           <Text>Creating a Service Account and API Key...</Text>
           {isCreating && <Spinner type="dots" />}
         </Box>
-        {setupStatus && <SetupStatusTable setupStatus={setupStatus} />}
+        {/* {setupStatus && <SetupStatusTable setupStatus={setupStatus} />} */}
+        {didStart && <ProgressSpinner label="" progress={(setupStatus?.progress || 0) * 100} spinnerType="dots" />}
       </Box>
     </>
   )

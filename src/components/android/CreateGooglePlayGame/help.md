@@ -17,4 +17,4 @@ To download the AAB file from the previous step, please run:
 ${downloadCmd}
 ```
 
-Alternatively, you can download the build from your **ShipThis Dashboard** [${dashboardURL}](${dashboardURL})
+The build is also available for download from your **ShipThis Dashboard** [${dashboardURL}](${dashboardURL})
