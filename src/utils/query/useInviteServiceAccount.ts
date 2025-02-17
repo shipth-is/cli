@@ -34,6 +34,9 @@ export const useInviteServiceAccount = () => {
       }
     },
     onSuccess: async (data: MutateResponse) => {
+      // TODO: found a race condition perhaps
+      const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+      await sleep(1000)
       queryClient.invalidateQueries({
         queryKey: cacheKeys.androidKeyTestResult({projectId: data.projectId}),
       })

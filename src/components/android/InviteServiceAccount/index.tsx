@@ -1,29 +1,22 @@
-import {useContext, useState} from 'react'
+import {useContext} from 'react'
 import {Box} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {useInviteServiceAccount} from '@cli/utils/index.js'
-import {GameContext} from '@cli/components/context/GameProvider.js'
-import {StepProps} from '@cli/components/index.js'
+import {scriptDir, useInviteServiceAccount} from '@cli/utils/index.js'
+import {GameContext, Markdown, StepProps} from '@cli/components/index.js'
+import {WEB_URL} from '@cli/constants/config.js'
 
 import {InviteForm} from './InviteForm.js'
 
-export const InviteServiceAccount = (props: StepProps): JSX.Element => {
+const __dirname = scriptDir(import.meta)
+
+export const InviteServiceAccount = ({onComplete, onError, ...boxProps}: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)
-  return <>{gameId && <Invite gameId={gameId} {...props} />}</>
-}
-
-interface Props extends StepProps {
-  gameId: string
-}
-
-const Invite = ({onComplete, onError, gameId, ...boxProps}: Props) => {
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const inviteMutation = useInviteServiceAccount()
 
   const handleSubmit = async (developerId: string) => {
     try {
-      setIsSubmitting(true)
+      if (!gameId) return
       await inviteMutation.mutateAsync({projectId: gameId, developerId})
       onComplete()
     } catch (error: any) {
@@ -31,11 +24,18 @@ const Invite = ({onComplete, onError, gameId, ...boxProps}: Props) => {
     }
   }
 
+  const templateVars = {
+    guideURL: new URL('/docs/guides/google-play-account-id', WEB_URL).toString(),
+  }
+
   return (
     <>
       <Box flexDirection="column" gap={1} {...boxProps}>
-        {isSubmitting && <Spinner type="dots" />}
-        {!isSubmitting && <InviteForm onSubmit={handleSubmit} />}
+        <Markdown path={`${__dirname}/help.md`} templateVars={templateVars} />
+        <Box>
+          {inviteMutation.isPending && <Spinner type="dots" />}
+          {!inviteMutation.isPending && <InviteForm onSubmit={handleSubmit} />}
+        </Box>
       </Box>
     </>
   )

@@ -43,7 +43,7 @@ export function getBuildSummary(build: Build): ScalarDict {
     platform: getPlatformName(build.platform),
     jobId: getShortUUID(build.jobId),
     createdAt: getShortDateTime(build.createdAt),
-    cmd: `$ shipthis game build download ${getShortUUID(build.id)} ${filename}`,
+    cmd: `shipthis game build download ${getShortUUID(build.id)} ${filename}`,
   }
 }
 

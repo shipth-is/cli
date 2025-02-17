@@ -10,7 +10,7 @@ import {CreateKeystore} from '@cli/components/android/CreateKeystore.js'
 import {ConnectGoogle} from '@cli/components/android/ConnectGoogle/index.js'
 import {CreateServiceAccountKey} from '@cli/components/android/CreateServiceAccountKey/index.js'
 import {CreateInitialBuild} from '@cli/components/android/CreateInitialBuild/index.js'
-import {CreateGooglePlayGame} from '@cli/components/android/CreateGooglePlayGame.js'
+import {CreateGooglePlayGame} from '@cli/components/android/CreateGooglePlayGame/index.js'
 import {InviteServiceAccount} from '@cli/components/android/InviteServiceAccount/index.js'
 
 import {StepStatusTable} from './StepStatusTable.js'
