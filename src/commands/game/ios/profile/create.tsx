@@ -2,7 +2,7 @@ import {render} from 'ink'
 import {Flags} from '@oclif/core'
 import axios from 'axios'
 
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 
 import {
@@ -121,14 +121,14 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
     if (this.flags.quiet) return await createProfile()
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress="Creating Mobile Provisioning Profile in the Apple Developer Portal"
           msgComplete="Mobile Provisioning Profile created"
           executeMethod={createProfile}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

@@ -7,6 +7,7 @@ import {Auth} from '@cli/apple/expo.js'
 import {AuthConfig, ProjectConfig} from '@cli/types'
 import {setAuthToken} from '@cli/api/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
+import {DetailsFlags} from './index.js'
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<(typeof BaseCommand)['baseFlags'] & T['flags']>
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
@@ -49,6 +50,11 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   protected async finally(_: Error | undefined): Promise<any> {
     // called after run and catch regardless of whether or not the command errored
     return super.finally(_)
+  }
+
+  // Exposing it to the react components using the CommandContext
+  public getFlags(): Flags<T> {
+    return this.flags
   }
 
   private getAuthConfigPath(): string {
@@ -177,5 +183,24 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
         exit: 1,
       })
     }
+  }
+
+  // Returns the values of the flags in DetailsFlags
+  // This is used to expose the flags to the Android Wizard
+  public getDetailsFlagsValues(): Record<string, string> {
+    const keys = Object.keys(DetailsFlags)
+    const values = {} as Record<string, string>
+    for (const key of keys) {
+      if (this.flags[key]) values[key] = this.flags[key]
+    }
+    return values
+  }
+
+  public async getGameId(): Promise<string | null> {
+    const {flags} = this
+    if (flags.gameId) return flags.gameId
+    const {project} = await this.getProjectConfigSafe()
+    if (!project) return null
+    return project.id
   }
 }

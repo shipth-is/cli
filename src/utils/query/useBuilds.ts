@@ -36,14 +36,14 @@ export async function queryBuilds({projectId, ...pageAndSortParams}: BuildsQuery
 
 // How we typically display a project build
 export function getBuildSummary(build: Build): ScalarDict {
-  const filename = build.platform == Platform.IOS ? 'output.ipa' : 'output.apk'
+  const filename = build.platform == Platform.IOS ? 'output.ipa' : 'output.aab' // TODO
   return {
     id: getShortUUID(build.id),
     ...getJobDetailsSummary(build.jobDetails),
     platform: getPlatformName(build.platform),
     jobId: getShortUUID(build.jobId),
     createdAt: getShortDateTime(build.createdAt),
-    cmd: `$ shipthis game build download ${getShortUUID(build.id)} ${filename}`,
+    cmd: `shipthis game build download ${getShortUUID(build.id)} ${filename}`,
   }
 }
 

@@ -3,7 +3,7 @@ import {render} from 'ink'
 
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {getUserCredentials, uploadUserCredentials, UserCertificate_iOS} from '@cli/api/credentials/index.js'
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {createCertificate, exportCertificate} from '@cli/apple/certificate.js'
 
@@ -58,14 +58,14 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
     if (this.flags.quiet) return await createCert()
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Creating certificate in the Apple Developer Portal...`}
           msgComplete={`Certificate created and saved to ShipThis`}
           executeMethod={createCert}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

@@ -50,7 +50,7 @@ export function getProjectCredentialSummary(credential: ProjectCredential): Scal
   return {
     id: getShortUUID(credential.id),
     type: credential.type,
-    serial: credential.serialNumber,
+    serial: credential.serialNumber.substring(0, 30) + (credential.serialNumber.length > 30 ? '…' : ''),
     isActive: credential.isActive,
     createdAt: getShortDate(credential.createdAt),
   }

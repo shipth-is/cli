@@ -1,0 +1,23 @@
+import React, {useState} from 'react'
+
+import {BaseCommand} from '@cli/baseCommands/index.js'
+
+export type CommandContextType = {
+  command: BaseCommand<any> | null
+  setCommand: (command: BaseCommand<any>) => void
+}
+
+export const CommandContext = React.createContext<CommandContextType>({
+  command: null,
+  setCommand: (command: BaseCommand<any>) => {},
+})
+
+interface Props {
+  command?: BaseCommand<any>
+  children: React.ReactNode
+}
+
+export const CommandProvider = (props: Props) => {
+  const [command, setCommand] = useState<BaseCommand<any> | null>(props.command || null)
+  return <CommandContext.Provider value={{command, setCommand}}>{props.children}</CommandContext.Provider>
+}

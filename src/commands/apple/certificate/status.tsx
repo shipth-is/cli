@@ -2,7 +2,7 @@ import {Flags} from '@oclif/core'
 import {render} from 'ink'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {App, AppleCertificatesTable, UserCredentialsTable} from '@cli/components/index.js'
+import {Command, AppleCertificatesTable, UserCredentialsTable} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class AppleCertificateStatus extends BaseAuthenticatedCommand<typeof AppleCertificateStatus> {
@@ -33,14 +33,14 @@ export default class AppleCertificateStatus extends BaseAuthenticatedCommand<typ
     }
 
     render(
-      <App>
+      <Command command={this}>
         <UserCredentialsTable
           credentialTypeName="Apple iOS Distribution Certificate"
           queryProps={{type: CredentialsType.CERTIFICATE, platform: Platform.IOS}}
         />
 
         {showApple && <AppleCertificatesTable ctx={ctx} />}
-      </App>,
+      </Command>,
     )
   }
 }

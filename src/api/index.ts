@@ -1,9 +1,13 @@
 import axios from 'axios'
+import CryptoJS from 'crypto-js'
+import {v4 as uuid} from 'uuid'
 
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
   Build,
   EditableProject,
+  GoogleAuthResponse,
+  GoogleStatusResponse,
   Job,
   PageAndSortParams,
   Platform,
@@ -132,12 +136,44 @@ export async function getSingleUseUrl(destination: string) {
   const {data} = await axios.post(`${API_URL}/me/otp`, {}, {headers})
   // Convert data (otp and userId) and the destination into a query string
   const queryString = Object.entries({...data, destination})
-    .map(([key, value]) => `${key}=${value}`)
+    .map(([key, value]) => `${key}=${encodeURIComponent(`${value}`)}`)
     .join('&')
   // Build the url
   const url = `${WEB_URL}exchange/?${queryString}`
-  // Caller can use the open() function to launch the browser
   return url
+}
+
+// Builds a URL that emails the user the login-OTP when visited and shows the form.
+// Auth is checked and they are redirected.
+export async function getShortAuthRequiredUrl(destination: string) {
+  // We encrypt their email address in the URL to obfuscate it
+  // The frontend will decrypt the email and use it to send the OTP
+  const {email} = await getSelf()
+  // We include a random key
+  const key = uuid()
+  // With a little salt
+  const salt = 'Na (s) + 1/2 Cl₂ (g) → NaCl (s)'
+  const fullKey = `${key}${salt}`
+  const token = CryptoJS.AES.encrypt(email, fullKey).toString()
+  const params = {
+    key,
+    token,
+    destination,
+  }
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(`${value}`)}`)
+    .join('&')
+  const url = `${WEB_URL}login/?${queryString}`
+  const headers = await getAuthedHeaders()
+  // Shorten the url so that the QR code is smaller
+  const {data} = await axios.post(
+    `${API_URL}/me/shorten`,
+    {
+      url,
+    },
+    {headers},
+  )
+  return data.url
 }
 
 // Returns a single build - used in the game:build:download command
@@ -162,4 +198,48 @@ export async function acceptTerms(): Promise<Self> {
   const opt = {headers}
   const {data} = await axios.post(`${API_URL}/me/acceptTerms`, {}, opt)
   return castObjectDates<Self>(data)
+}
+
+// Makes a url for the OAuth-flow which starts at the Google hosted auth page
+export async function getGoogleAuthUrl(projectId: string): Promise<string> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  // We redirect to a fixed place (not passing id here - cant add a value)
+  const web = encodeURIComponent(new URL('/google/redirect/', WEB_URL).href)
+  const url = `${API_URL}/projects/${projectId}/credentials/android/key/connect`
+  const {data} = await axios.get(`${url}?redirectUri=${web}`, opt)
+  const response = data as GoogleAuthResponse
+  // We want them to be logged in
+  return await getShortAuthRequiredUrl(response.url)
+}
+
+// Deletes the current user's Google connection token
+export async function disconnectGoogle(): Promise<void> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  await axios.delete(`${API_URL}/me/google/connect`, opt)
+}
+
+export async function getGoogleStatus(): Promise<GoogleStatusResponse> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.get(`${API_URL}/me/google/status`, opt)
+  return data as GoogleStatusResponse
+}
+
+export async function inviteServiceAccount(projectId: string, developerId: string) {
+  try {
+    const headers = getAuthedHeaders()
+    const {data} = await axios.post(
+      `${API_URL}/projects/${projectId}/credentials/android/key/invite/`,
+      {developerId},
+      {
+        headers,
+      },
+    )
+    return data
+  } catch (error) {
+    console.error('inviteServiceAccount Error', error)
+    throw error
+  }
 }

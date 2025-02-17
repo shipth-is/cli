@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, AppleAppDetails, AppleBundleIdDetails, NextSteps, StatusTable} from '@cli/components/index.js'
+import {Command, AppleAppDetails, AppleBundleIdDetails, NextSteps, StatusTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectPlatformProgress} from '@cli/api/index.js'
 import {Platform, ProjectPlatformProgress} from '@cli/types'
@@ -48,7 +48,7 @@ export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus>
     const ctx = authState.context
 
     render(
-      <App>
+      <Command command={this}>
         <StatusTable marginBottom={1} title="ShipThis game status" statuses={gameStatuses} />
 
         <StatusTable
@@ -61,7 +61,7 @@ export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus>
         <AppleBundleIdDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
 
         <NextSteps steps={steps} />
-      </App>,
+      </Command>,
     )
   }
 }

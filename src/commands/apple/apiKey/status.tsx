@@ -2,7 +2,7 @@ import {Flags} from '@oclif/core'
 import {render} from 'ink'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {App, AppleApiKeysTable, UserCredentialsTable} from '@cli/components/index.js'
+import {Command, AppleApiKeysTable, UserCredentialsTable} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class AppleApiKeyStatus extends BaseAuthenticatedCommand<typeof AppleApiKeyStatus> {
@@ -33,14 +33,14 @@ export default class AppleApiKeyStatus extends BaseAuthenticatedCommand<typeof A
     }
 
     render(
-      <App>
+      <Command command={this}>
         <UserCredentialsTable
           credentialTypeName="App Store Connect API Key"
           queryProps={{type: CredentialsType.KEY, platform: Platform.IOS}}
         />
 
         {showApple && <AppleApiKeysTable ctx={ctx} />}
-      </App>,
+      </Command>,
     )
   }
 }

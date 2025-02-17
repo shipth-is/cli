@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {fetchBundleId} from '@cli/utils/index.js'
 
@@ -62,14 +62,14 @@ export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSyn
     if (this.flags.quiet) return await syncCapabilities()
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress="Syncing App Store BundleId capabilities"
           msgComplete="App Store BundleId capabilities synced"
           executeMethod={syncCapabilities}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

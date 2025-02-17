@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, AppleProfilesTable, ProjectCredentialsTable} from '@cli/components/index.js'
+import {Command, AppleProfilesTable, ProjectCredentialsTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
@@ -30,14 +30,14 @@ export default class GameIosProfileStatus extends BaseGameCommand<typeof GameIos
     }
 
     render(
-      <App>
+      <Command command={this}>
         <ProjectCredentialsTable
           credentialTypeName="Mobile Provisioning Profile"
           queryProps={{platform: Platform.IOS, type: CredentialsType.CERTIFICATE, projectId: game.id}}
         />
 
         {showApple && <AppleProfilesTable ctx={ctx} project={game} />}
-      </App>,
+      </Command>,
     )
   }
 }

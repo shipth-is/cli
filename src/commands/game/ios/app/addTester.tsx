@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {BetaGroup} from '@cli/apple/expo.js'
 import {getInput, queryAppleApp} from '@cli/utils/index.js'
@@ -28,7 +28,6 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     const ctx = authState.context
 
     const {flags} = this
-
 
     const getEmail = async (): Promise<string> => {
       if (flags.email) return flags.email
@@ -97,14 +96,14 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     const handleComplete = async () => {}
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress="Adding test user..."
           msgComplete="Added test user"
           executeMethod={addTestUser}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

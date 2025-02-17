@@ -2,7 +2,7 @@ import {Args, Flags} from '@oclif/core'
 import {render} from 'ink'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {App, JobLogTail, JobStatusTable, NextSteps} from '@cli/components/index.js'
+import {Command, JobLogTail, JobStatusTable, NextSteps} from '@cli/components/index.js'
 import {Job, JobStatus} from '@cli/types'
 import {getJob} from '@cli/api/index.js'
 
@@ -53,11 +53,11 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
     }
 
     render(
-      <App>
+      <Command command={this}>
         <JobStatusTable jobId={job.id} projectId={job.project.id} isWatching={follow} onJobUpdate={handleJobUpdate} />
         <JobLogTail jobId={job.id} projectId={job.project.id} isWatching={follow} length={lines} />
         <NextSteps steps={[]} />
-      </App>,
+      </Command>,
     )
   }
 }

@@ -1,8 +1,8 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, StatusTable} from '@cli/components/index.js'
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Command, StatusTable} from '@cli/components/index.js'
+import {BaseGameCommand, DetailsFlags} from '@cli/baseCommands/index.js'
 import {isValidSemVer} from '@cli/utils/index.js'
 import {GameEngine} from '@cli/types'
 
@@ -21,18 +21,14 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   static override flags = {
     ...BaseGameCommand.flags,
     force: Flags.boolean({char: 'f', description: 'Force the command to run'}),
-    buildNumber: Flags.integer({char: 'b', description: 'Set the build number'}),
-    semanticVersion: Flags.string({char: 's', description: 'Set the semantic version'}),
-    gameEngine: Flags.string({char: 'e', description: 'Set the game engine'}),
-    gameEngineVersion: Flags.string({char: 'v', description: 'Set the game engine version'}),
-    iosBundleId: Flags.string({char: 'i', description: 'Set the iOS bundle ID'}),
-    androidPackageName: Flags.string({char: 'a', description: 'Set the Android package name'}),
+    ...DetailsFlags,
   }
 
   public async run(): Promise<void> {
     const {gameId, force, ...valueFlags} = this.flags
 
-    const {semanticVersion, buildNumber, gameEngine, gameEngineVersion, iosBundleId, androidPackageName} = valueFlags
+    const {name, semanticVersion, buildNumber, gameEngine, gameEngineVersion, iosBundleId, androidPackageName} =
+      valueFlags
 
     if (semanticVersion && !isValidSemVer(semanticVersion))
       throw new Error(`Invalid semantic version: ${semanticVersion}`)
@@ -45,6 +41,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
     let game = await this.getGame()
 
     const update = {
+      name: name || game.name,
       details: {
         ...game.details,
         ...(semanticVersion && {semanticVersion}),
@@ -61,7 +58,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
     }
 
     render(
-      <App>
+      <Command command={this}>
         <StatusTable
           title="Game Details"
           statuses={{
@@ -73,7 +70,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
             'Build Number': game.details?.buildNumber || 1,
           }}
         />
-      </App>,
+      </Command>,
     )
     return
   }

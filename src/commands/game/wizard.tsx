@@ -1,4 +1,4 @@
-import {Flags} from '@oclif/core'
+import {Args, Flags} from '@oclif/core'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
@@ -12,30 +12,23 @@ interface Step {
 }
 
 export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWizard> {
-  static override args = {}
+  static override args = {
+    platform: Args.string({description: 'The platform to run the wizard for', required: true}),
+  }
 
   static override description = 'Runs all the steps for the specific platform'
 
-  static override examples = ['<%= config.bin %> <%= command.id %>']
+  static override examples = ['<%= config.bin %> <%= command.id %> ios', '<%= config.bin %> <%= command.id %> android']
 
   static override flags = {
     forceStep: Flags.string({
       char: 'f',
       description: 'Force a specific step to run.',
     }),
-    platform: Flags.string({
-      char: 'p',
-      description: 'The platform to run the wizard for',
-      options: ['ios' /* TODO - android */],
-      required: false,
-      default: 'ios',
-    }),
   }
 
   public async run(): Promise<void> {
-    const {flags} = this
-
-    // TODO: do something with the platform
+    const {flags, args} = this
 
     if (!isCWDGodotGame()) {
       this.error('No Godot project detected. Please run this from a godot project directory.', {exit: 1})
@@ -47,7 +40,7 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
     const isStepForced = (commandName: string) => flags.forceStep?.includes(commandName)
 
     // TODO: some duplication in the shouldRun logic and the commands themselves - perhaps we could refactor this
-    const steps: Step[] = [
+    const iosSteps: Step[] = [
       {
         command: 'game:create',
         args: ['--quiet'],
@@ -116,6 +109,17 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
         },
       },
     ]
+
+    const androidSteps: Step[] = [
+      {
+        // TODO: android has its own wizard command
+        command: 'game:android:wizard',
+        args: [],
+        shouldRun: async () => true,
+      },
+    ]
+
+    const steps = args.platform === Platform.IOS ? iosSteps : androidSteps
 
     for (const step of steps) {
       const command = step.command

@@ -35,7 +35,11 @@ export function useWebSocket(listeners: WebSocketListener[] = []) {
         log('Subscribing to', pattern)
         socket.on(pattern, boundListener)
       }
-      if (Array.isArray(pattern)) return pattern.forEach(bindSocket)
+      if (Array.isArray(pattern)) {
+        pattern.forEach(bindSocket)
+        continue
+      }
+
       bindSocket(pattern)
     }
 

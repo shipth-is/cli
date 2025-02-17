@@ -1,7 +1,7 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, AppleAppDetails, AppleBundleIdDetails, NextSteps} from '@cli/components/index.js'
+import {Command, AppleAppDetails, AppleBundleIdDetails, NextSteps} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 
 export default class GameIosAppStatus extends BaseGameCommand<typeof GameIosAppStatus> {
@@ -24,12 +24,12 @@ export default class GameIosAppStatus extends BaseGameCommand<typeof GameIosAppS
     const steps: string[] = []
 
     render(
-      <App>
+      <Command command={this}>
         <AppleAppDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
         <AppleBundleIdDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
 
         <NextSteps steps={steps} />
-      </App>,
+      </Command>,
     )
   }
 }

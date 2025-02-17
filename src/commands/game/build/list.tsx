@@ -5,7 +5,7 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 
 import {PageAndSortParams} from '@cli/types'
 
-import {App, BuildsTable} from '@cli/components/index.js'
+import {CommandGame, BuildsTable} from '@cli/components/index.js'
 
 export default class GameBuildList extends BaseGameCommand<typeof GameBuildList> {
   static override args = {}
@@ -49,9 +49,9 @@ export default class GameBuildList extends BaseGameCommand<typeof GameBuildList>
     }
 
     render(
-      <App>
+      <CommandGame command={this}>
         <BuildsTable queryProps={queryProps} />
-      </App>,
+      </CommandGame>,
     )
   }
 }

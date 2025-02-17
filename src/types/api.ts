@@ -128,6 +128,7 @@ export interface JobLogEntry {
   details: object
   sentAt: DateTime
   createdAt: DateTime
+  progress?: number // When we receive via the WebSocket
 }
 
 export interface CursorPaginatedResponse<T> {
@@ -193,11 +194,25 @@ export interface GoogleAuthResponse {
   url: string
 }
 
-export interface AndroidSetupStatus {
+export interface AndroidServiceAccountSetupStatus {
+  status: 'unknown' | 'queued' | 'running' | 'complete' | 'error'
+  errorMessage?: string
   hasSignedIn: boolean
   hasProject: boolean
   hasServiceAccount: boolean
   hasKey: boolean
   hasUploadedKey: boolean
   hasEnabledApi: boolean
+  appExists: boolean
+  serviceAccountEmail: string | null
+  hasInvitedServiceAccount: boolean
+  progress: number
+}
+
+export interface GoogleStatusResponse {
+  isAuthenticated: boolean
+  projectId?: string
+  isOrg?: boolean
+  orgName?: string
+  orgCreatedAt?: string
 }

@@ -4,7 +4,7 @@ import * as fs from 'fs'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {getBuild} from '@cli/api/index.js'
 import axios from 'axios'
 
@@ -56,14 +56,14 @@ export default class GameBuildDownload extends BaseGameCommand<typeof GameBuildD
     const handleComplete = async () => process.exit(0)
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Downloading to ${file}...`}
           msgComplete={`Downloaded build artifact to ${file}`}
           executeMethod={executeMethod}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

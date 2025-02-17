@@ -4,7 +4,7 @@ import * as fs from 'fs'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {exportCredential, getUserCredentials} from '@cli/api/credentials/index.js'
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 
 export default class AppleApiKeyExport extends BaseAuthenticatedCommand<typeof AppleApiKeyExport> {
@@ -44,14 +44,14 @@ export default class AppleApiKeyExport extends BaseAuthenticatedCommand<typeof A
     const handleComplete = async () => process.exit(0)
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Exporting App Store Connect API Key to ${file}...`}
           msgComplete={`App Store Connect API Key exported to ${file}`}
           executeMethod={() => exportCredential({zipPath: file, credentialId: key.id})}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

@@ -1,11 +1,33 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {App, NextSteps, StatusTable} from '@cli/components/index.js'
+import {Command, NextSteps, StatusTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectPlatformProgress} from '@cli/api/index.js'
 import {Platform, ProjectPlatformProgress} from '@cli/types'
 import {getShortDate, getShortUUID, makeHumanReadable} from '@cli/utils/index.js'
+
+function getSteps(platform: Platform, progress: ProjectPlatformProgress | null) {
+  if (!progress) return []
+  switch (platform) {
+    case Platform.ANDROID:
+      return [
+        !progress.hasCredentialsForPlatform && '$ shipthis game android keyStore create',
+        !progress.hasApiKeyForPlatform && '$ shipthis game android apiKey create',
+        progress.hasCredentialsForPlatform && progress.hasApiKeyForPlatform && '$ shipthis game ship',
+      ].filter(Boolean) as string[]
+
+    case Platform.IOS:
+      return [
+        !progress.hasApiKeyForPlatform && '$ shipthis apple apiKey create',
+        !progress.hasCredentialsForPlatform && '$ shipthis game ios profile create',
+        progress.hasApiKeyForPlatform && progress.hasCredentialsForPlatform && '$ shipthis game ship',
+      ].filter(Boolean) as string[]
+
+    default:
+      throw new Error('Invalid platform')
+  }
+}
 
 export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
   static override args = {}
@@ -23,16 +45,18 @@ export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
 
   public async run(): Promise<void> {
     const game = await this.getGame()
-    const iosPlatformStatus = await getProjectPlatformProgress(game.id, Platform.IOS)
 
-    const {hasBundleSet, hasApiKeyForPlatform, hasCredentialsForPlatform} = iosPlatformStatus
+    const hasConfiguredIos = !!game.details?.iosBundleId
+    const hasConfiguredAndroid = !!game.details?.androidPackageName
 
-    const steps = [
-      hasBundleSet == false && '$ shipthis game ios app create',
-      hasApiKeyForPlatform == false && '$ shipthis apple apiKey create',
-      hasCredentialsForPlatform == false && '$ shipthis game ios profile create',
-      hasBundleSet && hasApiKeyForPlatform && hasCredentialsForPlatform && '$ shipthis game ship',
-    ].filter(Boolean) as string[]
+    let statuses = {
+      [Platform.IOS]: hasConfiguredIos ? await getProjectPlatformProgress(game.id, Platform.IOS) : null,
+      [Platform.ANDROID]: hasConfiguredAndroid ? await getProjectPlatformProgress(game.id, Platform.ANDROID) : null,
+    }
+
+    let steps: string[] = []
+    if (hasConfiguredIos) steps = steps.concat(getSteps(Platform.IOS, statuses[Platform.IOS]))
+    if (hasConfiguredAndroid) steps = steps.concat(getSteps(Platform.ANDROID, statuses[Platform.ANDROID]))
 
     const progressToStatuses = (progress: ProjectPlatformProgress) => {
       // Remove the 'platform' key as we have titles
@@ -41,7 +65,7 @@ export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
     }
 
     render(
-      <App>
+      <Command command={this}>
         <StatusTable
           marginBottom={1}
           title="Game Details"
@@ -54,9 +78,14 @@ export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
             'Game Engine': `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.3'}`,
           }}
         />
-        <StatusTable title="iOS Status" statuses={progressToStatuses(iosPlatformStatus)} />
+        {statuses[Platform.IOS] && (
+          <StatusTable title="iOS Status" statuses={progressToStatuses(statuses[Platform.IOS])} />
+        )}
+        {statuses[Platform.ANDROID] && (
+          <StatusTable title="Android Status" statuses={progressToStatuses(statuses[Platform.ANDROID])} />
+        )}
         <NextSteps steps={steps} />
-      </App>,
+      </Command>,
     )
   }
 }

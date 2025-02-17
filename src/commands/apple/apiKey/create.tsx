@@ -3,7 +3,7 @@ import {render} from 'ink'
 
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {getUserCredentials, uploadUserCredentials, UserKey_iOS} from '@cli/api/credentials/index.js'
-import {App, RunWithSpinner} from '@cli/components/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {ApiKey, ApiKeyType, UserRole} from '@cli/apple/expo.js'
 
@@ -71,14 +71,14 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
     if (this.flags.quiet) return await createApiKey()
 
     render(
-      <App>
+      <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Creating App Store Connect API in the Apple Developer Portal...`}
           msgComplete={`App Store Connect API created and saved to ShipThis`}
           executeMethod={createApiKey}
           onComplete={handleComplete}
         />
-      </App>,
+      </Command>,
     )
   }
 }

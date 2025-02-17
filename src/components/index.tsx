@@ -1,19 +1,19 @@
-export * from './App.js'
-export * from './AppleApiKeysTable.js'
-export * from './AppleAppDetails.js'
-export * from './AppleBundleIdDetails.js'
-export * from './AppleCertificatesTable.js'
-export * from './AppleProfilesTable.js'
+export * from './android/index.js'
+export * from './apple/index.js'
+export * from './common/index.js'
+export * from './context/index.js'
+export * from './wrappers/index.js'
+
 export * from './BuildsTable.js'
-export * from './Environment.js'
 export * from './JobLogTail.js'
 export * from './JobStatusTable.js'
-export * from './ListWithTitle.js'
-export * from './NextSteps.js'
 export * from './ProjectCredentialsTable.js'
-export * from './RunWithSpinner.js'
-export * from './StatusTable.js'
-export * from './Table.js'
-export * from './Title.js'
-export * from './TruncatedText.js'
 export * from './UserCredentialsTable.js'
+
+// The components for each sub-command run in the wizard have these props
+// TODO: put in a better place
+import {Box} from 'ink'
+export interface StepProps extends React.ComponentPropsWithoutRef<typeof Box> {
+  onComplete: () => void
+  onError: (error: Error) => void
+}

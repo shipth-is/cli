@@ -2,6 +2,8 @@ import crypto from 'crypto'
 import fs from 'fs'
 import readlineSync from 'readline-sync'
 import {promises as readline} from 'node:readline'
+import path from 'node:path'
+import {fileURLToPath} from 'node:url'
 
 import {JobStage, JobStatus, LogLevel, Platform, ScalarDict} from '@cli/types'
 
@@ -11,6 +13,7 @@ export * from './dates.js'
 export * from './dictionary.js'
 export * from './git.js'
 export * from './godot.js'
+export * from './help.js'
 
 /**
  * Works the same way that git short commits are generated.
@@ -172,4 +175,12 @@ export function generatePackageName(gameName: string): string | null {
   }
 
   return prefix + normalizedGameName
+}
+
+// __dirname and import.meta.dirname are not things :(
+// This saves 2 imports
+export function scriptDir(importMeta: ImportMeta): string {
+  const filename = fileURLToPath(importMeta.url)
+  const dirname = path.dirname(filename)
+  return dirname
 }

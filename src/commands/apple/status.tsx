@@ -1,5 +1,5 @@
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {App, NextSteps, StatusTable} from '@cli/components/index.js'
+import {Command, NextSteps, StatusTable} from '@cli/components/index.js'
 import {render} from 'ink'
 
 export default class AppleStatus extends BaseAuthenticatedCommand<typeof AppleStatus> {
@@ -41,10 +41,10 @@ export default class AppleStatus extends BaseAuthenticatedCommand<typeof AppleSt
     if (!isAuthenticatedOnApple) steps.push('$ shipthis apple login')
 
     render(
-      <App>
+      <Command command={this}>
         <StatusTable marginBottom={1} title="Apple Status" statuses={statuses as any} />
         <NextSteps steps={steps} />
-      </App>,
+      </Command>,
     )
   }
 }
