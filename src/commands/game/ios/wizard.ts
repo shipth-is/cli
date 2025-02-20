@@ -1,4 +1,4 @@
-import {Args, Flags} from '@oclif/core'
+import {Flags} from '@oclif/core'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
@@ -11,15 +11,10 @@ interface Step {
   shouldRun: () => Promise<boolean>
 }
 
-export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWizard> {
-  static override args = {
-    platform: Args.string({description: 'The platform to run the wizard for', required: true}),
-  }
-
-  static override description = 'Runs all the steps for the specific platform'
-
-  static override examples = ['<%= config.bin %> <%= command.id %> ios', '<%= config.bin %> <%= command.id %> android']
-
+export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameIosWizard> {
+  static override args = {}
+  static override description = 'Runs all the steps for iOS'
+  static override examples = ['<%= config.bin %> <%= command.id %>']
   static override flags = {
     forceStep: Flags.string({
       char: 'f',
@@ -28,10 +23,13 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
   }
 
   public async run(): Promise<void> {
-    const {flags, args} = this
+    const {flags} = this
 
     if (!isCWDGodotGame()) {
-      this.error('No Godot project detected. Please run this from a godot project directory.', {exit: 1})
+      this.error(
+        'No Godot project detected. Please run this from a Godot project directory with a project.godot file.',
+        {exit: 1},
+      )
     }
 
     const projectConfig = await this.getProjectConfigSafe()
@@ -110,18 +108,7 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
       },
     ]
 
-    const androidSteps: Step[] = [
-      {
-        // TODO: android has its own wizard command
-        command: 'game:android:wizard',
-        args: [],
-        shouldRun: async () => true,
-      },
-    ]
-
-    const steps = args.platform === Platform.IOS ? iosSteps : androidSteps
-
-    for (const step of steps) {
+    for (const step of iosSteps) {
       const command = step.command
       const willRun = isStepForced(command) || (await step.shouldRun())
 

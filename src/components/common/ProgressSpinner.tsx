@@ -5,7 +5,7 @@ import type {SpinnerName} from 'cli-spinners'
 
 interface Props {
   progress?: number | null
-  label: string
+  label?: string
   spinnerType?: SpinnerName
   labelProps?: TextProps
   boxProps?: BoxProps
@@ -16,7 +16,7 @@ export const ProgressSpinner = ({progress, label, spinnerType, labelProps, boxPr
   <>
     <Box flexDirection="column" gap={1} {...boxProps}>
       <Box flexDirection="row" gap={1}>
-        {label != '' && <Text {...labelProps}>{label}</Text>}
+        {label && label != '' && <Text {...labelProps}>{label}</Text>}
         <ProgressBar value={progress || 0} />
         <Text>{Math.floor(progress || 0)}%</Text>
         <Spinner type={spinnerType} />

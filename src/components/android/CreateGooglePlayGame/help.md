@@ -1,6 +1,6 @@
-# Create the game in google play
+# Create the game in Google Play
 
-You will need to manually create an app in Google Play. This will involve entering the name, agreeing to Google Play's TOS and uploading an initial build.
+You will need to manually create an "app" in Google Play. This will involve entering the name, agreeing to Google Play's TOS and uploading an initial build (created in the previous step).
 
 Broadly, the steps are:
 

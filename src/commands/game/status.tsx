@@ -2,8 +2,8 @@ import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
 import {Command, NextSteps, StatusTable} from '@cli/components/index.js'
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {getProjectPlatformProgress} from '@cli/api/index.js'
+import {BaseAuthenticatedCommand, BaseGameCommand} from '@cli/baseCommands/index.js'
+import {getProject, getProjectPlatformProgress} from '@cli/api/index.js'
 import {Platform, ProjectPlatformProgress} from '@cli/types'
 import {getShortDate, getShortUUID, makeHumanReadable} from '@cli/utils/index.js'
 
@@ -29,7 +29,7 @@ function getSteps(platform: Platform, progress: ProjectPlatformProgress | null) 
   }
 }
 
-export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
+export default class GameStatus extends BaseAuthenticatedCommand<typeof GameStatus> {
   static override args = {}
 
   static override description = 'Shows the status of the current game.'
@@ -44,7 +44,12 @@ export default class GameStatus extends BaseGameCommand<typeof GameStatus> {
   }
 
   public async run(): Promise<void> {
-    const game = await this.getGame()
+    const gameId = await this.getGameId()
+    if (!gameId) {
+      this.error('No game found - please run `shipthis game wizard` or specify a game ID with --gameId', {exit: 1})
+    }
+
+    const game = await getProject(gameId)
 
     const hasConfiguredIos = !!game.details?.iosBundleId
     const hasConfiguredAndroid = !!game.details?.androidPackageName

@@ -38,7 +38,7 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
           {isCreating && <Spinner type="dots" />}
         </Box>
         {/* {setupStatus && <SetupStatusTable setupStatus={setupStatus} />} */}
-        {didStart && <ProgressSpinner label="" progress={(setupStatus?.progress || 0) * 100} spinnerType="dots" />}
+        {didStart && <ProgressSpinner progress={(setupStatus?.progress || 0) * 100} spinnerType="dots" />}
       </Box>
     </>
   )

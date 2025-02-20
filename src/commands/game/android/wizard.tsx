@@ -1,5 +1,4 @@
-import {Flags} from '@oclif/core'
-import {render, Box, Text} from 'ink'
+import {render} from 'ink'
 
 import {BaseAuthenticatedCommand, DetailsFlags} from '@cli/baseCommands/index.js'
 import {Command} from '@cli/components/index.js'
