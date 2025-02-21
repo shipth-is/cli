@@ -56,16 +56,17 @@ const Create = ({onComplete, onError, gameId, ...boxProps}: Props): JSX.Element 
     previousIsFound.current = isFound
   }, [result])
 
-  // Refresh when R is pressed
   useInput(async (input) => {
     if (!gameId) return
     switch (input) {
       case 'r':
+        // Refresh when R is pressed
         queryClient.invalidateQueries({
           queryKey: cacheKeys.androidKeyTestResult({projectId: gameId}),
         })
         break
       case 'd':
+        // Open the dashboard to download the game when D is pressed
         const dashUrl = await getShortAuthRequiredUrl(`/games/${getShortUUID(gameId)}/builds`)
         await open(dashUrl)
     }
