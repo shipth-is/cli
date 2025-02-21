@@ -145,6 +145,7 @@ export async function getSingleUseUrl(destination: string) {
 
 // Builds a URL that emails the user the login-OTP when visited and shows the form.
 // Auth is checked and they are redirected.
+// TODO: this logic and the salt should be moved to the backend
 export async function getShortAuthRequiredUrl(destination: string) {
   // We encrypt their email address in the URL to obfuscate it
   // The frontend will decrypt the email and use it to send the OTP
@@ -165,7 +166,8 @@ export async function getShortAuthRequiredUrl(destination: string) {
     .join('&')
   const url = `${WEB_URL}login/?${queryString}`
   const headers = await getAuthedHeaders()
-  // Shorten the url so that the QR code is smaller
+  // Shorten the url so that the QR code is smaller.
+  // Also the final link will expire in 24 hours
   const {data} = await axios.post(
     `${API_URL}/me/shorten`,
     {

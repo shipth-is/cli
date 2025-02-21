@@ -8,12 +8,11 @@ Creates a new Android Keystore for a game
 
 ```
 USAGE
-  $ shipthis game android keyStore create [-g <value>] [-q] [-f]
+  $ shipthis game android keyStore create [-g <value>] [-f]
 
 FLAGS
   -f, --force
   -g, --gameId=<value>  The ID of the game
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Creates a new Android Keystore for a game

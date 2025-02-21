@@ -1,6 +1,6 @@
 {
   "name": "shipthis",
-  "description": "ShipThis is a command-line tool which manages building and uploading your Godot mobile games to the Apple App Store and Google Play.",
+  "description": "ShipThis manages building and uploading your Godot games to the App Store and Google Play.",
   "version": "0.0.41",
   "author": "Hello Invent Ltd",
   "bin": {

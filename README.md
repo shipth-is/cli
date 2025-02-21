@@ -11,18 +11,19 @@
   </a>
 </h1>
 <p align="center">
-  <em><b>ShipThis</b> is a <b>command line tool</b> which manages releasing your <a href="https://godotengine.org/">Godot</a> games to the <b>iOS App Store</b>. Designed to compile and upload your Godot games in the cloud, meaning <b>you do not need to install or run Xcode to release an iOS game</b>.</em>
+  <em><b>ShipThis</b> is a <b>command line tool</b> which manages building and uploading your <a href="https://godotengine.org/">Godot</a> mobile games to the <b>Apple App Store</b> and <b>Google Play</b>. Designed to compile and upload your Godot games in the cloud, meaning <b>you do not need to install or run Xcode or Android Studio to release an iOS or Android game</b>.</em>
 </p>
 
 ---
 
-## ⚡️ Quickstart
+## ⚡️ Quick start
 
-### You will need
+### What you'll need
 
 - A Godot 3.6 or 4.3 game
 - [Node.js](https://nodejs.org/en/download/) version 18.0 or above
-- An [Apple Developer](https://developer.apple.com) account
+- **If you are building an iOS game** - an [Apple Developer account](https://developer.apple.com)
+- **If you are building an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup)
 
 ### 1. Install ShipThis
 
@@ -40,30 +41,29 @@ Set up an account with ShipThis by logging in for the first time using the [`shi
 shipthis login
 ```
 
-### 3. Configure your game
+### 3. Set up your game
 
-Set up your ShipThis configuration using the built in [wizard](https://shipthis.cc/docs/wizard). Run this command from within a Godot game directory (with a project.godot file):
+Next, run the [wizard command](https://shipthis.cc/docs/wizard) to configure your game on ShipThis. The command takes a platform parameter - this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
+
+### Set up an Android game
 
 ```bash
-shipthis game wizard
+shipthis game wizard android
+```
+
+### Set up an iOS game
+
+```bash
+shipthis game wizard ios
 ```
 
 ### 4. Ship
 
-Now you can publish your game to TestFlight with the [`shipthis game ship`](https://shipthis.cc/docs/reference/game/ship) command:
+Now you can publish new versions your game to TestFlight or Google Play with the [`shipthis game ship`](https://shipthis.cc/docs/reference/game/ship) command:
 
 ```bash
 shipthis game ship
 ```
-
-Once you are happy with the build you can submit it to Apple using [App Store
-Connect](https://appstoreconnect.apple.com/).
-
-Re-run the `shipthis game ship` command each time you want to build a new release of your game. **You never need to run Xcode**.
-
-### Next Steps
-
-- Checkout the [ShipThis Tutorial](https://shipthis.cc/docs/tutorial)
 
 ## 📖 Command Reference
 

@@ -8,18 +8,20 @@ Connects ShipThis with Google for managing Service Account API Keys for an Andro
 
 ```
 USAGE
-  $ shipthis game android apiKey connect [-g <value>] [-d] [-m] [-h] [-f]
+  $ shipthis game android apiKey connect [-g <value>] [-f] [-d]
 
 FLAGS
-  -d, --desktop         Open the link in the desktop browser
+  -d, --disconnect
   -f, --force
   -g, --gameId=<value>  The ID of the game
-  -h, --helpPage        Open the interstitial help page first rather than the Google OAuth page
-  -m, --mobile          Display a QR code for mobile authentication
 
 DESCRIPTION
   Connects ShipThis with Google for managing Service Account API Keys for an Android game
 
 EXAMPLES
   $ shipthis game android apiKey connect
+
+  $ shipthis game android apiKey connect --force
+
+  $ shipthis game android apiKey connect --disconnect
 ```

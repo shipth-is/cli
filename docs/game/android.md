@@ -7,7 +7,7 @@ Commands related to the Android platform for a specific game
 
 # Topic: `game android apiKey`
 
-Connects ShipThis with Google for managing Service Account API Keys for an Android game
+Commands related to they Android Service Account API Key for a specific game
 
 
 ## Commands
@@ -23,20 +23,22 @@ Connects ShipThis with Google for managing Service Account API Keys for an Andro
 
 ```
 USAGE
-  $ shipthis game android apiKey connect [-g <value>] [-d] [-m] [-h] [-f]
+  $ shipthis game android apiKey connect [-g <value>] [-f] [-d]
 
 FLAGS
-  -d, --desktop         Open the link in the desktop browser
+  -d, --disconnect
   -f, --force
   -g, --gameId=<value>  The ID of the game
-  -h, --helpPage        Open the interstitial help page first rather than the Google OAuth page
-  -m, --mobile          Display a QR code for mobile authentication
 
 DESCRIPTION
   Connects ShipThis with Google for managing Service Account API Keys for an Android game
 
 EXAMPLES
   $ shipthis game android apiKey connect
+
+  $ shipthis game android apiKey connect --force
+
+  $ shipthis game android apiKey connect --disconnect
 ```
 
 ### `game android apiKey create`
@@ -172,7 +174,7 @@ EXAMPLES
 
 # Topic: `game android keyStore`
 
-Creates a new Android Keystore for a game
+Commands related to the Android KeyStore for a specific game
 
 
 ## Commands
@@ -188,12 +190,11 @@ Creates a new Android Keystore for a game
 
 ```
 USAGE
-  $ shipthis game android keyStore create [-g <value>] [-q] [-f]
+  $ shipthis game android keyStore create [-g <value>] [-f]
 
 FLAGS
   -f, --force
   -g, --gameId=<value>  The ID of the game
-  -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
   Creates a new Android Keystore for a game
@@ -306,4 +307,33 @@ EXAMPLES
   $ shipthis game android status
 
   $ shipthis game android status --gameId 0c179fc4
+```
+
+### `game android wizard`
+
+#### Description
+
+Prototype Android Wizard
+
+#### Help Output
+
+```
+USAGE
+  $ shipthis game android wizard [-n <value>] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>] [-a
+    <value>]
+
+FLAGS
+  -a, --androidPackageName=<value>  Set the Android package name
+  -b, --buildNumber=<value>         Set the build number
+  -e, --gameEngine=<value>          Set the game engine
+  -i, --iosBundleId=<value>         Set the iOS bundle ID
+  -n, --name=<value>                The name of the game
+  -s, --semanticVersion=<value>     Set the semantic version
+  -v, --gameEngineVersion=<value>   Set the game engine version
+
+DESCRIPTION
+  Prototype Android Wizard
+
+EXAMPLES
+  $ shipthis game android wizard
 ```
