@@ -1,9 +1,11 @@
 import {Box, Text, useInput} from 'ink'
 import {useContext, useEffect, useRef} from 'react'
 import Spinner from 'ink-spinner'
+import open from 'open'
 
 import {
   getBuildSummary,
+  getShortUUID,
   KeyTestError,
   KeyTestResult,
   KeyTestStatus,
@@ -12,12 +14,12 @@ import {
   useAndroidServiceAccountTestResult,
   useBuilds,
 } from '@cli/utils/index.js'
-import {cacheKeys} from '@cli/constants/cacheKeys.js'
-
+import {cacheKeys, WEB_URL} from '@cli/constants/index.js'
 import {GameContext, Markdown} from '@cli/components/index.js'
-import {StepProps} from '../../index.js'
 import {Platform} from '@cli/types/api.js'
-import {WEB_URL} from '@cli/constants/config.js'
+import {getShortAuthRequiredUrl} from '@cli/api/index.js'
+
+import {StepProps} from '../../index.js'
 
 const __dirname = scriptDir(import.meta)
 
@@ -57,6 +59,17 @@ const Create = ({onComplete, onError, gameId, ...boxProps}: Props): JSX.Element 
   // Refresh when R is pressed
   useInput(async (input) => {
     if (!gameId) return
+    switch (input) {
+      case 'r':
+        queryClient.invalidateQueries({
+          queryKey: cacheKeys.androidKeyTestResult({projectId: gameId}),
+        })
+        break
+      case 'd':
+        const dashUrl = await getShortAuthRequiredUrl(`/games/${getShortUUID(gameId)}/builds`)
+        await open(dashUrl)
+    }
+
     if (input !== 'r') return
     queryClient.invalidateQueries({
       queryKey: cacheKeys.androidKeyTestResult({projectId: gameId}),
@@ -68,7 +81,7 @@ const Create = ({onComplete, onError, gameId, ...boxProps}: Props): JSX.Element 
 
   const templateVars = {
     downloadCmd,
-    dashboardURL: new URL('/dashboard', WEB_URL).toString(),
+    dashboardURL: new URL(`/games/${getShortUUID(gameId)}/builds`, WEB_URL).toString(),
   }
 
   return (
