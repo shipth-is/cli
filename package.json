@@ -209,7 +209,7 @@
     "lint": "eslint . --ext .ts",
     "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "npm run lint",
-    "prepack": "npm run readme && oclif manifest",
+    "prepack": "npm run readme && oclif manifest && npm shrinkwrap",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
     "readme": "bin/dev.js internal readme docs/ -d 2 --notDryRun # does not overwrite existing files"
   },
