@@ -6,6 +6,7 @@
 /tmp
 /node_modules
 oclif.manifest.json
+npm-shrinkwrap.json
 
 yarn.lock
 pnpm-lock.yaml

@@ -84,7 +84,8 @@
     "/bin",
     "/dist",
     "/docs",
-    "/oclif.manifest.json"
+    "/oclif.manifest.json",
+    "npm-shrinkwrap.json"
   ],
   "homepage": "https://shipth.is",
   "keywords": [
@@ -207,9 +208,9 @@
     "build-tsc-alias": "shx rm -rf dist && npx tsc --build && npx tsc-alias -p tsconfig.json",
     "build": "pkgroll --clean-dist",
     "lint": "eslint . --ext .ts",
-    "postpack": "shx rm -f oclif.manifest.json",
     "posttest": "npm run lint",
-    "prepack": "npm run readme && oclif manifest && npm shrinkwrap",
+    "prepack": "cp package-lock.json package-lock.dev.json || true && npm run readme && oclif manifest && npm shrinkwrap",
+    "postpack": "mv package-lock.dev.json package-lock.json || true && shx rm -f oclif.manifest.json && shx rm -f npm-shrinkwrap.json",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
     "readme": "bin/dev.js internal readme docs/ -d 2 --notDryRun # does not overwrite existing files"
   },
