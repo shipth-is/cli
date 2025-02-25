@@ -2,13 +2,11 @@ import {useContext} from 'react'
 import {Box} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {scriptDir, useInviteServiceAccount} from '@cli/utils/index.js'
+import {useInviteServiceAccount} from '@cli/utils/index.js'
 import {GameContext, Markdown, StepProps} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 
 import {InviteForm} from './InviteForm.js'
-
-const __dirname = scriptDir(import.meta)
 
 export const InviteServiceAccount = ({onComplete, onError, ...boxProps}: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)
@@ -31,7 +29,7 @@ export const InviteServiceAccount = ({onComplete, onError, ...boxProps}: StepPro
   return (
     <>
       <Box flexDirection="column" gap={1} {...boxProps}>
-        <Markdown path={`${__dirname}/help.md`} templateVars={templateVars} />
+        <Markdown filename="invite-service-account.md" templateVars={templateVars} />
         <Box>
           {inviteMutation.isPending && <Spinner type="dots" />}
           {!inviteMutation.isPending && <InviteForm onSubmit={handleSubmit} />}

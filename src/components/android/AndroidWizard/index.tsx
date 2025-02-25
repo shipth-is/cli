@@ -3,7 +3,6 @@ import {Box} from 'ink'
 
 import {Markdown, StepProps, Title} from '@cli/components/index.js'
 import {CommandContext, GameProvider} from '@cli/components/context/index.js'
-import {scriptDir} from '@cli/utils/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 
 // Avoid circular imports here - import the components directly
@@ -28,7 +27,6 @@ const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   inviteServiceAccount: InviteServiceAccount,
 }
 
-const __dirname = scriptDir(import.meta)
 const ON_COMPLETE_DELAY_MS = 500
 
 export const AndroidWizard = (props: StepProps) => {
@@ -91,7 +89,7 @@ export const AndroidWizard = (props: StepProps) => {
       )}
       {showSuccess && (
         <Box marginTop={1}>
-          <Markdown path={`${__dirname}/success.md`} templateVars={templateVars} />
+          <Markdown filename="android-success.md" templateVars={templateVars} />
         </Box>
       )}
     </GameProvider>

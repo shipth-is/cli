@@ -94,7 +94,7 @@ const Create = ({onComplete, onError, gameId, ...boxProps}: Props): JSX.Element 
           </Text>
           {isFetching && <Spinner type="dots" />}
         </Box>
-        <Markdown path={`${__dirname}/help.md`} templateVars={templateVars} />
+        <Markdown filename="create-google-play-game.md" templateVars={templateVars} />
       </Box>
     </>
   )
