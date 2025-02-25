@@ -9,7 +9,9 @@ interface Props extends TerminalRendererOptions {
   templateVars?: Record<string, string>
 }
 
-const root = path.dirname(process.argv[1])
+// Handling when the entrypoint is a symlink
+const entrypointPath = fs.realpathSync(process.argv[1])
+const root = path.dirname(entrypointPath)
 
 export const Markdown = ({filename, templateVars, ...options}: Props): JSX.Element => {
   setOptions({renderer: new TerminalRenderer(options)})
