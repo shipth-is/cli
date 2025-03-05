@@ -6,7 +6,7 @@ Displays the status of the Android Service Account API Key for a specific game.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey status [-g <value>]
 

@@ -26,7 +26,7 @@ Downloads the given build artifact to the specified file
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game build download BUILD_ID FILE [-g <value>] [-f]
 
@@ -55,7 +55,7 @@ Lists the builds for successful jobs of a game.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game build list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
 

@@ -6,7 +6,7 @@ Display help for shipthis.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis help [COMMAND...] [-n]
 

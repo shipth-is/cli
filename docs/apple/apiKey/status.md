@@ -7,7 +7,7 @@ This API key is used to automatically publish your games to the App Store.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis apple apiKey status [-f]
 

@@ -40,7 +40,7 @@ Provisioning profile. To do that please run:
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios profile create [-q] [-g <value>] [-f]
 
@@ -64,7 +64,7 @@ Saves the current Mobile Provisioning Profile to a ZIP file
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios profile export FILE [-g <value>] [-f]
 
@@ -90,7 +90,7 @@ Imports an Mobile Provisioning Profile to your ShipThis account
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios profile import FILE [-g <value>] [-f]
 
@@ -116,7 +116,7 @@ Shows the Game iOS Mobile Provisioning Profile Status.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios profile status [-g <value>] [-f]
 

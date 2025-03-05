@@ -21,7 +21,7 @@ To control which files are uploaded, in the **shipthis.json** file there are two
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game ship [-g <value>]
 

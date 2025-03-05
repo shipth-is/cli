@@ -6,7 +6,7 @@ Shows the status of the setup for the Android platform for a specific game.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android status [-g <value>]
 

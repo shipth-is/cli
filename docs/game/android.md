@@ -21,7 +21,7 @@ Connects ShipThis with Google for managing Service Account API Keys for an Andro
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey connect [-g <value>] [-f] [-d]
 
@@ -49,7 +49,7 @@ Creates a new Android Service Account API Key for a game
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey create [-g <value>] [-w] [-f]
 
@@ -75,7 +75,7 @@ Saves the current Android Service Account API Key to a ZIP file
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey export FILE [-g <value>] [-f]
 
@@ -101,7 +101,7 @@ Imports an Android Service Account API Key to your ShipThis account for the spec
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey import FILE [-g <value>] [-f]
 
@@ -127,7 +127,7 @@ Invites the Service Account to your Google Play Account.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey invite [ACCOUNTID] [-g <value>] [-p] [-p] [-w]
 
@@ -155,7 +155,7 @@ Displays the status of the Android Service Account API Key for a specific game.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey status [-g <value>]
 
@@ -188,7 +188,7 @@ Creates a new Android Keystore for a game
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore create [-g <value>] [-f]
 
@@ -213,7 +213,7 @@ Saves the current Android Keystore to a ZIP file
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore export FILE [-g <value>] [-f]
 
@@ -239,7 +239,7 @@ Imports an Android Keystore to your ShipThis account for the specified game.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore import FILE [-g <value>] [-f]
 
@@ -265,7 +265,7 @@ Displays the status of the Android Keystore for a specific game.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore status [-g <value>]
 
@@ -293,7 +293,7 @@ Shows the status of the setup for the Android platform for a specific game.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android status [-g <value>]
 
@@ -317,7 +317,7 @@ Prototype Android Wizard
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android wizard [-n <value>] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>] [-a
     <value>]

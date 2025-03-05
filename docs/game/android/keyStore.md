@@ -14,7 +14,7 @@ Creates a new Android Keystore for a game
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore create [-g <value>] [-f]
 
@@ -39,7 +39,7 @@ Saves the current Android Keystore to a ZIP file
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore export FILE [-g <value>] [-f]
 
@@ -65,7 +65,7 @@ Imports an Android Keystore to your ShipThis account for the specified game.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore import FILE [-g <value>] [-f]
 
@@ -91,7 +91,7 @@ Displays the status of the Android Keystore for a specific game.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore status [-g <value>]
 

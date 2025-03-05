@@ -26,7 +26,7 @@ Lists the jobs for a game.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
 
@@ -56,7 +56,7 @@ Shows the real-time status of a job.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis game job status JOB_ID [-g <value>] [-n <value>] [-f]
 

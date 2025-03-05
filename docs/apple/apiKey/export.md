@@ -6,7 +6,7 @@ Saves the current App Store Connect API Key to a ZIP file
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis apple apiKey export FILE [-f]
 

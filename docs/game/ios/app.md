@@ -40,7 +40,7 @@ to be unique within the Apple ecosystem. ShipThis will suggest values for these.
 
 #### Help Output
 
-```bash
+```help
 USAGE
   $ shipthis game ios app create [-q] [-g <value>] [-n <value>] [-b <value>] [-f]
 
@@ -76,7 +76,7 @@ create command or sync command.
 
 #### Help Output
 
-```bash
+```help
 USAGE
   $ shipthis game ios app status [-g <value>]
 
@@ -121,7 +121,7 @@ ShipThis will use default values for this file if it does not exist.
 
 #### Help Output
 
-```bash
+```help
 USAGE
   $ shipthis game ios app sync [-q] [-g <value>] [-f]
 

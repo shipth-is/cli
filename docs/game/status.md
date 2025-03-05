@@ -10,7 +10,7 @@ Shows the status of a specific game (generally in the currently directory).
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game status [-g <value>]
 

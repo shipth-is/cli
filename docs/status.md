@@ -21,7 +21,7 @@ Displays the current overall status.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis status
 

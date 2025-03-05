@@ -13,7 +13,8 @@ To authenticate, please run [`shipthis apple login`](/docs/reference/apple/login
 [![asciicast](https://asciinema.org/a/PPSZ5EUxbdnd3IqCk6vtb2Bmw.svg)](https://asciinema.org/a/PPSZ5EUxbdnd3IqCk6vtb2Bmw)
 
 ## Help Output
-```
+
+```help
 USAGE
   $ shipthis apple status
 

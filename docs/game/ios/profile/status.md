@@ -6,7 +6,7 @@ Shows the Game iOS Mobile Provisioning Profile Status.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios profile status [-g <value>] [-f]
 

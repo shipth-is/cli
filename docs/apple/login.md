@@ -22,7 +22,7 @@ your behalf. To do this, ShipThis generates temporary session cookies which it r
 
 ## Help Output
 
-```bash
+```help
 USAGE
   $ shipthis apple login [-q] [-f] [-e <value>]
 

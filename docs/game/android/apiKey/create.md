@@ -6,7 +6,7 @@ Creates a new Android Service Account API Key for a game
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey create [-g <value>] [-w] [-f]
 

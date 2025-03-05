@@ -37,7 +37,7 @@ Saves the private key in your ShipThis account.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis apple apiKey create [-f] [-q]
 
@@ -63,7 +63,7 @@ Saves the current App Store Connect API Key to a ZIP file
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis apple apiKey export FILE [-f]
 
@@ -88,7 +88,7 @@ Imports an App Store Connect API Key ZIP file into your ShipThis account
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis apple apiKey import FILE [-f]
 
@@ -114,7 +114,7 @@ This API key is used to automatically publish your games to the App Store.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis apple apiKey status [-f]
 

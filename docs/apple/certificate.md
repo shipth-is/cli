@@ -39,7 +39,7 @@ Saves the certificate with the private key to your ShipThis account
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis apple certificate create [-f] [-q]
 
@@ -65,7 +65,7 @@ Saves the current Apple Distribution Certificate to a ZIP file.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis apple certificate export FILE [-f]
 
@@ -90,7 +90,7 @@ Imports an iOS Distribution Certificate to your ShipThis account
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis apple certificate import FILE [-f]
 
@@ -116,7 +116,7 @@ These are used to sign all of your iOS apps.
 
 #### Help Output
 
-```
+```help
 USAGE
   $ shipthis apple certificate status [-f]
 

@@ -7,7 +7,7 @@ Saves the certificate with the private key to your ShipThis account
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis apple certificate create [-f] [-q]
 

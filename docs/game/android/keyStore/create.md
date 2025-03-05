@@ -6,7 +6,7 @@ Creates a new Android Keystore for a game
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore create [-g <value>] [-f]
 

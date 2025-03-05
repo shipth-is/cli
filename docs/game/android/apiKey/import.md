@@ -6,7 +6,7 @@ Imports an Android Service Account API Key to your ShipThis account for the spec
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey import FILE [-g <value>] [-f]
 

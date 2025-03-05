@@ -7,7 +7,7 @@ Saves the private key in your ShipThis account.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis apple apiKey create [-f] [-q]
 

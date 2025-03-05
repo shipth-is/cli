@@ -6,7 +6,7 @@ Saves the current Mobile Provisioning Profile to a ZIP file
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios profile export FILE [-g <value>] [-f]
 

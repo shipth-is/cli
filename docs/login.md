@@ -16,7 +16,7 @@ you can view details of your games.
 
 ## Help Output
 
-```bash
+```help
 USAGE
   $ shipthis login [-f] [-e <value>]
 

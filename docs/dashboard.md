@@ -18,7 +18,7 @@ You need to have authenticated with [`shipthis login`](/docs/reference/login) fi
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis dashboard
 

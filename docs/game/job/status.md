@@ -6,7 +6,7 @@ Shows the real-time status of a job.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game job status JOB_ID [-g <value>] [-n <value>] [-f]
 

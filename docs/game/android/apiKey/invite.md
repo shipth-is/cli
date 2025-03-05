@@ -6,7 +6,7 @@ Invites the Service Account to your Google Play Account.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey invite [ACCOUNTID] [-g <value>] [-p] [-p] [-w]
 

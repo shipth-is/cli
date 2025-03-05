@@ -6,7 +6,7 @@ Shows the Game iOS App status.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios app status [-g <value>]
 

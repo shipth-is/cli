@@ -6,7 +6,7 @@ Lists the jobs for a game.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
 

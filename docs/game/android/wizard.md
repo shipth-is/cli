@@ -6,7 +6,7 @@ Prototype Android Wizard
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android wizard [-n <value>] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>] [-a
     <value>]

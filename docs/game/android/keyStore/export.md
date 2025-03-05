@@ -6,7 +6,7 @@ Saves the current Android Keystore to a ZIP file
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore export FILE [-g <value>] [-f]
 

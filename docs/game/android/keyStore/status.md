@@ -6,7 +6,7 @@ Displays the status of the Android Keystore for a specific game.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore status [-g <value>]
 

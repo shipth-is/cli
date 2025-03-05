@@ -11,7 +11,7 @@ includes the [App & BundleId](/docs/reference/game/ios/app) and the [Provisionin
 
 ## Help Output
 
-```bash
+```help
 USAGE
   $ shipthis game ios status [-g <value>]
 

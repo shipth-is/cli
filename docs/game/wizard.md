@@ -21,7 +21,7 @@ To do that please run the following command first:
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game wizard PLATFORM [-f <value>]
 

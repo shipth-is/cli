@@ -27,7 +27,7 @@ After changing these values, you will need to trigger a new build of your game w
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game details [-g <value>] [-f] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>] [-a
     <value>]

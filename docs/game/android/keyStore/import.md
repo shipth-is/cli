@@ -6,7 +6,7 @@ Imports an Android Keystore to your ShipThis account for the specified game.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android keyStore import FILE [-g <value>] [-f]
 

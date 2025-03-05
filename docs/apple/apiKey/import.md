@@ -6,7 +6,7 @@ Imports an App Store Connect API Key ZIP file into your ShipThis account
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis apple apiKey import FILE [-f]
 

@@ -6,7 +6,7 @@ Runs all the steps for iOS
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios wizard [-f <value>]
 

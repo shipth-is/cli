@@ -26,7 +26,7 @@ command.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game create [-q] [-f] [-n <value>] [-b <value>] [-s <value>] [-e <value>] [-v <value>] [-i <value>]
     [-a <value>]

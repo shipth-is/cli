@@ -6,7 +6,7 @@ Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the loca
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios app sync [-q] [-g <value>] [-f]
 

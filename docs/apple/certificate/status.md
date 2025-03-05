@@ -7,7 +7,7 @@ These are used to sign all of your iOS apps.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis apple certificate status [-f]
 

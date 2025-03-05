@@ -6,7 +6,7 @@ Saves the current Android Service Account API Key to a ZIP file
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game android apiKey export FILE [-g <value>] [-f]
 

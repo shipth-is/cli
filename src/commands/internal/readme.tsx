@@ -67,7 +67,7 @@ const COMMAND_TEMPLATE = `
 
 ## Help Output
 
-\`\`\`
+\`\`\`help
 <%- helpOutput %>
 \`\`\`
 `.trim() // Remove the leading newline
@@ -82,7 +82,7 @@ const COMMAND_TEMPLATE_INCLUDE = `
 
 #### Help Output
 
-\`\`\`
+\`\`\`help
 <%- helpOutput %>
 \`\`\`
 `.trim() // Remove the leading newline

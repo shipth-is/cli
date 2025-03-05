@@ -6,7 +6,7 @@ Creates a Mobile Provisioning Profile in the Apple Developer Portal.
 
 ## Help Output
 
-```
+```help
 USAGE
   $ shipthis game ios profile create [-q] [-g <value>] [-f]
 
