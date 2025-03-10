@@ -3,7 +3,7 @@ import {Box, Text} from 'ink'
 import {DateTime} from 'luxon'
 import Spinner from 'ink-spinner'
 
-import {getBuildSummary, getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
+import {getBuildSummary, getJobStatusColor, getJobSummary, getStageColor} from '@cli/utils/index.js'
 import {Job, JobStatus} from '@cli/types'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
 import {Title} from './common/Title.js'
@@ -29,7 +29,7 @@ const JobStatusSpinner = ({status, showSpinner}: {status: JobStatus; showSpinner
 )
 
 export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobStatusTableProps) => {
-  const {data: job, isLoading} = useJobWatching({projectId, jobId, isWatching, onJobUpdate})
+  const {data: job, stage, isLoading} = useJobWatching({projectId, jobId, isWatching, onJobUpdate})
 
   const [time, setTime] = useState(DateTime.now())
 
@@ -57,6 +57,10 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
             <Box flexDirection="row">
               <StatusRowLabel label="Status" />
               <JobStatusSpinner status={job.status} showSpinner={isWatching && !!isJobInProgress} />
+            </Box>
+            <Box flexDirection="row">
+              <StatusRowLabel label="Stage" />
+              {stage && <Text color={getStageColor(stage)}>{`${stage}`}</Text>}
             </Box>
             <StatusRow label="Version" value={summary.version} />
             <StatusRow label="Git Info" value={summary.gitInfo} />

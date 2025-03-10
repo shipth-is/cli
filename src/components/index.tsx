@@ -8,6 +8,7 @@ export * from './BuildsTable.js'
 export * from './JobLogTail.js'
 export * from './JobStatusTable.js'
 export * from './ProjectCredentialsTable.js'
+export * from './Ship.js'
 export * from './UserCredentialsTable.js'
 
 // The components for each sub-command run in the wizard have these props

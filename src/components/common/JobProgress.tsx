@@ -1,7 +1,7 @@
 import {useRef} from 'react'
 
 import {Job, JobStatus} from '@cli/types/api.js'
-import {useJobWatching} from '@cli/utils/index.js'
+import {getPlatformName, useJobWatching} from '@cli/utils/index.js'
 import {ProgressSpinner} from '@cli/components/index.js'
 
 interface Props {
@@ -28,9 +28,11 @@ export const JobProgress = (props: Props) => {
     onJobUpdate: handleJobUpdate,
   })
 
+  const label = `${getPlatformName(props.job.type)} build progress...`
+
   return (
     <>
-      <ProgressSpinner progress={progress} label="Job progress..." spinnerType="dots" />
+      <ProgressSpinner progress={progress} label={label} spinnerType="dots" />
     </>
   )
 }

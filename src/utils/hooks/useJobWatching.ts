@@ -1,4 +1,4 @@
-import {Job, JobLogEntry} from '@cli/types'
+import {Job, JobLogEntry, JobStage} from '@cli/types'
 import {useJob} from '@cli/utils/query/useJob.js'
 import {useEffect, useState} from 'react'
 import {useWebSocket, WebSocketListener} from './useWebSocket.js'
@@ -15,6 +15,7 @@ export interface JobWatchingResult {
   isLoading: boolean
   data: Job | null
   progress: number | null
+  stage: JobStage | null
 }
 
 // Like useJob but also listens for job updates via websocket
@@ -54,10 +55,12 @@ export function useJobWatching({projectId, jobId, isWatching, onJobUpdate}: JobW
   const fetchedJob = job ? job : null
   const data = websocketJob ? websocketJob : fetchedJob
   const progress = mostRecentLog?.progress || null
+  const stage = mostRecentLog?.stage || null
 
   return {
     isLoading,
     data,
     progress,
+    stage,
   }
 }

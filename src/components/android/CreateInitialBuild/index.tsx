@@ -2,11 +2,9 @@ import {Box, Text} from 'ink'
 import {useContext, useEffect, useRef} from 'react'
 import Spinner from 'ink-spinner'
 
-import {CommandContext, GameContext, StepProps} from '@cli/components/index.js'
+import {CommandContext, GameContext, StepProps, JobProgress} from '@cli/components/index.js'
 import {useBuilds, useJobs, useShip} from '@cli/utils/index.js'
 import {JobStatus, Platform} from '@cli/types/api.js'
-
-import {JobProgress} from './JobProgress.js'
 
 export const CreateInitialBuild = (props: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)

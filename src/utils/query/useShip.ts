@@ -13,18 +13,26 @@ import {BaseCommand} from '@cli/baseCommands/index.js'
 
 // Takes the current command so we can get the project config
 // TODO: refactor to make more composable
-export async function ship(command: BaseCommand<any>): Promise<Job[]> {
+interface ShipOptions {
+  command: BaseCommand<any>
+  log?: (message: string) => void
+}
+
+export async function ship({command, log = () => {}}: ShipOptions): Promise<Job[]> {
+  log('Fetching project config...')
   const projectConfig: ProjectConfig = await command.getProjectConfig()
 
   if (!projectConfig.project) throw new Error('No project found in project config')
 
+  log('Retrieving file globs...')
   const shippedFilesGlobs = projectConfig.shippedFilesGlobs || DEFAULT_SHIPPED_FILES_GLOBS
   const ignoredFilesGlobs = projectConfig.ignoredFilesGlobs || DEFAULT_IGNORED_FILES_GLOBS
 
+  log('Finding files to include in zip...')
   const files = await fg(shippedFilesGlobs, {dot: true, ignore: ignoredFilesGlobs})
 
+  log(`Found ${files.length} files, adding to zip...`)
   const zipFile = new yazl.ZipFile()
-
   for (const file of files) {
     zipFile.addFile(file, file)
   }
@@ -37,12 +45,17 @@ export async function ship(command: BaseCommand<any>): Promise<Job[]> {
     })
 
   const tmpZipFile = `${process.cwd()}/shipthis-${uuid()}.zip`
+  log(`Creating zip file: ${tmpZipFile}`)
   await outputZipToFile(zipFile, tmpZipFile)
+
+  log('Reading zip file buffer...')
   const zipBuffer = fs.readFileSync(tmpZipFile)
   const {size} = fs.statSync(tmpZipFile)
 
+  log('Requesting upload ticket...')
   const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
 
+  log('Uploading zip file...')
   await axios.put(uploadTicket.url, zipBuffer, {
     headers: {
       'Content-length': size,
@@ -50,15 +63,22 @@ export async function ship(command: BaseCommand<any>): Promise<Job[]> {
     },
   })
 
-  // Tag the upload with some info
+  log('Fetching Git info...')
   const gitInfo = await getCWDGitInfo()
+  log('Computing file hash...')
   const zipFileMd5 = await getFileHash(tmpZipFile)
   const uploadDetails: UploadDetails = {
     ...gitInfo,
     zipFileMd5,
   }
 
+  log('Starting jobs from upload...')
   const jobs = await startJobsFromUpload(uploadTicket.id, uploadDetails)
+
+  log('Cleaning up temporary zip file...')
+  fs.unlinkSync(tmpZipFile)
+
+  log('Job submission complete.')
   return jobs
 }
 
