@@ -1,5 +1,5 @@
 import {Box, Text} from 'ink'
-import {useContext, useEffect, useRef} from 'react'
+import {useContext, useEffect, useRef, useState} from 'react'
 import Spinner from 'ink-spinner'
 
 import {CommandContext, GameContext, StepProps, JobProgress} from '@cli/components/index.js'
@@ -24,6 +24,7 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
   })
   const prevHasBuild = useRef<boolean>(false)
   const shipMutation = useShip()
+  const [shipLog, setShipLog] = useState<string>('')
 
   // Trigger a build if we don't have one
   useEffect(() => {
@@ -39,7 +40,13 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
     const hasAndroidJob = jobData.data.some((job) => job.type === Platform.ANDROID)
     // If we don't have a build and we don't have an android job - run the ship command
     const shouldRun = !hasAndroidBuild && !hasAndroidJob
-    if (shouldRun) shipMutation.mutateAsync(command).catch(onError)
+    if (shouldRun)
+      shipMutation
+        .mutateAsync({
+          command,
+          log: setShipLog,
+        })
+        .catch(onError)
   }, [buildData, jobData, command])
 
   const androidJob = jobData?.data.find(
@@ -53,6 +60,7 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
           <Text>Create an initial build...</Text>
           {(isLoadingBuilds || isLoadingJobs || shipMutation.isPending) && <Spinner type="dots" />}
         </Box>
+        {androidJob == null && <Text>{shipLog}</Text>}
         {androidJob && <JobProgress job={androidJob} onComplete={onComplete} />}
       </Box>
     </>
