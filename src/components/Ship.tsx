@@ -47,7 +47,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
         jobs.map((job) => (
           <Box key={job.id} flexDirection="column" marginBottom={1}>
             <JobStatusTable jobId={job.id} projectId={job.project.id} isWatching={true} />
-            <Box width={100} flexDirection="column">
+            <Box flexDirection="column">
               <JobProgress job={job} onComplete={() => handleJobComplete(job)} />
             </Box>
           </Box>
