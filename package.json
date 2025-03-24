@@ -143,7 +143,6 @@
     "./dist/commands/game/android/apiKey/invite.js",
     "./dist/commands/game/android/apiKey/connect.js",
     "./dist/commands/game/android/status.js",
-    "./dist/commands/game/android/wizard.js",
     "./dist/commands/game/export.js",
     "./dist/commands/internal/readme.js",
     "./dist/commands/internal/fastlane.js",
@@ -157,8 +156,7 @@
     "commands": "./dist/commands",
     "helpClass": "./dist/utils/help",
     "plugins": [
-      "@oclif/plugin-help",
-      "@oclif/plugin-plugins"
+      "@oclif/plugin-help"
     ],
     "topicSeparator": " ",
     "topics": {
