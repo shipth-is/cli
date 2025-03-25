@@ -39,6 +39,8 @@ export interface ProjectDetails {
   androidPackageName?: string
   buildNumber?: number
   semanticVersion?: string
+  gcpProjectId?: string
+  gcpServiceAccountId?: string
 }
 
 // What the POST/PUT endpoints accept for creating/updating a project

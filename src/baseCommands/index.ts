@@ -14,4 +14,6 @@ export const DetailsFlags = {
   gameEngineVersion: Flags.string({char: 'v', description: 'Set the game engine version'}),
   iosBundleId: Flags.string({char: 'i', description: 'Set the iOS bundle ID'}),
   androidPackageName: Flags.string({char: 'a', description: 'Set the Android package name'}),
+  gcpProjectId: Flags.string({char: 'g', description: 'Set the GCP project ID'}),
+  gcpServiceAccountId: Flags.string({char: 'c', description: 'Set the GCP service account ID'}),
 }

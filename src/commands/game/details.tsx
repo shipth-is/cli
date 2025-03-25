@@ -27,8 +27,17 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   public async run(): Promise<void> {
     const {gameId, force, ...valueFlags} = this.flags
 
-    const {name, semanticVersion, buildNumber, gameEngine, gameEngineVersion, iosBundleId, androidPackageName} =
-      valueFlags
+    const {
+      name,
+      semanticVersion,
+      buildNumber,
+      gameEngine,
+      gameEngineVersion,
+      iosBundleId,
+      androidPackageName,
+      gcpProjectId,
+      gcpServiceAccountId,
+    } = valueFlags
 
     if (semanticVersion && !isValidSemVer(semanticVersion))
       throw new Error(`Invalid semantic version: ${semanticVersion}`)
@@ -50,6 +59,8 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
         ...(gameEngineVersion && {gameEngineVersion}),
         ...(iosBundleId && {iosBundleId}),
         ...(androidPackageName && {androidPackageName}),
+        ...(gcpProjectId && {gcpProjectId}),
+        ...(gcpServiceAccountId && {gcpServiceAccountId}),
       },
     }
 
@@ -68,6 +79,8 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
             'Android Package Name': game.details?.androidPackageName || 'N/A',
             'Semantic Version': game.details?.semanticVersion || '0.0.1',
             'Build Number': game.details?.buildNumber || 1,
+            'GCP Project ID': game.details?.gcpProjectId || 'N/A',
+            'GCP Service Account ID': game.details?.gcpServiceAccountId || 'N/A',
           }}
         />
       </Command>,
