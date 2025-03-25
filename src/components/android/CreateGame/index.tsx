@@ -2,8 +2,7 @@ import {Box} from 'ink'
 import {useContext, useEffect, useState} from 'react'
 import Spinner from 'ink-spinner'
 
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {createProject} from '@cli/api/index.js'
+import {createProject, updateProject} from '@cli/api/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/config.js'
 import {EditableProject, GameEngine, Project} from '@cli/types/api.js'
 import {getGodotVersion} from '@cli/utils/godot.js'
@@ -36,64 +35,64 @@ export const CreateGame = (props: StepProps): JSX.Element => {
 
   // Populate the form with the game info (if game already exists)
   const handleLoad = async () => {
-    if (!command) return
-    const flagValues = command.getDetailsFlagsValues()
-    const projectConfig = await command.getProjectConfigSafe()
-    if (!projectConfig.project) {
-      setShowForm(true)
-      setIsLoading(false)
-      const gameInfo = getGameInfo(flagValues)
-      setGameInfo(gameInfo)
-      return
-    }
-    const gameInfo = getGameInfo(flagValues, game || undefined)
-    setGameInfo(gameInfo)
+    if (!command) throw new Error('No command')
+    const flags = command.getDetailsFlagsValues()
+    const config = await command.getProjectConfigSafe()
     setShowForm(true)
     setIsLoading(false)
+    const info = getGameInfo(flags, config.project)
+    setGameInfo(info)
   }
-
   useEffect(() => {
-    handleLoad()
+    handleLoad().catch(props.onError)
   }, [])
 
-  const handleGameInfoSubmit = async (gameInfo: EditableProject) => {
-    if (!command) return
-    // TODO: error handling and props.onError
-    setShowForm(false)
-    setIsLoading(true)
+  const handleSubmitForm = async (gameInfo: EditableProject) => {
+    try {
+      setShowForm(false)
+      setIsLoading(true)
 
-    const isNew = !(await command.getProjectConfigSafe()).project
+      if (!command) throw new Error('No command')
+      const projectConfig = await command.getProjectConfigSafe()
+      const existingGame = projectConfig.project
 
-    // If the game already exists, update the game info (set androidPackageName)
-    if (!isNew) {
-      // TODO
-      const cmd = command as BaseGameCommand<any>
-      await cmd.updateGame(gameInfo)
-      return props.onComplete()
+      // If the game already exists, update the game info (set androidPackageName)
+      const isNew = !existingGame
+      if (!isNew) {
+        const project = await updateProject(existingGame.id, gameInfo)
+        const updatedConfig = {
+          ...projectConfig,
+          project,
+        }
+        await command.setProjectConfig(updatedConfig)
+        return props.onComplete()
+      }
+
+      const {name, details} = gameInfo
+      const projectDetails = {
+        ...details,
+        gameEngine: GameEngine.GODOT,
+        gameEngineVersion: getGodotVersion(),
+      }
+      const project = await createProject({name, details: projectDetails})
+      await command.setProjectConfig({
+        project,
+        shippedFilesGlobs: DEFAULT_SHIPPED_FILES_GLOBS,
+        ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
+      })
+
+      // Update the context value for the other components in the wizard
+      setGameId(project.id)
+      props.onComplete()
+    } catch (e: any) {
+      props.onError(e as Error)
     }
-
-    const {name, details} = gameInfo
-    const projectDetails = {
-      ...details,
-      gameEngine: GameEngine.GODOT,
-      gameEngineVersion: getGodotVersion(),
-    }
-    const project = await createProject({name, details: projectDetails})
-    await command.setProjectConfig({
-      project,
-      shippedFilesGlobs: DEFAULT_SHIPPED_FILES_GLOBS,
-      ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
-    })
-
-    // Update the context value for the other components in the wizard
-    setGameId(project.id)
-    props.onComplete()
   }
 
   return (
     <Box flexDirection="column" gap={1} borderStyle="single" margin={1}>
       {isLoading && <Spinner />}
-      {showForm && gameInfo && <GameInfoForm gameInfo={gameInfo} onSubmit={handleGameInfoSubmit} />}
+      {showForm && gameInfo && <GameInfoForm gameInfo={gameInfo} onSubmit={handleSubmitForm} />}
     </Box>
   )
 }

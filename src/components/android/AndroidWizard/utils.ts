@@ -24,21 +24,12 @@ export const Steps = [
 
 export type Step = (typeof Steps)[number]
 
+// Determines the initial status of a step
 // We apply what is running / failed over this
 export const getStepInitialStatus = (
   step: Step,
   statusFlags: StatusFlags,
 ): StepStatus.SUCCESS | StepStatus.PENDING | StepStatus.WARN => {
-  const base: any = {
-    gameInfo: statusFlags.hasGameName && statusFlags.hasAndroidPackageName,
-    createGame: statusFlags.hasShipThisProject,
-    createKeystore: statusFlags.hasAndroidKeystore,
-    createServiceAccount: statusFlags.hasServiceAccountKey,
-    createGooglePlayGame: statusFlags.hasGooglePlayGame,
-    inviteServiceAccount: statusFlags.hasInvitedServiceAccount,
-  }
-
-  if (step in base) return base[step] ? StepStatus.SUCCESS : StepStatus.PENDING
   if (step === 'connectGoogle') {
     // Not connected but we don't need to be since we have key and have invited service account
     if (!statusFlags.hasGoogleConnection && statusFlags.hasServiceAccountKey && statusFlags.hasInvitedServiceAccount)
@@ -52,7 +43,21 @@ export const getStepInitialStatus = (
     return statusFlags.hasInitialBuild ? StepStatus.SUCCESS : StepStatus.PENDING
   }
 
-  throw new Error(`Unknown step: ${step}`)
+  type BaseStatuses = {
+    [K in Step]: boolean
+  }
+
+  const base: BaseStatuses = {
+    createGame: statusFlags.hasGameName && statusFlags.hasAndroidPackageName,
+    createKeystore: statusFlags.hasAndroidKeystore,
+    createServiceAccount: statusFlags.hasServiceAccountKey,
+    createGooglePlayGame: statusFlags.hasGooglePlayGame,
+    inviteServiceAccount: statusFlags.hasInvitedServiceAccount,
+    connectGoogle: false,
+    createInitialBuild: false,
+  }
+
+  return base[step] ? StepStatus.SUCCESS : StepStatus.PENDING
 }
 
 // All the data points we need to determine the status of each step
@@ -93,7 +98,7 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
   )
 
   const buildsResponse = !!projectId && hasShipThisProject && (await queryBuilds({projectId, pageNumber: 0}))
-  const hasInitialBuild = !!buildsResponse && buildsResponse.data.length > 0
+  const hasInitialBuild = !!buildsResponse && buildsResponse.data.some((build) => build.platform === Platform.ANDROID)
 
   const testResult = projectId ? await fetchKeyTestResult({projectId}) : null
 
@@ -117,7 +122,8 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
 }
 
 export const isComplete = (statusFlags: StatusFlags): boolean => {
-  const needed = [
+  type StatusFlagKey = keyof StatusFlags
+  const needed: StatusFlagKey[] = [
     'hasShipThisProject',
     'hasGameName',
     'hasAndroidPackageName',
