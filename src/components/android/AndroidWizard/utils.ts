@@ -43,18 +43,12 @@ export const getStepInitialStatus = (
     return statusFlags.hasInitialBuild ? StepStatus.SUCCESS : StepStatus.PENDING
   }
 
-  type BaseStatuses = {
-    [K in Step]: boolean
-  }
-
-  const base: BaseStatuses = {
+  const base: Partial<Record<Step, boolean>> = {
     createGame: statusFlags.hasGameName && statusFlags.hasAndroidPackageName,
     createKeystore: statusFlags.hasAndroidKeystore,
     createServiceAccount: statusFlags.hasServiceAccountKey,
     createGooglePlayGame: statusFlags.hasGooglePlayGame,
     inviteServiceAccount: statusFlags.hasInvitedServiceAccount,
-    connectGoogle: false,
-    createInitialBuild: false,
   }
 
   return base[step] ? StepStatus.SUCCESS : StepStatus.PENDING

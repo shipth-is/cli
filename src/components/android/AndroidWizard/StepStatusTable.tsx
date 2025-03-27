@@ -6,7 +6,7 @@ import {Step, Steps, StepStatus} from './utils.js'
 
 const StepLabels: Record<Step, string> = {
   createGame: 'Create game in ShipThis',
-  createKeystore: 'Create an Android Keystore',
+  createKeystore: 'Create or import an Android Keystore',
   connectGoogle: 'Connect ShipThis with Google',
   createServiceAccount: 'Create a Service Account & API Key',
   createInitialBuild: 'Create an initial build',

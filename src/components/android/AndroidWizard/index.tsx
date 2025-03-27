@@ -7,7 +7,7 @@ import {WEB_URL} from '@cli/constants/config.js'
 
 // Avoid circular imports here - import the components directly
 import {CreateGame} from '@cli/components/android/CreateGame/index.js'
-import {CreateKeystore} from '@cli/components/android/CreateKeystore.js'
+import {CreateKeystore} from '@cli/components/android/Keystore/Create.js'
 import {ConnectGoogle} from '@cli/components/android/ConnectGoogle/index.js'
 import {CreateServiceAccountKey} from '@cli/components/android/CreateServiceAccountKey/index.js'
 import {CreateInitialBuild} from '@cli/components/android/CreateInitialBuild/index.js'

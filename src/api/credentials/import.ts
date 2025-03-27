@@ -5,7 +5,7 @@ import {promises as fsAsync} from 'fs'
 import {getAuthedHeaders} from '@cli/api/index.js'
 
 import {API_URL} from '@cli/constants/index.js'
-import {CredentialsType, Platform} from '@cli/types'
+import {CredentialsType, Platform, ProjectCredential, UserCredential} from '@cli/types'
 
 interface ImportTicket {
   url: string
@@ -33,7 +33,12 @@ export interface ImportCredentialProps {
   platform: Platform
 }
 
-export async function importCredential({projectId, zipPath, type, platform}: ImportCredentialProps) {
+export async function importCredential({
+  projectId,
+  zipPath,
+  type,
+  platform,
+}: ImportCredentialProps): Promise<UserCredential | ProjectCredential> {
   // Request a new import
   const importTicket = await getNewImportTicket(projectId)
   // Upload zip to the given url
@@ -50,7 +55,7 @@ export async function importCredential({projectId, zipPath, type, platform}: Imp
   const url = projectId ? `${API_URL}/projects/${projectId}/credentials/import` : `${API_URL}/credentials/import`
 
   // Trigger import for this import request
-  return await axios({
+  const {data: publicCredential} = await axios({
     method: 'post',
     url,
     headers,
@@ -60,4 +65,11 @@ export async function importCredential({projectId, zipPath, type, platform}: Imp
       platform,
     },
   })
+
+  if (projectId) {
+    // If we have a projectId, we need to return the project credential
+    return publicCredential as ProjectCredential
+  }
+
+  return publicCredential as UserCredential
 }
