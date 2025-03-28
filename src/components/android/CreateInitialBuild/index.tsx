@@ -37,9 +37,11 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
     // If we now have a build - trigger the onComplete
     if (!prevHasBuild.current && hasAndroidBuild) return onComplete()
     prevHasBuild.current = hasAndroidBuild
-    const hasAndroidJob = jobData.data.some((job) => job.type === Platform.ANDROID)
+    const hasRunningAndroidJob = jobData.data.some(
+      (job) => job.type === Platform.ANDROID && [JobStatus.PENDING, JobStatus.PROCESSING].includes(job.status),
+    )
     // If we don't have a build and we don't have an android job - run the ship command
-    const shouldRun = !hasAndroidBuild && !hasAndroidJob
+    const shouldRun = !hasAndroidBuild && !hasRunningAndroidJob
     if (shouldRun)
       shipMutation
         .mutateAsync({
