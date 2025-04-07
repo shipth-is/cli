@@ -13,9 +13,7 @@ export interface CommandProps {
 }
 
 export const Command = ({children, command}: CommandProps) => {
-  // TODO: this is because I have a massive wide monitor.
-  const width = Math.min(160, process.stdout.columns || 80)
-
+  const width = process.stdout.columns || 80
   return (
     <QueryClientProvider client={queryClient}>
       <CommandProvider command={command}>

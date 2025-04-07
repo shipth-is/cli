@@ -42,7 +42,7 @@ export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<type
     )
 
     if (hasAndroidApiKey && !force) {
-      this.error('An Android API Key is already set on this game. Use --force to overwrite it.')
+      this.error('An Android Service Account API Key is already set on this game. Use --force to overwrite it.')
     }
 
     const handleComplete = async () => {
@@ -53,7 +53,7 @@ export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<type
       <Command command={this}>
         <RunWithSpinner
           msgInProgress={`Importing Android Service Account API Key from ${file}...`}
-          msgComplete={`Android Android Service Account API Key imported from ${file}`}
+          msgComplete={`Android Service Account API Key imported from ${file}`}
           executeMethod={() =>
             importCredential({
               projectId: game.id,

@@ -18,7 +18,9 @@ interface JobStatusTableProps {
 
 const JobStatusSpinner = ({status, showSpinner}: {status: JobStatus; showSpinner: boolean}) => (
   <>
-    <Text color={getJobStatusColor(status)}>{`${status}`}</Text>
+    <Box width={JobStatus.PROCESSING.length}>
+      <Text color={getJobStatusColor(status)}>{`${status}`}</Text>
+    </Box>
     {showSpinner && (
       <>
         <Text> </Text>
@@ -51,22 +53,25 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
         <Title>Job Details</Title>
         {isLoading && <Spinner type="dots" />}
         {summary && job && (
-          <Box flexDirection="column" marginLeft={2}>
-            <StatusRow label="ID" value={summary.id} />
-            <StatusRow label="Name" value={job.project.name} />
-            <Box flexDirection="row">
-              <StatusRowLabel label="Status" />
-              <JobStatusSpinner status={job.status} showSpinner={isWatching && !!isJobInProgress} />
+          <Box flexDirection="row">
+            <Box flexDirection="column" marginLeft={2}>
+              <StatusRow label="ID" value={summary.id} />
+              <StatusRow label="Platform" value={summary.platform} />
+              <Box flexDirection="row">
+                <StatusRowLabel label="Status" />
+                <JobStatusSpinner status={job.status} showSpinner={isWatching && !!isJobInProgress} />
+              </Box>
+              <Box flexDirection="row">
+                <StatusRowLabel label="Stage" />
+                {stage && <Text color={getStageColor(stage)}>{`${stage}`}</Text>}
+              </Box>
             </Box>
-            <Box flexDirection="row">
-              <StatusRowLabel label="Stage" />
-              {stage && <Text color={getStageColor(stage)}>{`${stage}`}</Text>}
+            <Box flexDirection="column" marginLeft={2}>
+              <StatusRow label="Version" value={summary.version} />
+              <StatusRow label="Git Info" value={summary.gitInfo} />
+              <StatusRow label="Started At" value={summary.createdAt} />
+              <StatusRow label="Runtime" value={summary.runtime} />
             </Box>
-            <StatusRow label="Version" value={summary.version} />
-            <StatusRow label="Git Info" value={summary.gitInfo} />
-            <StatusRow label="Platform" value={summary.platform} />
-            <StatusRow label="Started At" value={summary.createdAt} />
-            <StatusRow label="Runtime" value={summary.runtime} />
           </Box>
         )}
       </Box>

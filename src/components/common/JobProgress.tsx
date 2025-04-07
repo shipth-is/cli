@@ -6,7 +6,8 @@ import {ProgressSpinner} from '@cli/components/index.js'
 
 interface Props {
   job: Job
-  onComplete: () => void
+  onComplete: (j: Job) => void
+  onFailure: (j: Job) => void
 }
 
 export const JobProgress = (props: Props) => {
@@ -16,7 +17,11 @@ export const JobProgress = (props: Props) => {
     const completed = [JobStatus.COMPLETED, JobStatus.FAILED]
     const wasRunning = !completed.includes(prevJobStatus.current)
     if (completed.includes(job.status) && wasRunning) {
-      props.onComplete()
+      if (job.status === JobStatus.FAILED) {
+        props.onFailure(job)
+      } else {
+        props.onComplete(job)
+      }
     }
     prevJobStatus.current = job.status
   }

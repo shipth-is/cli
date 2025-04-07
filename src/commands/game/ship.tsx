@@ -14,7 +14,11 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     await this.ensureWeAreInAProjectDir()
 
     const handleComplete = () => process.exit(0)
-    const handleError = (e: Error) => this.error(e)
+    const handleError = (e: Error) => {
+      // The ship component shows the error - we just fail
+      // TODO: specific error codes?
+      process.exit(1)
+    }
 
     render(
       <CommandGame command={this}>
