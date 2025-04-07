@@ -4,7 +4,7 @@ import {Text, Box, useInput} from 'ink'
 import open from 'open'
 
 import {CommandContext, GameContext, JobLogTail, JobProgress, JobStatusTable, Markdown} from '@cli/components/index.js'
-import {useShip} from '@cli/utils/index.js'
+import {getShortUUID, useShip} from '@cli/utils/index.js'
 import {Job} from '@cli/types/index.js'
 import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
@@ -75,6 +75,8 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
     }, 500)
   }, [isComplete])
 
+  if (!gameId) return <></>
+
   return (
     <Box flexDirection="column">
       {jobs == null && <Text>{shipLog}</Text>}
@@ -105,7 +107,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
             <Markdown
               filename="ship-success.md"
               templateVars={{
-                gameBuildsUrl: `${WEB_URL}games/${gameId}/builds`,
+                gameBuildsUrl: `${WEB_URL}games/${getShortUUID(gameId)}/builds`,
               }}
             />
           )}
@@ -114,7 +116,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
               <Markdown
                 filename="ship-failure.md"
                 templateVars={{
-                  jobDashboardUrl: `${WEB_URL}games/${gameId}/job/${failedJobs[0].id}`,
+                  jobDashboardUrl: `${WEB_URL}games/${getShortUUID(gameId)}/job/${getShortUUID(failedJobs[0].id)}`,
                 }}
               />
               <Box marginTop={1}>
