@@ -4,10 +4,9 @@
 
 ## What now?
 
-- The last 10 lines of the failed jobs are shown below
+- **The last 10 lines of the failed jobs are shown below**
 - Check out the full output in the **ShipThis Dashboard** [${jobDashboardUrl}](${jobDashboardUrl})
 
 ### Need help?
 
 - Join the Discord [https://discord.gg/HuSvK4GT](https://discord.gg/HuSvK4GT)
-- Report an issue [https://gitlab.com/shipthis.cc/shipthis-cli/-/issues](https://gitlab.com/shipthis.cc/shipthis-cli/-/issues)
