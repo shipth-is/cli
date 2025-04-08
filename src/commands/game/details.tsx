@@ -73,6 +73,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
         <StatusTable
           title="Game Details"
           statuses={{
+            'Game Name': game.name,
             'Game Engine': game.details?.gameEngine || 'Please set!',
             'Game Engine Version': game.details?.gameEngineVersion || 'Please set!',
             'iOS Bundle ID': game.details?.iosBundleId || 'N/A',
