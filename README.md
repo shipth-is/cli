@@ -11,8 +11,13 @@
   </a>
 </h1>
 <p align="center">
-Test
   <em><b>ShipThis</b> is a <b>command line tool</b> which manages building and uploading your <a href="https://godotengine.org/">Godot</a> mobile games to the <b>Apple App Store</b> and <b>Google Play</b>. Designed to compile and upload your Godot games in the cloud, meaning <b>you do not need to install or run Xcode or Android Studio to release an iOS or Android game</b>.</em>
+</p>
+
+<p align="center">
+  <picture>
+    <img height="266" width="504" alt="ShipThis Home" src="docs/assets/ship-outputx0.8.gif">
+  </picture>
 </p>
 
 ---
@@ -21,7 +26,7 @@ Test
 
 ### What you'll need
 
-- A Godot 3.6 or 4.3 game
+- A Godot 3.6 or 4.X game
 - [Node.js](https://nodejs.org/en/download/) version 18.0 or above
 - **If you are building an iOS game** - an [Apple Developer account](https://developer.apple.com)
 - **If you are building an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup)
