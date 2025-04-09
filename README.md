@@ -1,13 +1,14 @@
 <h1 align="center">
   <a href="https://shipthis.cc">
     <picture>
-    <source height="56" width="260" srcset="https://shipthis.cc/logo_darkmode.svg">
-      <img height="56" width="260" alt="ShipThis" src="https://shipthis.cc/logo_darkmode.svg" ></img>
+    <source height="56" width="260" srcset="https://shipthis.cc/logo_darkmode.svg" media="(prefers-color-scheme: dark)">
+    <source height="56" width="260" srcset="https://shipthis.cc/logo_normal.svg" media="(prefers-color-scheme: light)">
+      <img height="56" width="260" alt="ShipThis" src="https://shipthis.cc/logo_normal.svg" />
     </picture>
   </a>
   <br>
   <a href="https://discord.gg/gPjn3S99k4">
-    <img src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7">
+    <img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7">
   </a>
 </h1>
 <p align="center">
