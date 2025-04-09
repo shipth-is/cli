@@ -1,8 +1,8 @@
 <h1 align="center">
   <a href="https://shipthis.cc">
     <picture>
-    <source height="56" width="260" srcset="https://shipthis.cc/logo_normal.svg" media="(prefers-color-scheme: dark)">
-    <img height="56" width="260" alt="ShipThis" src="https://shipthis.cc/logo_darkmode.svg" />
+      <source height="56" width="260" srcset="docs/assets/logo_dark.svg" media="(prefers-color-scheme: dark)">
+      <img height="56" width="260" alt="ShipThis Home" src="docs/assets/logo_light.svg" />
   </a>
   <br>
   <a href="https://discord.gg/gPjn3S99k4">
