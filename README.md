@@ -2,9 +2,7 @@
   <a href="https://shipthis.cc">
     <picture>
     <source height="56" width="260" srcset="https://shipthis.cc/logo_darkmode.svg" media="(prefers-color-scheme: dark)">
-    <source height="56" width="260" srcset="https://shipthis.cc/logo_normal.svg" media="(prefers-color-scheme: light)">
-      <img height="56" width="260" alt="ShipThis" src="https://shipthis.cc/logo_normal.svg" />
-    </picture>
+    <img height="56" width="260" alt="ShipThis" src="https://shipthis.cc/logo_normal.svg" />
   </a>
   <br>
   <a href="https://discord.gg/gPjn3S99k4">
