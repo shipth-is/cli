@@ -43,7 +43,7 @@ shipthis login
 
 ### 3. Set up your game
 
-Next, run the [wizard command](https://shipthis.cc/docs/wizard) to configure your game on ShipThis. The command takes a platform parameter - this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
+Next, run the [wizard command](https://shipthis.cc/docs/reference/game/wizard) to configure your game on ShipThis. The command takes a platform parameter - this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
 
 ### Set up an Android game
 
