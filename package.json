@@ -6,7 +6,7 @@
   "bin": {
     "shipthis": "./bin/run.js"
   },
-  "bugs": "https://gitlab.com/shipthis.cc/shipthis-cli/-/issues",
+  "bugs": "https://github.com/shipth-is/cli/issues",
   "dependencies": {
     "@expo/apple-utils": "2.0.3",
     "@expo/json-file": "^8.3.3",
@@ -201,7 +201,7 @@
       }
     }
   },
-  "repository": "gitlab:shipthis.cc/shipthis-cli",
+  "repository": "github:shipth-is/cli",
   "scripts": {
     "build-original": "shx rm -rf dist && tsc -b",
     "build-tsc-alias": "shx rm -rf dist && npx tsc --build && npx tsc-alias -p tsconfig.json",

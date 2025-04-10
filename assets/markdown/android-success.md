@@ -14,4 +14,4 @@ shipthis game ship
 ### Need help?
 
 - Join the Discord [https://discord.gg/HuSvK4GT](https://discord.gg/HuSvK4GT)
-- Report an issue [https://gitlab.com/shipthis.cc/shipthis-cli/-/issues](https://gitlab.com/shipthis.cc/shipthis-cli/-/issues)
+- Report an issue [https://github.com/shipth-is/cli/issues](https://github.com/shipth-is/cli/issues)
