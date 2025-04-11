@@ -3,9 +3,10 @@ import {Box} from 'ink'
 import {QueryClientProvider} from '@tanstack/react-query'
 
 import {queryClient} from '@cli/utils/query/index.js'
+import {BaseCommand} from '@cli/baseCommands/index.js'
 
 import {CommandProvider} from '../context/index.js'
-import {BaseCommand} from '@cli/baseCommands/index.js'
+import {ScrollArea} from './ScrollArea.js'
 
 export interface CommandProps {
   command?: BaseCommand<any>

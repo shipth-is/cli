@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Box} from 'ink'
 
-import {Markdown, StepProps, Title} from '@cli/components/index.js'
+import {Markdown, ScrollArea, StepProps, Title} from '@cli/components/index.js'
 import {CommandContext, GameProvider} from '@cli/components/context/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 
@@ -72,26 +72,28 @@ export const AndroidWizard = (props: StepProps) => {
 
   return (
     <GameProvider>
-      <Box flexDirection="column">
-        <Box marginBottom={1}>
-          <Title>ShipThis Android Wizard</Title>
+      <ScrollArea height={process.stdout.rows || 24}>
+        <Box flexDirection="column">
+          <Box marginBottom={1}>
+            <Title>ShipThis Android Wizard</Title>
+          </Box>
+          {stepStatuses && <StepStatusTable stepStatuses={stepStatuses} />}
         </Box>
-        {stepStatuses && <StepStatusTable stepStatuses={stepStatuses} />}
-      </Box>
-      {StepInterface && (
-        <StepInterface
-          onComplete={handleStepComplete}
-          onError={props.onError}
-          margin={1}
-          borderStyle="single"
-          padding={1}
-        />
-      )}
-      {showSuccess && (
-        <Box marginTop={1}>
-          <Markdown filename="android-success.md" templateVars={templateVars} />
-        </Box>
-      )}
+        {StepInterface && (
+          <StepInterface
+            onComplete={handleStepComplete}
+            onError={props.onError}
+            margin={1}
+            borderStyle="single"
+            padding={1}
+          />
+        )}
+        {showSuccess && (
+          <Box marginTop={1}>
+            <Markdown filename="android-success.md" templateVars={templateVars} />
+          </Box>
+        )}
+      </ScrollArea>
     </GameProvider>
   )
 }

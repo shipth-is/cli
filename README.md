@@ -11,7 +11,10 @@
   </a>
 </h1>
 <p align="center">
-  <em><b>ShipThis</b> is a <b>command line tool</b> which manages building and uploading your <a href="https://godotengine.org/">Godot</a> mobile games to the <b>Apple App Store</b> and <b>Google Play</b>. Designed to compile and upload your Godot games in the cloud, meaning <b>you do not need to install or run Xcode or Android Studio to release an iOS or Android game</b>.</em>
+  <em><b>ShipThis</b> is a <b>command line tool</b> which manages building and uploading your <a href="https://godotengine.org/">Godot</a> mobile games to the <b>Apple App Store</b> and <b>Google Play</b>.</em>
+</p>
+<p align="center">
+  <em><b>ShipThis compiles and uploads your Godot games in the cloud, meaning <b>you do not need to install or run Xcode or Android Studio to ship a Godot iOS/Android game</b>.</em>
 </p>
 
 <p align="center">
