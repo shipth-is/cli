@@ -19,22 +19,22 @@
 
 <p align="center">
   <picture>
-    <img height="266" width="504" alt="ShipThis Home" src="docs/assets/ship-outputx0.8.gif">
+    <img height="266" width="504" alt="ShipThis Command - ship output" src="docs/assets/ship-outputx0.8.gif">
   </picture>
 </p>
 
 ---
 
+> [!IMPORTANT]
+> ShipThis is in public beta. While in beta, it is completely free to use.
+
 ## ❓ Why use ShipThis?
 
 - **✅ Always a free tier** – Enough usage for most solo devs.
 - **✨ One-command setup** – Our interactive [`wizard`](https://shipthis.cc/docs/reference/game/wizard) guides you through configuration.
-- **⏱ Skip the build tools** – No Xcode, Android Studio, or SDK installation required.
+- **🕒 Skip the build tools** – No Xcode, Android Studio, or SDK installation required.
 - **🔐 Simplify provisioning** – We handle iOS certificates, Android keystores, app signing, and API keys.
 - **🚀 One-command deployment** – Publish to TestFlight or Google Play with a single CLI command.
-
-> [!IMPORTANT]
-> ShipThis is in public beta. While in beta, it is completely free to use. Early users will receive discounts or free access to premium features after launch.
 
 ## ⚡️ Quick start
 
@@ -55,9 +55,9 @@ npm install -g shipthis
 
 ### 2. Create an account
 
-> 🛠 All builds run on managed cloud servers – no need to install Xcode or Android Studio locally.
-
 Set up an account with ShipThis by logging in for the first time using the [`shipthis login`](https://shipthis.cc/docs/reference/login) command.
+
+> 🛠 All builds run on managed cloud servers – no need to install Xcode or Android Studio locally.
 
 ```bash
 shipthis login
@@ -82,7 +82,7 @@ If you have already published your game to Google Play then you will be able to 
 
 <p align="center">
   <picture>
-    <img height="862" width="1344" alt="ShipThis Home" src="docs/assets/wizard-android-existing.gif">
+    <img height="431" width="672" alt="ShipThis Command - Android Wizard - published game" src="docs/assets/wizard-android-existingx0.5.gif">
   </picture>
 </p>
 
