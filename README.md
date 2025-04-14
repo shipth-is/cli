@@ -14,7 +14,7 @@
   <b>ShipThis</b> is a <b>command line tool</b> for building and uploading your <a href="https://godotengine.org/">Godot</a> mobile games to the <b>Apple App Store</b> and <b>Google Play</b>.
 </p>
 <p align="center">
-  ShipThis compiles your game on managed cloud servers – no local build tools needed. It can be integrated with existing CI or run ad-hoc when you have a new version of your game ready.
+  ShipThis compiles your game on managed cloud servers — no local build tools needed. Use it manually or add it into your CI when you're ready to ship.
 </p>
 
 <p align="center">
@@ -32,7 +32,7 @@
 
 - **✅ Always a free tier** – Enough usage for most solo devs.
 - **✨ One-command setup** – Our interactive [`wizard`](https://shipthis.cc/docs/reference/game/wizard) guides you through configuration.
-- **🕒 Skip the build tools** – No Xcode, Android Studio, or SDK installation required.
+- **⏩ Skip the build tools** – No Xcode, Android Studio, or SDK installation required.
 - **🔐 Simplify provisioning** – We handle iOS certificates, Android keystores, app signing, and API keys.
 - **🚀 One-command deployment** – Publish to TestFlight or Google Play with a single CLI command.
 
@@ -74,17 +74,17 @@ shipthis game wizard android
 ```
 
 <details>
-<summary>Using the wizard for a published Google Play game</summary>
-
-### Published game
-
-If you have already published your game to Google Play then you will be able to skip manually creating the game in the Play Console and uploading the initial build. Once you have connected your Google Account, the wizard will be able to determine if the game exists in Google Play. Below is a recording of the wizard being run to configure a game called **ShipThis Godot Demo Game** which was previously published manually in the Play Console.
+<summary>Watch: Android wizard run for a published Google Play game</summary>
 
 <p align="center">
   <picture>
     <img height="431" width="672" alt="ShipThis Command - Android Wizard - published game" src="docs/assets/wizard-android-existingx0.5.gif">
   </picture>
 </p>
+
+The wizard will ask if you would like to import an existing Keystore. You will need the password and path to the JKS file.
+
+If your game is already published on Google Play, the wizard will skip the initial build upload step. Once you have connected ShipThis with Google, the wizard will be able to determine if the game exists in Google Play.
 
 </details>
 
