@@ -7,7 +7,7 @@ These commands relate to iOS Distribution Certificates within your Apple Develop
 
 - You can view the Distribution Certificates in the [Apple Developer Portal](https://developer.apple.com/account/resources/certificates/list).
 - You can more about Certificates in the [Apple Documentation](https://developer.apple.com/help/account/create-certificates/certificates-overview/).
-- You can view the Certificates which ShipThis uses in the [ShipThis Dashboard](https://shipthis.cc/credentials).
+- You can view the Certificates which ShipThis uses in the [ShipThis Dashboard](https://shipth.is/credentials).
 
 :::info
 An **iOS Distribution Certificate** is used to authenticate and authorize the distribution of iOS apps, ensuring they are signed and trusted for installation on devices or submission to the App Store.

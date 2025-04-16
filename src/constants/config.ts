@@ -1,8 +1,7 @@
 export const DEFAULT_SHIPPED_FILES_GLOBS = ['**/*']
 export const DEFAULT_IGNORED_FILES_GLOBS = ['.git', '.gitignore', 'shipthis.json', 'shipthis-*.zip']
 
-const PRIMARY_DOMAIN = 'shipthis.cc'
-
+const PRIMARY_DOMAIN = 'shipth.is'
 interface BackendUrls {
   api: string
   ws: string
@@ -11,8 +10,8 @@ interface BackendUrls {
 
 function getUrlsForDomain(domain: string): BackendUrls {
   const isPublic = domain.includes(PRIMARY_DOMAIN)
-  const apiDomain = (isPublic ? `api.` : '') + domain // develop.shipthis.cc -> api.develop.shipthis.cc
-  const wsDomain = (isPublic ? `ws.` : '') + domain // develop.shipthis.cc -> ws.develop.shipthis.cc
+  const apiDomain = (isPublic ? `api.` : '') + domain // develop.shipth.is -> api.develop.shipth.is
+  const wsDomain = (isPublic ? `ws.` : '') + domain // develop.shipth.is -> ws.develop.shipth.is
   return {
     api: `https://${apiDomain}/api/1.0.0`,
     ws: `wss://${wsDomain}`,

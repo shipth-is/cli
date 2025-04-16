@@ -7,7 +7,7 @@ We recommend creating your game using the [`shipthis game wizard`](/docs/referen
 The `shipthis game create` command is the first step run by the wizard
 :::
 
-Creates a new game in your [ShipThis account](https://shipthis.cc/games).
+Creates a new game in your [ShipThis account](https://shipth.is/games).
 
 ShipThis will read the name of your game from your **project.godot** file. You will be
 prompted to confirm this name, or you can specify one with the `--name` flag.

@@ -1,5 +1,5 @@
 <h1 align="center">
-  <a href="https://shipthis.cc">
+  <a href="https://shipth.is">
     <picture>
       <source height="56" width="260" srcset="docs/assets/logo_dark.svg" media="(prefers-color-scheme: dark)">
       <img height="56" width="260" alt="ShipThis Home" src="docs/assets/logo_light.svg">
@@ -26,12 +26,12 @@
 ---
 
 > [!IMPORTANT]
-> ShipThis is in public beta. While in beta, it is completely free to use.
+> ShipThis is in open beta. While in beta, it is completely free to use.
 
 ## ❓ Why use ShipThis?
 
 - **✅ Always a free tier** – Enough usage for most solo devs.
-- **✨ One-command setup** – Our interactive [`wizard`](https://shipthis.cc/docs/reference/game/wizard) guides you through configuration.
+- **✨ One-command setup** – Our interactive [`wizard`](https://shipth.is/docs/reference/game/wizard) guides you through configuration.
 - **⏩ Skip the build tools** – No Xcode, Android Studio, or SDK installation required.
 - **🔐 Simplify provisioning** – We handle iOS certificates, Android keystores, app signing, and API keys.
 - **🚀 One-command deployment** – Publish to TestFlight or Google Play with a single CLI command.
@@ -55,7 +55,7 @@ npm install -g shipthis
 
 ### 2. Create an account
 
-Set up an account with ShipThis by logging in for the first time using the [`shipthis login`](https://shipthis.cc/docs/reference/login) command.
+Set up an account with ShipThis by logging in for the first time using the [`shipthis login`](https://shipth.is/docs/reference/login) command.
 
 > 🛠 All builds run on managed cloud servers – no need to install Xcode or Android Studio locally.
 
@@ -65,7 +65,7 @@ shipthis login
 
 ### 3. Set up your game
 
-Next, run the [wizard command](https://shipthis.cc/docs/reference/game/wizard) to configure your game on ShipThis. The command takes a platform parameter – this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
+Next, run the [wizard command](https://shipth.is/docs/reference/game/wizard) to configure your game on ShipThis. The command takes a platform parameter – this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
 
 ### Set up an Android game
 
@@ -96,31 +96,31 @@ shipthis game wizard ios
 
 ### 4. Ship
 
-Now you can publish new versions of your game to TestFlight or Google Play with the [`shipthis game ship`](https://shipthis.cc/docs/reference/game/ship) command:
+Now you can publish new versions of your game to TestFlight or Google Play with the [`shipthis game ship`](https://shipth.is/docs/reference/game/ship) command:
 
 ```bash
 shipthis game ship
 ```
 
-- 💡 Having issues? Check the [Troubleshooting](https://shipthis.cc/docs/troubleshooting) or [join our Discord](https://discord.gg/gPjn3S99k4)
-- 📚 For detailed documentation, visit [shipthis.cc/docs](https://shipthis.cc/docs)
+- 💡 Having issues? Check the [Troubleshooting](https://shipth.is/docs/troubleshooting) or [join our Discord](https://discord.gg/gPjn3S99k4)
+- 📚 For detailed documentation, visit [shipth.is/docs](https://shipth.is/docs)
 
 ## 📖 Command Reference
 
 ### 🗂 Topics
 
-- [apple](https://shipthis.cc/docs/reference/apple) – Commands that relate to linking your ShipThis account with your Apple Developer Account
-- [game](https://shipthis.cc/docs/reference/game) – Commands that relate to configuring the specific game in the current working directory.
+- [apple](https://shipth.is/docs/reference/apple) – Commands that relate to linking your ShipThis account with your Apple Developer Account
+- [game](https://shipth.is/docs/reference/game) – Commands that relate to configuring the specific game in the current working directory.
 
 ### 🔧 Commands
 
-- [dashboard](https://shipthis.cc/docs/reference/dashboard) – Opens the web browser to your shipthis.cc dashboard
-- [login](https://shipthis.cc/docs/reference/login) – Sign in or create a new account
-- [status](https://shipthis.cc/docs/reference/status) – Display your overall ShipThis account status
-- [help](https://shipthis.cc/docs/reference/help) – Display help for a specific topic or command
+- [dashboard](https://shipth.is/docs/reference/dashboard) – Opens the web browser to your shipth.is dashboard
+- [login](https://shipth.is/docs/reference/login) – Sign in or create a new account
+- [status](https://shipth.is/docs/reference/status) – Display your overall ShipThis account status
+- [help](https://shipth.is/docs/reference/help) – Display help for a specific topic or command
 
 ## 🌍 Community
 
 - 💬 [Join us on Discord](https://discord.gg/gPjn3S99k4)
 - 🐛 [Report an issue](https://github.com/shipth-is/cli/issues)
-- 📣 Feature ideas? Feedback? We’d love to hear from you – email support@shipthis.cc
+- 📣 Feature ideas? Feedback? We’d love to hear from you – email support@shipth.is

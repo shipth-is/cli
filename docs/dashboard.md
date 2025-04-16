@@ -5,7 +5,7 @@
 Opens the web-browser to your ShipThis dashboard.
 
 :::note
-ShipThis generates single-use links which will automatically log you into shipthis.cc in your browser.
+ShipThis generates single-use links which will automatically log you into shipth.is in your browser.
 :::
 
 
