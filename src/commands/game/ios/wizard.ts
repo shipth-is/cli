@@ -38,12 +38,11 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
     const projectConfig = await this.getProjectConfigSafe()
     const game = projectConfig.project
 
-    const isStepForced = (commandName: string) => flags.forceStep?.includes(commandName)
+    const isStepForced = (cmdName: string) => flags.forceStep?.includes(cmdName)
 
-    const logSkip = (commandName: string) =>
-      this.log(chalk.blue(`[skip] \`shipthis ${commandName.replaceAll(':', ' ')}\``))
-    const logRun = (commandName: string, args: string[]) =>
-      this.log(chalk.green(`[run] \`shipthis ${commandName.replaceAll(':', ' ')}\` ${args.join(' ')}`))
+    const logSkip = (cmdName: string) => this.log(chalk.blue(`[skip] shipthis ${cmdName.replaceAll(':', ' ')}`))
+    const logRun = (cmdName: string, args: string[]) =>
+      this.log(chalk.green(`[run] shipthis ${cmdName.replaceAll(':', ' ')} ${args.join(' ')}`))
 
     // TODO: some duplication in the shouldRun logic and the commands themselves - perhaps we could refactor this
     const iosSteps: Step[] = [
