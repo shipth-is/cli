@@ -1,9 +1,12 @@
 import {Flags} from '@oclif/core'
+import chalk from 'chalk'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
 import {getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+import {getRenderedMarkdown} from '@cli/components/index.js'
+import {WEB_URL} from '@cli/constants/config.js'
 
 interface Step {
   command: string
@@ -37,6 +40,11 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
 
     const isStepForced = (commandName: string) => flags.forceStep?.includes(commandName)
 
+    const logSkip = (commandName: string) =>
+      this.log(chalk.blue(`[skip] \`shipthis ${commandName.replaceAll(':', ' ')}\``))
+    const logRun = (commandName: string, args: string[]) =>
+      this.log(chalk.green(`[run] \`shipthis ${commandName.replaceAll(':', ' ')}\` ${args.join(' ')}`))
+
     // TODO: some duplication in the shouldRun logic and the commands themselves - perhaps we could refactor this
     const iosSteps: Step[] = [
       {
@@ -61,7 +69,8 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
           const userAppleApiKeyCredentials = userCredentials.filter(
             (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.KEY,
           )
-          return userAppleApiKeyCredentials.length === 0
+          const hasKey = userAppleApiKeyCredentials.length > 0
+          return !hasKey
         },
       },
       {
@@ -73,7 +82,8 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
           const userAppleDistCredentials = userCredentials.filter(
             (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
           )
-          return userAppleDistCredentials.length === 0
+          const hasDistCert = userAppleDistCredentials.length > 0
+          return !hasDistCert
         },
       },
       {
@@ -103,7 +113,8 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
           const projectAppleProfileCredentials = projectCredentials.filter(
             (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
           )
-          return projectAppleProfileCredentials.length === 0
+          const hasProfile = projectAppleProfileCredentials.length > 0
+          return !hasProfile
         },
       },
     ]
@@ -111,18 +122,24 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
     for (const step of iosSteps) {
       const command = step.command
       const willRun = isStepForced(command) || (await step.shouldRun())
-
       if (!willRun) {
-        this.debug(`Skipping step: ${command}`)
+        logSkip(command)
         continue
       }
 
       const args = [...step.args, ...(isStepForced(command) ? ['--force'] : [])]
-      this.debug(`Running step: ${command} with args: ${args.join(' ')}`)
+      logRun(command, args)
       await this.config.runCommand(command, args)
     }
 
-    // We finish with the game status
-    await this.config.runCommand('game:status')
+    const successMessage = getRenderedMarkdown({
+      filename: 'ios-success.md',
+      templateVars: {
+        androidSetupURL: new URL('/docs/android', WEB_URL).toString(),
+        docsURL: new URL('/docs', WEB_URL).toString(),
+      },
+    })
+
+    this.log(`\n${successMessage}\n`)
   }
 }

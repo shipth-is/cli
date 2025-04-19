@@ -18,30 +18,35 @@ const cleanHyperlinks = (input: string): string => {
     .replace(/\x1b]8;;\x07/g, '') // remove OSC 8 end
 }
 
-// Handling when the entrypoint is a symlink
-const entrypointPath = fs.realpathSync(process.argv[1])
-const root = path.dirname(entrypointPath)
+export const getRenderedMarkdown = ({filename, templateVars, ...options}: Props): string => {
+  setOptions({
+    renderer: new TerminalRenderer({
+      ...options,
+    }),
+  })
+
+  // Handling when the entrypoint is a symlink
+  const entrypointPath = fs.realpathSync(process.argv[1])
+  const root = path.dirname(entrypointPath)
+
+  const mdPath = path.join(root, '..', 'assets', 'markdown', filename)
+  const mdTemplate = fs.readFileSync(mdPath, 'utf8').trim()
+  // Quick and dirty template - use ${name} in the markdown file
+
+  const markdown = !templateVars
+    ? mdTemplate
+    : mdTemplate.replace(/\${(.*?)}/g, (_, key) => templateVars[key.trim()] || '')
+
+  const rendered = parse(markdown).trim()
+  const cleaned = cleanHyperlinks(rendered)
+  return cleaned
+}
 
 export const Markdown = ({filename, templateVars, ...options}: Props): JSX.Element => {
   const [text, setText] = useState('')
 
   useEffect(() => {
-    setOptions({
-      renderer: new TerminalRenderer({
-        ...options,
-      }),
-    })
-    const mdPath = path.join(root, '..', 'assets', 'markdown', filename)
-    const mdTemplate = fs.readFileSync(mdPath, 'utf8').trim()
-    // Quick and dirty template - use ${name} in the markdown file
-
-    const markdown = !templateVars
-      ? mdTemplate
-      : mdTemplate.replace(/\${(.*?)}/g, (_, key) => templateVars[key.trim()] || '')
-
-    const rendered = parse(markdown).trim()
-    const cleaned = cleanHyperlinks(rendered)
-
+    const cleaned = getRenderedMarkdown({filename, templateVars, ...options})
     setText(cleaned)
   }, [filename, templateVars, options])
 
