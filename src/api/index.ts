@@ -1,6 +1,7 @@
 import axios from 'axios'
 import CryptoJS from 'crypto-js'
 import {v4 as uuid} from 'uuid'
+import * as fs from 'fs'
 
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
@@ -101,10 +102,15 @@ export async function getNewUploadTicket(projectId: string): Promise<UploadTicke
 }
 
 // Tells the backend to start running the jobs for an upload-ticket
-export async function startJobsFromUpload(uploadTicketId: string, uploadDetails: UploadDetails): Promise<Job[]> {
+type StartJobsOptions = UploadDetails & {
+  skipPublish?: boolean
+  platform?: Platform
+}
+
+export async function startJobsFromUpload(uploadTicketId: string, startOptions: StartJobsOptions): Promise<Job[]> {
   const headers = getAuthedHeaders()
   const opt = {headers}
-  const {data} = await axios.post(`${API_URL}/upload/start/${uploadTicketId}`, uploadDetails, opt)
+  const {data} = await axios.post(`${API_URL}/upload/start/${uploadTicketId}`, startOptions, opt)
   return castArrayObjectDates<Job>(data)
 }
 
@@ -244,4 +250,21 @@ export async function inviteServiceAccount(projectId: string, developerId: strin
     console.error('inviteServiceAccount Error', error)
     throw error
   }
+}
+
+// Downloads a build artifact from the given projectId and buildId
+export async function downloadBuildById(projectId: string, buildId: string, fileName: string): Promise<void> {
+  const build = await getBuild(projectId, buildId)
+  const url = build.url
+  const writer = fs.createWriteStream(fileName)
+  const response = await axios({
+    url,
+    method: 'GET',
+    responseType: 'stream',
+  })
+  response.data.pipe(writer)
+  return new Promise((resolve, reject) => {
+    writer.on('finish', resolve)
+    writer.on('error', reject)
+  })
 }

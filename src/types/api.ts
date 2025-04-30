@@ -93,7 +93,10 @@ export enum JobStatus {
   FAILED = 'FAILED',
 }
 
-export type JobDetails = ProjectDetails & UploadDetails
+export type JobDetails = ProjectDetails &
+  UploadDetails & {
+    skipPublish?: boolean // If true, don't publish the build to the store
+  }
 
 export interface Job {
   id: string
