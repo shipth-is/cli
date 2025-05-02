@@ -7,13 +7,14 @@ import {fileURLToPath} from 'node:url'
 
 import {JobStage, JobStatus, LogLevel, Platform, ScalarDict} from '@cli/types'
 
-export * from './hooks/index.js'
-export * from './query/index.js'
 export * from './dates.js'
 export * from './dictionary.js'
+export * from './errors.js'
 export * from './git.js'
 export * from './godot.js'
 export * from './help.js'
+export * from './hooks/index.js'
+export * from './query/index.js'
 
 /**
  * Works the same way that git short commits are generated.

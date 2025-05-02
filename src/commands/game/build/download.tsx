@@ -5,8 +5,7 @@ import * as fs from 'fs'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 
 import {Command, RunWithSpinner} from '@cli/components/index.js'
-import {getBuild} from '@cli/api/index.js'
-import axios from 'axios'
+import {downloadBuildById} from '@cli/api/index.js'
 
 export default class GameBuildDownload extends BaseGameCommand<typeof GameBuildDownload> {
   static override args = {
@@ -38,19 +37,7 @@ export default class GameBuildDownload extends BaseGameCommand<typeof GameBuildD
 
     const executeMethod = async () => {
       const game = await this.getGame()
-      const build = await getBuild(game.id, build_id)
-      const url = build.url
-      const writer = fs.createWriteStream(file)
-      const response = await axios({
-        url,
-        method: 'GET',
-        responseType: 'stream',
-      })
-      response.data.pipe(writer)
-      return new Promise((resolve, reject) => {
-        writer.on('finish', resolve)
-        writer.on('error', reject)
-      })
+      await downloadBuildById(game.id, build_id, file)
     }
 
     const handleComplete = async () => process.exit(0)

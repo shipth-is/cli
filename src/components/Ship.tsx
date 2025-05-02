@@ -10,7 +10,7 @@ import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 
 interface Props {
-  onComplete: () => void
+  onComplete: (completedJobs: Job[]) => void
   onError: (error: any) => void
 }
 
@@ -21,6 +21,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
 
   const [jobs, setJobs] = useState<Job[] | null>(null)
   const [failedJobs, setFailedJobs] = useState<Job[]>([])
+  const [successJobs, setSuccessJobs] = useState<Job[]>([])
 
   const [shipLog, setShipLog] = useState<string>('') // message shown as we prepare the shipping
   const [showLog, setShowLog] = useState<boolean>(false)
@@ -53,6 +54,8 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   })
 
   const handleJobComplete = (job: Job) => {
+    // Add the job to the list of completed jobs
+    setSuccessJobs([...successJobs, job])
     // Remove the job from the list
     const newJobs = (jobs || []).filter((prevJob) => prevJob.id !== job.id)
     setJobs(newJobs)
@@ -71,7 +74,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   useEffect(() => {
     if (!isComplete) return
     setTimeout(() => {
-      failedJobs.length === 0 ? onComplete() : onError('One or more jobs failed')
+      failedJobs.length === 0 ? onComplete(successJobs) : onError('One or more jobs failed')
     }, 500)
   }, [isComplete])
 
