@@ -11,6 +11,7 @@ import {getAuthedHeaders} from '@cli/api/index.js'
 export const CreateKeystore = ({onComplete, onError, ...boxProps}: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)
   const queryClient = useQueryClient()
+
   const handleCreate = async () => {
     try {
       if (!gameId) throw new Error('No game')
@@ -26,12 +27,14 @@ export const CreateKeystore = ({onComplete, onError, ...boxProps}: StepProps): J
 
   return (
     <Box flexDirection="column" gap={1} {...boxProps}>
-      <RunWithSpinner
-        executeMethod={handleCreate}
-        msgInProgress="Creating Keystore..."
-        msgComplete="Keystore created"
-        onComplete={onComplete}
-      />
+      {gameId && (
+        <RunWithSpinner
+          executeMethod={handleCreate}
+          msgInProgress="Creating Keystore..."
+          msgComplete="Keystore created"
+          onComplete={onComplete}
+        />
+      )}
     </Box>
   )
 }
