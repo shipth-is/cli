@@ -3,7 +3,7 @@ import {Box, Text} from 'ink'
 import {DateTime} from 'luxon'
 import Spinner from 'ink-spinner'
 
-import {getBuildSummary, getJobStatusColor, getJobSummary, getStageColor} from '@cli/utils/index.js'
+import {getJobStatusColor, getJobSummary, getStageColor} from '@cli/utils/index.js'
 import {Job, JobStatus} from '@cli/types'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
 import {Title} from './common/Title.js'
@@ -45,7 +45,6 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
 
   const isJobInProgress = job && ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
   const summary = job ? getJobSummary(job, time) : null
-  const buildSummary = job && job.build ? getBuildSummary(job.build) : null
 
   return (
     <Box flexDirection="row">
@@ -75,17 +74,6 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
           </Box>
         )}
       </Box>
-      {buildSummary && (
-        <Box flexDirection="column" marginBottom={1} marginLeft={3} borderStyle="single" padding={1}>
-          <Title>Build Details</Title>
-          <Box flexDirection="column" marginLeft={2}>
-            <StatusRow label="ID" value={buildSummary.id} />
-            <StatusRow label="Platform" value={buildSummary.platform} />
-            <StatusRow label="Type" value={buildSummary.type} />
-            <StatusRow label="CMD" value={buildSummary.cmd} />
-          </Box>
-        </Box>
-      )}
     </Box>
   )
 }

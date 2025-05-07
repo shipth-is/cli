@@ -15,14 +15,13 @@ export interface JobQueryProps {
 export function getJobDetailsSummary(jobDetails: JobDetails): ScalarDict {
   const semanticVersion = jobDetails?.semanticVersion || 'N/A'
   const buildNumber = jobDetails?.buildNumber || 'N/A'
-  const gitCommit = jobDetails?.gitCommitHash ? getShortUUID(jobDetails?.gitCommitHash) : 'N/A'
-  const gitBranch = jobDetails?.gitBranch || 'N/A'
+  const gitCommit = jobDetails?.gitCommitHash ? getShortUUID(jobDetails?.gitCommitHash) : ''
+  const gitBranch = jobDetails?.gitBranch || ''
   return {
     version: `${semanticVersion} (${buildNumber})`,
-    gitInfo: `${gitCommit} (${gitBranch})`,
+    gitInfo: gitCommit ? `${gitCommit} (${gitBranch})` : '',
   }
 }
-
 
 export function getJobSummary(job: Job, timeNow: DateTime): ScalarDict {
   const inProgress = ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)

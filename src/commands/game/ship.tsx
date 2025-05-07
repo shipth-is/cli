@@ -27,6 +27,11 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       required: false,
       dependsOn: ['platform'],
     }),
+    downloadAPK: Flags.string({
+      description: 'Download the APK artifact (if available) to the specified file',
+      required: false,
+      dependsOn: ['platform'],
+    }),
   }
 
   static override description = 'Builds the app (for all platforms with valid credentials) and ships it to the stores.'
@@ -45,11 +50,21 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       this.error('No game ID found')
     }
 
-    const handleComplete = async (jobs: Job[]) => {
-      if (this.flags.download) {
-        // this only runs with the platform flag - so only one job
-        await downloadBuildById(gameId, `${jobs[0]?.build?.id}`, this.flags.download)
-      }
+    const handleComplete = async ([job]: Job[]) => {
+      if (!this.flags.download && !this.flags.downloadAPK) return process.exit(0)
+
+      const builds = job.builds ?? []
+      if (builds.length === 0) this.error('No builds found for this job')
+
+      const platform = this.flags.platform
+      const type = platform === 'android' ? (this.flags.downloadAPK ? 'APK' : 'AAB') : 'IPA'
+
+      const build = builds.find((b) => b.buildType === type)
+      if (!build) this.error(`No build found for type ${type}`)
+
+      const filename = this.flags.download || this.flags.downloadAPK
+      await downloadBuildById(gameId, build.id, `${filename}`)
+
       process.exit(0)
     }
 
