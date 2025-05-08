@@ -107,7 +107,7 @@ export interface Job {
   createdAt: DateTime
   updatedAt: DateTime
   details: JobDetails
-  build?: Build
+  builds?: Build[]
 }
 
 export enum JobStage {
@@ -169,6 +169,12 @@ export interface ProjectCredential extends UserCredential {
   identifier: string
 }
 
+export enum BuildType {
+  IPA = 'IPA',
+  APK = 'APK',
+  AAB = 'AAB',
+}
+
 export interface Build {
   id: string
   jobId: Job['id']
@@ -181,6 +187,7 @@ export interface Build {
   // When we display the list of builds we want to show some details and
   // we don't want to make a circular reference to the job
   jobDetails: JobDetails
+  buildType: BuildType
 }
 
 // URL params received by the Google Redirect destination
