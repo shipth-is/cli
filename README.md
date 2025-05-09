@@ -23,10 +23,34 @@
   </picture>
 </p>
 
----
 
 > [!IMPORTANT]
 > ShipThis is in open beta. While in beta, it is completely free to use.
+
+---
+
+
+<details>
+<summary><strong>Watch: Set up ShipThis for iOS</strong></summary>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=ijTUFVk1duw" target="_blank">
+    <img src="https://img.youtube.com/vi/ijTUFVk1duw/0.jpg" alt="Watch the iOS setup video" width="640" height="480">
+  </a>
+</p>
+
+</details>
+<details>
+<summary><strong>Watch: Set up ShipThis for Android</strong></summary>
+
+<p align="center">
+  <picture>
+    <img height="431" width="672" alt="ShipThis Command - Android Wizard - published game" src="docs/assets/wizard-android-existingx0.5.gif">
+  </picture>
+</p>
+
+</details>
+
 
 ## ❓ Why use ShipThis?
 
@@ -72,21 +96,6 @@ Next, run the [wizard command](https://shipth.is/docs/reference/game/wizard) to 
 ```bash
 shipthis game wizard android
 ```
-
-<details>
-<summary>Watch: Android wizard run for a published Google Play game</summary>
-
-<p align="center">
-  <picture>
-    <img height="431" width="672" alt="ShipThis Command - Android Wizard - published game" src="docs/assets/wizard-android-existingx0.5.gif">
-  </picture>
-</p>
-
-The wizard will ask if you would like to import an existing Keystore. You will need the password and path to the JKS file.
-
-If your game is already published on Google Play, the wizard will skip the initial build upload step. Once you have connected ShipThis with Google, the wizard will be able to determine if the game exists in Google Play.
-
-</details>
 
 ### Set up an iOS game
 
