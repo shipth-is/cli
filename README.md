@@ -33,11 +33,11 @@
 <details>
 <summary><strong>Watch: Set up ShipThis for iOS</strong></summary>
 
-<center>
-
-[![Watch the iOS setup](https://img.youtube.com/vi/ijTUFVk1duw/0.jpg)](https://www.youtube.com/watch?v=ijTUFVk1duw)
-
-</center>
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=ijTUFVk1duw" target="_blank">
+    <img src="https://img.youtube.com/vi/ijTUFVk1duw/0.jpg" alt="Watch the iOS setup video" width="672" height="378">
+  </a>
+</p>
 
 </details>
 <details>
