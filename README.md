@@ -35,7 +35,7 @@
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=ijTUFVk1duw" target="_blank">
-    <img src="https://img.youtube.com/vi/ijTUFVk1duw/0.jpg" alt="Watch the iOS setup video" width="672" height="378">
+    <img src="https://img.youtube.com/vi/ijTUFVk1duw/0.jpg" alt="Watch the iOS setup video" width="640" height="480">
   </a>
 </p>
 
