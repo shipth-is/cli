@@ -23,15 +23,21 @@
   </picture>
 </p>
 
----
 
 > [!IMPORTANT]
 > ShipThis is in open beta. While in beta, it is completely free to use.
 
+---
+
+
 <details>
 <summary><strong>Watch: Set up ShipThis for iOS</strong></summary>
 
+<center>
+
 [![Watch the iOS setup](https://img.youtube.com/vi/ijTUFVk1duw/0.jpg)](https://www.youtube.com/watch?v=ijTUFVk1duw)
+
+</center>
 
 </details>
 <details>
