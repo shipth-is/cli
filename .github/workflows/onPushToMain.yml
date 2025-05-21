@@ -34,15 +34,15 @@ jobs:
         run: |
           git config --global user.email ${{ secrets.GH_EMAIL }}
           git config --global user.name ${{ secrets.GH_USERNAME }}
-      - name: Generate oclif README
+      - name: Generate README
         if: ${{ steps.version-check.outputs.skipped == 'false' }}
-        id: oclif-readme
+        id: shipthis-readme
         run: |
           npm install
-          npm exec oclif readme
+          ./bin/readme.sh
           if [ -n "$(git status --porcelain)" ]; then
             git add .
-            git commit -am "chore: update README.md"
+            git commit -am "chore: update docs"
             git push -u origin ${{ github.ref_name }}
           fi
       - name: Create Github Release
