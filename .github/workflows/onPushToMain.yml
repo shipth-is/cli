@@ -37,7 +37,7 @@ jobs:
         id: shipthis-readme
         run: |
           npm install
-          ./bin/readme.sh
+          npm run readme
           if [ -n "$(git status --porcelain)" ]; then
             git add .
             git commit -am "chore: update docs"
