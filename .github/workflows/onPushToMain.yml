@@ -51,3 +51,8 @@ jobs:
           tag: ${{ steps.version-check.outputs.tag }}
           commit: ${{ github.ref_name }}
           skipIfReleaseExists: true
+      - name: Publish to npm
+        if: ${{ steps.version-check.outputs.skipped == 'false' }}
+        uses: JS-DevTools/npm-publish@v3
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
