@@ -8,6 +8,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,22 +29,20 @@ jobs:
             echo "skipped=false" >> $GITHUB_OUTPUT
             echo "tag=v$package_version" >> $GITHUB_OUTPUT
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
       - name: Setup git
         if: ${{ steps.version-check.outputs.skipped == 'false' }}
         run: |
           git config --global user.email ${{ secrets.GH_EMAIL }}
           git config --global user.name ${{ secrets.GH_USERNAME }}
-      - name: Generate oclif README
+      - name: Generate README
         if: ${{ steps.version-check.outputs.skipped == 'false' }}
-        id: oclif-readme
+        id: shipthis-readme
         run: |
           npm install
-          npm exec oclif readme
+          npm run readme
           if [ -n "$(git status --porcelain)" ]; then
             git add .
-            git commit -am "chore: update README.md"
+            git commit -am "chore: update docs"
             git push -u origin ${{ github.ref_name }}
           fi
       - name: Create Github Release
@@ -52,5 +52,9 @@ jobs:
           name: ${{ steps.version-check.outputs.tag }}
           tag: ${{ steps.version-check.outputs.tag }}
           commit: ${{ github.ref_name }}
-          token: ${{ secrets.GH_TOKEN }}
           skipIfReleaseExists: true
+      - name: Publish to npm
+        if: ${{ steps.version-check.outputs.skipped == 'false' }}
+        uses: JS-DevTools/npm-publish@v3
+        with:
+          token: ${{ secrets.NPM_TOKEN }}
