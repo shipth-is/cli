@@ -34,6 +34,11 @@ jobs:
         run: |
           git config --global user.email ${{ secrets.GH_EMAIL }}
           git config --global user.name ${{ secrets.GH_USERNAME }}
+      - name: Run build
+        if: ${{ steps.version-check.outputs.skipped == 'false' }}
+        run: |
+          npm install
+          npm run build
       - name: Generate README
         if: ${{ steps.version-check.outputs.skipped == 'false' }}
         id: shipthis-readme
