@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -45,11 +46,12 @@ jobs:
         run: |
           npm install
           npm run readme
-          if [ -n "$(git status --porcelain)" ]; then
-            git add .
-            git commit -am "chore: update docs"
-            git push -u origin ${{ github.ref_name }}
-          fi
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: 'chore: update docs'
+          title: 'chore: update docs'
+          body: 'Automatically generated as missing docs in `main` branch'
       - name: Create Github Release
         uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5
         if: ${{ steps.version-check.outputs.skipped == 'false' }}
