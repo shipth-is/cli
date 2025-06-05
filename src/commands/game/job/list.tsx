@@ -5,7 +5,7 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {getProjectJobs} from '@cli/api/index.js'
 import {JobStatus, PageAndSortParams} from '@cli/types'
 
-import {Command, Table} from '@cli/components/index.js'
+import {Command, Table, Title} from '@cli/components/index.js'
 import {getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
 import {DateTime} from 'luxon'
 
@@ -48,15 +48,25 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
 
     const data = jobListResponse.data.map((j) => getJobSummary(j, DateTime.now()))
 
+    const hasJobs = data.length > 0
+
     render(
       <Command command={this}>
-        <Table
-          data={data}
-          getTextProps={(col, val) => {
-            if (col.key !== 'status') return {}
-            return {color: getJobStatusColor(val as JobStatus)}
-          }}
-        />
+        <Title>Jobs for this game</Title>
+        {!hasJobs && (
+          <Box marginLeft={2} marginTop={1} flexDirection="column">
+            <Text>You DO NOT have any jobs for this game.</Text>
+          </Box>
+        )}
+        {hasJobs && (
+          <Table
+            data={data}
+            getTextProps={(col, val) => {
+              if (col.key !== 'status') return {}
+              return {color: getJobStatusColor(val as JobStatus)}
+            }}
+          />
+        )}
         {jobListResponse.pageCount > 1 && (
           <Box marginTop={1} flexDirection="column">
             <Text>{`Showing page ${flags.pageNumber + 1} of ${jobListResponse.pageCount}.`}</Text>
