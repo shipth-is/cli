@@ -52,16 +52,24 @@ jobs:
           commit-message: 'chore: update docs'
           title: 'chore: update docs'
           body: 'Automatically generated as missing docs in `main` branch'
+      - name: Verify build
+        if: ${{ steps.version-check.outputs.skipped == 'false' }}
+        run: |
+          ./bin/run.js
+          if [ $? -ne 0 ]; then
+            echo "Build verification failed. Please check the build output."
+            exit 1
+          fi
       - name: Create Github Release
         uses: ncipollo/release-action@2c591bcc8ecdcd2db72b97d6147f871fcd833ba5
-        if: ${{ steps.version-check.outputs.skipped == 'false' }}
+        if: ${{ steps.version-check.outputs.skipped == 'false' && !env.ACT }}
         with:
           name: ${{ steps.version-check.outputs.tag }}
           tag: ${{ steps.version-check.outputs.tag }}
           commit: ${{ github.ref_name }}
           skipIfReleaseExists: true
       - name: Publish to npm
-        if: ${{ steps.version-check.outputs.skipped == 'false' }}
+        if: ${{ steps.version-check.outputs.skipped == 'false' && !env.ACT }}
         uses: JS-DevTools/npm-publish@v3
         with:
           token: ${{ secrets.NPM_TOKEN }}
