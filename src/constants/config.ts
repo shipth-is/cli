@@ -1,5 +1,22 @@
 export const DEFAULT_SHIPPED_FILES_GLOBS = ['**/*']
-export const DEFAULT_IGNORED_FILES_GLOBS = ['.git', '.gitignore', 'shipthis.json', 'shipthis-*.zip']
+
+// Generated from the Godot gitignore https://github.com/github/gitignore/blob/main/Godot.gitignore
+// And included the shipthis.json and shipthis-*.zip
+export const DEFAULT_IGNORED_FILES_GLOBS = [
+  '.git',
+  '.gitignore',
+  'shipthis.json',
+  'shipthis-*.zip',
+  '.godot/**',
+  '.nomedia',
+  '.import/**',
+  'export.cfg',
+  'export_credentials.cfg',
+  '*.translation',
+  '.mono/**',
+  'data_*/**',
+  'mono_crash.*.json'
+]
 
 const PRIMARY_DOMAIN = 'shipth.is'
 interface BackendUrls {
