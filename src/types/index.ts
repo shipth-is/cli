@@ -15,5 +15,13 @@ export interface ProjectConfig {
   ignoredFilesGlobs?: string[]
 }
 
+export type ShipGameFlags = {
+  platform?: 'android' | 'ios'
+  skipPublish?: boolean
+  download?: string
+  downloadAPK?: string
+  follow?: boolean
+}
+
 export * from './api.js'
 export * from './request.js'

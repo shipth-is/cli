@@ -8,7 +8,7 @@ import {useMutation} from '@tanstack/react-query'
 import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS, cacheKeys} from '@cli/constants/index.js'
 import {getCWDGitInfo, getFileHash, queryClient} from '@cli/utils/index.js'
 import {getNewUploadTicket, startJobsFromUpload} from '@cli/api/index.js'
-import {Job, Platform, ProjectConfig, UploadDetails} from '@cli/types'
+import {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 
 // Takes the current command so we can get the project config
@@ -16,12 +16,6 @@ import {BaseCommand} from '@cli/baseCommands/index.js'
 interface ShipOptions {
   command: BaseCommand<any>
   log?: (message: string) => void
-}
-
-type ShipGameFlags = {
-  platform?: 'android' | 'ios'
-  skipPublish?: boolean
-  download?: string
 }
 
 export async function ship({command, log = () => {}}: ShipOptions): Promise<Job[]> {

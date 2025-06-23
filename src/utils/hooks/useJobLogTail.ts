@@ -2,9 +2,8 @@ import {useEffect, useState} from 'react'
 
 import {JobLogEntry} from '@cli/types'
 import {useJobLogs} from '@cli/utils/query/useJobLogs.js'
-import {useWebSocket, WebSocketListener} from './useWebSocket.js'
-import {castObjectDates} from '../dates.js'
 import {arrayToDictionary, dictionaryToArray} from '../dictionary.js'
+import {useJobWatching} from './useJobWatching.js'
 
 export interface JobLogTailProps {
   projectId: string
@@ -24,32 +23,29 @@ function getSortedJobLogs(logs: JobLogEntry[]) {
 }
 
 // Merges fetched job logs with those received from the websocket
-export function useJobLogTail(props: JobLogTailProps): JobLogTailResult {
+export function useJobLogTail({projectId, jobId, isWatching, length}: JobLogTailProps): JobLogTailResult {
   const [websocketLogs, setWebsocketLogs] = useState<JobLogEntry[]>([])
 
   // Updates our state with logs received from the websocket
-  const listener: WebSocketListener = {
-    getPattern: () => `project.${props.projectId}:job.${props.jobId}:log`,
-    eventHandler: async (pattern: string, rawLogEntry: any) => {
-      setWebsocketLogs((prevLogs) => {
-        const logEntry = castObjectDates<JobLogEntry>(rawLogEntry, ['sentAt', 'createdAt'])
-        return [...prevLogs, logEntry]
-      })
+  useJobWatching({
+    projectId,
+    jobId,
+    isWatching,
+    onNewLogEntry: (logEntry: JobLogEntry) => {
+      setWebsocketLogs((prevLogs) => [...prevLogs, logEntry])
     },
-  }
-
-  useWebSocket(props.isWatching ? [listener] : [])
+  })
 
   const {isLoading, data: fetchedJobLogs} = useJobLogs({
-    projectId: props.projectId,
-    jobId: props.jobId,
-    pageSize: props.length,
+    projectId,
+    jobId,
+    pageSize: length,
   })
 
   useEffect(() => {
     // Reset the websocket data when we refetch
     setWebsocketLogs([])
-  }, [props.jobId, props.projectId, props.length, props.isWatching, fetchedJobLogs])
+  }, [jobId, projectId, length, isWatching, fetchedJobLogs])
 
   // We only use the first page of the infinite query
   const firstPage = fetchedJobLogs ? fetchedJobLogs?.pages[0].data : []
@@ -59,7 +55,7 @@ export function useJobLogTail(props: JobLogTailProps): JobLogTailResult {
   const allLogsById = arrayToDictionary<JobLogEntry>(allLogs)
   const uniqueLogs = dictionaryToArray(allLogsById)
 
-  const data = getSortedJobLogs(uniqueLogs).slice(-props.length)
+  const data = getSortedJobLogs(uniqueLogs).slice(-length)
 
   return {
     isLoading,
