@@ -35,7 +35,6 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     follow: Flags.boolean({
       description: 'Follow the job logs in real-time. Requires --platform to be specified.',
       required: false,
-      default: false,
       dependsOn: ['platform'],
     }),
   }
