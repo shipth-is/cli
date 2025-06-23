@@ -2,9 +2,10 @@ import {Box, Text} from 'ink'
 import {useContext, useEffect, useRef, useState} from 'react'
 import Spinner from 'ink-spinner'
 
-import {CommandContext, GameContext, StepProps, JobProgress} from '@cli/components/index.js'
-import {useBuilds, useJobs, useShip} from '@cli/utils/index.js'
-import {JobStatus, Platform} from '@cli/types/api.js'
+import {CommandContext, GameContext, StepProps, JobProgress, JobLogTail, Markdown} from '@cli/components/index.js'
+import {getShortUUID, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
+import {Job, JobStatus, Platform} from '@cli/types/api.js'
+import {WEB_URL} from '@cli/constants/config.js'
 
 export const CreateInitialBuild = (props: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)
@@ -25,6 +26,7 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
   const prevHasBuild = useRef<boolean>(false)
   const shipMutation = useShip()
   const [shipLog, setShipLog] = useState<string>('')
+  const [failedJob, setFailedJob] = useState<Job | null>(null)
 
   // Trigger a build if we don't have one
   useEffect(() => {
@@ -63,7 +65,27 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
           {(isLoadingBuilds || isLoadingJobs || shipMutation.isPending) && <Spinner type="dots" />}
         </Box>
         {androidJob == null && <Text>{shipLog}</Text>}
-        {androidJob && <JobProgress job={androidJob} onComplete={onComplete} />}
+        {androidJob && <JobProgress job={androidJob} onComplete={onComplete} onFailure={(j: Job) => {
+          setFailedJob(j)
+          // Wait before triggering the error to allow the job log to be displayed
+          setTimeout(() => {
+            onError(new Error(`Job ${j.id} failed`))
+          }, 1000)
+        }}/>}
+
+        {failedJob && (
+          <>
+            <Markdown
+              filename="ship-failure.md"
+              templateVars={{
+                jobDashboardUrl: `${WEB_URL}games/${getShortUUID(gameId)}/job/${getShortUUID(failedJob.id)}`,
+              }}
+            />
+            <Box marginTop={1}>
+              <JobLogTail jobId={failedJob.id} projectId={gameId} isWatching={false} length={10} />
+            </Box>
+          </>
+        )}
       </Box>
     </>
   )
