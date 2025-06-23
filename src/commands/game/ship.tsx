@@ -32,6 +32,12 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       required: false,
       dependsOn: ['platform'],
     }),
+    follow: Flags.boolean({
+      description: 'Follow the job logs in real-time. Requires --platform to be specified.',
+      required: false,
+      default: false,
+      dependsOn: ['platform'],
+    }),
   }
 
   static override description = 'Builds the app (for all platforms with valid credentials) and ships it to the stores.'
@@ -40,7 +46,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     '<%= config.bin %> <%= command.id %>',
     '<%= config.bin %> <%= command.id %> --platform ios',
     '<%= config.bin %> <%= command.id %> --platform android --skipPublish',
-    '<%= config.bin %> <%= command.id %> --platform android --download output.aab',
+    '<%= config.bin %> <%= command.id %> --platform android --download game.aab',
+    '<%= config.bin %> <%= command.id %> --platform android --follow --downloadAPK game.apk',
   ]
 
   public async run(): Promise<void> {

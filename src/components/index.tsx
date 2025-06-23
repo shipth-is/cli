@@ -5,6 +5,7 @@ export * from './context/index.js'
 export * from './wrappers/index.js'
 
 export * from './BuildsTable.js'
+export * from './JobFollow.js'
 export * from './JobLogTail.js'
 export * from './JobStatusTable.js'
 export * from './ProjectCredentialsTable.js'

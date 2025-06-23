@@ -3,9 +3,17 @@ import {useContext, useEffect, useState} from 'react'
 import {Text, Box, useInput} from 'ink'
 import open from 'open'
 
-import {CommandContext, GameContext, JobLogTail, JobProgress, JobStatusTable, Markdown} from '@cli/components/index.js'
+import {
+  CommandContext,
+  GameContext,
+  JobLogTail,
+  JobProgress,
+  JobStatusTable,
+  Markdown,
+  JobFollow,
+} from '@cli/components/index.js'
 import {getShortUUID, useShip} from '@cli/utils/index.js'
-import {Job} from '@cli/types/index.js'
+import {Job, ShipGameFlags} from '@cli/types/index.js'
 import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 
@@ -16,6 +24,7 @@ interface Props {
 
 export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   const {command} = useContext(CommandContext)
+  const flags = command && (command.getFlags() as ShipGameFlags)
   const {gameId} = useContext(GameContext)
   const shipMutation = useShip()
 
@@ -79,6 +88,16 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   }, [isComplete])
 
   if (!gameId) return <></>
+
+  if (flags?.follow) {
+    if (jobs && jobs.length > 0) {
+      return (
+        <JobFollow projectId={gameId} jobId={jobs[0].id} onComplete={handleJobComplete} onFailure={handleJobFailure} />
+      )
+    }
+
+    return <></>
+  }
 
   return (
     <Box flexDirection="column">
