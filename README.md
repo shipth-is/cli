@@ -44,7 +44,7 @@
 - A Godot 3.6 or 4.X game
 - [Node.js](https://nodejs.org/en/download/) version 18.0 or above
 - **If you are building an iOS game** - an [Apple Developer account](https://developer.apple.com)
-- **If you are building an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup)
+- **If you are publishing an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup) (not required for building an APK/AAB)
 
 ### 1. Install ShipThis
 
@@ -119,8 +119,6 @@ shipthis game ship
 <details>
 <summary><strong>Can I use ShipThis for testing builds without publishing them?</strong></summary>
 
-Can I use ShipThis for testing builds without publishing them?
-
 Yes, you can run the [`shipthis game ship`](https://shipth.is/docs/reference/game/ship) command with the `--skipPublish` and `--download` flags to build and and download the asset. For example:
 
 ```bash
@@ -147,12 +145,13 @@ ShipThis handles iOS builds on managed macOS cloud servers. The command-line too
 
 We support **all stable Godot versions since 3.6**, including:
 
-| 3.x     | 4.0.x         | 4.1.x         | 4.2.x   | 4.3 | 4.4.x   |
-|---------|---------------|---------------|---------|------|---------|
-| 3.6     | 4.0, 4.0.1    | 4.1, 4.1.1    | 4.2     | 4.3 | 4.4     |
-|         | 4.0.2, 4.0.3  | 4.1.2, 4.1.3  | 4.2.1   |      | 4.4.1   |
-|         | 4.0.4         | 4.1.4         | 4.2.2   |      |         |
-
+| 3.6     | 4.0      | 4.1      | 4.2    | 4.3 | 4.4    |
+|---------|----------|----------|--------|-----|--------|
+| 3.6     | 4.0      | 4.1      | 4.2    | 4.3 | 4.4    |
+| 3.6.1   | 4.0.1    | 4.1.1    | 4.2.1  |     | 4.4.1  |
+|         | 4.0.2    | 4.1.2    | 4.2.2  |     |        |
+|         | 4.0.3    | 4.1.3    |        |     |        |
+|         | 4.0.4    | 4.1.4    |        |     |        |
 
 You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning).
 
@@ -183,22 +182,22 @@ ShipThis is currently in open-beta as so it is completely free to use. You can s
 
 </details>
 
-## Command Reference
+## 📖 Command Reference
 
-### Topics
+### 🗂 Topics
 
-- [apple](https://shipth.is/docs/reference/apple) - Commands that relate to linking your ShipThis account with your Apple Developer Account
-- [game](https://shipth.is/docs/reference/game) - Commands that relate to configuring the specific game in the current working directory.
+- [apple](https://shipth.is/docs/reference/apple) – Commands that relate to linking your ShipThis account with your Apple Developer Account
+- [game](https://shipth.is/docs/reference/game) – Commands that relate to configuring the specific game in the current working directory.
 
-### Commands
+### 🔧 Commands
 
-- [dashboard](https://shipth.is/docs/reference/dashboard) - Opens the web browser to your shipth.is dashboard
-- [login](https://shipth.is/docs/reference/login) - Sign in or create a new account
-- [status](https://shipth.is/docs/reference/status) - Display your overall ShipThis account status
-- [help](https://shipth.is/docs/reference/help) - Display help for a specific topic or command
+- [dashboard](https://shipth.is/docs/reference/dashboard) – Opens the web browser to your shipth.is dashboard
+- [login](https://shipth.is/docs/reference/login) – Sign in or create a new account
+- [status](https://shipth.is/docs/reference/status) – Display your overall ShipThis account status
+- [help](https://shipth.is/docs/reference/help) – Display help for a specific topic or command
 
-## Community
+## 🌍 Community
 
-- [Join us on Discord](https://discord.gg/gPjn3S99k4)
-- [Report an issue](https://github.com/shipth-is/cli/issues)
-- Feature ideas? Feedback? We’d love to hear from you - email support@shipth.is
+- 💬 [Join us on Discord](https://discord.gg/gPjn3S99k4)
+- 🐛 [Report an issue](https://github.com/shipth-is/cli/issues)
+- 📣 Feature ideas? Feedback? We’d love to hear from you – email support@shipth.is
