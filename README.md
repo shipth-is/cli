@@ -117,26 +117,16 @@ shipthis game ship
 ## FAQ
 
 <details>
-<summary><strong>Can I use ShipThis for testing builds without publishing them?</strong></summary>
+<summary><strong>Can I build my game as APK without a Google Play account?</strong></summary>
 
 ---
 
-Yes, you can run the [`shipthis game ship`](https://shipth.is/docs/reference/game/ship) command with the `--skipPublish` and `--download` flags to build and and download the asset. For example:
+Yes.
 
-```bash
-shipthis game ship \
-  --follow \
-  --platform android \
-  --skipPublish \
-  --downloadAPK game.apk
-```
+Running the wizard command will create a Service Account Key for automatic publishing, you might not need this when initially building your game.
 
-</details>
+You can run the steps below to create a ShipThis account, create the game, create a keystore, and then run the ship command. Later, when you need to setup publishing you can re-run the wizard command.
 
-<details>
-<summary><strong>What are the minimum steps to build my game as an APK?</strong></summary>
-
----
 
 ```bash
 # Create or login to your shipthis account (OTP based login)
@@ -149,12 +139,9 @@ shipthis game create --name "My Game" --androidPackageName "com.my.game"
 shipthis game android keyStore create
 
 # Run the build, skip the publish step, and download as game.apk
-shipthis game ship \
-  --follow \
-  --platform android \
-  --skipPublish \
-  --downloadAPK game.apk
+shipthis game ship --follow --platform android --skipPublish --downloadAPK game.apk
 ```
+
 
 </details>
 
