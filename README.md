@@ -14,7 +14,7 @@
   <b>ShipThis</b> is a <b>command line tool</b> for building and uploading your <a href="https://godotengine.org/">Godot</a> mobile games to the <b>Apple App Store</b> and <b>Google Play</b>.
 </p>
 <p align="center">
-  ShipThis compiles your game on managed cloud servers — no local build tools needed. Use it manually or add it into your CI when you're ready to ship.
+  ShipThis compiles your game on managed cloud servers. You do not need Xcode, Android Studio, or SDK installations. You can run it manually or from CI.
 </p>
 
 <p align="center">
@@ -29,45 +29,22 @@
 
 ---
 
+## Why use ShipThis?
 
-<details>
-<summary><strong>Watch: Set up ShipThis for iOS</strong></summary>
+- **Always a free tier** - Enough build minutes for most solo devs
+- **One-command setup** - Use the interactive [`wizard`](https://shipth.is/docs/reference/game/wizard) to configure your game
+- **No additional tools** - No Xcode, Android Studio, or SDK installation required
+- **Simplified provisioning** - We handle iOS certificates, Android keystores, app signing, and API keys
+- **One-command deployment** - Publish to TestFlight or Google Play with a single command
 
-<p align="center">
-  <a href="https://www.youtube.com/watch?v=ijTUFVk1duw" target="_blank">
-    <img src="https://img.youtube.com/vi/ijTUFVk1duw/0.jpg" alt="Watch the iOS setup video" width="640" height="480">
-  </a>
-</p>
+## Quick start
 
-</details>
-<details>
-<summary><strong>Watch: Set up ShipThis for Android</strong></summary>
-
-<p align="center">
-  <picture>
-    <img height="431" width="672" alt="ShipThis Command - Android Wizard - published game" src="docs/assets/wizard-android-existingx0.5.gif">
-  </picture>
-</p>
-
-</details>
-
-
-## ❓ Why use ShipThis?
-
-- **✅ Always a free tier** – Enough usage for most solo devs.
-- **✨ One-command setup** – Our interactive [`wizard`](https://shipth.is/docs/reference/game/wizard) guides you through configuration.
-- **⏩ Skip the build tools** – No Xcode, Android Studio, or SDK installation required.
-- **🔐 Simplify provisioning** – We handle iOS certificates, Android keystores, app signing, and API keys.
-- **🚀 One-command deployment** – Publish to TestFlight or Google Play with a single CLI command.
-
-## ⚡️ Quick start
-
-### What you'll need
+### Requirements
 
 - A Godot 3.6 or 4.X game
 - [Node.js](https://nodejs.org/en/download/) version 18.0 or above
-- **If you are building an iOS game** – an [Apple Developer account](https://developer.apple.com)
-- **If you are building an Android game** – a [Play Console developer account](https://play.google.com/apps/publish/signup)
+- **To build an iOS game** - an [Apple Developer account](https://developer.apple.com)
+- **To publish an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup) (not required for building an APK/AAB)
 
 ### 1. Install ShipThis
 
@@ -81,7 +58,7 @@ npm install -g shipthis
 
 Set up an account with ShipThis by logging in for the first time using the [`shipthis login`](https://shipth.is/docs/reference/login) command.
 
-> 🛠 All builds run on managed cloud servers – no need to install Xcode or Android Studio locally.
+> 🛠 All builds run on managed cloud servers - no need to install Xcode or Android Studio locally.
 
 ```bash
 shipthis login
@@ -89,19 +66,41 @@ shipthis login
 
 ### 3. Set up your game
 
-Next, run the [wizard command](https://shipth.is/docs/reference/game/wizard) to configure your game on ShipThis. The command takes a platform parameter – this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
+Run the [wizard command](https://shipth.is/docs/reference/game/wizard) to configure your game on ShipThis. The command takes a platform parameter - this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
 
-### Set up an Android game
+#### Set up an Android game
 
 ```bash
 shipthis game wizard android
 ```
 
-### Set up an iOS game
+<details>
+<summary><strong>Watch: Set up ShipThis for Android</strong></summary>
+
+<p align="center">
+  <picture>
+    <img height="431" width="672" alt="ShipThis Command - Android Wizard - published game" src="docs/assets/wizard-android-existingx0.5.gif">
+  </picture>
+</p>
+
+</details>
+
+#### Set up an iOS game
 
 ```bash
 shipthis game wizard ios
 ```
+
+<details>
+<summary><strong>Watch: Set up ShipThis for iOS</strong></summary>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=ijTUFVk1duw" target="_blank">
+    <img src="https://img.youtube.com/vi/ijTUFVk1duw/0.jpg" alt="Watch the iOS setup video" width="640" height="480">
+  </a>
+</p>
+
+</details>
 
 ### 4. Ship
 
@@ -111,8 +110,77 @@ Now you can publish new versions of your game to TestFlight or Google Play with 
 shipthis game ship
 ```
 
-- 💡 Having issues? Check the [Troubleshooting](https://shipth.is/docs/troubleshooting) or [join our Discord](https://discord.gg/gPjn3S99k4)
-- 📚 For detailed documentation, visit [shipth.is/docs](https://shipth.is/docs)
+- Having issues? Check the [Troubleshooting](https://shipth.is/docs/troubleshooting) or [join our Discord](https://discord.gg/gPjn3S99k4)
+- For detailed documentation, visit [shipth.is/docs](https://shipth.is/docs)
+
+
+## FAQ
+
+<details>
+<summary><strong>Can I use ShipThis for testing builds without publishing them?</strong></summary>
+
+Yes, you can run the [`shipthis game ship`](https://shipth.is/docs/reference/game/ship) command with the `--skipPublish` and `--download` flags to build and and download the asset. For example:
+
+```bash
+shipthis game ship \
+  --follow \
+  --platform android \
+  --skipPublish \
+  --downloadAPK game.apk
+```
+
+</details>
+
+<details>
+<summary><strong>Do I need a Mac to build for iOS?</strong></summary>
+
+No, you do not need a Mac, but you will need an Apple Developer Account.
+
+ShipThis handles iOS builds on managed macOS cloud servers. The command-line tool communicates with the Apple Developer Portal to configure everything on your behalf.
+
+</details>
+
+<details>
+<summary><strong>Which versions of Godot are supported?</strong></summary>
+
+We support **all stable Godot versions since 3.6**, including:
+
+| 3.6     | 4.0      | 4.1      | 4.2    | 4.3 | 4.4    |
+|---------|----------|----------|--------|-----|--------|
+| 3.6     | 4.0      | 4.1      | 4.2    | 4.3 | 4.4    |
+| 3.6.1   | 4.0.1    | 4.1.1    | 4.2.1  |     | 4.4.1  |
+|         | 4.0.2    | 4.1.2    | 4.2.2  |     |        |
+|         | 4.0.3    | 4.1.3    |        |     |        |
+|         | 4.0.4    | 4.1.4    |        |     |        |
+
+You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning).
+
+</details>
+
+<details>
+<summary><strong>Do I need to create an export_presets.cfg file?</strong></summary>
+
+No, ShipThis will work without an **export_presets.cfg** by applying the known defaults for your specified platform and Godot version.
+
+If you provide an **export_presets.cfg** file then this will be merged with the known defaults.
+
+</details>
+
+<details>
+<summary><strong>How does ShipThis handle app signing and credentials?</strong></summary>
+
+The ShipThis command-line tool will guide you through the process of creating all of the required credentials and API keys to build and submit for Android or iOS.
+
+Once configured, your credentials are securely stored in the ShipThis backend and automatically injected into the cloud build environment as environment variables.
+
+</details>
+
+<details>
+<summary><strong>How much does it cost to use ShipThis?</strong></summary>
+
+ShipThis is currently in open-beta as so it is completely free to use. You can see our planned pricing on the [pricing page](https://shipth.is/pricing).
+
+</details>
 
 ## 📖 Command Reference
 
