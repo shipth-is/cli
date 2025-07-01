@@ -31,11 +31,11 @@
 
 ## Why use ShipThis?
 
-- **Always a free tier** - enough build minutes for most solo devs
+- **Always a free tier** - Enough build minutes for most solo devs
 - **One-command setup** - Use the interactive [`wizard`](https://shipth.is/docs/reference/game/wizard) to configure your game
 - **No additional tools** - No Xcode, Android Studio, or SDK installation required
 - **Simplified provisioning** - We handle iOS certificates, Android keystores, app signing, and API keys
-- **One-command deployment** - Publish to TestFlight or Google Play with a single CLI command
+- **One-command deployment** - Publish to TestFlight or Google Play with a single command
 
 ## Quick start
 
@@ -43,8 +43,8 @@
 
 - A Godot 3.6 or 4.X game
 - [Node.js](https://nodejs.org/en/download/) version 18.0 or above
-- **If you are building an iOS game** - an [Apple Developer account](https://developer.apple.com)
-- **If you are publishing an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup) (not required for building an APK/AAB)
+- **To build an iOS game** - an [Apple Developer account](https://developer.apple.com)
+- **To publish an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup) (not required for building an APK/AAB)
 
 ### 1. Install ShipThis
 
