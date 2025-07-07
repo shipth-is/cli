@@ -129,6 +129,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
             <Markdown
               filename="ship-success.md"
               templateVars={{
+                wasPublished: flags?.skipPublish ? false : true,
                 gameBuildsUrl: `${WEB_URL}games/${getShortUUID(gameId)}/builds`,
               }}
             />

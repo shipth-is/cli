@@ -7,7 +7,7 @@ import {useEffect, useState} from 'react'
 
 interface Props extends TerminalRendererOptions {
   filename: string
-  templateVars?: Record<string, string>
+  templateVars?: Record<string, string|boolean>
 }
 
 const cleanHyperlinks = (input: string): string => {
@@ -31,11 +31,23 @@ export const getRenderedMarkdown = ({filename, templateVars, ...options}: Props)
 
   const mdPath = path.join(root, '..', 'assets', 'markdown', filename)
   const mdTemplate = fs.readFileSync(mdPath, 'utf8').trim()
-  // Quick and dirty template - use ${name} in the markdown file
 
-  const markdown = !templateVars
-    ? mdTemplate
-    : mdTemplate.replace(/\${(.*?)}/g, (_, key) => templateVars[key.trim()] || '')
+  let markdown = mdTemplate
+
+  // This is crude and it needed ChatGPT for the regexes
+  // TODO: consider a different templating system
+  if (templateVars) {
+    // Conditional blocks: ${if key} ... ${endif}
+    markdown = markdown.replace(/\${if (.*?)\}([\s\S]*?)\${endif}/g, (_, key, content) => {
+      return templateVars[key.trim()] ? content : ''
+    })
+
+    // Variable replacement: ${key}
+    markdown = markdown.replace(/\${(.*?)}/g, (_, key) => {
+      const trimmed = key.trim()
+      return templateVars[trimmed] ? String(templateVars[trimmed]) : ''
+    })
+  }
 
   const rendered = parse(markdown).trim()
   const cleaned = cleanHyperlinks(rendered)
