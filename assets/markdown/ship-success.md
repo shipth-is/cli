@@ -1,6 +1,6 @@
 # 🚀 Shipped
 
-**Your game has been successfully built and published.**
+**Your game has been successfully built${if wasPublished} and published${endif}.**
 
 ## Next Steps
 
