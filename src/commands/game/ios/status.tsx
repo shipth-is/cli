@@ -34,7 +34,7 @@ export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus>
     }
     // TODO: what if they have not yet connected to apple?
     // TODO: what do do if they have credentials?
-    const steps = [iosPlatformStatus.hasBundleSet == false && '$ shipthis game ios app create'].filter(
+    const steps = [iosPlatformStatus.hasBundleSet == false && 'shipthis game ios app create'].filter(
       Boolean,
     ) as string[]
 

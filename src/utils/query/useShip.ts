@@ -19,10 +19,19 @@ interface ShipOptions {
 }
 
 export async function ship({command, log = () => {}}: ShipOptions): Promise<Job[]> {
-  log('Fetching project config...')
+  log('Fetching game config...')
   const projectConfig: ProjectConfig = await command.getProjectConfig()
 
   if (!projectConfig.project) throw new Error('No project found in project config')
+
+  const hasConfiguredIos = !!projectConfig.project.details?.iosBundleId
+  const hasConfiguredAndroid = !!projectConfig.project.details?.androidPackageName
+
+  if (!hasConfiguredAndroid && !hasConfiguredIos) {
+    throw new Error(
+      'No Android or iOS configuration found. Please run `shipthis game wizard android` or `shipthis game wizard ios` to configure your game.',
+    )
+  }
 
   log('Retrieving file globs...')
   const shippedFilesGlobs = projectConfig.shippedFilesGlobs || DEFAULT_SHIPPED_FILES_GLOBS
@@ -88,6 +97,11 @@ export async function ship({command, log = () => {}}: ShipOptions): Promise<Job[
   fs.unlinkSync(tmpZipFile)
 
   log('Job submission complete.')
+
+  if (jobs.length === 0) {
+    throw new Error('No jobs were created. Please check your game configuration and try again.')
+  }
+
   return jobs
 }
 

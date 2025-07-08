@@ -34,7 +34,7 @@ export default class GameAndroidStatus extends BaseGameCommand<typeof GameAndroi
       (platformStatus.hasBundleSet == false ||
         platformStatus.hasApiKeyForPlatform == false ||
         platformStatus.hasCredentialsForPlatform == false) &&
-        '$ shipthis game android setup',
+        'shipthis game wizard android',
     ].filter(Boolean) as string[]
 
     const progressToStatuses = (progress: ProjectPlatformProgress) => {

@@ -12,16 +12,16 @@ function getSteps(platform: Platform, progress: ProjectPlatformProgress | null) 
   switch (platform) {
     case Platform.ANDROID:
       return [
-        !progress.hasCredentialsForPlatform && '$ shipthis game android keyStore create',
-        !progress.hasApiKeyForPlatform && '$ shipthis game android apiKey create',
-        progress.hasCredentialsForPlatform && progress.hasApiKeyForPlatform && '$ shipthis game ship',
+        !progress.hasCredentialsForPlatform && 'shipthis game android keyStore create',
+        !progress.hasApiKeyForPlatform && 'shipthis game android apiKey create',
+        progress.hasCredentialsForPlatform && progress.hasApiKeyForPlatform && 'shipthis game ship',
       ].filter(Boolean) as string[]
 
     case Platform.IOS:
       return [
-        !progress.hasApiKeyForPlatform && '$ shipthis apple apiKey create',
-        !progress.hasCredentialsForPlatform && '$ shipthis game ios profile create',
-        progress.hasApiKeyForPlatform && progress.hasCredentialsForPlatform && '$ shipthis game ship',
+        !progress.hasApiKeyForPlatform && 'shipthis apple apiKey create',
+        !progress.hasCredentialsForPlatform && 'shipthis game ios profile create',
+        progress.hasApiKeyForPlatform && progress.hasCredentialsForPlatform && 'shipthis game ship',
       ].filter(Boolean) as string[]
 
     default:
@@ -62,6 +62,10 @@ export default class GameStatus extends BaseAuthenticatedCommand<typeof GameStat
     let steps: string[] = []
     if (hasConfiguredIos) steps = steps.concat(getSteps(Platform.IOS, statuses[Platform.IOS]))
     if (hasConfiguredAndroid) steps = steps.concat(getSteps(Platform.ANDROID, statuses[Platform.ANDROID]))
+
+    if (!hasConfiguredIos && !hasConfiguredAndroid) {
+      steps = steps.concat(['shipthis game wizard android', 'shipthis game wizard ios'])
+    }
 
     const progressToStatuses = (progress: ProjectPlatformProgress) => {
       // Remove the 'platform' key as we have titles
