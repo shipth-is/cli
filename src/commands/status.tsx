@@ -24,11 +24,11 @@ export default class Status extends BaseCommand<typeof Status> {
 
     let steps = []
 
-    if (!isLoggedIn) steps.push('$ shipthis login --email my.email@address.nowhere')
+    if (!isLoggedIn) steps.push('shipthis login --email my.email@address.nowhere')
     if (!isGodotGame) steps.push('Run this command in a Godot project directory')
-    if (!isShipThisConfigured) steps.push('$ shipthis game wizard')
+    if (!isShipThisConfigured) steps.push('shipthis game wizard')
 
-    if (steps.length === 0) steps = ['$ shipthis game status']
+    if (steps.length === 0) steps = ['shipthis game status']
 
     const statusProps = {
       title: 'Status',

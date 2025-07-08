@@ -38,7 +38,7 @@ export default class AppleStatus extends BaseAuthenticatedCommand<typeof AppleSt
 
     let steps = []
 
-    if (!isAuthenticatedOnApple) steps.push('$ shipthis apple login')
+    if (!isAuthenticatedOnApple) steps.push('shipthis apple login')
 
     render(
       <Command command={this}>
