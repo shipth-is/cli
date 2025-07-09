@@ -16,9 +16,10 @@ import {BaseCommand} from '@cli/baseCommands/index.js'
 interface ShipOptions {
   command: BaseCommand<any>
   log?: (message: string) => void
+  shipFlags?: ShipGameFlags // If provided, will override command flags
 }
 
-export async function ship({command, log = () => {}}: ShipOptions): Promise<Job[]> {
+export async function ship({command, log = () => {}, shipFlags}: ShipOptions): Promise<Job[]> {
   log('Fetching game config...')
   const projectConfig: ProjectConfig = await command.getProjectConfig()
 
@@ -83,12 +84,12 @@ export async function ship({command, log = () => {}}: ShipOptions): Promise<Job[
 
   log('Starting jobs from upload...')
 
-  const commandFlags = command.getFlags() as ShipGameFlags
+  const finalFlags = shipFlags || (command.getFlags() as ShipGameFlags)
 
   const startJobsOptions = {
     ...uploadDetails,
-    skipPublish: commandFlags.skipPublish,
-    platform: commandFlags.platform?.toUpperCase() as Platform,
+    skipPublish: finalFlags.skipPublish,
+    platform: finalFlags.platform?.toUpperCase() as Platform,
   }
 
   const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
