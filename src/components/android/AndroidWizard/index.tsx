@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Box} from 'ink'
 
-import {Markdown, ScrollArea, StepProps, Title} from '@cli/components/index.js'
+import {Markdown, StepProps} from '@cli/components/index.js'
 import {CommandContext, GameProvider} from '@cli/components/context/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 
@@ -14,8 +14,9 @@ import {CreateInitialBuild} from '@cli/components/android/CreateInitialBuild/ind
 import {CreateGooglePlayGame} from '@cli/components/android/CreateGooglePlayGame/index.js'
 import {InviteServiceAccount} from '@cli/components/android/InviteServiceAccount/index.js'
 
-import {StepStatusTable} from './StepStatusTable.js'
 import {getStatusFlags, getStepInitialStatus, Step, Steps, StepStatus} from './utils.js'
+import {WizardHeader} from './WizardHeader.js'
+import { useResponsive } from '@cli/utils/index.js'
 
 const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   createGame: CreateGame,
@@ -32,7 +33,10 @@ const ON_COMPLETE_DELAY_MS = 500
 export const AndroidWizard = (props: StepProps) => {
   const {command} = React.useContext(CommandContext)
 
+  const { isWide, isTall } = useResponsive()
+
   const [currentStep, setCurrentStep] = useState<Step | null>(null)
+  const [currentStepIndex, setCurrentStepIndex] = useState<number | null>(null)
   const [stepStatuses, setStepStatuses] = useState<null | StepStatus[]>(null)
 
   const [showSuccess, setShowSuccess] = useState(false)
@@ -50,6 +54,7 @@ export const AndroidWizard = (props: StepProps) => {
       if (index === firstPending) return StepStatus.RUNNING
       return status
     })
+    setCurrentStepIndex(firstPending)
     setCurrentStep(pendingStep)
     setStepStatuses(withPending)
     const isAllDone = firstPending === -1
@@ -72,28 +77,21 @@ export const AndroidWizard = (props: StepProps) => {
 
   return (
     <GameProvider>
-      <ScrollArea height={process.stdout.rows || 24}>
-        <Box flexDirection="column">
-          <Box marginBottom={1}>
-            <Title>ShipThis Android Wizard</Title>
-          </Box>
-          {stepStatuses && <StepStatusTable stepStatuses={stepStatuses} />}
+      <WizardHeader stepStatuses={stepStatuses} currentStepIndex={currentStepIndex} />
+      {StepInterface && (
+        <StepInterface
+          onComplete={handleStepComplete}
+          onError={props.onError}
+          margin={isTall && isWide ? 1 : 0}
+          borderStyle={isTall && isWide ? 'single' : undefined}
+          padding={isTall && isWide ? 1 : 0}
+        />
+      )}
+      {showSuccess && (
+        <Box marginTop={1}>
+          <Markdown filename="android-success.md" templateVars={templateVars} />
         </Box>
-        {StepInterface && (
-          <StepInterface
-            onComplete={handleStepComplete}
-            onError={props.onError}
-            margin={1}
-            borderStyle="single"
-            padding={1}
-          />
-        )}
-        {showSuccess && (
-          <Box marginTop={1}>
-            <Markdown filename="android-success.md" templateVars={templateVars} />
-          </Box>
-        )}
-      </ScrollArea>
+      )}
     </GameProvider>
   )
 }

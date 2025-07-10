@@ -1,10 +1,10 @@
 import {Args} from '@oclif/core'
 
-import {render} from 'ink'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
 
 import {AndroidWizard, Command} from '@cli/components/index.js'
+import {withFullScreen} from 'fullscreen-ink'
 
 export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWizard> {
   static override args = {
@@ -32,10 +32,10 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
       return this.config.runCommand('game:ios:wizard')
     }
 
-    render(
+    withFullScreen(
       <Command command={this}>
         <AndroidWizard onComplete={() => process.exit(0)} onError={(e) => this.error(e)} />
       </Command>,
-    )
+    ).start()
   }
 }

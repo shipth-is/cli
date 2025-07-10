@@ -49,6 +49,10 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
         .mutateAsync({
           command,
           log: setShipLog,
+          shipFlags: {
+            platform: 'android',
+            skipPublish: true
+          }
         })
         .catch(onError)
   }, [buildData, jobData, command])

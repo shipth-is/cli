@@ -16,7 +16,7 @@ import {
 } from '@cli/utils/index.js'
 import {cacheKeys, WEB_URL} from '@cli/constants/index.js'
 import {GameContext, Markdown} from '@cli/components/index.js'
-import {Platform} from '@cli/types/api.js'
+import {BuildType, Platform} from '@cli/types/api.js'
 import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 
 import {StepProps} from '../../index.js'
@@ -77,8 +77,11 @@ const Create = ({onComplete, onError, gameId, ...boxProps}: Props): JSX.Element 
     })
   })
 
-  const initialBuild = builds?.data.find((build) => build.platform === Platform.ANDROID)
-  const downloadCmd = initialBuild ? `${getBuildSummary(initialBuild).cmd}` : ''
+  const initialBuild = builds?.data.find((build) => {
+    return build.platform === Platform.ANDROID && build.buildType === BuildType.AAB
+  })
+
+  const downloadCmd = initialBuild ? `${getBuildSummary(initialBuild).cmd}` : 'Initial AAB build not found!'
 
   const templateVars = {
     downloadCmd,
