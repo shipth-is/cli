@@ -3,7 +3,7 @@ import open from 'open'
 import {useContext, useState} from 'react'
 
 import {WEB_URL} from '@cli/constants/index.js'
-import {useGoogleStatusWatching, useResponsive} from '@cli/utils/index.js'
+import {useGoogleStatusWatching} from '@cli/utils/index.js'
 import {GoogleStatusResponse} from '@cli/types/api.js'
 import {GameContext, Markdown, StepProps} from '@cli/components/index.js'
 
@@ -23,8 +23,8 @@ interface ConnectWithGameProps extends Props {
 }
 
 const ConnectForGame = ({onComplete, onError, helpPage, gameId, ...boxProps}: ConnectWithGameProps): JSX.Element => {
-  const {isTall} = useResponsive()
-  const [showQRCode, setShowQRCode] = useState(isTall)
+
+  const [showQRCode, setShowQRCode] = useState(false)
 
   useGoogleStatusWatching({
     projectId: gameId,
