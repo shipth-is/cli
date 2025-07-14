@@ -1,4 +1,4 @@
-import { useScreenSize } from './useScreenSize.js'
+import { useScreenSize } from 'fullscreen-ink'
 
 // TODO: this is a bit crude
 const WIDE_BREAKPOINT = 100
