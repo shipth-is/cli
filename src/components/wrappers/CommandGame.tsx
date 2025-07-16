@@ -2,10 +2,11 @@ import React from 'react'
 
 import {GameProvider} from '../context/index.js'
 import {Command, CommandProps} from './Command.js'
-import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
+
+import { BaseAuthenticatedCommand } from '@cli/baseCommands/baseAuthenticatedCommand.js'
 
 interface Props extends CommandProps {
-  command: BaseGameCommand<any>
+  command: BaseAuthenticatedCommand<any>
 }
 
 export const CommandGame = ({children, command}: Props) => {

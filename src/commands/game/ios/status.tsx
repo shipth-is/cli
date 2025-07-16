@@ -1,11 +1,8 @@
 import {render} from 'ink'
 import {Flags} from '@oclif/core'
 
-import {Command, AppleAppDetails, AppleBundleIdDetails, NextSteps, StatusTable} from '@cli/components/index.js'
+import {AppleAppDetails, AppleBundleIdDetails, GameStatus, CommandGame} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {getProjectPlatformProgress} from '@cli/api/index.js'
-import {Platform, ProjectPlatformProgress} from '@cli/types'
-import {getShortDate, getShortUUID, makeHumanReadable} from '@cli/utils/index.js'
 
 export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus> {
   static override args = {}
@@ -24,44 +21,20 @@ export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus>
 
   public async run(): Promise<void> {
     const game = await this.getGame()
-    const iosPlatformStatus = await getProjectPlatformProgress(game.id, Platform.IOS)
-
-    const gameStatuses = {
-      name: game.name,
-      id: getShortUUID(game.id),
-      createdAt: getShortDate(game.createdAt),
-      engine: 'Godot',
-    }
-    // TODO: what if they have not yet connected to apple?
-    // TODO: what do do if they have credentials?
-    const steps = [iosPlatformStatus.hasBundleSet == false && 'shipthis game ios app create'].filter(
-      Boolean,
-    ) as string[]
-
-    const progressToStatuses = (progress: ProjectPlatformProgress) => {
-      // Remove the 'platform' key as we have titles
-      const {platform, ...rest} = progress
-      return makeHumanReadable(rest)
-    }
 
     const authState = await this.refreshAppleAuthState()
     const ctx = authState.context
 
     render(
-      <Command command={this}>
-        <StatusTable marginBottom={1} title="ShipThis game status" statuses={gameStatuses} />
-
-        <StatusTable
-          marginBottom={1}
-          title="Overall iOS status for game"
-          statuses={progressToStatuses(iosPlatformStatus)}
-        />
-
-        <AppleAppDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
-        <AppleBundleIdDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
-
-        <NextSteps steps={steps} />
-      </Command>,
+      <CommandGame command={this}>
+        <GameStatus onComplete={(exitCode) => {
+          // TODO: this is a hack because the Apple components need time to load
+          setTimeout(() => process.exit(exitCode), 2000)
+        }}>
+          <AppleAppDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
+          <AppleBundleIdDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
+        </GameStatus>
+      </CommandGame>,
     )
   }
 }
