@@ -22,18 +22,9 @@ interface Props {
 }
 
 export const GameProvider = ({children}: Props) => {
-  const [gameId, setGameId] = useState<string | null>(null)
-  const [game, setGame] = useState<Project | null>(null)
-
   const {command} = React.useContext(CommandContext)
-
-  const handleLoad = async () => {
-    if (command) {
-      // Gives the id from the project config file or the --gameId flag
-      const commandGameId = await command.getGameId()
-      if (commandGameId) setGameId(commandGameId)
-    }
-  }
+  const [gameId, setGameId] = useState<string | null>(command?.getGameId() || null)
+  const [game, setGame] = useState<Project | null>(null)
 
   const handleGameIdChange = async () => {
     if (!gameId) {
@@ -47,10 +38,6 @@ export const GameProvider = ({children}: Props) => {
   useEffect(() => {
     handleGameIdChange()
   }, [gameId])
-
-  useEffect(() => {
-    handleLoad()
-  }, [command])
 
   return <GameContext.Provider value={{gameId, game, setGameId}}>{children}</GameContext.Provider>
 }

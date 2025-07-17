@@ -28,6 +28,8 @@ export default class Status extends BaseCommand<typeof Status> {
     if (!isGodotGame) steps.push('Run this command in a Godot project directory')
     if (!isShipThisConfigured) steps.push('shipthis game wizard')
 
+    const exitCode = steps.length > 0 ? 1 : 0
+
     if (steps.length === 0) steps = ['shipthis game status']
 
     const statusProps = {
@@ -46,5 +48,7 @@ export default class Status extends BaseCommand<typeof Status> {
         <NextSteps steps={steps} />
       </Command>,
     )
+
+    return process.exit(exitCode)
   }
 }

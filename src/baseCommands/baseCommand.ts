@@ -108,10 +108,11 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return this.getProjectConfigSafe()
   }
 
-  public async getProjectConfigSafe(): Promise<ProjectConfig> {
+  // Returns an empty config if one does not exist
+  public getProjectConfigSafe(): ProjectConfig {
     if (!this.hasProjectConfig()) return {}
     const configPath = this.getProjectConfigPath()
-    const raw = await fs.promises.readFile(configPath, 'utf8')
+    const raw = fs.readFileSync(configPath, 'utf8')
     return JSON.parse(raw)
   }
 
@@ -196,10 +197,10 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return values
   }
 
-  public async getGameId(): Promise<string | null> {
+  public getGameId(): string | null {
     const {flags} = this
     if (flags.gameId) return flags.gameId
-    const {project} = await this.getProjectConfigSafe()
+    const {project} = this.getProjectConfigSafe()
     if (!project) return null
     return project.id
   }
