@@ -1,11 +1,10 @@
-import {Flags, Args} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'fs'
-
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {exportCredential, getUserCredentials} from '@cli/api/credentials/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+import * as fs from 'node:fs'
 
 export default class AppleCertificateExport extends BaseAuthenticatedCommand<typeof AppleCertificateExport> {
   static override args = {
@@ -46,9 +45,9 @@ export default class AppleCertificateExport extends BaseAuthenticatedCommand<typ
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Exporting certificate to ${file}...`}
+          executeMethod={() => exportCredential({credentialId: cert.id, zipPath: file})}
           msgComplete={`Certificate exported to ${file}`}
-          executeMethod={() => exportCredential({zipPath: file, credentialId: cert.id})}
+          msgInProgress={`Exporting certificate to ${file}...`}
           onComplete={handleComplete}
         />
       </Command>,

@@ -1,9 +1,8 @@
-import {DateTime} from 'luxon'
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
-
 import {ApiKey} from '@cli/apple/expo.js'
 import {ScalarDict, UserCredential} from '@cli/types'
 import {getShortDate} from '@cli/utils/dates.js'
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
+import {DateTime} from 'luxon'
 
 export interface AppleApiKeysQueryProps {
   ctx: any
@@ -26,18 +25,18 @@ export const canAppleApiKeyBeUsed = (key: any, userCredentials: UserCredential[]
 // How we typically display an Apple API Key - needs the userCredentials to determine if it can be used
 export function getAppleApiKeySummary(key: any, userCredentials: UserCredential[]): ScalarDict {
   return {
+    canBeUsed: canAppleApiKeyBeUsed(key, userCredentials),
     keyID: key.id,
+    lastUsed: getShortDate(DateTime.fromISO(key.attributes.lastUsed)),
     name: key.attributes.nickname,
     roles: key.attributes.roles?.join(', '),
-    lastUsed: getShortDate(DateTime.fromISO(key.attributes.lastUsed)),
-    canBeUsed: canAppleApiKeyBeUsed(key, userCredentials),
   }
 }
 
 export const useAppleApiKeys = (props: AppleApiKeysQueryProps): UseQueryResult<AppleApiKeyQueryResponse> => {
   const queryResult = useQuery<AppleApiKeyQueryResponse>({
-    queryKey: ['appleApiKeys'],
     queryFn: () => queryAppleApiKeys(props),
+    queryKey: ['appleApiKeys'],
   })
   return queryResult
 }

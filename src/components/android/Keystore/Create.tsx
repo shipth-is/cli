@@ -1,12 +1,11 @@
-import {Box} from 'ink'
-import axios from 'axios'
-import {useContext} from 'react'
-import {useQueryClient} from '@tanstack/react-query'
-
-import {API_URL} from '@cli/constants/config.js'
-import {cacheKeys} from '@cli/constants/cacheKeys.js'
-import {GameContext, StepProps, RunWithSpinner} from '@cli/components/index.js'
 import {getAuthedHeaders} from '@cli/api/index.js'
+import {GameContext, RunWithSpinner, StepProps} from '@cli/components/index.js'
+import {cacheKeys} from '@cli/constants/cacheKeys.js'
+import {API_URL} from '@cli/constants/config.js'
+import {useQueryClient} from '@tanstack/react-query'
+import axios from 'axios'
+import {Box} from 'ink'
+import {useContext} from 'react'
 
 export const CreateKeystore = ({onComplete, onError, ...boxProps}: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)
@@ -19,9 +18,9 @@ export const CreateKeystore = ({onComplete, onError, ...boxProps}: StepProps): J
       await axios.post(`${API_URL}/projects/${gameId}/credentials/android/certificate`, null, {
         headers,
       })
-      queryClient.invalidateQueries({queryKey: cacheKeys.projectCredentials({projectId: gameId, pageNumber: 0})})
-    } catch (err) {
-      onError(err as Error)
+      queryClient.invalidateQueries({queryKey: cacheKeys.projectCredentials({pageNumber: 0, projectId: gameId})})
+    } catch (error) {
+      onError(error as Error)
     }
   }
 
@@ -30,8 +29,8 @@ export const CreateKeystore = ({onComplete, onError, ...boxProps}: StepProps): J
       {gameId && (
         <RunWithSpinner
           executeMethod={handleCreate}
-          msgInProgress="Creating Keystore..."
           msgComplete="Keystore created"
+          msgInProgress="Creating Keystore..."
           onComplete={onComplete}
         />
       )}

@@ -1,14 +1,13 @@
-import {Box, BoxProps, Text} from 'ink'
-import Spinner from 'ink-spinner'
-
+import {NextSteps, Table, Title} from '@cli/components/common/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {
-  useUserCredentials,
+  canAppleCertificateBeUsed,
   getAppleCertificateSummary,
   useAppleCertificates,
-  canAppleCertificateBeUsed,
+  useUserCredentials,
 } from '@cli/utils/index.js'
-import {Title, Table, NextSteps} from '@cli/components/common/index.js'
+import {Box, BoxProps, Text} from 'ink'
+import Spinner from 'ink-spinner'
 
 interface Props extends BoxProps {
   ctx: any
@@ -34,7 +33,7 @@ export const AppleCertificatesTable = ({ctx, ...boxProps}: Props) => {
 
         {certs && userCredentialsResponse && (
           <>
-            <Box marginLeft={2} marginBottom={1} flexDirection="column">
+            <Box flexDirection="column" marginBottom={1} marginLeft={2}>
               <Text>{`You have ${certs.length} Distribution Certificates in your Apple account`}</Text>
               <Text>{`${hasUsable ? 'One' : 'None'} of these can be used by ShipThis`}</Text>
             </Box>

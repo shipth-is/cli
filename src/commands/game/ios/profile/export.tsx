@@ -1,11 +1,10 @@
-import {Flags, Args} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'fs'
-
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {exportCredential, getProjectCredentials} from '@cli/api/credentials/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+import * as fs from 'node:fs'
 
 export default class GameIosProfileExport extends BaseGameCommand<typeof GameIosProfileExport> {
   static override args = {
@@ -17,8 +16,8 @@ export default class GameIosProfileExport extends BaseGameCommand<typeof GameIos
   static override examples = ['<%= config.bin %> <%= command.id %> userProfile.zip']
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     force: Flags.boolean({char: 'f', description: 'Overwrite the file if it already exists'}),
+    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
   }
 
   public async run(): Promise<void> {
@@ -49,9 +48,9 @@ export default class GameIosProfileExport extends BaseGameCommand<typeof GameIos
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Exporting Mobile Provisioning Profile to ${file}...`}
+          executeMethod={() => exportCredential({credentialId: profile.id, projectId: game.id, zipPath: file})}
           msgComplete={`Mobile Provisioning Profile exported to ${file}`}
-          executeMethod={() => exportCredential({zipPath: file, credentialId: profile.id, projectId: game.id})}
+          msgInProgress={`Exporting Mobile Provisioning Profile to ${file}...`}
           onComplete={handleComplete}
         />
       </Command>,

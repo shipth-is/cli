@@ -9,10 +9,8 @@ interface Props extends CommandProps {
   command: BaseAuthenticatedCommand<any>
 }
 
-export const CommandGame = ({children, command}: Props) => {
-  return (
+export const CommandGame = ({children, command}: Props) => (
     <Command command={command}>
       <GameProvider>{children}</GameProvider>
     </Command>
   )
-}

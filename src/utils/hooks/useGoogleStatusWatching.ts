@@ -1,41 +1,42 @@
 // We watch by projectId - but get the status without the id
 
 import {GoogleStatusResponse} from '@cli/types/api.js'
-import {useWebSocket, WebSocketListener} from './useWebSocket.js'
+import {useEffect, useState} from 'react'
+
 import {useGoogleStatus} from '../query/useGoogleStatus.js'
-import {useState, useEffect} from 'react'
+import {WebSocketListener, useWebSocket} from './useWebSocket.js'
 
 // TODO: there is potentially an issue if users are setting up multiple projects at once
 export interface GoogleStatusWatchingProps {
-  projectId: string | null
   isWatching: boolean
   onGoogleStatusUpdate?: (status: GoogleStatusResponse) => void
+  projectId: null | string
 }
 
 export interface GoogleStatusWatchingResult {
-  isLoading: boolean
   data: GoogleStatusResponse | null
+  isLoading: boolean
 }
 
 export function useGoogleStatusWatching({
-  projectId,
   isWatching,
   onGoogleStatusUpdate,
+  projectId,
 }: GoogleStatusWatchingProps): GoogleStatusWatchingResult {
   // The status that we receive over the websocket
   const [wsGoogleStatus, setWsGoogleStatus] = useState<GoogleStatusResponse | null>(null)
 
   const listener: WebSocketListener = {
-    getPattern: () => `project.${projectId}:google-status`,
-    eventHandler: async (pattern: string, data: any) => {
+    async eventHandler(pattern: string, data: any) {
       setWsGoogleStatus(data)
       if (onGoogleStatusUpdate) onGoogleStatusUpdate(data)
     },
+    getPattern: () => `project.${projectId}:google-status`,
   }
 
   useWebSocket(isWatching ? [listener] : [])
 
-  const {isLoading, data: googleStatus} = useGoogleStatus()
+  const {data: googleStatus, isLoading} = useGoogleStatus()
 
   useEffect(() => {
     setWsGoogleStatus(null)
@@ -45,7 +46,7 @@ export function useGoogleStatusWatching({
   const data = wsGoogleStatus ? wsGoogleStatus : fetchedGoogleStatus
 
   return {
-    isLoading,
     data,
+    isLoading,
   }
 }

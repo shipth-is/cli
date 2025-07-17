@@ -1,10 +1,9 @@
-import {Args, Flags} from '@oclif/core'
-import {render} from 'ink'
-
+import {getJob} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, JobLogTail, JobStatusTable, NextSteps} from '@cli/components/index.js'
 import {Job, JobStatus} from '@cli/types'
-import {getJob} from '@cli/api/index.js'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
 
 export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus> {
   static override args = {
@@ -21,8 +20,8 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
 
   static override flags = {
     ...super.flags,
-    lines: Flags.integer({char: 'n', description: 'The number of lines to show', default: 10}),
-    follow: Flags.boolean({char: 'f', description: 'Follow the log in real-time', default: false}),
+    follow: Flags.boolean({char: 'f', default: false, description: 'Follow the log in real-time'}),
+    lines: Flags.integer({char: 'n', default: 10, description: 'The number of lines to show'}),
   }
 
   protected async getJob(): Promise<Job> {
@@ -30,18 +29,19 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
       const game = await this.getGame()
       const job = await getJob(this.args.job_id, game.id)
       return job
-    } catch (e: any) {
-      if (e?.response?.status === 404) {
+    } catch (error: any) {
+      if (error?.response?.status === 404) {
         this.error('Job not found - please check you have access', {exit: 1})
       }
-      throw e
+
+      throw error
     }
   }
 
   public async run(): Promise<void> {
     // We run the getJob first to check the user has access
     const job = await this.getJob()
-    const {lines, follow} = this.flags
+    const {follow, lines} = this.flags
 
     const handleJobUpdate = (job: Job) => {
       if (!follow) return
@@ -54,8 +54,8 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
 
     render(
       <Command command={this}>
-        <JobStatusTable jobId={job.id} projectId={job.project.id} isWatching={follow} onJobUpdate={handleJobUpdate} />
-        <JobLogTail jobId={job.id} projectId={job.project.id} isWatching={follow} length={lines} />
+        <JobStatusTable isWatching={follow} jobId={job.id} onJobUpdate={handleJobUpdate} projectId={job.project.id} />
+        <JobLogTail isWatching={follow} jobId={job.id} length={lines} projectId={job.project.id} />
         <NextSteps steps={[]} />
       </Command>,
     )

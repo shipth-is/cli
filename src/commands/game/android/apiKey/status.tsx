@@ -1,10 +1,9 @@
-import {render} from 'ink'
-import {Flags} from '@oclif/core'
-
-import {Command, ProjectCredentialsTable, Table, Title} from '@cli/components/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
+import {Command, ProjectCredentialsTable, Table, Title} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
-import {fetchKeyTestResult, niceError, KeyTestStatus} from '@cli/utils/query/useAndroidServiceAccountTestResult.js'
+import {KeyTestStatus, fetchKeyTestResult, niceError} from '@cli/utils/query/useAndroidServiceAccountTestResult.js'
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
 export default class GameAndroidApiKeyStatus extends BaseGameAndroidCommand<typeof GameAndroidApiKeyStatus> {
   static override args = {}
@@ -30,9 +29,9 @@ export default class GameAndroidApiKeyStatus extends BaseGameAndroidCommand<type
         <ProjectCredentialsTable
           credentialTypeName="Android Service Account API Key"
           queryProps={{
+            platform: Platform.ANDROID,
             projectId: game.id,
             type: CredentialsType.KEY,
-            platform: Platform.ANDROID,
           }}
         />
         <Title>Android Service Account API Key Test Result</Title>

@@ -5,31 +5,34 @@ import {Box, DOMElement, measureElement, useFocus, useInput} from 'ink'
 import {useEffect, useReducer, useRef} from 'react'
 
 interface ScrollAreaState {
-  innerHeight: number
   height: number
+  innerHeight: number
   scrollTop: number
 }
 
 type ScrollAreaAction =
-  | {type: 'SET_INNER_HEIGHT'; innerHeight: number}
-  | {type: 'SET_HEIGHT'; height: number}
+  | {height: number; type: 'SET_HEIGHT'}
+  | {innerHeight: number; type: 'SET_INNER_HEIGHT'}
   | {type: 'SCROLL_DOWN'}
   | {type: 'SCROLL_UP'}
 
 const reducer = (state: ScrollAreaState, action: ScrollAreaAction) => {
   switch (action.type) {
-    case 'SET_INNER_HEIGHT':
+    case 'SET_INNER_HEIGHT': {
       return {
         ...state,
         innerHeight: action.innerHeight,
       }
-    case 'SET_HEIGHT':
+    }
+
+    case 'SET_HEIGHT': {
       return {
         ...state,
         height: action.height,
       }
+    }
 
-    case 'SCROLL_DOWN':
+    case 'SCROLL_DOWN': {
       return {
         ...state,
         scrollTop: Math.min(
@@ -37,15 +40,18 @@ const reducer = (state: ScrollAreaState, action: ScrollAreaAction) => {
           state.scrollTop + 1,
         ),
       }
+    }
 
-    case 'SCROLL_UP':
+    case 'SCROLL_UP': {
       return {
         ...state,
         scrollTop: Math.max(0, state.scrollTop - 1),
       }
+    }
 
-    default:
+    default: {
       return state
+    }
   }
 }
 
@@ -53,18 +59,18 @@ export interface ScrollAreaProps extends React.PropsWithChildren {
   height: number
 }
 
-export function ScrollArea({height, children}: ScrollAreaProps) {
+export function ScrollArea({children, height}: ScrollAreaProps) {
   useFocus()
   const [state, dispatch] = useReducer(reducer, {
-    height: height,
-    scrollTop: 0,
+    height,
     innerHeight: 0,
+    scrollTop: 0,
   })
 
   const innerRef = useRef<DOMElement>(null)
 
   useEffect(() => {
-    dispatch({type: 'SET_HEIGHT', height})
+    dispatch({height, type: 'SET_HEIGHT'})
   }, [height])
 
   useEffect(() => {
@@ -73,8 +79,8 @@ export function ScrollArea({height, children}: ScrollAreaProps) {
     const dimensions = measureElement(innerRef.current)
 
     dispatch({
-      type: 'SET_INNER_HEIGHT',
       innerHeight: dimensions.height,
+      type: 'SET_INNER_HEIGHT',
     })
   }, [])
 
@@ -93,8 +99,8 @@ export function ScrollArea({height, children}: ScrollAreaProps) {
   })
 
   return (
-    <Box height={height} flexDirection="column" flexGrow={1} overflow="hidden">
-      <Box ref={innerRef} flexShrink={0} flexDirection="column" marginTop={-state.scrollTop}>
+    <Box flexDirection="column" flexGrow={1} height={height} overflow="hidden">
+      <Box flexDirection="column" flexShrink={0} marginTop={-state.scrollTop} ref={innerRef}>
         {children}
       </Box>
     </Box>

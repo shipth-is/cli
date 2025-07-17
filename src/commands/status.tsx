@@ -1,9 +1,8 @@
-import {render} from 'ink'
-
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {Command, NextSteps, StatusTable} from '@cli/components/index.js'
-import {isCWDGitRepo, isCWDGodotGame} from '@cli/utils/index.js'
 import {AuthConfig} from '@cli/types'
+import {isCWDGitRepo, isCWDGodotGame} from '@cli/utils/index.js'
+import {render} from 'ink'
 
 export default class Status extends BaseCommand<typeof Status> {
   static override args = {}
@@ -17,7 +16,7 @@ export default class Status extends BaseCommand<typeof Status> {
   public async run(): Promise<void> {
     const authConfig: AuthConfig = await this.getAuthConfig()
 
-    const isLoggedIn = !!authConfig.shipThisUser
+    const isLoggedIn = Boolean(authConfig.shipThisUser)
     const isGodotGame = isCWDGodotGame()
     const isShipThisConfigured = await this.hasProjectConfig()
     const isGitRepo = await isCWDGitRepo()
@@ -33,13 +32,13 @@ export default class Status extends BaseCommand<typeof Status> {
     if (steps.length === 0) steps = ['shipthis game status']
 
     const statusProps = {
-      title: 'Status',
       statuses: {
-        'Logged in': isLoggedIn,
-        'Godot project detected': isGodotGame,
-        'ShipThis project configured': isShipThisConfigured,
         'Git repository detected (not required)': isGitRepo,
+        'Godot project detected': isGodotGame,
+        'Logged in': isLoggedIn,
+        'ShipThis project configured': isShipThisConfigured,
       },
+      title: 'Status',
     }
 
     render(

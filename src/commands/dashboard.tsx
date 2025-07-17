@@ -1,7 +1,6 @@
-import open from 'open'
-
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {getSingleUseUrl} from '@cli/api/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import open from 'open'
 
 export default class Dashboard extends BaseAuthenticatedCommand<typeof Dashboard> {
   static override args = {}

@@ -1,9 +1,8 @@
-import {Box, Text} from 'ink'
-import {useContext, useEffect, useState} from 'react'
-import Spinner from 'ink-spinner'
-
 import {GameContext, ProgressSpinner, StepProps} from '@cli/components/index.js'
 import {useAndroidServiceAccount} from '@cli/utils/index.js'
+import {Box, Text} from 'ink'
+import Spinner from 'ink-spinner'
+import {useContext, useEffect, useState} from 'react'
 
 import {SetupStatusTable} from './SetupStatusTable.js'
 
@@ -17,13 +16,13 @@ interface CreateForGameProps extends StepProps {
   gameId: string
 }
 
-const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGameProps) => {
+const CreateForGame = ({gameId, onComplete, onError, ...boxProps}: CreateForGameProps) => {
   const [didStart, setDidStart] = useState(false)
 
-  const {handleStart, setupStatus, isCreating} = useAndroidServiceAccount({
-    projectId: gameId,
-    onError,
+  const {handleStart, isCreating, setupStatus} = useAndroidServiceAccount({
     onComplete,
+    onError,
+    projectId: gameId,
   })
 
   useEffect(() => {

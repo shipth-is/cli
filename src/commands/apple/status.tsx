@@ -31,18 +31,18 @@ export default class AppleStatus extends BaseAuthenticatedCommand<typeof AppleSt
     const {isAuthenticatedOnApple, session} = await checkAuth()
 
     const statuses = {
-      'Authenticated on Apple Developer Portal': isAuthenticatedOnApple,
       'Apple Full Name': session?.user?.fullName || 'Please authenticate',
       'Apple Provider Name': session?.provider?.name || 'Please authenticate',
+      'Authenticated on Apple Developer Portal': isAuthenticatedOnApple,
     }
 
-    let steps = []
+    const steps = []
 
     if (!isAuthenticatedOnApple) steps.push('shipthis apple login')
 
     render(
       <Command command={this}>
-        <StatusTable marginBottom={1} title="Apple Status" statuses={statuses as any} />
+        <StatusTable marginBottom={1} statuses={statuses as any} title="Apple Status" />
         <NextSteps steps={steps} />
       </Command>,
     )

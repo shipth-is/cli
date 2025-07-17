@@ -1,11 +1,10 @@
-import {DateTime} from 'luxon'
 import type {Profile as AppleProfileType} from '@expo/apple-utils'
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
 
 import {Profile, ProfileType} from '@cli/apple/expo.js'
-import {getShortDate} from '@cli/utils/index.js'
-
 import {Project, ProjectCredential, ScalarDict} from '@cli/types'
+import {getShortDate} from '@cli/utils/index.js'
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
+import {DateTime} from 'luxon'
 
 export interface AppleProfilesQueryProps {
   ctx: any
@@ -37,8 +36,8 @@ export const canAppleProfileBeUsed = (
     return projectCredentials.some(
       (credential) => credential.isActive && credential.serialNumber === profileCertificateSerialNumber,
     )
-  } catch (e) {
-    console.log(e)
+  } catch (error) {
+    console.log(error)
     return false
   }
 }
@@ -49,18 +48,18 @@ export function getAppleProfileSummary(
   projectCredentials: ProjectCredential[],
 ): ScalarDict {
   return {
+    canBeUsed: canAppleProfileBeUsed(appleProfile, project, projectCredentials),
+    expires: getShortDate(DateTime.fromISO(appleProfile.attributes.expirationDate)),
     id: appleProfile.id,
     name: appleProfile.attributes.name,
     platform: appleProfile.attributes.platform,
-    expires: getShortDate(DateTime.fromISO(appleProfile.attributes.expirationDate)),
-    canBeUsed: canAppleProfileBeUsed(appleProfile, project, projectCredentials),
   }
 }
 
 export const useAppleProfiles = (props: AppleProfilesQueryProps): UseQueryResult<AppleProfileQueryResponse> => {
   const queryResult = useQuery<AppleProfileQueryResponse>({
-    queryKey: ['appleProfiles'],
     queryFn: () => queryAppleProfiles(props),
+    queryKey: ['appleProfiles'],
   })
   return queryResult
 }

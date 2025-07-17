@@ -1,20 +1,19 @@
-import React, {useEffect, useState} from 'react'
-
-import {Project} from '@cli/types/api.js'
 import {getProject} from '@cli/api/index.js'
+import {Project} from '@cli/types/api.js'
+import React, {useEffect, useState} from 'react'
 
 import {CommandContext} from './CommandProvider.js'
 
 export type GameContextType = {
-  gameId: string | null
   game: Project | null
+  gameId: null | string
   setGameId: (gameId: string) => void
 }
 
 export const GameContext = React.createContext<GameContextType>({
-  gameId: null,
   game: null,
-  setGameId: (gameId: string) => {},
+  gameId: null,
+  setGameId(gameId: string) {},
 })
 
 interface Props {
@@ -31,6 +30,7 @@ export const GameProvider = ({children}: Props) => {
       setGame(null)
       return
     }
+
     const game = await getProject(gameId)
     setGame(game)
   }
@@ -39,5 +39,5 @@ export const GameProvider = ({children}: Props) => {
     handleGameIdChange()
   }, [gameId])
 
-  return <GameContext.Provider value={{gameId, game, setGameId}}>{children}</GameContext.Provider>
+  return <GameContext.Provider value={{game, gameId, setGameId}}>{children}</GameContext.Provider>
 }

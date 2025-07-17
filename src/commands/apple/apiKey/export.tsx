@@ -1,11 +1,10 @@
-import {Flags, Args} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'fs'
-
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {exportCredential, getUserCredentials} from '@cli/api/credentials/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+import * as fs from 'node:fs'
 
 export default class AppleApiKeyExport extends BaseAuthenticatedCommand<typeof AppleApiKeyExport> {
   static override args = {
@@ -46,9 +45,9 @@ export default class AppleApiKeyExport extends BaseAuthenticatedCommand<typeof A
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Exporting App Store Connect API Key to ${file}...`}
+          executeMethod={() => exportCredential({credentialId: key.id, zipPath: file})}
           msgComplete={`App Store Connect API Key exported to ${file}`}
-          executeMethod={() => exportCredential({zipPath: file, credentialId: key.id})}
+          msgInProgress={`Exporting App Store Connect API Key to ${file}...`}
           onComplete={handleComplete}
         />
       </Command>,

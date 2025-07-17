@@ -1,16 +1,15 @@
+import {getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {getRenderedMarkdown} from '@cli/components/index.js'
+import {WEB_URL} from '@cli/constants/config.js'
+import {CredentialsType, Platform} from '@cli/types'
+import {isCWDGodotGame} from '@cli/utils/godot.js'
 import {Flags} from '@oclif/core'
 import chalk from 'chalk'
 
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {isCWDGodotGame} from '@cli/utils/godot.js'
-import {getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
-import {CredentialsType, Platform} from '@cli/types'
-import {getRenderedMarkdown} from '@cli/components/index.js'
-import {WEB_URL} from '@cli/constants/config.js'
-
 interface Step {
-  command: string
   args: string[]
+  command: string
   shouldRun: () => Promise<boolean>
 }
 
@@ -47,22 +46,22 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
     // TODO: some duplication in the shouldRun logic and the commands themselves - perhaps we could refactor this
     const iosSteps: Step[] = [
       {
-        command: 'game:create',
         args: ['--quiet'],
+        command: 'game:create',
         shouldRun: async () => !game,
       },
       {
-        command: 'apple:login',
         args: ['--quiet'],
+        command: 'apple:login',
         shouldRun: async () => {
           const isLoggedIn = await this.hasValidAppleAuthState()
           return !isLoggedIn
         },
       },
       {
-        command: 'apple:apiKey:create',
         args: ['--quiet'],
-        shouldRun: async () => {
+        command: 'apple:apiKey:create',
+        async shouldRun() {
           // TODO: this doesn't tell us if the key is valid or usable (since we don't query Apple for that here)
           const userCredentials = await getUserCredentials()
           const userAppleApiKeyCredentials = userCredentials.filter(
@@ -73,9 +72,9 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
         },
       },
       {
-        command: 'apple:certificate:create',
         args: ['--quiet'],
-        shouldRun: async () => {
+        command: 'apple:certificate:create',
+        async shouldRun() {
           // TODO: this doesn't tell us if the certificate is valid or usable (since we don't query Apple for that here)
           const userCredentials = await getUserCredentials()
           const userAppleDistCredentials = userCredentials.filter(
@@ -86,26 +85,26 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
         },
       },
       {
-        command: 'game:ios:app:create',
         args: ['--quiet'],
-        shouldRun: async () => {
+        command: 'game:ios:app:create',
+        async shouldRun() {
           if (!game) return true
-          const hasBundleIdSet = !!game.details?.iosBundleId
+          const hasBundleIdSet = Boolean(game.details?.iosBundleId)
           // Assume that this has run if the bundle id is set in the config
           // The command will check if it exists in Apple before creating it
           return !hasBundleIdSet
         },
       },
       {
-        command: 'game:ios:app:sync',
         args: ['--quiet'],
+        command: 'game:ios:app:sync',
         // Can always run this
         shouldRun: async () => true,
       },
       {
-        command: 'game:ios:profile:create',
         args: ['--quiet'],
-        shouldRun: async () => {
+        command: 'game:ios:profile:create',
+        async shouldRun() {
           // Again - should we call Apple here?
           if (!game) return true
           const projectCredentials = await getProjectCredentials(game.id)
@@ -119,7 +118,7 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
     ]
 
     for (const step of iosSteps) {
-      const command = step.command
+      const {command} = step
       const willRun = isStepForced(command) || (await step.shouldRun())
       if (!willRun) {
         logSkip(command)

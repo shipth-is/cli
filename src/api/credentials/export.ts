@@ -1,18 +1,16 @@
-import axios from 'axios'
-import * as fs from 'fs'
-
 import {getAuthedHeaders} from '@cli/api/index.js'
-
 import {API_URL} from '@cli/constants/index.js'
+import axios from 'axios'
+import * as fs from 'node:fs'
 
 export interface ExportCredentialProps {
-  zipPath: string
   credentialId: string
   // Only included if the credential is associated with a project
   projectId?: string
+  zipPath: string
 }
 
-export async function exportCredential({zipPath, credentialId, projectId}: ExportCredentialProps) {
+export async function exportCredential({credentialId, projectId, zipPath}: ExportCredentialProps) {
   const headers = getAuthedHeaders()
 
   const url = projectId
@@ -32,9 +30,9 @@ export async function exportCredential({zipPath, credentialId, projectId}: Expor
 
 async function downloadFile(url: string, destination: string): Promise<void> {
   const response = await axios({
-    url,
     method: 'GET',
     responseType: 'stream',
+    url,
   })
 
   return new Promise((resolve, reject) => {

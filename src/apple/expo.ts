@@ -8,6 +8,7 @@ const {
   ApiKeyType,
   App,
   Auth,
+  BetaGroup,
   BundleId,
   CapabilityType,
   CapabilityTypeOption,
@@ -17,7 +18,6 @@ const {
   ProfileType,
   Session,
   UserRole,
-  BetaGroup,
 } = defaultExport
 
 export {
@@ -25,6 +25,7 @@ export {
   ApiKeyType,
   App,
   Auth,
+  BetaGroup,
   BundleId,
   CapabilityType,
   CapabilityTypeOption,
@@ -34,5 +35,4 @@ export {
   ProfileType,
   Session,
   UserRole,
-  BetaGroup,
 }

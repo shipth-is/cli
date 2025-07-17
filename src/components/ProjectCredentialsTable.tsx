@@ -1,7 +1,7 @@
+import {ProjectCredentialsQueryProps, getProjectCredentialSummary, useProjectCredentials} from '@cli/utils/index.js'
 import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {getProjectCredentialSummary, ProjectCredentialsQueryProps, useProjectCredentials} from '@cli/utils/index.js'
 import {Table} from './common/Table.js'
 import {Title} from './common/Title.js'
 
@@ -11,14 +11,14 @@ interface Props extends BoxProps {
 }
 
 export const ProjectCredentialsTable = ({credentialTypeName, queryProps, ...boxProps}: Props) => {
-  const {isLoading, data} = useProjectCredentials(queryProps)
+  const {data, isLoading} = useProjectCredentials(queryProps)
 
   const hasActive = data?.data.some((credential) => credential.isActive)
 
   return (
     <Box flexDirection="column" marginBottom={1} {...boxProps}>
       <Title>{`${credentialTypeName}s in your ShipThis account`}</Title>
-      <Box marginLeft={2} marginBottom={1} flexDirection="column">
+      <Box flexDirection="column" marginBottom={1} marginLeft={2}>
         <Text>
           {hasActive
             ? `You have an active ${credentialTypeName} in your ShipThis account.`

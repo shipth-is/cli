@@ -1,12 +1,11 @@
+import {Table, Title} from '@cli/components/common/index.js'
+import {AppleBundleIdQueryProps, useAppleBundleId} from '@cli/utils/query/index.js'
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {AppleBundleIdQueryProps, useAppleBundleId} from '@cli/utils/query/index.js'
-import {Title, Table} from '@cli/components/common/index.js'
-
 export const AppleBundleIdDetails = (props: AppleBundleIdQueryProps) => {
   const {data, isLoading} = useAppleBundleId(props)
-  const {bundleIdSummary, capabilitiesTable, shouldSyncCapabilities, capabilities} = data || {}
+  const {bundleIdSummary, capabilities, capabilitiesTable, shouldSyncCapabilities} = data || {}
 
   return (
     <>
@@ -19,9 +18,7 @@ export const AppleBundleIdDetails = (props: AppleBundleIdQueryProps) => {
         <Box flexDirection="column" marginBottom={1}>
           <Title>Capabilities enabled in the BundleId</Title>
           <Table
-            data={capabilities.map((c) => {
-              return {capability: `${c}`}
-            })}
+            data={capabilities.map((c) => ({capability: `${c}`}))}
           />
         </Box>
       )}

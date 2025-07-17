@@ -21,8 +21,8 @@ export const DEFAULT_IGNORED_FILES_GLOBS = [
 const PRIMARY_DOMAIN = 'shipth.is'
 interface BackendUrls {
   api: string
-  ws: string
   web: string
+  ws: string
 }
 
 function getUrlsForDomain(domain: string): BackendUrls {
@@ -31,8 +31,8 @@ function getUrlsForDomain(domain: string): BackendUrls {
   const wsDomain = (isPublic ? `ws.` : '') + domain // develop.shipth.is -> ws.develop.shipth.is
   return {
     api: `https://${apiDomain}/api/1.0.0`,
-    ws: `wss://${wsDomain}`,
     web: `https://${domain}/`,
+    ws: `wss://${wsDomain}`,
   }
 }
 

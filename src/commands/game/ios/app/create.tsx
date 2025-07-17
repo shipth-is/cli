@@ -1,11 +1,9 @@
-import {render} from 'ink'
-import {Flags} from '@oclif/core'
-
-import {Command, RunWithSpinner} from '@cli/components/index.js'
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {getInput, getGodotAppleBundleIdentifier, generatePackageName} from '@cli/utils/index.js'
-
 import {App as AppleApp, BundleId as AppleBundleId} from '@cli/apple/expo.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
+import {generatePackageName, getGodotAppleBundleIdentifier, getInput} from '@cli/utils/index.js'
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
 export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppCreate> {
   static override args = {}
@@ -15,11 +13,11 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     appName: Flags.string({char: 'n', description: 'The name of the App in the Apple Developer Portal'}),
     bundleId: Flags.string({char: 'b', description: 'The BundleId in the Apple Developer Portal'}),
     force: Flags.boolean({char: 'f'}), // not used but don't remove or the wizard breaks
+    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
   }
 
   public async run(): Promise<void> {
@@ -96,9 +94,9 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress="Creating App and BundleId in the Apple Developer Portal"
-          msgComplete="App and BundleId created"
           executeMethod={createApp}
+          msgComplete="App and BundleId created"
+          msgInProgress="Creating App and BundleId in the Apple Developer Portal"
           onComplete={handleComplete}
         />
       </Command>,

@@ -1,14 +1,13 @@
-import {Args, Flags} from '@oclif/core'
-
+import {inviteServiceAccount} from '@cli/api/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
+import {getInput} from '@cli/utils/index.js'
 import {
-  fetchKeyTestResult,
   KeyTestError,
   KeyTestStatus,
+  fetchKeyTestResult,
   niceError,
 } from '@cli/utils/query/useAndroidServiceAccountTestResult.js'
-import {inviteServiceAccount} from '@cli/api/index.js'
-import {getInput} from '@cli/utils/index.js'
+import {Args, Flags} from '@oclif/core'
 
 export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<typeof GameAndroidApiKeyInvite> {
   static override args = {
@@ -22,8 +21,8 @@ export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<type
   static override flags = {
     ...BaseGameAndroidCommand.flags,
     prompt: Flags.boolean({char: 'p', description: 'Prompt for the Google Play Account ID'}),
-    waitForGoogleApp: Flags.boolean({char: 'p', description: 'Waits for the Google Play app to be created (10 mins).'}),
     waitForAuth: Flags.boolean({char: 'w', description: 'Wait for Google Authentication (10 mins).'}),
+    waitForGoogleApp: Flags.boolean({char: 'p', description: 'Waits for the Google Play app to be created (10 mins).'}),
   }
 
   public async run(): Promise<void> {
@@ -47,6 +46,7 @@ export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<type
         await sleep(1000 * 30)
         testResult = await fetchKeyTestResult({projectId: game.id})
       }
+
       return testResult
     }
 

@@ -1,6 +1,6 @@
 import {DateTime} from 'luxon'
 
-export type Scalar = string | number | boolean | null | undefined
+export type Scalar = boolean | null | number | string | undefined
 
 export type ScalarDict = {
   [key: string]: Scalar
@@ -12,20 +12,20 @@ export interface UserDetails {
 }
 
 export interface Self {
-  id: string
-  email: string
-  details: UserDetails
   createdAt: DateTime
+  details: UserDetails
+  email: string
+  id: string
   updatedAt: DateTime
 }
 
-export type SelfWithJWT = Self & {
+export type SelfWithJWT = {
   jwt: string
-}
+} & Self
 
 export enum Platform {
-  IOS = 'IOS',
   ANDROID = 'ANDROID',
+  IOS = 'IOS',
 }
 
 export enum GameEngine {
@@ -33,107 +33,107 @@ export enum GameEngine {
 }
 
 export interface ProjectDetails {
-  gameEngine?: GameEngine
-  gameEngineVersion?: string
-  iosBundleId?: string
   androidPackageName?: string
   buildNumber?: number
-  semanticVersion?: string
+  gameEngine?: GameEngine
+  gameEngineVersion?: string
   gcpProjectId?: string
   gcpServiceAccountId?: string
+  iosBundleId?: string
+  semanticVersion?: string
 }
 
 // What the POST/PUT endpoints accept for creating/updating a project
 export interface EditableProject {
-  name: string
   details?: ProjectDetails
+  name: string
 }
 
 // What a project from the API looks like
 export interface Project extends EditableProject {
-  id: string
   createdAt: DateTime
+  id: string
   updatedAt: DateTime
 }
 
 export interface ProjectPlatformProgress {
-  platform: string
+  hasApiKeyForPlatform: boolean
   hasBundleSet: boolean
   hasCredentialsForPlatform: boolean
-  hasApiKeyForPlatform: boolean
   hasSuccessfulJobForPlatform: boolean
+  platform: string
 }
 
 export interface UploadTicket {
-  url: string
   id: string
+  url: string
 }
 
 export interface Upload {
-  id: string
-  userId: string
   bucketName: string
-  key: string
   createdAt: DateTime
+  details: UploadDetails
+  id: string
+  key: string
   updatedAt: DateTime
   url: string
-  details: UploadDetails
+  userId: string
 }
 
 export type UploadDetails = {
-  gitCommitHash?: string
   gitBranch?: string
+  gitCommitHash?: string
   zipFileMd5?: string
 }
 
 export enum JobStatus {
-  PENDING = 'PENDING',
-  PROCESSING = 'PROCESSING',
   COMPLETED = 'COMPLETED',
   FAILED = 'FAILED',
+  PENDING = 'PENDING',
+  PROCESSING = 'PROCESSING',
 }
 
-export type JobDetails = ProjectDetails &
-  UploadDetails & {
+export type JobDetails = {
     skipPublish?: boolean // If true, don't publish the build to the store
-  }
+  } &
+  ProjectDetails & UploadDetails
 
 export interface Job {
+  builds?: Build[]
+  createdAt: DateTime
+  details: JobDetails
   id: string
   project: Project
-  upload: Upload
-  type: Platform // not the best named field
   status: JobStatus
-  createdAt: DateTime
+  type: Platform // not the best named field
   updatedAt: DateTime
-  details: JobDetails
-  builds?: Build[]
+  upload: Upload
 }
 
 export enum JobStage {
-  SETUP = 'SETUP',
-  EXPORT = 'EXPORT',
-  CONFIGURE = 'CONFIGURE',
   BUILD = 'BUILD',
+  CONFIGURE = 'CONFIGURE',
+  EXPORT = 'EXPORT',
   PUBLISH = 'PUBLISH',
+  SETUP = 'SETUP',
 }
 
 export enum LogLevel {
+  ERROR = 'ERROR',
   INFO = 'INFO',
   WARN = 'WARN',
-  ERROR = 'ERROR',
 }
 
 export interface JobLogEntry {
-  id: string
-  level: LogLevel
-  stage: JobStage
-  jobId: Job['id']
-  message: string
-  details: object
-  sentAt: DateTime
   createdAt: DateTime
+  details: object
+  id: string
+  jobId: Job['id']
+  level: LogLevel
+  message: string
   progress?: number // When we receive via the WebSocket
+  sentAt: DateTime
+  stage: JobStage
 }
 
 export interface CursorPaginatedResponse<T> {
@@ -151,43 +151,43 @@ export enum CredentialsType {
   KEY = 'KEY',
 }
 export interface UserCredential {
-  id: string
-  platform: Platform
-  type: CredentialsType
   bucketName: string
-  key: string
   createdAt: DateTime
+  id: string
+  isActive: boolean
+  key: string
+  platform: Platform
+  serialNumber: string
+  type: CredentialsType
   updatedAt: DateTime
   url: string
-  serialNumber: string
-  isActive: boolean
   userId: string
 }
 
 export interface ProjectCredential extends UserCredential {
-  projectId: string
   identifier: string
+  projectId: string
 }
 
 export enum BuildType {
-  IPA = 'IPA',
-  APK = 'APK',
   AAB = 'AAB',
+  APK = 'APK',
+  IPA = 'IPA',
 }
 
 export interface Build {
-  id: string
-  jobId: Job['id']
-  projectId: Project['id']
-  platform: Platform
-  details: ScalarDict
+  buildType: BuildType
   createdAt: DateTime
-  updatedAt: DateTime
-  url: string
-  // When we display the list of builds we want to show some details and
+  details: ScalarDict
+  id: string
   // we don't want to make a circular reference to the job
   jobDetails: JobDetails
-  buildType: BuildType
+  jobId: Job['id']
+  platform: Platform
+  projectId: Project['id']
+  // When we display the list of builds we want to show some details and
+  updatedAt: DateTime
+  url: string
 }
 
 // URL params received by the Google Redirect destination
@@ -207,24 +207,24 @@ export interface GoogleAuthResponse {
 }
 
 export interface AndroidServiceAccountSetupStatus {
-  status: 'unknown' | 'queued' | 'running' | 'complete' | 'error'
+  appExists: boolean
   errorMessage?: string
-  hasSignedIn: boolean
+  hasEnabledApi: boolean
+  hasInvitedServiceAccount: boolean
+  hasKey: boolean
   hasProject: boolean
   hasServiceAccount: boolean
-  hasKey: boolean
+  hasSignedIn: boolean
   hasUploadedKey: boolean
-  hasEnabledApi: boolean
-  appExists: boolean
-  serviceAccountEmail: string | null
-  hasInvitedServiceAccount: boolean
   progress: number
+  serviceAccountEmail: null | string
+  status: 'complete' | 'error' | 'queued' | 'running' | 'unknown'
 }
 
 export interface GoogleStatusResponse {
   isAuthenticated: boolean
-  projectId?: string
   isOrg?: boolean
-  orgName?: string
   orgCreatedAt?: string
+  orgName?: string
+  projectId?: string
 }

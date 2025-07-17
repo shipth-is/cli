@@ -1,13 +1,11 @@
-import {render, Box, Text} from 'ink'
-import {Flags} from '@oclif/core'
-
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {PageAndSortParams} from '@cli/types'
 import {getProjects} from '@cli/api/index.js'
-
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {Command, Table} from '@cli/components/index.js'
-import {getShortUUID} from '@cli/utils/index.js'
+import {PageAndSortParams} from '@cli/types'
 import {getShortDate} from '@cli/utils/dates.js'
+import {getShortUUID} from '@cli/utils/index.js'
+import {Flags} from '@oclif/core'
+import {Box, Text, render} from 'ink'
 
 // Not specific to one game so we use BaseAuthenticatedCommand
 export default class GameList extends BaseAuthenticatedCommand<typeof GameList> {
@@ -18,20 +16,20 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    pageNumber: Flags.integer({char: 'p', description: 'The page number to show (starts at 0)', default: 0}),
-    pageSize: Flags.integer({char: 's', description: 'The number of items to show per page', default: 10}),
-    orderBy: Flags.string({
-      char: 'o',
-      description: 'The field to order by',
-      default: 'createdAt',
-      options: ['createdAt', 'updatedAt', 'name'],
-    }),
     order: Flags.string({
       char: 'r',
-      description: 'The order to sort by',
       default: 'desc',
+      description: 'The order to sort by',
       options: ['asc', 'desc'],
     }),
+    orderBy: Flags.string({
+      char: 'o',
+      default: 'createdAt',
+      description: 'The field to order by',
+      options: ['createdAt', 'updatedAt', 'name'],
+    }),
+    pageNumber: Flags.integer({char: 'p', default: 0, description: 'The page number to show (starts at 0)'}),
+    pageSize: Flags.integer({char: 's', default: 10, description: 'The number of items to show per page'}),
   }
 
   public async run(): Promise<void> {
@@ -39,13 +37,11 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
     const params = flags as PageAndSortParams
     const gameListResponse = await getProjects(params)
 
-    const data = gameListResponse.data.map((game) => {
-      return {
+    const data = gameListResponse.data.map((game) => ({
+        createdAt: getShortDate(game.createdAt),
         id: getShortUUID(game.id),
         name: game.name,
-        createdAt: getShortDate(game.createdAt),
-      }
-    })
+      }))
 
     render(
       <Command command={this}>
@@ -60,7 +56,7 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
         )}
         {data.length > 0 && <Table data={data} />}
         {gameListResponse.pageCount > 1 && (
-          <Box marginTop={1} flexDirection="column">
+          <Box flexDirection="column" marginTop={1}>
             <Text>{`Showing page ${flags.pageNumber + 1} of ${gameListResponse.pageCount}.`}</Text>
             <Text>Use the --pageNumber parameter to see other pages.</Text>
           </Box>

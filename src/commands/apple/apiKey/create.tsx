@@ -1,11 +1,10 @@
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
-
+import {UserKey_iOS, getUserCredentials, uploadUserCredentials} from '@cli/api/credentials/index.js'
+import {ApiKey, ApiKeyType, UserRole} from '@cli/apple/expo.js'
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
-import {getUserCredentials, uploadUserCredentials, UserKey_iOS} from '@cli/api/credentials/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
-import {ApiKey, ApiKeyType, UserRole} from '@cli/apple/expo.js'
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
 export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiKeyCreate> {
   static override args = {}
@@ -29,7 +28,7 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
       (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.KEY,
     )
 
-    if (userAppleApiKeyCredentials.length !== 0 && !force) {
+    if (userAppleApiKeyCredentials.length > 0 && !force) {
       this.error('An App Store Connect API already exists. Use --force to overwrite it.')
     }
 
@@ -38,10 +37,10 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
 
     const createApiKey = async () => {
       const userKey = await ApiKey.createAsync(ctx, {
-        nickname: `ShipThis ${Math.floor(new Date().valueOf() / 1000)}`,
         allAppsVisible: true,
-        roles: [UserRole.ADMIN],
         keyType: ApiKeyType.PUBLIC_API,
+        nickname: `ShipThis ${Math.floor(Date.now() / 1000)}`,
+        roles: [UserRole.ADMIN],
       })
 
       const keyContent = await userKey.downloadAsync()
@@ -50,17 +49,17 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
       // To get the issuer correctly we have to reload
       const reloadedKey = await ApiKey.infoAsync(ctx, {id: userKey.id})
       const key: UserKey_iOS = {
-        keyId: userKey.id,
         issuer: `${reloadedKey.attributes.provider?.id}`,
+        keyId: userKey.id,
         p8Content: keyContent,
         serialNumber: userKey.id,
       }
 
       await uploadUserCredentials({
-        platform: Platform.IOS,
-        type: CredentialsType.KEY,
         contents: key,
+        platform: Platform.IOS,
         serialNumber: key.serialNumber,
+        type: CredentialsType.KEY,
       })
     }
 
@@ -73,9 +72,9 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Creating App Store Connect API in the Apple Developer Portal...`}
-          msgComplete={`App Store Connect API created and saved to ShipThis`}
           executeMethod={createApiKey}
+          msgComplete={`App Store Connect API created and saved to ShipThis`}
+          msgInProgress={`Creating App Store Connect API in the Apple Developer Portal...`}
           onComplete={handleComplete}
         />
       </Command>,

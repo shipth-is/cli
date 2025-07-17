@@ -1,6 +1,5 @@
-import {SerializedCookieJar} from 'tough-cookie'
-
 import {Auth} from '@cli/apple/expo.js'
+import {SerializedCookieJar} from 'tough-cookie'
 
 /**
  * We were doing this with the nativescript lib to give more control over user
@@ -8,8 +7,8 @@ import {Auth} from '@cli/apple/expo.js'
  */
 export async function getNewAuthState(username: string, password: string): Promise<any> {
   const authState = await Auth.loginAsync({
-    username,
     password,
+    username,
   })
   return authState
 }

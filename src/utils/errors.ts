@@ -23,6 +23,7 @@ export function getErrorMessage(error: any) {
     if (apiMsg.length === 0) {
       return 'message' in error ? error.message : error.toString()
     }
+
     return apiMsg
   } catch {
     return error ? error.toString() : 'Error'

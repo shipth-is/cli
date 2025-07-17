@@ -1,11 +1,8 @@
-import {render} from 'ink'
-import {Flags} from '@oclif/core'
-
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-
+import {BuildsTable, CommandGame} from '@cli/components/index.js'
 import {PageAndSortParams} from '@cli/types'
-
-import {CommandGame, BuildsTable} from '@cli/components/index.js'
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
 export default class GameBuildList extends BaseGameCommand<typeof GameBuildList> {
   static override args = {}
@@ -20,20 +17,20 @@ export default class GameBuildList extends BaseGameCommand<typeof GameBuildList>
 
   static override flags = {
     ...super.flags,
-    pageNumber: Flags.integer({char: 'p', description: 'The page number to show (starts at 0)', default: 0}),
-    pageSize: Flags.integer({char: 's', description: 'The number of items to show per page', default: 10}),
-    orderBy: Flags.string({
-      char: 'o',
-      description: 'The field to order by',
-      default: 'createdAt',
-      options: ['createdAt', 'updatedAt'],
-    }),
     order: Flags.string({
       char: 'r',
-      description: 'The order to sort by',
       default: 'desc',
+      description: 'The order to sort by',
       options: ['asc', 'desc'],
     }),
+    orderBy: Flags.string({
+      char: 'o',
+      default: 'createdAt',
+      description: 'The field to order by',
+      options: ['createdAt', 'updatedAt'],
+    }),
+    pageNumber: Flags.integer({char: 'p', default: 0, description: 'The page number to show (starts at 0)'}),
+    pageSize: Flags.integer({char: 's', default: 10, description: 'The number of items to show per page'}),
   }
 
   public async run(): Promise<void> {

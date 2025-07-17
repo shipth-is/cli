@@ -1,10 +1,8 @@
+import {NextSteps, Table, Title} from '@cli/components/common/index.js'
+import {CredentialsType, Platform} from '@cli/types'
+import {canAppleApiKeyBeUsed, getAppleApiKeySummary, useAppleApiKeys, useUserCredentials} from '@cli/utils/index.js'
 import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
-
-import {CredentialsType, Platform} from '@cli/types'
-import {useUserCredentials, getAppleApiKeySummary, useAppleApiKeys, canAppleApiKeyBeUsed} from '@cli/utils/index.js'
-
-import {Title, Table, NextSteps} from '@cli/components/common/index.js'
 
 interface Props extends BoxProps {
   ctx: any
@@ -25,7 +23,7 @@ export const AppleApiKeysTable = ({ctx, ...boxProps}: Props) => {
 
         {keys && userCredentialsResponse && (
           <>
-            <Box marginLeft={2} marginBottom={1} flexDirection="column">
+            <Box flexDirection="column" marginBottom={1} marginLeft={2}>
               <Text>{`You have ${keys.length} App Store Connect API Keys in your Apple account`}</Text>
               <Text>{`${hasUsable ? 'One' : 'None'} of these can be used by ShipThis`}</Text>
             </Box>

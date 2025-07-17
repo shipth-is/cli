@@ -1,9 +1,8 @@
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {AppleApiKeysTable, Command, UserCredentialsTable} from '@cli/components/index.js'
+import {CredentialsType, Platform} from '@cli/types'
 import {Flags} from '@oclif/core'
 import {render} from 'ink'
-
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {Command, AppleApiKeysTable, UserCredentialsTable} from '@cli/components/index.js'
-import {CredentialsType, Platform} from '@cli/types'
 
 export default class AppleApiKeyStatus extends BaseAuthenticatedCommand<typeof AppleApiKeyStatus> {
   static override args = {}
@@ -36,7 +35,7 @@ export default class AppleApiKeyStatus extends BaseAuthenticatedCommand<typeof A
       <Command command={this}>
         <UserCredentialsTable
           credentialTypeName="App Store Connect API Key"
-          queryProps={{type: CredentialsType.KEY, platform: Platform.IOS}}
+          queryProps={{platform: Platform.IOS, type: CredentialsType.KEY}}
         />
 
         {showApple && <AppleApiKeysTable ctx={ctx} />}

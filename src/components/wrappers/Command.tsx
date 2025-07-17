@@ -1,16 +1,15 @@
-import React from 'react'
-import {Box} from 'ink'
+import {BaseCommand} from '@cli/baseCommands/index.js'
+import {queryClient} from '@cli/utils/query/index.js'
 import {QueryClientProvider} from '@tanstack/react-query'
 import {useScreenSize} from 'fullscreen-ink'
-
-import {queryClient} from '@cli/utils/query/index.js'
-import {BaseCommand} from '@cli/baseCommands/index.js'
+import {Box} from 'ink'
+import React from 'react'
 
 import {CommandProvider} from '../context/index.js'
 
 export interface CommandProps {
-  command?: BaseCommand<any>
   children: React.ReactNode
+  command?: BaseCommand<any>
 }
 
 export const Command = ({children, command}: CommandProps) => {
@@ -19,7 +18,7 @@ export const Command = ({children, command}: CommandProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <CommandProvider command={command}>
-        <Box width={width} flexDirection="column">
+        <Box flexDirection="column" width={width}>
           {children}
         </Box>
       </CommandProvider>

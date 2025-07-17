@@ -1,22 +1,22 @@
-import {useEffect, useState} from 'react'
-import {Box, Text} from 'ink'
-import {DateTime} from 'luxon'
-import Spinner from 'ink-spinner'
-
-import {getJobStatusColor, getJobSummary, getStageColor} from '@cli/utils/index.js'
 import {Job, JobStatus} from '@cli/types'
 import {useJobWatching} from '@cli/utils/hooks/index.js'
-import {Title} from './common/Title.js'
+import {getJobStatusColor, getJobSummary, getStageColor} from '@cli/utils/index.js'
+import {Box, Text} from 'ink'
+import Spinner from 'ink-spinner'
+import {DateTime} from 'luxon'
+import {useEffect, useState} from 'react'
+
 import {StatusRow, StatusRowLabel} from './common/StatusTable.js'
+import {Title} from './common/Title.js'
 
 interface JobStatusTableProps {
-  projectId: string
-  jobId: string
   isWatching: boolean
+  jobId: string
   onJobUpdate?: (job: Job) => void
+  projectId: string
 }
 
-const JobStatusSpinner = ({status, showSpinner}: {status: JobStatus; showSpinner: boolean}) => (
+const JobStatusSpinner = ({showSpinner, status}: {showSpinner: boolean; status: JobStatus}) => (
   <>
     <Box width={JobStatus.PROCESSING.length}>
       <Text color={getJobStatusColor(status)}>{`${status}`}</Text>
@@ -30,8 +30,8 @@ const JobStatusSpinner = ({status, showSpinner}: {status: JobStatus; showSpinner
   </>
 )
 
-export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobStatusTableProps) => {
-  const {data: job, stage, isLoading} = useJobWatching({projectId, jobId, isWatching, onJobUpdate})
+export const JobStatusTable = ({isWatching, jobId, onJobUpdate, projectId}: JobStatusTableProps) => {
+  const {data: job, isLoading, stage} = useJobWatching({isWatching, jobId, onJobUpdate, projectId})
 
   const [time, setTime] = useState(DateTime.now())
 
@@ -58,7 +58,7 @@ export const JobStatusTable = ({jobId, projectId, isWatching, onJobUpdate}: JobS
               <StatusRow label="Platform" value={summary.platform} />
               <Box flexDirection="row">
                 <StatusRowLabel label="Status" />
-                <JobStatusSpinner status={job.status} showSpinner={isWatching && !!isJobInProgress} />
+                <JobStatusSpinner showSpinner={isWatching && Boolean(isJobInProgress)} status={job.status} />
               </Box>
               <Box flexDirection="row">
                 <StatusRowLabel label="Stage" />

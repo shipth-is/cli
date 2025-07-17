@@ -1,26 +1,24 @@
-import {API_URL, cacheKeys} from '@cli/constants/index.js'
-
-import axios, {AxiosError, AxiosRequestConfig} from 'axios'
-import {useQuery} from '@tanstack/react-query'
-
 import {getAuthedHeaders} from '@cli/api/index.js'
+import {API_URL, cacheKeys} from '@cli/constants/index.js'
+import {useQuery} from '@tanstack/react-query'
+import axios, {AxiosError, AxiosRequestConfig} from 'axios'
 
 export enum KeyTestStatus {
-  SUCCESS = 'success',
   ERROR = 'error',
+  SUCCESS = 'success',
 }
 
 export enum KeyTestError {
-  NO_SERVICE_ACCOUNT_KEY = 'no_service_account_key',
-  NO_PACKAGE_NAME = 'no_package_name',
   APP_NOT_FOUND = 'app_not_found',
+  NO_PACKAGE_NAME = 'no_package_name',
+  NO_SERVICE_ACCOUNT_KEY = 'no_service_account_key',
   NOT_INVITED = 'not_invited',
 }
 
 export const KeyTestErrorMessage: Record<KeyTestError, string> = {
-  [KeyTestError.NO_SERVICE_ACCOUNT_KEY]: 'Service Account API Key not found in your account',
-  [KeyTestError.NO_PACKAGE_NAME]: 'Android Package Name has not been set',
   [KeyTestError.APP_NOT_FOUND]: 'Application not found in Google Play Console',
+  [KeyTestError.NO_PACKAGE_NAME]: 'Android Package Name has not been set',
+  [KeyTestError.NO_SERVICE_ACCOUNT_KEY]: 'Service Account API Key not found in your account',
   [KeyTestError.NOT_INVITED]: 'Service Account has not been invited to Google Play',
 }
 
@@ -29,9 +27,9 @@ export function niceError(keyError: KeyTestError | undefined): string | undefine
 }
 
 export interface KeyTestResult {
-  status: KeyTestStatus
   error?: KeyTestError
   message?: string
+  status: KeyTestStatus
 }
 
 export interface TestQueryProps {
@@ -50,9 +48,7 @@ export const fetchKeyTestResult = async (
   return data
 }
 
-export const useAndroidServiceAccountTestResult = (props: TestQueryProps) => {
-  return useQuery<KeyTestResult, AxiosError>({
-    queryKey: cacheKeys.androidKeyTestResult(props),
+export const useAndroidServiceAccountTestResult = (props: TestQueryProps) => useQuery<KeyTestResult, AxiosError>({
     queryFn: () => fetchKeyTestResult(props),
+    queryKey: cacheKeys.androidKeyTestResult(props),
   })
-}

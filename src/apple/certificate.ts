@@ -1,6 +1,5 @@
-import forge from 'node-forge'
-
 import {Certificate, CertificateType} from '@cli/apple/expo.js'
+import forge from 'node-forge'
 
 function decodeCertificate(certificateContent: string) {
   const decodedContent = forge.util.decode64(certificateContent)
@@ -25,13 +24,13 @@ export async function createCertificate(
   certificateType = CertificateType.IOS_DISTRIBUTION,
 ): Promise<CreateCertificateResult> {
   const {
-    pem: csrPem,
     keyPair: {privateKey},
+    pem: csrPem,
   } = await Certificate.createCertificateSigningRequestAsync()
 
   const certificate = await Certificate.createAsync(ctx, {
-    csrContent: csrPem,
     certificateType,
+    csrContent: csrPem,
   })
 
   return {
@@ -52,8 +51,8 @@ export function exportCertificate(certificate: any, privateKey: forge.pki.rsa.Pr
 
   const password = forge.util.encode64(forge.random.getBytesSync(16))
   const pkcs12Asn1 = forge.pkcs12.toPkcs12Asn1(privateKey, [decodedCertificate], password, {
-    friendlyName: 'key',
     algorithm: '3des',
+    friendlyName: 'key',
   })
   const encodedPkcs12 = encodePkcs12(pkcs12Asn1)
   return {

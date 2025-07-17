@@ -1,11 +1,10 @@
-import {Flags, Args} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'fs'
-
-import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getProjectCredentials, importCredential} from '@cli/api/credentials/index.js'
+import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+import * as fs from 'node:fs'
 
 export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<typeof GameAndroidApiKeyImport> {
   static override args = {
@@ -21,8 +20,8 @@ export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<type
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     force: Flags.boolean({char: 'f'}),
+    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
   }
 
   public async run(): Promise<void> {
@@ -52,16 +51,16 @@ export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<type
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Importing Android Service Account API Key from ${file}...`}
-          msgComplete={`Android Service Account API Key imported from ${file}`}
           executeMethod={() =>
             importCredential({
-              projectId: game.id,
-              zipPath: file,
-              type: CredentialsType.KEY,
               platform: Platform.ANDROID,
+              projectId: game.id,
+              type: CredentialsType.KEY,
+              zipPath: file,
             })
           }
+          msgComplete={`Android Service Account API Key imported from ${file}`}
+          msgInProgress={`Importing Android Service Account API Key from ${file}...`}
           onComplete={handleComplete}
         />
       </Command>,

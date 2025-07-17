@@ -1,26 +1,25 @@
-import axios, {AxiosError} from 'axios'
-import {InfiniteData, useInfiniteQuery, UseInfiniteQueryResult} from '@tanstack/react-query'
-
-import {castArrayObjectDates} from '@cli/utils/index.js'
-import {cacheKeys} from '@cli/constants/cacheKeys.js'
 import {getAuthedHeaders} from '@cli/api/index.js'
+import {cacheKeys} from '@cli/constants/cacheKeys.js'
 import {API_URL} from '@cli/constants/index.js'
 import {CursorPaginatedResponse, JobLogEntry} from '@cli/types'
+import {castArrayObjectDates} from '@cli/utils/index.js'
+import {InfiniteData, UseInfiniteQueryResult, useInfiniteQuery} from '@tanstack/react-query'
+import axios, {AxiosError} from 'axios'
 
 export interface JobLogsQueryProps {
-  projectId: string
-  jobId: string
   cursor?: string
+  jobId: string
   pageSize?: number
+  projectId: string
 }
 
 export type JobLogsQueryResponse = CursorPaginatedResponse<JobLogEntry>
 
 export async function queryJobLogs({
-  projectId,
-  jobId,
   cursor,
+  jobId,
   pageSize = 10,
+  projectId,
 }: JobLogsQueryProps): Promise<JobLogsQueryResponse> {
   try {
     const headers = getAuthedHeaders()
@@ -41,15 +40,15 @@ export const useJobLogs = (
   props: JobLogsQueryProps,
 ): UseInfiniteQueryResult<InfiniteData<JobLogsQueryResponse>, AxiosError> => {
   const queryResult = useInfiniteQuery<JobLogsQueryResponse, AxiosError>({
-    queryKey: cacheKeys.jobLogs(props),
-    queryFn: async ({pageParam}) => {
+    getNextPageParam: (lastPage) => lastPage.nextCursor,
+    initialPageParam: props.cursor,
+    async queryFn({pageParam}) {
       return queryJobLogs({
         ...props,
         cursor: pageParam as string,
       })
     },
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    initialPageParam: props.cursor,
+    queryKey: cacheKeys.jobLogs(props),
   })
 
   return queryResult

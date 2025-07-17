@@ -1,11 +1,10 @@
-import {DateTime} from 'luxon'
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
-
 import type {Certificate as Cert} from '@expo/apple-utils'
 
 import {Certificate, CertificateType} from '@cli/apple/expo.js'
 import {ScalarDict, UserCredential} from '@cli/types'
-import {getShortUUID, getShortDate} from '@cli/utils/index.js'
+import {getShortDate, getShortUUID} from '@cli/utils/index.js'
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
+import {DateTime} from 'luxon'
 
 export interface AppleCertificatesQueryProps {
   ctx: any
@@ -34,11 +33,11 @@ export const canAppleCertificateBeUsed = (cert: Cert, userCredentials: UserCrede
 // How we typically display an Apple Cert - needs the userCredentials to determine if it can be used
 export function getAppleCertificateSummary(cert: Cert, userCredentials: UserCredential[]): ScalarDict {
   return {
+    canBeUsed: canAppleCertificateBeUsed(cert, userCredentials),
+    expires: getShortDate(DateTime.fromISO(cert.attributes.expirationDate)),
     id: getShortUUID(cert.id),
     name: cert.attributes.name,
     serial: cert.attributes.serialNumber,
-    expires: getShortDate(DateTime.fromISO(cert.attributes.expirationDate)),
-    canBeUsed: canAppleCertificateBeUsed(cert, userCredentials),
   }
 }
 
@@ -46,8 +45,8 @@ export const useAppleCertificates = (
   props: AppleCertificatesQueryProps,
 ): UseQueryResult<AppleCertificateQueryResponse> => {
   const queryResult = useQuery<AppleCertificateQueryResponse>({
-    queryKey: ['appleCertificates'],
     queryFn: () => queryAppleCertificates(props),
+    queryKey: ['appleCertificates'],
   })
   return queryResult
 }

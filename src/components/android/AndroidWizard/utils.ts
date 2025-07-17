@@ -1,14 +1,13 @@
 import {getGoogleStatus, getProject, getProjectCredentials} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/baseCommand.js'
-
 import {CredentialsType, Platform} from '@cli/types/index.js'
-import {fetchKeyTestResult, KeyTestError, KeyTestStatus, queryBuilds} from '@cli/utils/index.js'
+import {KeyTestError, KeyTestStatus, fetchKeyTestResult, queryBuilds} from '@cli/utils/index.js'
 
 export enum StepStatus {
+  FAILURE = 'FAILURE',
   PENDING = 'PENDING',
   RUNNING = 'RUNNING',
   SUCCESS = 'SUCCESS',
-  FAILURE = 'FAILURE',
   WARN = 'WARN',
 }
 
@@ -29,7 +28,7 @@ export type Step = (typeof Steps)[number]
 export const getStepInitialStatus = (
   step: Step,
   statusFlags: StatusFlags,
-): StepStatus.SUCCESS | StepStatus.PENDING | StepStatus.WARN => {
+): StepStatus.PENDING | StepStatus.SUCCESS | StepStatus.WARN => {
   if (step === 'connectGoogle') {
     // Not connected but we don't need to be since we have key and have invited service account
     if (!statusFlags.hasGoogleConnection && statusFlags.hasServiceAccountKey && statusFlags.hasInvitedServiceAccount)
@@ -45,9 +44,9 @@ export const getStepInitialStatus = (
 
   const base: Partial<Record<Step, boolean>> = {
     createGame: statusFlags.hasGameName && statusFlags.hasAndroidPackageName,
+    createGooglePlayGame: statusFlags.hasGooglePlayGame,
     createKeystore: statusFlags.hasAndroidKeystore,
     createServiceAccount: statusFlags.hasServiceAccountKey,
-    createGooglePlayGame: statusFlags.hasGooglePlayGame,
     inviteServiceAccount: statusFlags.hasInvitedServiceAccount,
   }
 
@@ -56,15 +55,15 @@ export const getStepInitialStatus = (
 
 // All the data points we need to determine the status of each step
 export interface StatusFlags {
-  hasShipThisProject: boolean
-  hasGameName: boolean
-  hasAndroidPackageName: boolean
   hasAndroidKeystore: boolean
+  hasAndroidPackageName: boolean
+  hasGameName: boolean
   hasGoogleConnection: boolean
-  hasServiceAccountKey: boolean
-  hasInitialBuild: boolean
   hasGooglePlayGame: boolean
+  hasInitialBuild: boolean
   hasInvitedServiceAccount: boolean
+  hasServiceAccountKey: boolean
+  hasShipThisProject: boolean
 }
 
 // Get the values needed to determine the status of each step at the same time
@@ -74,11 +73,11 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
   const projectConfig = cmd.getProjectConfigSafe()
   const projectId = projectConfig.project?.id
 
-  const project = !!projectId && (await getProject(projectId))
-  const hasShipThisProject = !!project
+  const project = Boolean(projectId) && (await getProject(projectId))
+  const hasShipThisProject = Boolean(project)
 
-  const hasGameName = project && !!project?.name
-  const hasAndroidPackageName = project && !!project?.details?.androidPackageName
+  const hasGameName = project && Boolean(project?.name)
+  const hasAndroidPackageName = project && Boolean(project?.details?.androidPackageName)
 
   const projectCredentials = hasShipThisProject ? await getProjectCredentials(project.id) : []
   const hasAndroidKeystore = projectCredentials.some(
@@ -91,8 +90,8 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
     (cred) => cred.isActive && cred.platform == Platform.ANDROID && cred.type == CredentialsType.KEY,
   )
 
-  const buildsResponse = !!projectId && hasShipThisProject && (await queryBuilds({projectId, pageNumber: 0}))
-  const hasInitialBuild = !!buildsResponse && buildsResponse.data.some((build) => build.platform === Platform.ANDROID)
+  const buildsResponse = Boolean(projectId) && hasShipThisProject && (await queryBuilds({pageNumber: 0, projectId}))
+  const hasInitialBuild = Boolean(buildsResponse) && buildsResponse.data.some((build) => build.platform === Platform.ANDROID)
 
   const testResult = projectId ? await fetchKeyTestResult({projectId}) : null
 
@@ -103,15 +102,15 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
   const hasInvitedServiceAccount = testResult ? testResult?.status === KeyTestStatus.SUCCESS : false
 
   return {
-    hasShipThisProject,
-    hasGameName,
-    hasAndroidPackageName,
     hasAndroidKeystore,
+    hasAndroidPackageName,
+    hasGameName,
     hasGoogleConnection,
-    hasServiceAccountKey,
-    hasInitialBuild,
     hasGooglePlayGame,
+    hasInitialBuild,
     hasInvitedServiceAccount,
+    hasServiceAccountKey,
+    hasShipThisProject,
   }
 }
 

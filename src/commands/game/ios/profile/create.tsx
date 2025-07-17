@@ -1,25 +1,23 @@
-import {render} from 'ink'
-import {Flags} from '@oclif/core'
-import axios from 'axios'
-
-import {Command, RunWithSpinner} from '@cli/components/index.js'
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
-
+import {
+  ProjectCertificate_iOS,
+  UserCertificate_iOS,
+  getProjectCredentials,
+  getUserCredentials,
+  uploadProjectCredentials,
+} from '@cli/api/index.js'
 import {
   Certificate as AppleCertificate,
   CertificateType as AppleCertificateType,
   Profile as AppleProfile,
   ProfileType as AppleProfileType,
 } from '@cli/apple/expo.js'
-import {
-  getProjectCredentials,
-  getUserCredentials,
-  ProjectCertificate_iOS,
-  uploadProjectCredentials,
-  UserCertificate_iOS,
-} from '@cli/api/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {fetchBundleId} from '@cli/utils/index.js'
+import {Flags} from '@oclif/core'
+import axios from 'axios'
+import {render} from 'ink'
 
 export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIosProfileCreate> {
   static override args = {}
@@ -29,9 +27,9 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     force: Flags.boolean({char: 'f'}),
+    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
   }
 
   public async run(): Promise<void> {
@@ -47,7 +45,7 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
       (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
     )
 
-    if (projectAppleProfileCredentials.length !== 0 && !force) {
+    if (projectAppleProfileCredentials.length > 0 && !force) {
       this.error('A Mobile Provisioning Profile already exists. Use --force to overwrite it.')
     }
 
@@ -107,10 +105,10 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
       }
       await uploadProjectCredentials(game.id, {
         contents: projectCertContent,
-        platform: Platform.IOS,
-        type: CredentialsType.CERTIFICATE,
-        serialNumber: validCert.serialNumber,
         identifier: iosBundleId,
+        platform: Platform.IOS,
+        serialNumber: validCert.serialNumber,
+        type: CredentialsType.CERTIFICATE,
       })
     }
 
@@ -123,9 +121,9 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress="Creating Mobile Provisioning Profile in the Apple Developer Portal"
-          msgComplete="Mobile Provisioning Profile created"
           executeMethod={createProfile}
+          msgComplete="Mobile Provisioning Profile created"
+          msgInProgress="Creating Mobile Provisioning Profile in the Apple Developer Portal"
           onComplete={handleComplete}
         />
       </Command>,

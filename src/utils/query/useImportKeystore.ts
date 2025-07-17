@@ -1,18 +1,17 @@
-import {v4 as uuid} from 'uuid'
-import yazl from 'yazl'
-import fs from 'fs'
-import {useMutation} from '@tanstack/react-query'
-
+import {importCredential} from '@cli/api/index.js'
 import {cacheKeys} from '@cli/constants/index.js'
 import {CredentialsType, Platform, ProjectCredential} from '@cli/types/api.js'
-import {importCredential} from '@cli/api/index.js'
 import {queryClient} from '@cli/utils/index.js'
+import {useMutation} from '@tanstack/react-query'
+import fs from 'node:fs'
+import {v4 as uuid} from 'uuid'
+import yazl from 'yazl'
 
 export interface ImportKeystoreProps {
-  zipFilePath?: string
   jksFilePath?: string
-  keystorePassword?: string
   keyPassword?: string
+  keystorePassword?: string
+  zipFilePath?: string
 }
 
 // We take a zipFilePath or a jksFilePath and a keystorePassword and a keyPassword
@@ -66,30 +65,28 @@ export async function importKeystore({log = () => {}, ...opt}: ImportOptions): P
 
   log('Uploading and importing zip file...')
   const keyStore = await importCredential({
-    projectId: opt.gameId,
-    zipPath: `${opt.zipFilePath}`,
-    type: CredentialsType.CERTIFICATE,
     platform: Platform.ANDROID,
+    projectId: opt.gameId,
+    type: CredentialsType.CERTIFICATE,
+    zipPath: `${opt.zipFilePath}`,
   })
   log('Imported successfully')
 
   // Delete the temporary zip files
-  toDelete.forEach((file) => {
+  for (const file of toDelete) {
     log(`Deleting temporary file: ${file}`)
     fs.unlinkSync(file)
-  })
+  }
 
   return keyStore as ProjectCredential
 }
 
-export const useImportKeystore = () => {
-  return useMutation({
+export const useImportKeystore = () => useMutation({
     mutationFn: importKeystore,
-    onSuccess: async (data: ProjectCredential) => {
-      const projectId = data.projectId
+    async onSuccess(data: ProjectCredential) {
+      const {projectId} = data
       queryClient.invalidateQueries({
-        queryKey: cacheKeys.projectCredentials({projectId, pageNumber: 0}),
+        queryKey: cacheKeys.projectCredentials({pageNumber: 0, projectId}),
       })
     },
   })
-}

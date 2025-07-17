@@ -1,9 +1,8 @@
-import {render} from 'ink'
-import {Flags} from '@oclif/core'
-
-import {Command, AppleProfilesTable, ProjectCredentialsTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {AppleProfilesTable, Command, ProjectCredentialsTable} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
 export default class GameIosProfileStatus extends BaseGameCommand<typeof GameIosProfileStatus> {
   static override args = {}
@@ -33,7 +32,7 @@ export default class GameIosProfileStatus extends BaseGameCommand<typeof GameIos
       <Command command={this}>
         <ProjectCredentialsTable
           credentialTypeName="Mobile Provisioning Profile"
-          queryProps={{platform: Platform.IOS, type: CredentialsType.CERTIFICATE, projectId: game.id}}
+          queryProps={{platform: Platform.IOS, projectId: game.id, type: CredentialsType.CERTIFICATE}}
         />
 
         {showApple && <AppleProfilesTable ctx={ctx} project={game} />}
