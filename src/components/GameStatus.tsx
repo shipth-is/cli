@@ -8,7 +8,12 @@ import {StatusTable, NextSteps, CommandContext, GameContext} from '@cli/componen
 
 function isPlatformConfigured(platform: Platform, progress: ProjectPlatformProgress | null): boolean {
   if (!progress) return false
-  return progress.platform === platform && progress.hasCredentialsForPlatform && progress.hasApiKeyForPlatform
+  return (
+    progress.platform === platform &&
+    progress.hasBundleSet &&
+    progress.hasCredentialsForPlatform &&
+    progress.hasApiKeyForPlatform
+  )
 }
 
 function getSteps(platform: Platform, progress: ProjectPlatformProgress | null | undefined): string[] {
@@ -22,6 +27,8 @@ function getSteps(platform: Platform, progress: ProjectPlatformProgress | null |
       ].filter(Boolean) as string[]
 
     case Platform.IOS:
+      // TODO: what about creating the app? shipthis game ios app create
+      // we may need more backend flags to determine if the app exists etc
       return [
         !progress.hasApiKeyForPlatform && 'shipthis apple apiKey create',
         !progress.hasCredentialsForPlatform && 'shipthis game ios profile create',
@@ -31,12 +38,6 @@ function getSteps(platform: Platform, progress: ProjectPlatformProgress | null |
     default:
       throw new Error('Invalid platform')
   }
-}
-
-function progressToStatuses(progress: ProjectPlatformProgress) {
-  // Remove the 'platform' key as we have titles
-  const {platform, ...rest} = progress
-  return makeHumanReadable(rest)
 }
 
 interface FetchGameStatusResult {
@@ -55,9 +56,8 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
 
   for (const platform of platforms) {
     // The platform is considered enabled if it has the identifier set
-    const hasEnabled = platform === Platform.IOS ? !!game.details?.iosBundleId : !!game.details?.androidPackageName
-    isEnabled[platform] = hasEnabled
-    if (hasEnabled) {
+    isEnabled[platform] = platform === Platform.IOS ? !!game.details?.iosBundleId : !!game.details?.androidPackageName
+    if (isEnabled[platform]) {
       // Call the backend to tell us the status of the platform for this game
       statuses[platform] = await getProjectPlatformProgress(game.id, platform)
     }
@@ -69,18 +69,18 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
     steps = steps.concat(getSteps(platform, statuses[platform]))
   }
 
+  // Determine the exit code - this is for use in other pipeline tools - e.g. github action
   let exitCode = 0
-
   for (const platform of platforms) {
     const platformStatus = statuses[platform as Platform]
     if (!platformStatus) continue
-    const hasConfigError = isEnabled && !isPlatformConfigured(platform as Platform, platformStatus)
+    // Enabled but not configured - then error
+    const hasConfigError = isEnabled[platform] && !isPlatformConfigured(platform as Platform, platformStatus)
     if (hasConfigError) exitCode = exitCode || 1
   }
 
-  // If specifically checking android and android is not enabled, exit with code 1
+  // If specifically checking a platform e.g android and android is not enabled, exit with code 1
   // If checking both and both are not enabled, exit with code 1
-  // This is for use in other pipeline tools - e.g. github action
   if (platforms.length === 1 && !isEnabled[platforms[0]]) {
     exitCode = exitCode || 1
   } else if (platforms.length > 1 && !isEnabled[Platform.IOS] && !isEnabled[Platform.ANDROID]) {
@@ -136,10 +136,11 @@ export const GameStatusDetails = ({gameId, platforms, onComplete, onError, child
         const status = statuses[platform]
         const label = platform === Platform.IOS ? 'iOS' : 'Android'
         const color = platforms.length === 1 ? 'red' : 'yellow'
+        const {platform: _, ...statusValues} = status || {}
         return (
           <Box key={platform} marginTop={1}>
             {status ? (
-              <StatusTable title={`${label} Status`} statuses={progressToStatuses(status)} />
+              <StatusTable title={`${label} Status`} statuses={makeHumanReadable(statusValues)} />
             ) : (
               <Text color={color}>The {label} platform is not enabled for this game.</Text>
             )}
