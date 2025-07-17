@@ -1,7 +1,8 @@
-import {getAuthToken} from '@cli/api/index.js'
-import {WS_URL} from '@cli/constants/index.js'
 import {useEffect} from 'react'
 import {io} from 'socket.io-client'
+
+import {getAuthToken} from '@cli/api/index.js'
+import {WS_URL} from '@cli/constants/index.js'
 
 export interface WebSocketListener {
   // What we run

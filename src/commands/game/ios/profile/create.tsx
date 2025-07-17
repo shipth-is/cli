@@ -1,3 +1,7 @@
+import {Flags} from '@oclif/core'
+import axios from 'axios'
+import {render} from 'ink'
+
 import {
   ProjectCertificate_iOS,
   UserCertificate_iOS,
@@ -15,9 +19,6 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {fetchBundleId} from '@cli/utils/index.js'
-import {Flags} from '@oclif/core'
-import axios from 'axios'
-import {render} from 'ink'
 
 export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIosProfileCreate> {
   static override args = {}

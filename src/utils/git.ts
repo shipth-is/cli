@@ -1,5 +1,6 @@
-import git from 'isomorphic-git'
 import {promises as fs} from 'node:fs'
+
+import git from 'isomorphic-git'
 
 export type GitInfo = {
   gitBranch?: string

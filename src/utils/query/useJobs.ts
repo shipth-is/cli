@@ -1,9 +1,10 @@
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
+import axios, {AxiosError} from 'axios'
+
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL, cacheKeys} from '@cli/constants/index.js'
 import {Job, OffsetPaginatedResponse, PageAndSortParams} from '@cli/types'
 import {castArrayObjectDates} from '@cli/utils/index.js'
-import {UseQueryResult, useQuery} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
 
 export interface JobsQueryProps extends PageAndSortParams {
   projectId: string

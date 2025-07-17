@@ -1,8 +1,9 @@
-import {GameContext} from '@cli/components/index.js'
-import {ImportKeystoreProps, useImportKeystore} from '@cli/utils/query/useImportKeystore.js'
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 import {useContext, useEffect, useState} from 'react'
+
+import {GameContext} from '@cli/components/index.js'
+import {ImportKeystoreProps, useImportKeystore} from '@cli/utils/query/useImportKeystore.js'
 
 interface Props {
   importKeystoreProps: ImportKeystoreProps

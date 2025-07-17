@@ -70,6 +70,7 @@
     "eslint-config-oclif": "^5",
     "eslint-config-oclif-typescript": "^3",
     "eslint-config-prettier": "^9",
+    "eslint-plugin-import": "^2.32.0",
     "mocha": "^10",
     "oclif": "^4",
     "pkgroll": "^2.4.2",

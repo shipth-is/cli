@@ -1,10 +1,11 @@
+import {Box, Text} from 'ink'
+import Spinner from 'ink-spinner'
+import {useContext, useEffect, useRef, useState} from 'react'
+
 import {CommandContext, GameContext, JobLogTail, JobProgress, Markdown, StepProps} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 import {Job, JobStatus, Platform} from '@cli/types/api.js'
 import {getShortUUID, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
-import {Box, Text} from 'ink'
-import Spinner from 'ink-spinner'
-import {useContext, useEffect, useRef, useState} from 'react'
 
 export const CreateInitialBuild = (props: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)

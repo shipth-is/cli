@@ -1,5 +1,6 @@
-import {Certificate, CertificateType} from '@cli/apple/expo.js'
 import forge from 'node-forge'
+
+import {Certificate, CertificateType} from '@cli/apple/expo.js'
 
 function decodeCertificate(certificateContent: string) {
   const decodedContent = forge.util.decode64(certificateContent)

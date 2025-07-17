@@ -1,10 +1,11 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {UserCertificate_iOS, getUserCredentials, uploadUserCredentials} from '@cli/api/credentials/index.js'
 import {createCertificate, exportCertificate} from '@cli/apple/certificate.js'
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class AppleCertificateCreate extends BaseAppleCommand<typeof AppleCertificateCreate> {
   static override args = {}

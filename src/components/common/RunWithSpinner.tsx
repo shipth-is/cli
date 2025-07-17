@@ -1,5 +1,4 @@
 import type {SpinnerName} from 'cli-spinners'
-
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 import React from 'react'

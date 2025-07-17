@@ -1,3 +1,8 @@
+import {Box, Text, useInput} from 'ink'
+import Spinner from 'ink-spinner'
+import open from 'open'
+import {useContext, useEffect, useRef} from 'react'
+
 import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 import {GameContext, Markdown} from '@cli/components/index.js'
 import {WEB_URL, cacheKeys} from '@cli/constants/index.js'
@@ -13,10 +18,6 @@ import {
   useAndroidServiceAccountTestResult,
   useBuilds,
 } from '@cli/utils/index.js'
-import {Box, Text, useInput} from 'ink'
-import Spinner from 'ink-spinner'
-import open from 'open'
-import {useContext, useEffect, useRef} from 'react'
 
 import {StepProps} from '../../index.js'
 

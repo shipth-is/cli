@@ -1,12 +1,13 @@
+import {Box} from 'ink'
+import Spinner from 'ink-spinner'
+import {useContext, useEffect, useState} from 'react'
+
 import {createProject, updateProject} from '@cli/api/index.js'
 import {CommandContext, GameContext} from '@cli/components/context/index.js'
 import {StepProps} from '@cli/components/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/config.js'
 import {EditableProject, GameEngine, Project} from '@cli/types/api.js'
 import {getGodotVersion} from '@cli/utils/godot.js'
-import {Box} from 'ink'
-import Spinner from 'ink-spinner'
-import {useContext, useEffect, useState} from 'react'
 
 import {GameInfoForm} from './GameInfoForm.js'
 

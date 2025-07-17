@@ -1,8 +1,9 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {disconnectGoogle, getGoogleStatus} from '@cli/api/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {CommandGame, ConnectGoogle} from '@cli/components/index.js'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typeof GameAndroidApiKeyConnect> {
   static override args = {}

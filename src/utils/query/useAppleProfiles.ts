@@ -1,10 +1,10 @@
 import type {Profile as AppleProfileType} from '@expo/apple-utils'
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
+import {DateTime} from 'luxon'
 
 import {Profile, ProfileType} from '@cli/apple/expo.js'
 import {Project, ProjectCredential, ScalarDict} from '@cli/types'
 import {getShortDate} from '@cli/utils/index.js'
-import {UseQueryResult, useQuery} from '@tanstack/react-query'
-import {DateTime} from 'luxon'
 
 export interface AppleProfilesQueryProps {
   ctx: any

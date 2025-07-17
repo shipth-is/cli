@@ -1,6 +1,7 @@
+import {Command} from '@oclif/core'
+
 import {getGoogleStatus} from '@cli/api/index.js'
 import {generatePackageName, getGodotAndroidPackageName, getInput} from '@cli/utils/index.js'
-import {Command} from '@oclif/core'
 
 import {BaseGameCommand} from './baseGameCommand.js'
 

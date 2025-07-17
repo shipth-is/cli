@@ -1,3 +1,6 @@
+import {Box} from 'ink'
+import React, {useEffect, useState} from 'react'
+
 import {ConnectGoogle} from '@cli/components/android/ConnectGoogle/index.js'
 // Avoid circular imports here - import the components directly
 import {CreateGame} from '@cli/components/android/CreateGame/index.js'
@@ -10,11 +13,9 @@ import {CommandContext, GameProvider} from '@cli/components/context/index.js'
 import {Markdown, StepProps} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 import { useResponsive } from '@cli/utils/index.js'
-import {Box} from 'ink'
-import React, {useEffect, useState} from 'react'
 
-import {WizardHeader} from './WizardHeader.js'
 import {Step, StepStatus, Steps, getStatusFlags, getStepInitialStatus} from './utils.js'
+import {WizardHeader} from './WizardHeader.js'
 
 const stepComponentMap: Record<Step, React.ComponentType<StepProps>> = {
   connectGoogle: ConnectGoogle,

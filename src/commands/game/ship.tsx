@@ -1,10 +1,11 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {downloadBuildById, getJob} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {CommandGame, Ship} from '@cli/components/index.js'
 import {Build, Job} from '@cli/types/api.js'
 import {getErrorMessage} from '@cli/utils/errors.js'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
   static override args = {}

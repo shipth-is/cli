@@ -1,10 +1,11 @@
+import {Box, Text, useInput} from 'ink'
+import open from 'open'
+import {useContext, useState} from 'react'
+
 import {GameContext, Markdown, StepProps} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/index.js'
 import {GoogleStatusResponse} from '@cli/types/api.js'
 import {useGoogleStatusWatching} from '@cli/utils/index.js'
-import {Box, Text, useInput} from 'ink'
-import open from 'open'
-import {useContext, useState} from 'react'
 
 import {GoogleAuthQRCode, getConnectUrl} from './GoogleAuthQRCode.js'
 

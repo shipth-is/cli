@@ -1,5 +1,6 @@
-import {BaseCommand} from '@cli/baseCommands/index.js'
 import React, {useState} from 'react'
+
+import {BaseCommand} from '@cli/baseCommands/index.js'
 
 export type CommandContextType = {
   command: BaseCommand<any> | null

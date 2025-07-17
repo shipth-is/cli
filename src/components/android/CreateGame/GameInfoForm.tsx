@@ -1,8 +1,9 @@
-import {FormTextInput} from '@cli/components/index.js'
-import {EditableProject} from '@cli/types/api.js'
 import {Alert} from '@inkjs/ui'
 import {Box, Text} from 'ink'
 import {useState} from 'react'
+
+import {FormTextInput} from '@cli/components/index.js'
+import {EditableProject} from '@cli/types/api.js'
 
 interface Props {
   gameInfo: EditableProject

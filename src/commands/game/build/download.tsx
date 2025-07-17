@@ -1,9 +1,12 @@
+import * as fs from 'node:fs'
+
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {downloadBuildById} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
-import {Args, Flags} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'node:fs'
+
 
 export default class GameBuildDownload extends BaseGameCommand<typeof GameBuildDownload> {
   static override args = {

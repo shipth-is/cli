@@ -1,11 +1,12 @@
+import {Flags} from '@oclif/core'
+import {Box, Text, render} from 'ink'
+
 import {getProjects} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {Command, Table} from '@cli/components/index.js'
 import {PageAndSortParams} from '@cli/types'
 import {getShortDate} from '@cli/utils/dates.js'
 import {getShortUUID} from '@cli/utils/index.js'
-import {Flags} from '@oclif/core'
-import {Box, Text, render} from 'ink'
 
 // Not specific to one game so we use BaseAuthenticatedCommand
 export default class GameList extends BaseAuthenticatedCommand<typeof GameList> {

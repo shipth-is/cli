@@ -1,8 +1,9 @@
+import {Box, Text} from 'ink'
+import Spinner from 'ink-spinner'
+
 import {JobLogEntry} from '@cli/types'
 import {JobLogTailProps, useJobLogTail} from '@cli/utils/hooks/index.js'
 import {getMessageColor, getShortTime, getStageColor} from '@cli/utils/index.js'
-import {Box, Text} from 'ink'
-import Spinner from 'ink-spinner'
 
 import {Title} from './common/Title.js'
 import {TruncatedText} from './common/TruncatedText.js'

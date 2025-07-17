@@ -1,5 +1,6 @@
-import {Auth} from '@cli/apple/expo.js'
 import {SerializedCookieJar} from 'tough-cookie'
+
+import {Auth} from '@cli/apple/expo.js'
 
 /**
  * We were doing this with the nativescript lib to give more control over user

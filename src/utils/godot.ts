@@ -1,9 +1,12 @@
-import {CapabilityType} from '@cli/apple/expo.js'
-import {Platform} from '@cli/types'
-import merge from 'deepmerge'
-import {parse} from 'ini'
 import fs from 'node:fs'
 import path from 'node:path'
+
+import merge from 'deepmerge'
+import {parse} from 'ini'
+
+import {CapabilityType} from '@cli/apple/expo.js'
+import {Platform} from '@cli/types'
+
 
 // Check if the current working directory is a Godot game
 // TODO: allow for cwd override

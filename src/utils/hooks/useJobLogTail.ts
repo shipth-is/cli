@@ -1,8 +1,10 @@
-import {JobLogEntry} from '@cli/types'
-import {useJobLogs} from '@cli/utils/query/useJobLogs.js'
 import {useEffect, useState} from 'react'
 
+import {JobLogEntry} from '@cli/types'
+import {useJobLogs} from '@cli/utils/query/useJobLogs.js'
+
 import {arrayToDictionary, dictionaryToArray} from '../dictionary.js'
+
 import {useJobWatching} from './useJobWatching.js'
 
 export interface JobLogTailProps {

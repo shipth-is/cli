@@ -1,6 +1,7 @@
+import {useEffect, useState} from 'react'
+
 import {getGoogleAuthUrl, getShortAuthRequiredUrl} from '@cli/api/index.js'
 import {QRCodeTerminal} from '@cli/components/common/index.js'
-import {useEffect, useState} from 'react'
 
 export async function getConnectUrl(gameId: string, helpPage: boolean): Promise<string> {
   // TODO: what if this changes

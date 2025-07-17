@@ -1,6 +1,7 @@
-import {ProjectCredentialsQueryProps, getProjectCredentialSummary, useProjectCredentials} from '@cli/utils/index.js'
 import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
+
+import {ProjectCredentialsQueryProps, getProjectCredentialSummary, useProjectCredentials} from '@cli/utils/index.js'
 
 import {Table} from './common/Table.js'
 import {Title} from './common/Title.js'

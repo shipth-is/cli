@@ -1,5 +1,6 @@
-import {getSelf} from '@cli/api/index.js'
 import {Command} from '@oclif/core'
+
+import {getSelf} from '@cli/api/index.js'
 
 import {BaseCommand} from './baseCommand.js'
 

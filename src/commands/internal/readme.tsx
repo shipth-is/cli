@@ -1,10 +1,13 @@
-import {BaseCommand} from '@cli/baseCommands/index.js'
-import CustomHelp from '@cli/utils/help.js'
+import fs from 'node:fs'
+import path from 'node:path'
+
 import {Args, Command, Config, Flags} from '@oclif/core'
 import {Topic} from '@oclif/core/interfaces'
 import ejs from 'ejs'
-import fs from 'node:fs'
-import path from 'node:path'
+
+import {BaseCommand} from '@cli/baseCommands/index.js'
+import CustomHelp from '@cli/utils/help.js'
+
 
 const ROOT_TOPIC_NAME = 'shipthis'
 const ROOT_TOPIC_DESCRIPTION = 'Root topic'

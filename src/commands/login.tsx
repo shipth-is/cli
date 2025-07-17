@@ -1,10 +1,11 @@
+import {Flags} from '@oclif/core'
+import axios from 'axios'
+
 import {acceptTerms, setAuthToken} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {AuthConfig} from '@cli/types'
 import {getInput} from '@cli/utils/index.js'
-import {Flags} from '@oclif/core'
-import axios from 'axios'
 
 const TERMS_URL = new URL('/terms', WEB_URL).href
 const PRIVACY_URL = new URL('/privacy', WEB_URL).href

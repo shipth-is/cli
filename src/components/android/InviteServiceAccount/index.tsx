@@ -1,9 +1,10 @@
-import {GameContext, Markdown, StepProps} from '@cli/components/index.js'
-import {WEB_URL} from '@cli/constants/config.js'
-import {useInviteServiceAccount} from '@cli/utils/index.js'
 import {Box} from 'ink'
 import Spinner from 'ink-spinner'
 import {useContext} from 'react'
+
+import {GameContext, Markdown, StepProps} from '@cli/components/index.js'
+import {WEB_URL} from '@cli/constants/config.js'
+import {useInviteServiceAccount} from '@cli/utils/index.js'
 
 import {InviteForm} from './InviteForm.js'
 

@@ -1,8 +1,9 @@
+import fs from 'node:fs'
+import path from 'node:path'
+
 import {Text} from 'ink'
 import {parse, setOptions} from 'marked'
 import TerminalRenderer, {TerminalRendererOptions} from 'marked-terminal'
-import fs from 'node:fs'
-import path from 'node:path'
 import {useEffect, useState} from 'react'
 
 interface Props extends TerminalRendererOptions {

@@ -1,10 +1,11 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {UserKey_iOS, getUserCredentials, uploadUserCredentials} from '@cli/api/credentials/index.js'
 import {ApiKey, ApiKeyType, UserRole} from '@cli/apple/expo.js'
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiKeyCreate> {
   static override args = {}

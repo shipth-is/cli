@@ -1,3 +1,7 @@
+import {Box, Text, useInput} from 'ink'
+import open from 'open'
+import {useContext, useEffect, useState} from 'react'
+
 import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 import {
   CommandContext,
@@ -11,9 +15,6 @@ import {
 import {WEB_URL} from '@cli/constants/config.js'
 import {Job, ShipGameFlags} from '@cli/types/index.js'
 import {getShortUUID, useShip} from '@cli/utils/index.js'
-import {Box, Text, useInput} from 'ink'
-import open from 'open'
-import {useContext, useEffect, useState} from 'react'
 
 interface Props {
   onComplete: (completedJobs: Job[]) => void

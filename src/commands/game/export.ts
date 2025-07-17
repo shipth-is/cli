@@ -1,8 +1,9 @@
+import {Args, Flags} from '@oclif/core'
+
 import {getProject} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/index.js'
 import {isCWDGodotGame} from '@cli/utils/index.js'
-import {Args, Flags} from '@oclif/core'
 
 export default class GameExport extends BaseAuthenticatedCommand<typeof GameExport> {
   static override args = {

@@ -1,6 +1,7 @@
+import React, {useEffect, useState} from 'react'
+
 import {getProject} from '@cli/api/index.js'
 import {Project} from '@cli/types/api.js'
-import React, {useEffect, useState} from 'react'
 
 import {CommandContext} from './CommandProvider.js'
 

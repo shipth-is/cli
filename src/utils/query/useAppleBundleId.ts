@@ -1,8 +1,8 @@
 import type {BundleId} from '@expo/apple-utils'
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
 
 import {BundleId as AppleBundleId, CapabilityType} from '@cli/apple/expo.js'
 import {Platform, ScalarDict} from '@cli/types'
-import {UseQueryResult, useQuery} from '@tanstack/react-query'
 
 import {GODOT_CAPABILITIES, getGodotProjectCapabilities} from '../godot.js'
 

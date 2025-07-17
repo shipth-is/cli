@@ -1,9 +1,10 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {App as AppleApp, BundleId as AppleBundleId} from '@cli/apple/expo.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {generatePackageName, getGodotAppleBundleIdentifier, getInput} from '@cli/utils/index.js'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppCreate> {
   static override args = {}

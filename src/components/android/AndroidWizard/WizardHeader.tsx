@@ -1,7 +1,8 @@
-import {Title} from '@cli/components/index.js'
-import {useResponsive} from '@cli/utils/index.js'
 import {Box} from 'ink'
 import React from 'react'
+
+import {Title} from '@cli/components/index.js'
+import {useResponsive} from '@cli/utils/index.js'
 
 import {StepStatusTable} from './StepStatusTable.js'
 import {StepStatus} from './utils.js'

@@ -1,14 +1,16 @@
+import fs from 'node:fs'
+
+import {useMutation} from '@tanstack/react-query'
+import axios from 'axios'
+import fg from 'fast-glob'
+import {v4 as uuid} from 'uuid'
+import yazl from 'yazl'
+
 import {getNewUploadTicket, startJobsFromUpload} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS, cacheKeys} from '@cli/constants/index.js'
 import {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
 import {getCWDGitInfo, getFileHash, queryClient} from '@cli/utils/index.js'
-import {useMutation} from '@tanstack/react-query'
-import axios from 'axios'
-import fg from 'fast-glob'
-import fs from 'node:fs'
-import {v4 as uuid} from 'uuid'
-import yazl from 'yazl'
 
 // Takes the current command so we can get the project config
 // TODO: refactor to make more composable

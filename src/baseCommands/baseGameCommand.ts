@@ -1,6 +1,7 @@
+import {Command, Flags} from '@oclif/core'
+
 import {getProject, updateProject} from '@cli/api/index.js'
 import {EditableProject, Project} from '@cli/types'
-import {Command, Flags} from '@oclif/core'
 
 import {BaseAuthenticatedCommand} from './baseAuthenticatedCommand.js'
 

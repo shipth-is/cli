@@ -1,7 +1,8 @@
+import {useEffect, useRef, useState} from 'react'
+
 import {Job, JobLogEntry, JobStage, JobStatus} from '@cli/types'
 import {castJobDates, castObjectDates} from '@cli/utils/dates.js'
 import {useJob} from '@cli/utils/query/useJob.js'
-import {useEffect, useRef, useState} from 'react'
 
 import {WebSocketListener, useWebSocket} from './useWebSocket.js'
 

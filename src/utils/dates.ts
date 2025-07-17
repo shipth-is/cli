@@ -1,5 +1,6 @@
-import {Build, Job} from '@cli/types'
 import {DateTime, DateTimeFormatOptions} from 'luxon'
+
+import {Build, Job} from '@cli/types'
 
 export const DEFAULT_LOCALE = 'en-US'
 

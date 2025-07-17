@@ -1,7 +1,8 @@
-import {getAuthedHeaders} from '@cli/api/index.js'
-import {API_URL, cacheKeys} from '@cli/constants/index.js'
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
+
+import {getAuthedHeaders} from '@cli/api/index.js'
+import {API_URL, cacheKeys} from '@cli/constants/index.js'
 
 import {queryClient} from './queryClient.js'
 

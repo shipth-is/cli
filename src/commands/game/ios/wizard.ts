@@ -1,11 +1,12 @@
+import {Flags} from '@oclif/core'
+import chalk from 'chalk'
+
 import {getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {getRenderedMarkdown} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
-import {Flags} from '@oclif/core'
-import chalk from 'chalk'
 
 interface Step {
   args: string[]

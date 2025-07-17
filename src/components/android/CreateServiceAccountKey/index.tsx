@@ -1,8 +1,9 @@
-import {GameContext, ProgressSpinner, StepProps} from '@cli/components/index.js'
-import {useAndroidServiceAccount} from '@cli/utils/index.js'
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 import {useContext, useEffect, useState} from 'react'
+
+import {GameContext, ProgressSpinner, StepProps} from '@cli/components/index.js'
+import {useAndroidServiceAccount} from '@cli/utils/index.js'
 
 import {SetupStatusTable} from './SetupStatusTable.js'
 

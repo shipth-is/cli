@@ -1,9 +1,10 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {CapabilityTypeOption} from '@cli/apple/expo.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {fetchBundleId} from '@cli/utils/index.js'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSync> {
   static override args = {}

@@ -1,7 +1,9 @@
+import * as fs from 'node:fs'
+
+import axios from 'axios'
+
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/constants/index.js'
-import axios from 'axios'
-import * as fs from 'node:fs'
 
 export interface ExportCredentialProps {
   credentialId: string

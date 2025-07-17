@@ -1,7 +1,8 @@
-import {Markdown, StepProps} from '@cli/components/index.js'
-import {ImportKeystoreProps} from '@cli/utils/query/useImportKeystore.js'
 import {Box, Text, useInput} from 'ink'
 import {useState} from 'react'
+
+import {Markdown, StepProps} from '@cli/components/index.js'
+import {ImportKeystoreProps} from '@cli/utils/query/useImportKeystore.js'
 
 import {CreateKeystore} from './Create.js'
 import {ImportKeystore} from './Import.js'

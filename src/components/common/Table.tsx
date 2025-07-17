@@ -1,8 +1,9 @@
 // Table.tsx
-import {Scalar, ScalarDict} from '@cli/types'
 import {Box, Text, TextProps} from 'ink'
 // From https://github.com/maticzav/ink-table/issues/268 and modified
 import React from 'react'
+
+import {Scalar, ScalarDict} from '@cli/types'
 
 type Column = {
   key: string

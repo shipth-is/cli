@@ -1,8 +1,10 @@
+import {promises as fsAsync} from 'node:fs'
+
+import axios from 'axios'
+
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/constants/index.js'
 import {CredentialsType, Platform, ProjectCredential, UserCredential} from '@cli/types'
-import axios from 'axios'
-import {promises as fsAsync} from 'node:fs'
 
 interface ImportTicket {
   url: string

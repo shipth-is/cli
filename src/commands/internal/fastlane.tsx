@@ -1,7 +1,9 @@
-import {BaseCommand} from '@cli/baseCommands/index.js'
-import {Args, Flags} from '@oclif/core'
 import fs, {promises as fsAsync} from 'node:fs'
 import path from 'node:path'
+
+import {Args, Flags} from '@oclif/core'
+
+import {BaseCommand} from '@cli/baseCommands/index.js'
 
 type Cookie = {
   creation: string

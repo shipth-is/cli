@@ -1,10 +1,11 @@
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
+import {AxiosError} from 'axios'
+import {DateTime} from 'luxon'
+
 import {getJob} from '@cli/api/index.js'
 import {cacheKeys} from '@cli/constants/index.js'
 import {Job, JobDetails, JobStatus, ScalarDict} from '@cli/types'
 import {getPlatformName, getShortDateTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
-import {UseQueryResult, useQuery} from '@tanstack/react-query'
-import {AxiosError} from 'axios'
-import {DateTime} from 'luxon'
 
 export interface JobQueryProps {
   jobId: string

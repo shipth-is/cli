@@ -1,3 +1,6 @@
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
+import axios, {AxiosError} from 'axios'
+
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL, cacheKeys} from '@cli/constants/index.js'
 import {
@@ -9,8 +12,6 @@ import {
   UserCredential,
 } from '@cli/types'
 import {castArrayObjectDates, getShortDate, getShortUUID} from '@cli/utils/index.js'
-import {UseQueryResult, useQuery} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
 
 export interface UserCredentialsQueryProps extends PageAndSortParams {
   platform?: Platform

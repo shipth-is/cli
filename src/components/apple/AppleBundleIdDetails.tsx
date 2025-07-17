@@ -1,7 +1,8 @@
-import {Table, Title} from '@cli/components/common/index.js'
-import {AppleBundleIdQueryProps, useAppleBundleId} from '@cli/utils/query/index.js'
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
+
+import {Table, Title} from '@cli/components/common/index.js'
+import {AppleBundleIdQueryProps, useAppleBundleId} from '@cli/utils/query/index.js'
 
 export const AppleBundleIdDetails = (props: AppleBundleIdQueryProps) => {
   const {data, isLoading} = useAppleBundleId(props)

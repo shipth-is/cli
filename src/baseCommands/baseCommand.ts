@@ -1,11 +1,14 @@
+import fs from 'node:fs'
+import path from 'node:path'
+
+import {Command, Flags, Interfaces} from '@oclif/core'
+import {SerializedCookieJar} from 'tough-cookie'
+
 import {setAuthToken} from '@cli/api/index.js'
 import {Auth} from '@cli/apple/expo.js'
 import {AuthConfig, ProjectConfig} from '@cli/types'
 import {isCWDGodotGame} from '@cli/utils/index.js'
-import {Command, Flags, Interfaces} from '@oclif/core'
-import fs from 'node:fs'
-import path from 'node:path'
-import {SerializedCookieJar} from 'tough-cookie'
+
 
 import {DetailsFlags} from './index.js'
 

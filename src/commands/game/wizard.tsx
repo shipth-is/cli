@@ -1,8 +1,9 @@
+import {Args} from '@oclif/core'
+import {withFullScreen} from 'fullscreen-ink'
+
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {AndroidWizard, Command} from '@cli/components/index.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
-import {Args} from '@oclif/core'
-import {withFullScreen} from 'fullscreen-ink'
 
 export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWizard> {
   static override args = {

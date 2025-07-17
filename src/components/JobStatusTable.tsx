@@ -1,10 +1,11 @@
-import {Job, JobStatus} from '@cli/types'
-import {useJobWatching} from '@cli/utils/hooks/index.js'
-import {getJobStatusColor, getJobSummary, getStageColor} from '@cli/utils/index.js'
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 import {DateTime} from 'luxon'
 import {useEffect, useState} from 'react'
+
+import {Job, JobStatus} from '@cli/types'
+import {useJobWatching} from '@cli/utils/hooks/index.js'
+import {getJobStatusColor, getJobSummary, getStageColor} from '@cli/utils/index.js'
 
 import {StatusRow, StatusRowLabel} from './common/StatusTable.js'
 import {Title} from './common/Title.js'

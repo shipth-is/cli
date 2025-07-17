@@ -1,10 +1,11 @@
+import {InfiniteData, UseInfiniteQueryResult, useInfiniteQuery} from '@tanstack/react-query'
+import axios, {AxiosError} from 'axios'
+
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {cacheKeys} from '@cli/constants/cacheKeys.js'
 import {API_URL} from '@cli/constants/index.js'
 import {CursorPaginatedResponse, JobLogEntry} from '@cli/types'
 import {castArrayObjectDates} from '@cli/utils/index.js'
-import {InfiniteData, UseInfiniteQueryResult, useInfiniteQuery} from '@tanstack/react-query'
-import axios, {AxiosError} from 'axios'
 
 export interface JobLogsQueryProps {
   cursor?: string

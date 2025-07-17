@@ -1,7 +1,8 @@
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {AppleAppDetails, AppleBundleIdDetails, Command, NextSteps} from '@cli/components/index.js'
 import {Flags} from '@oclif/core'
 import {render} from 'ink'
+
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {AppleAppDetails, AppleBundleIdDetails, Command, NextSteps} from '@cli/components/index.js'
 
 export default class GameIosAppStatus extends BaseGameCommand<typeof GameIosAppStatus> {
   static override args = {}

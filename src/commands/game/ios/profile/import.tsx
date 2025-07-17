@@ -1,10 +1,13 @@
+import * as fs from 'node:fs'
+
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {getProjectCredentials, importCredential} from '@cli/api/credentials/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
-import {Args, Flags} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'node:fs'
+
 
 export default class GameIosProfileImport extends BaseGameCommand<typeof GameIosProfileImport> {
   static override args = {

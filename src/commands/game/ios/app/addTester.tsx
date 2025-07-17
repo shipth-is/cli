@@ -1,9 +1,10 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {BetaGroup} from '@cli/apple/expo.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {getInput, queryAppleApp} from '@cli/utils/index.js'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 const TEST_GROUP_NAME = 'ShipThis Test Group'
 

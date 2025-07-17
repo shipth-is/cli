@@ -1,10 +1,13 @@
+import * as fs from 'node:fs'
+
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {exportCredential, getUserCredentials} from '@cli/api/credentials/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
-import {Args, Flags} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'node:fs'
+
 
 export default class AppleCertificateExport extends BaseAuthenticatedCommand<typeof AppleCertificateExport> {
   static override args = {

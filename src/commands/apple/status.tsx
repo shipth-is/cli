@@ -1,6 +1,7 @@
+import {render} from 'ink'
+
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {Command, NextSteps, StatusTable} from '@cli/components/index.js'
-import {render} from 'ink'
 
 export default class AppleStatus extends BaseAuthenticatedCommand<typeof AppleStatus> {
   static override args = {}

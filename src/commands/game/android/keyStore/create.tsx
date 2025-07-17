@@ -1,9 +1,10 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {getProjectCredentials} from '@cli/api/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {CommandGame, CreateKeystore} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class GameAndroidKeyStoreCreate extends BaseGameAndroidCommand<typeof GameAndroidKeyStoreCreate> {
   static override args = {}

@@ -1,7 +1,8 @@
-import {getAuthedHeaders} from '@cli/api/index.js'
-import {API_URL, cacheKeys} from '@cli/constants/index.js'
 import {useQuery} from '@tanstack/react-query'
 import axios, {AxiosError, AxiosRequestConfig} from 'axios'
+
+import {getAuthedHeaders} from '@cli/api/index.js'
+import {API_URL, cacheKeys} from '@cli/constants/index.js'
 
 export enum KeyTestStatus {
   ERROR = 'error',

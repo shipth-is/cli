@@ -1,6 +1,5 @@
-import type {SpinnerName} from 'cli-spinners'
-
 import {ProgressBar} from '@inkjs/ui'
+import type {SpinnerName} from 'cli-spinners'
 import {Box, BoxProps, Text, TextProps} from 'ink'
 import Spinner from 'ink-spinner'
 

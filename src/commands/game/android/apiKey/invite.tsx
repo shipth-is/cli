@@ -1,3 +1,5 @@
+import {Args, Flags} from '@oclif/core'
+
 import {inviteServiceAccount} from '@cli/api/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getInput} from '@cli/utils/index.js'
@@ -7,7 +9,6 @@ import {
   fetchKeyTestResult,
   niceError,
 } from '@cli/utils/query/useAndroidServiceAccountTestResult.js'
-import {Args, Flags} from '@oclif/core'
 
 export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<typeof GameAndroidApiKeyInvite> {
   static override args = {

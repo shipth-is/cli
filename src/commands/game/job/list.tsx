@@ -1,11 +1,12 @@
+import {Flags} from '@oclif/core'
+import {Box, Text, render} from 'ink'
+import {DateTime} from 'luxon'
+
 import {getProjectJobs} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, Table, Title} from '@cli/components/index.js'
 import {JobStatus, PageAndSortParams} from '@cli/types'
 import {getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
-import {Flags} from '@oclif/core'
-import {Box, Text, render} from 'ink'
-import {DateTime} from 'luxon'
 
 export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
   static override args = {}

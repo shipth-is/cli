@@ -1,7 +1,8 @@
-import {FormTextInput} from '@cli/components/index.js'
 import {Alert} from '@inkjs/ui'
 import {Box} from 'ink'
 import {useState} from 'react'
+
+import {FormTextInput} from '@cli/components/index.js'
 
 interface Props {
   // TODO: no initial values

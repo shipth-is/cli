@@ -1,8 +1,9 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {AppleApiKeysTable, Command, UserCredentialsTable} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class AppleApiKeyStatus extends BaseAuthenticatedCommand<typeof AppleApiKeyStatus> {
   static override args = {}

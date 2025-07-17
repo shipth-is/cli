@@ -1,6 +1,7 @@
-import {Scalar, ScalarDict} from '@cli/types'
 import {Box, Text, TextProps} from 'ink'
 import React from 'react'
+
+import {Scalar, ScalarDict} from '@cli/types'
 
 import {Title} from './Title.js'
 

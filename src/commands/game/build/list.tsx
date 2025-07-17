@@ -1,8 +1,9 @@
+import {Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {BuildsTable, CommandGame} from '@cli/components/index.js'
 import {PageAndSortParams} from '@cli/types'
-import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class GameBuildList extends BaseGameCommand<typeof GameBuildList> {
   static override args = {}

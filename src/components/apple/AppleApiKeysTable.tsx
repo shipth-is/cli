@@ -1,8 +1,9 @@
+import {Box, BoxProps, Text} from 'ink'
+import Spinner from 'ink-spinner'
+
 import {NextSteps, Table, Title} from '@cli/components/common/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {canAppleApiKeyBeUsed, getAppleApiKeySummary, useAppleApiKeys, useUserCredentials} from '@cli/utils/index.js'
-import {Box, BoxProps, Text} from 'ink'
-import Spinner from 'ink-spinner'
 
 interface Props extends BoxProps {
   ctx: any

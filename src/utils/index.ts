@@ -1,10 +1,12 @@
-import {JobStage, JobStatus, LogLevel, Platform, ScalarDict} from '@cli/types'
 import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import {promises as readline} from 'node:readline'
 import {fileURLToPath} from 'node:url'
+
 import readlineSync from 'readline-sync'
+
+import {JobStage, JobStatus, LogLevel, Platform, ScalarDict} from '@cli/types'
 
 export * from './dates.js'
 export * from './dictionary.js'

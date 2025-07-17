@@ -1,7 +1,8 @@
+import {Flags} from '@oclif/core'
+
 import {getNewAuthState} from '@cli/apple/auth.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {getInput, getMaskedInput} from '@cli/utils/index.js'
-import {Flags} from '@oclif/core'
 
 export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLogin> {
   static override args = {}

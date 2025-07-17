@@ -1,9 +1,10 @@
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {getJob} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, JobLogTail, JobStatusTable, NextSteps} from '@cli/components/index.js'
 import {Job, JobStatus} from '@cli/types'
-import {Args, Flags} from '@oclif/core'
-import {render} from 'ink'
 
 export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus> {
   static override args = {

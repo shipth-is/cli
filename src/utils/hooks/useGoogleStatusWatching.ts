@@ -1,9 +1,11 @@
 // We watch by projectId - but get the status without the id
 
-import {GoogleStatusResponse} from '@cli/types/api.js'
 import {useEffect, useState} from 'react'
 
+import {GoogleStatusResponse} from '@cli/types/api.js'
+
 import {useGoogleStatus} from '../query/useGoogleStatus.js'
+
 import {WebSocketListener, useWebSocket} from './useWebSocket.js'
 
 // TODO: there is potentially an issue if users are setting up multiple projects at once
