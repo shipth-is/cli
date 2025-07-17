@@ -2,9 +2,9 @@ import {Box, Text} from 'ink'
 import {useContext, useEffect, useState} from 'react'
 
 import {getProject, getProjectPlatformProgress} from '@cli/api/index.js'
+import {CommandContext, GameContext, NextSteps, StatusTable} from '@cli/components/index.js'
 import {Platform, Project, ProjectPlatformProgress} from '@cli/types/api.js'
 import {getShortDate, getShortUUID, makeHumanReadable} from '@cli/utils/index.js'
-import {StatusTable, NextSteps, CommandContext, GameContext} from '@cli/components/index.js'
 
 function isPlatformConfigured(platform: Platform, progress: ProjectPlatformProgress | null): boolean {
   if (!progress) return false
@@ -19,14 +19,15 @@ function isPlatformConfigured(platform: Platform, progress: ProjectPlatformProgr
 function getSteps(platform: Platform, progress: ProjectPlatformProgress | null | undefined): string[] {
   if (!progress) return ['shipthis game wizard ' + platform.toLowerCase()]
   switch (platform) {
-    case Platform.ANDROID:
+    case Platform.ANDROID: {
       return [
         !progress.hasCredentialsForPlatform && 'shipthis game android keyStore create',
         !progress.hasApiKeyForPlatform && 'shipthis game android apiKey create',
         isPlatformConfigured(platform, progress) && 'shipthis game ship',
       ].filter(Boolean) as string[]
+    }
 
-    case Platform.IOS:
+    case Platform.IOS: {
       // TODO: what about creating the app? shipthis game ios app create
       // we may need more backend flags to determine if the app exists etc
       return [
@@ -34,29 +35,31 @@ function getSteps(platform: Platform, progress: ProjectPlatformProgress | null |
         !progress.hasCredentialsForPlatform && 'shipthis game ios profile create',
         isPlatformConfigured(platform, progress) && 'shipthis game ship',
       ].filter(Boolean) as string[]
+    }
 
-    default:
+    default: {
       throw new Error('Invalid platform')
+    }
   }
 }
 
 interface FetchGameStatusResult {
+  exitCode: number
   game: Project
-  isEnabled: Partial<Record<Platform, Boolean>>
+  isEnabled: Partial<Record<Platform, boolean>>
   statuses: Partial<Record<Platform, ProjectPlatformProgress>>
   steps: string[]
-  exitCode: number
 }
 
 async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<FetchGameStatusResult> {
   const game = await getProject(gameId)
 
-  const isEnabled: Partial<Record<Platform, Boolean>> = {}
+  const isEnabled: Partial<Record<Platform, boolean>> = {}
   const statuses: Partial<Record<Platform, ProjectPlatformProgress>> = {}
 
   for (const platform of platforms) {
     // The platform is considered enabled if it has the identifier set
-    isEnabled[platform] = platform === Platform.IOS ? !!game.details?.iosBundleId : !!game.details?.androidPackageName
+    isEnabled[platform] = platform === Platform.IOS ? Boolean(game.details?.iosBundleId) : Boolean(game.details?.androidPackageName)
     if (isEnabled[platform]) {
       // Call the backend to tell us the status of the platform for this game
       statuses[platform] = await getProjectPlatformProgress(game.id, platform)
@@ -88,11 +91,11 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
   }
 
   return {
+    exitCode,
     game,
     isEnabled,
     statuses,
     steps,
-    exitCode,
   }
 }
 
@@ -101,7 +104,7 @@ interface GameStatusDetailsProps extends GameStatusProps {
   platforms: Platform[]
 }
 
-export const GameStatusDetails = ({gameId, platforms, onComplete, onError, children}: GameStatusDetailsProps) => {
+export const GameStatusDetails = ({children, gameId, onComplete, onError, platforms}: GameStatusDetailsProps) => {
   const [state, setState] = useState<FetchGameStatusResult | null>(null)
 
   useEffect(() => {
@@ -111,7 +114,7 @@ export const GameStatusDetails = ({gameId, platforms, onComplete, onError, child
         // TODO: do we need the setTimeout here?
         setTimeout(() => onComplete?.(res.exitCode), 0)
       })
-      .catch((e) => onError?.(e))
+      .catch((error) => onError?.(error))
   }, [])
 
   if (!state) return <Text></Text>
@@ -121,15 +124,15 @@ export const GameStatusDetails = ({gameId, platforms, onComplete, onError, child
   return (
     <Box flexDirection="column">
       <StatusTable
-        title="Game Details"
         statuses={{
-          'Game ID': getShortUUID(game.id),
-          Name: game.name,
-          Version: game.details?.semanticVersion || '0.0.1',
           'Build Number': `${game.details?.buildNumber || 1}`,
           'Created At': getShortDate(game.createdAt),
           'Game Engine': `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.3'}`,
+          'Game ID': getShortUUID(game.id),
+          Name: game.name,
+          Version: game.details?.semanticVersion || '0.0.1',
         }}
+        title="Game Details"
       />
 
       {platforms.map((platform) => {
@@ -140,7 +143,7 @@ export const GameStatusDetails = ({gameId, platforms, onComplete, onError, child
         return (
           <Box key={platform} marginTop={1}>
             {status ? (
-              <StatusTable title={`${label} Status`} statuses={makeHumanReadable(statusValues)} />
+              <StatusTable statuses={makeHumanReadable(statusValues)} title={`${label} Status`} />
             ) : (
               <Text color={color}>The {label} platform is not enabled for this game.</Text>
             )}
@@ -155,12 +158,12 @@ export const GameStatusDetails = ({gameId, platforms, onComplete, onError, child
 }
 
 interface GameStatusProps {
+  children?: React.ReactNode
   onComplete?: (exitCode: number) => void
   onError?: (error: Error) => void
-  children?: React.ReactNode
 }
 
-export const GameStatus = ({onComplete, children}: GameStatusProps) => {
+export const GameStatus = ({children, onComplete}: GameStatusProps) => {
   const {gameId} = useContext(GameContext)
   const {command} = useContext(CommandContext)
   const flags = (command && (command.getFlags() as {platform?: string})) || {}
@@ -171,7 +174,7 @@ export const GameStatus = ({onComplete, children}: GameStatusProps) => {
 
   if (!gameId) return null
   return (
-    <GameStatusDetails gameId={gameId} platforms={platforms} onComplete={onComplete}>
+    <GameStatusDetails gameId={gameId} onComplete={onComplete} platforms={platforms}>
       {children}
     </GameStatusDetails>
   )

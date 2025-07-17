@@ -93,7 +93,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return this.flags
   }
 
-  public async getGameId(): Promise<null | string> {
+  public getGameId(): null | string {
     const {flags} = this
     if (flags.gameId) return flags.gameId
     const {project} = this.getProjectConfigSafe()

@@ -23,7 +23,7 @@ interface Props {
 
 export const GameProvider = ({children}: Props) => {
   const {command} = React.useContext(CommandContext)
-  const [gameId, setGameId] = useState<string | null>(command?.getGameId() || null)
+  const [gameId, setGameId] = useState<null | string>(command?.getGameId() || null)
   const [game, setGame] = useState<Project | null>(null)
 
   const handleGameIdChange = async () => {
