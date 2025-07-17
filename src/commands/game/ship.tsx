@@ -51,7 +51,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
 
   public async run(): Promise<void> {
     await this.ensureWeAreInAProjectDir()
-    const gameId = await this.getGameId()
+    const gameId = this.getGameId()
     if (!gameId) {
       this.error('No game ID found')
     }

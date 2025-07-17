@@ -71,7 +71,7 @@ export interface StatusFlags {
 // Needs the command context to get the project config
 export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags> => {
   // Get the project config if there from the current working directory
-  const projectConfig = await cmd.getProjectConfigSafe()
+  const projectConfig = cmd.getProjectConfigSafe()
   const projectId = projectConfig.project?.id
 
   const project = !!projectId && (await getProject(projectId))

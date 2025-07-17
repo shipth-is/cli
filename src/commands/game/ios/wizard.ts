@@ -35,7 +35,7 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
       )
     }
 
-    const projectConfig = await this.getProjectConfigSafe()
+    const projectConfig = this.getProjectConfigSafe()
     const game = projectConfig.project
 
     const isStepForced = (cmdName: string) => flags.forceStep?.includes(cmdName)

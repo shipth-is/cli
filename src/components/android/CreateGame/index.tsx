@@ -37,7 +37,7 @@ export const CreateGame = (props: StepProps): JSX.Element => {
   const handleLoad = async () => {
     if (!command) throw new Error('No command')
     const flags = command.getDetailsFlagsValues()
-    const config = await command.getProjectConfigSafe()
+    const config = command.getProjectConfigSafe()
     setShowForm(true)
     setIsLoading(false)
     const info = getGameInfo(flags, config.project)
@@ -53,7 +53,7 @@ export const CreateGame = (props: StepProps): JSX.Element => {
       setIsLoading(true)
 
       if (!command) throw new Error('No command')
-      const projectConfig = await command.getProjectConfigSafe()
+      const projectConfig = command.getProjectConfigSafe()
       const existingGame = projectConfig.project
 
       // If the game already exists, update the game info (set androidPackageName)

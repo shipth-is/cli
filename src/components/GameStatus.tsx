@@ -11,8 +11,8 @@ function isPlatformConfigured(platform: Platform, progress: ProjectPlatformProgr
   return progress.platform === platform && progress.hasCredentialsForPlatform && progress.hasApiKeyForPlatform
 }
 
-function getSteps(platform: Platform, progress: ProjectPlatformProgress | null) {
-  if (!progress) return []
+function getSteps(platform: Platform, progress: ProjectPlatformProgress | null | undefined): string[] {
+  if (!progress) return ['shipthis game wizard ' + platform.toLowerCase()]
   switch (platform) {
     case Platform.ANDROID:
       return [
@@ -39,14 +39,7 @@ function progressToStatuses(progress: ProjectPlatformProgress) {
   return makeHumanReadable(rest)
 }
 
-interface FetchGameStatusProps {
-  gameId: string
-  platforms: Platform[]
-  onComplete?: (exitCode: number) => void
-}
-
 interface FetchGameStatusResult {
-  isLoading: boolean
   game: Project
   isEnabled: Partial<Record<Platform, Boolean>>
   statuses: Partial<Record<Platform, ProjectPlatformProgress>>
@@ -61,27 +54,17 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
   const statuses: Partial<Record<Platform, ProjectPlatformProgress>> = {}
 
   for (const platform of platforms) {
-    if (platform === Platform.IOS) {
-      isEnabled[Platform.IOS] = !!game.details?.iosBundleId
-    } else if (platform === Platform.ANDROID) {
-      isEnabled[Platform.ANDROID] = !!game.details?.androidPackageName
+    const hasEnabled = platform === Platform.IOS ? !!game.details?.iosBundleId : !!game.details?.androidPackageName
+    isEnabled[platform] = hasEnabled
+    if (hasEnabled) {
+      statuses[platform] = await getProjectPlatformProgress(game.id, platform)
     }
-  }
-  for (const platform of platforms) {
-    if (isEnabled[platform as Platform])
-      statuses[platform as Platform] = await getProjectPlatformProgress(game.id, platform as Platform)
   }
 
   let steps: string[] = []
 
   for (const platform of platforms) {
-    if (isEnabled[platform as Platform]) {
-      const platformStatus = statuses[platform as Platform]
-      if (!platformStatus) continue
-      steps = steps.concat(getSteps(platform as Platform, platformStatus))
-    } else {
-      steps.push(`shipthis game wizard ${platform.toLowerCase()}`)
-    }
+    steps = steps.concat(getSteps(platform, statuses[platform]))
   }
 
   let exitCode = 0
@@ -103,7 +86,6 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
   }
 
   return {
-    isLoading: false,
     game,
     isEnabled,
     statuses,
@@ -112,64 +94,28 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
   }
 }
 
-const useGameStatus = ({gameId, platforms, onComplete}: FetchGameStatusProps) => {
-  const [isLoading, setIsLoading] = useState(true)
-  const [game, setGame] = useState<Project | null>(null)
-  const [isEnabled, setIsEnabled] = useState<Partial<Record<Platform, Boolean>>>({})
-  const [statuses, setStatuses] = useState<Partial<Record<Platform, ProjectPlatformProgress>>>({})
-  const [steps, setSteps] = useState<string[]>([])
+interface GameStatusDetailsProps extends GameStatusProps {
+  gameId: string
+  platforms: Platform[]
+}
+
+export const GameStatusDetails = ({gameId, platforms, onComplete, onError, children}: GameStatusDetailsProps) => {
+  const [state, setState] = useState<FetchGameStatusResult | null>(null)
 
   useEffect(() => {
-    const init = async () => {
-      setIsLoading(true)
-      try {
-        const result = await fetchGameStatus(gameId, platforms)
-        setGame(result.game)
-        setIsEnabled(result.isEnabled)
-        setStatuses(result.statuses)
-        setSteps(result.steps)
-        // To force rendering
-        setTimeout(() => {
-          if (onComplete) onComplete(result.exitCode)
-        }, 0)
-      } catch (error) {
-        console.error('Error fetching game status:', error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    init()
+    fetchGameStatus(gameId, platforms)
+      .then((res) => {
+        setState(res)
+        setTimeout(() => onComplete?.(res.exitCode), 0)
+      })
+      .catch((e) => {
+        onError?.(e)
+      })
   }, [])
 
-  return {
-    game,
-    isLoading,
-    isEnabled,
-    statuses,
-    steps,
-  } as FetchGameStatusResult
-}
+  if (!state) return <Text></Text>
 
-interface GameStatusSafeProps {
-  gameId: string
-  onComplete?: (exitCode: number) => void
-  children?: React.ReactNode
-}
-
-const GameStatusSafe = ({gameId, onComplete, children}: GameStatusSafeProps) => {
-  const {command} = useContext(CommandContext)
-  const flags = (command && (command.getFlags() as {platform?: string})) || {}
-
-  const platforms: Platform[] = flags.platform
-    ? [flags.platform.toUpperCase() as Platform]
-    : [Platform.IOS, Platform.ANDROID]
-
-  const {isLoading, game, statuses, steps} = useGameStatus({gameId, platforms, onComplete})
-
-  if (isLoading) {
-    return <Text></Text>
-  }
+  const {game, statuses, steps} = state
 
   return (
     <Box flexDirection="column">
@@ -178,45 +124,29 @@ const GameStatusSafe = ({gameId, onComplete, children}: GameStatusSafeProps) => 
         statuses={{
           'Game ID': getShortUUID(game.id),
           Name: game.name,
-          Version: `${game.details?.semanticVersion || '0.0.1'}`,
+          Version: game.details?.semanticVersion || '0.0.1',
           'Build Number': `${game.details?.buildNumber || 1}`,
           'Created At': getShortDate(game.createdAt),
           'Game Engine': `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.3'}`,
         }}
       />
-      {platforms.includes(Platform.IOS) && (
-        <>
-          {statuses[Platform.IOS] ? (
-            <StatusTable marginTop={1} title="iOS Status" statuses={progressToStatuses(statuses[Platform.IOS])} />
-          ) : (
-            <Box marginTop={1}>
-              <Text color={platforms.length == 1 ? 'red' : 'yellow'}>
-                The iOS platform is not enabled for this game.
-              </Text>
-            </Box>
-          )}
-        </>
-      )}
-      {platforms.includes(Platform.ANDROID) && (
-        <>
-          {statuses[Platform.ANDROID] ? (
-            <StatusTable
-              marginTop={1}
-              title="Android Status"
-              statuses={progressToStatuses(statuses[Platform.ANDROID])}
-            />
-          ) : (
-            <Box marginTop={1}>
-              <Text color={platforms.length == 1 ? 'red' : 'yellow'}>
-                The Android platform is not enabled for this game.
-              </Text>
-            </Box>
-          )}
-        </>
-      )}
+
+      {platforms.map((platform) => {
+        const status = statuses[platform]
+        const label = platform === Platform.IOS ? 'iOS' : 'Android'
+        const color = platforms.length === 1 ? 'red' : 'yellow'
+        return (
+          <Box key={platform} marginTop={1}>
+            {status ? (
+              <StatusTable title={`${label} Status`} statuses={progressToStatuses(status)} />
+            ) : (
+              <Text color={color}>The {label} platform is not enabled for this game.</Text>
+            )}
+          </Box>
+        )
+      })}
 
       {children}
-
       <NextSteps steps={steps} />
     </Box>
   )
@@ -224,16 +154,23 @@ const GameStatusSafe = ({gameId, onComplete, children}: GameStatusSafeProps) => 
 
 interface GameStatusProps {
   onComplete?: (exitCode: number) => void
+  onError?: (error: Error) => void
   children?: React.ReactNode
 }
 
 export const GameStatus = ({onComplete, children}: GameStatusProps) => {
   const {gameId} = useContext(GameContext)
+  const {command} = useContext(CommandContext)
+  const flags = (command && (command.getFlags() as {platform?: string})) || {}
+
+  const platforms: Platform[] = flags.platform
+    ? [flags.platform.toUpperCase() as Platform]
+    : [Platform.IOS, Platform.ANDROID]
 
   if (!gameId) return null
   return (
-    <GameStatusSafe gameId={gameId} onComplete={onComplete}>
+    <GameStatusDetails gameId={gameId} platforms={platforms} onComplete={onComplete}>
       {children}
-    </GameStatusSafe>
+    </GameStatusDetails>
   )
 }
