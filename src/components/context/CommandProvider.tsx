@@ -9,12 +9,12 @@ export type CommandContextType = {
 
 export const CommandContext = React.createContext<CommandContextType>({
   command: null,
-  setCommand: (command: BaseCommand<any>) => {},
+  setCommand(command: BaseCommand<any>) {},
 })
 
 interface Props {
-  command?: BaseCommand<any>
   children: React.ReactNode
+  command?: BaseCommand<any>
 }
 
 export const CommandProvider = (props: Props) => {

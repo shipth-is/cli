@@ -1,23 +1,22 @@
-import axios from 'axios'
 import {useMutation} from '@tanstack/react-query'
+import axios from 'axios'
 
 import {getAuthedHeaders} from '@cli/api/index.js'
-import {cacheKeys, API_URL} from '@cli/constants/index.js'
+import {API_URL, cacheKeys} from '@cli/constants/index.js'
 
 import {queryClient} from './queryClient.js'
 
 interface MutateProps {
-  projectId: string
   developerId: string
+  projectId: string
 }
 
 interface MutateResponse {
   projectId: string
 }
 
-export const useInviteServiceAccount = () => {
-  return useMutation({
-    mutationFn: async ({projectId, developerId}: MutateProps) => {
+export const useInviteServiceAccount = () => useMutation({
+    async mutationFn({developerId, projectId}: MutateProps) {
       try {
         const headers = getAuthedHeaders()
         const {data} = await axios.post(
@@ -33,7 +32,7 @@ export const useInviteServiceAccount = () => {
         throw error
       }
     },
-    onSuccess: async (data: MutateResponse) => {
+    async onSuccess(data: MutateResponse) {
       // TODO: found a race condition perhaps
       const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
       await sleep(1000)
@@ -42,4 +41,3 @@ export const useInviteServiceAccount = () => {
       })
     },
   })
-}

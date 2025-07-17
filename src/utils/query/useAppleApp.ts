@@ -1,6 +1,5 @@
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
-
 import type {App} from '@expo/apple-utils'
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
 
 import {App as AppleApp} from '@cli/apple/expo.js'
 import {ScalarDict} from '@cli/types'
@@ -31,9 +30,9 @@ export const queryAppleApp = async ({ctx, iosBundleId}: AppleAppQueryProps) => {
   return {
     app,
     summary: {
+      bundleId: app.attributes.bundleId,
       id: app.id,
       name: app.attributes.name,
-      bundleId: app.attributes.bundleId,
       primaryLocale: app.attributes.primaryLocale,
     },
   }
@@ -41,8 +40,8 @@ export const queryAppleApp = async ({ctx, iosBundleId}: AppleAppQueryProps) => {
 
 export const useAppleApp = (props: AppleAppQueryProps): UseQueryResult<AppleAppQueryResponse> => {
   const queryResult = useQuery<AppleAppQueryResponse>({
-    queryKey: ['appleApp', props.iosBundleId],
     queryFn: () => queryAppleApp(props),
+    queryKey: ['appleApp', props.iosBundleId],
   })
 
   return queryResult

@@ -15,10 +15,10 @@ export interface ProjectCertificate_iOS extends baseCredentialContent {
 
 // TODO: use this
 export interface ProjectCertificate_Android extends baseCredentialContent {
+  keyAlias: string
+  keyPassword: string
   keyStoreBase64: string
   keyStorePassword: string
-  keyPassword: string
-  keyAlias: string
 }
 
 export interface UserKey_iOS extends baseCredentialContent {

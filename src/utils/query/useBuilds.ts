@@ -1,9 +1,9 @@
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
 
-import {OffsetPaginatedResponse, PageAndSortParams, ScalarDict, Build, Platform} from '@cli/types'
-
+import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL, cacheKeys} from '@cli/constants/index.js'
+import {Build, OffsetPaginatedResponse, PageAndSortParams, Platform, ScalarDict} from '@cli/types'
 import {
   castArrayObjectDates,
   getJobDetailsSummary,
@@ -11,7 +11,6 @@ import {
   getShortDateTime,
   getShortUUID,
 } from '@cli/utils/index.js'
-import {getAuthedHeaders} from '@cli/api/index.js'
 
 export interface BuildsQueryProps extends PageAndSortParams {
   projectId: string
@@ -43,16 +42,16 @@ export function getBuildSummary(build: Build): ScalarDict {
     id: getShortUUID(build.id),
     jobId: getShortUUID(build.jobId),
     ...getJobDetailsSummary(build.jobDetails),
-    type: `${getPlatformName(build.platform)} ${build.buildType || ''}`.trim(),
-    createdAt: getShortDateTime(build.createdAt),
     cmd: `shipthis game build download ${getShortUUID(build.id)} ${filename}`,
+    createdAt: getShortDateTime(build.createdAt),
+    type: `${getPlatformName(build.platform)} ${build.buildType || ''}`.trim(),
   }
 }
 
 export const useBuilds = (props: BuildsQueryProps): UseQueryResult<BuildsQueryResponse, AxiosError> => {
   const queryResult = useQuery<BuildsQueryResponse, AxiosError>({
-    queryKey: cacheKeys.builds(props),
     queryFn: async () => queryBuilds(props),
+    queryKey: cacheKeys.builds(props),
   })
 
   return queryResult

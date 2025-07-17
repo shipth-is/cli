@@ -1,10 +1,10 @@
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
-
 import type {BundleId} from '@expo/apple-utils'
-import {BundleId as AppleBundleId, CapabilityType} from '@cli/apple/expo.js'
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
 
-import {getGodotProjectCapabilities, GODOT_CAPABILITIES} from '../godot.js'
+import {BundleId as AppleBundleId, CapabilityType} from '@cli/apple/expo.js'
 import {Platform, ScalarDict} from '@cli/types'
+
+import {GODOT_CAPABILITIES, getGodotProjectCapabilities} from '../godot.js'
 
 export interface AppleBundleIdQueryProps {
   ctx: any
@@ -25,7 +25,7 @@ export type AppleBundleIdQueryResponse = {
 export async function getBundleIdCapabilities(bundleId: BundleId): Promise<any[]> {
   const current = await bundleId.getBundleIdCapabilitiesAsync()
 
-  let existing = []
+  const existing = []
 
   for (const capability of current) {
     // determine the type of the capability
@@ -65,10 +65,10 @@ export const fetchBundleId = async ({ctx, iosBundleId}: AppleBundleIdQueryProps)
     const isEnabledInProject = projectCapabilities.includes(gc.type)
     const isCorrectlyConfigured = isEnabledInBundle === isEnabledInProject
     return {
-      name: gc.name,
+      isCorrectlyConfigured,
       isEnabledInBundle,
       isEnabledInProject,
-      isCorrectlyConfigured,
+      name: gc.name,
     }
   })
 
@@ -89,8 +89,8 @@ export const fetchBundleId = async ({ctx, iosBundleId}: AppleBundleIdQueryProps)
 
 export const useAppleBundleId = (props: AppleBundleIdQueryProps): UseQueryResult<AppleBundleIdQueryResponse> => {
   const queryResult = useQuery<AppleBundleIdQueryResponse>({
-    queryKey: ['appleBundleId', props.iosBundleId],
     queryFn: () => fetchBundleId(props),
+    queryKey: ['appleBundleId', props.iosBundleId],
   })
 
   return queryResult

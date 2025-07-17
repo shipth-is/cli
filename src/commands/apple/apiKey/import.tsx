@@ -1,11 +1,13 @@
-import {Flags, Args} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {getUserCredentials, importCredential} from '@cli/api/credentials/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+
 
 export default class AppleApiKeyImport extends BaseAuthenticatedCommand<typeof AppleApiKeyImport> {
   static override args = {
@@ -38,7 +40,7 @@ export default class AppleApiKeyImport extends BaseAuthenticatedCommand<typeof A
       (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.KEY,
     )
 
-    if (userAppleApiKeyCredentials.length !== 0 && !force) {
+    if (userAppleApiKeyCredentials.length > 0 && !force) {
       this.error('An App Store Connect API Key already exists. Use --force to overwrite it.')
     }
 
@@ -49,9 +51,9 @@ export default class AppleApiKeyImport extends BaseAuthenticatedCommand<typeof A
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Importing App Store Connect API from ${file}...`}
+          executeMethod={() => importCredential({platform: Platform.IOS, type: CredentialsType.KEY, zipPath: file})}
           msgComplete={`App Store Connect API imported from ${file}`}
-          executeMethod={() => importCredential({zipPath: file, type: CredentialsType.KEY, platform: Platform.IOS})}
+          msgInProgress={`Importing App Store Connect API from ${file}...`}
           onComplete={handleComplete}
         />
       </Command>,

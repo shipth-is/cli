@@ -8,8 +8,8 @@ import {Auth} from '@cli/apple/expo.js'
  */
 export async function getNewAuthState(username: string, password: string): Promise<any> {
   const authState = await Auth.loginAsync({
-    username,
     password,
+    username,
   })
   return authState
 }

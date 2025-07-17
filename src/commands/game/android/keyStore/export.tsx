@@ -1,11 +1,13 @@
-import {Flags, Args} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {exportCredential, getProjectCredentials} from '@cli/api/credentials/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+
 
 export default class GameAndroidKeyStoreExport extends BaseGameCommand<typeof GameAndroidKeyStoreExport> {
   static override args = {
@@ -17,8 +19,8 @@ export default class GameAndroidKeyStoreExport extends BaseGameCommand<typeof Ga
   static override examples = ['<%= config.bin %> <%= command.id %> keyStore.zip']
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     force: Flags.boolean({char: 'f', description: 'Overwrite the file if it already exists'}),
+    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
   }
 
   public async run(): Promise<void> {
@@ -49,9 +51,9 @@ export default class GameAndroidKeyStoreExport extends BaseGameCommand<typeof Ga
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Exporting Android Keystore to ${file}...`}
+          executeMethod={() => exportCredential({credentialId: keyStore.id, projectId: game.id, zipPath: file})}
           msgComplete={`Android Keystore exported to ${file}`}
-          executeMethod={() => exportCredential({zipPath: file, credentialId: keyStore.id, projectId: game.id})}
+          msgInProgress={`Exporting Android Keystore to ${file}...`}
           onComplete={handleComplete}
         />
       </Command>,

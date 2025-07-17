@@ -1,20 +1,20 @@
-import React from 'react'
+import type {SpinnerName} from 'cli-spinners'
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
-import type {SpinnerName} from 'cli-spinners'
+import React from 'react'
 
 interface Props {
   executeMethod: () => Promise<any>
-  msgInProgress: string
   msgComplete: string
+  msgInProgress: string
   onComplete: () => void
   spinnerType?: SpinnerName
 }
 
 export const RunWithSpinner = ({
   executeMethod,
-  msgInProgress,
   msgComplete,
+  msgInProgress,
   onComplete,
   spinnerType,
 }: Props): JSX.Element => {

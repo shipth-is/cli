@@ -1,8 +1,8 @@
 import {Flags} from '@oclif/core'
 
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {getNewAuthState} from '@cli/apple/auth.js'
-import {getMaskedInput, getInput} from '@cli/utils/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {getInput, getMaskedInput} from '@cli/utils/index.js'
 
 export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLogin> {
   static override args = {}
@@ -15,12 +15,12 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
   ]
 
   static override flags = {
-    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
-    force: Flags.boolean({char: 'f'}),
     appleEmail: Flags.string({
       char: 'e',
       description: 'Your Apple Developer email address',
     }),
+    force: Flags.boolean({char: 'f'}),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
   }
 
   public async run(): Promise<void> {

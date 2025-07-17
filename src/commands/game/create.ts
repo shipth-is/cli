@@ -1,11 +1,10 @@
 import {Flags} from '@oclif/core'
 
-import {BaseAuthenticatedCommand, DetailsFlags} from '@cli/baseCommands/index.js'
 import {createProject} from '@cli/api/index.js'
-
-import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
-import {getGodotProjectName, getGodotVersion, isCWDGodotGame} from '@cli/utils/godot.js'
+import {BaseAuthenticatedCommand, DetailsFlags} from '@cli/baseCommands/index.js'
+import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/index.js'
 import {GameEngine, ProjectDetails} from '@cli/types'
+import {getGodotProjectName, getGodotVersion, isCWDGodotGame} from '@cli/utils/godot.js'
 import {getInput} from '@cli/utils/index.js'
 
 export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCreate> {
@@ -16,15 +15,15 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     force: Flags.boolean({char: 'f'}),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     ...DetailsFlags,
   }
 
   public async run(): Promise<void> {
     const {flags} = this
 
-    const {quiet, force, name: flagName, ...details} = flags
+    const {force, name: flagName, quiet, ...details} = flags
 
     if (this.hasProjectConfig() && !force) {
       throw new Error('This directory already has a ShipThis project. Use --force to overwrite.')
@@ -52,12 +51,12 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
       gameEngineVersion,
     }
 
-    const project = await createProject({name, details: projectDetails})
+    const project = await createProject({details: projectDetails, name})
 
     await this.setProjectConfig({
+      ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
       project,
       shippedFilesGlobs: DEFAULT_SHIPPED_FILES_GLOBS,
-      ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
     })
 
     if (!flags.quiet) await this.config.runCommand('game:status')

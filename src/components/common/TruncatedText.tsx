@@ -1,4 +1,4 @@
-import {measureElement, Box, Text, TextProps} from 'ink'
+import {Box, Text, TextProps, measureElement} from 'ink'
 import {useEffect, useRef, useState} from 'react'
 import stringLength from 'string-length'
 import stripAnsi from 'strip-ansi'
@@ -11,7 +11,7 @@ interface Props extends TextProps {
 export const TruncatedText = ({children, wrap, ...textPropsWithoutWrap}: Props) => {
   const ref = useRef()
 
-  const [width, setWidth] = useState<number | null>(null)
+  const [width, setWidth] = useState<null | number>(null)
 
   useEffect(() => {
     if (!ref.current) return
@@ -21,16 +21,16 @@ export const TruncatedText = ({children, wrap, ...textPropsWithoutWrap}: Props) 
 
   // TODO: still not perfect as things get cut off earlier in the JobLogTail component?
   const getTruncated = (input: string) => {
-    const withoutCrlf = input.replaceAll(/[\r\n]/g, '')
+    const withoutCrlf = input.replaceAll(/[\n\r]/g, '')
     if (width === null) return withoutCrlf
     const withoutAnsi = stripAnsi(withoutCrlf)
     const textLength = stringLength(withoutAnsi)
-    return textLength > width ? withoutCrlf.substring(0, width) : withoutCrlf
+    return textLength > width ? withoutCrlf.slice(0, Math.max(0, width)) : withoutCrlf
   }
 
   return (
     <Box ref={ref as any}>
-      <Text {...textPropsWithoutWrap}>{getTruncated(children) + '\x1b[0m'}</Text>
+      <Text {...textPropsWithoutWrap}>{getTruncated(children) + '\u001B[0m'}</Text>
     </Box>
   )
 }

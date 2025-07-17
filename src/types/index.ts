@@ -4,23 +4,23 @@ import {Project, SelfWithJWT} from './api.js'
 
 // Structure of the auth (~/.shipthis.auth.json) file
 export interface AuthConfig {
-  shipThisUser?: SelfWithJWT
   appleCookies?: SerializedCookieJar
+  shipThisUser?: SelfWithJWT
 }
 
 // Structure of the project (./shipthis.json) file
 export interface ProjectConfig {
+  ignoredFilesGlobs?: string[]
   project?: Project
   shippedFilesGlobs?: string[]
-  ignoredFilesGlobs?: string[]
 }
 
 export type ShipGameFlags = {
-  platform?: 'android' | 'ios'
-  skipPublish?: boolean
   download?: string
   downloadAPK?: string
   follow?: boolean
+  platform?: 'android' | 'ios'
+  skipPublish?: boolean
 }
 
 export * from './api.js'

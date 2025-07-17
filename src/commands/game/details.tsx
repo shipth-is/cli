@@ -1,10 +1,10 @@
-import {render} from 'ink'
 import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
-import {Command, StatusTable} from '@cli/components/index.js'
 import {BaseGameCommand, DetailsFlags} from '@cli/baseCommands/index.js'
-import {isValidSemVer} from '@cli/utils/index.js'
+import {Command, StatusTable} from '@cli/components/index.js'
 import {GameEngine} from '@cli/types'
+import {isValidSemVer} from '@cli/utils/index.js'
 
 export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   static override args = {}
@@ -25,18 +25,18 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   }
 
   public async run(): Promise<void> {
-    const {gameId, force, ...valueFlags} = this.flags
+    const {force, gameId, ...valueFlags} = this.flags
 
     const {
-      name,
-      semanticVersion,
+      androidPackageName,
       buildNumber,
       gameEngine,
       gameEngineVersion,
-      iosBundleId,
-      androidPackageName,
       gcpProjectId,
       gcpServiceAccountId,
+      iosBundleId,
+      name,
+      semanticVersion,
     } = valueFlags
 
     if (semanticVersion && !isValidSemVer(semanticVersion))
@@ -50,7 +50,6 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
     let game = await this.getGame()
 
     const update = {
-      name: name || game.name,
       details: {
         ...game.details,
         ...(semanticVersion && {semanticVersion}),
@@ -62,6 +61,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
         ...(gcpProjectId && {gcpProjectId}),
         ...(gcpServiceAccountId && {gcpServiceAccountId}),
       },
+      name: name || game.name,
     }
 
     if (Object.keys(valueFlags).length > 0) {
@@ -71,21 +71,21 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
     render(
       <Command command={this}>
         <StatusTable
-          title="Game Details"
           statuses={{
-            'Game Name': game.name,
-            'Game Engine': game.details?.gameEngine || 'Please set!',
-            'Game Engine Version': game.details?.gameEngineVersion || 'Please set!',
-            'iOS Bundle ID': game.details?.iosBundleId || 'N/A',
             'Android Package Name': game.details?.androidPackageName || 'N/A',
-            'Semantic Version': game.details?.semanticVersion || '0.0.1',
             'Build Number': game.details?.buildNumber || 1,
             'GCP Project ID': game.details?.gcpProjectId || 'N/A',
             'GCP Service Account ID': game.details?.gcpServiceAccountId || 'N/A',
+            'Game Engine': game.details?.gameEngine || 'Please set!',
+            'Game Engine Version': game.details?.gameEngineVersion || 'Please set!',
+            'Game Name': game.name,
+            'Semantic Version': game.details?.semanticVersion || '0.0.1',
+            'iOS Bundle ID': game.details?.iosBundleId || 'N/A',
           }}
+          title="Game Details"
         />
       </Command>,
     )
-    return
+    
   }
 }

@@ -1,14 +1,14 @@
 import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
+import {NextSteps, Table, Title} from '@cli/components/common/index.js'
 import {CredentialsType, Platform, Project} from '@cli/types'
 import {
-  useProjectCredentials,
+  canAppleProfileBeUsed,
   getAppleProfileSummary,
   useAppleProfiles,
-  canAppleProfileBeUsed,
+  useProjectCredentials,
 } from '@cli/utils/index.js'
-import {Title, Table, NextSteps} from '@cli/components/common/index.js'
 
 interface Props extends BoxProps {
   ctx: any
@@ -17,8 +17,8 @@ interface Props extends BoxProps {
 
 export const AppleProfilesTable = ({ctx, project, ...boxProps}: Props) => {
   const {data: credentialsResponse} = useProjectCredentials({
-    projectId: project.id,
     platform: Platform.IOS,
+    projectId: project.id,
     type: CredentialsType.CERTIFICATE,
   })
   const {data: profiles, isLoading} = useAppleProfiles({ctx})
@@ -35,7 +35,7 @@ export const AppleProfilesTable = ({ctx, project, ...boxProps}: Props) => {
 
       {profiles && credentialsResponse && (
         <>
-          <Box marginLeft={2} marginBottom={1} flexDirection="column">
+          <Box flexDirection="column" marginBottom={1} marginLeft={2}>
             <Text>{`You have ${profiles.length} Mobile Provisioning Profiles in your Apple account`}</Text>
             <Text>{`${hasUsable ? 'One' : 'None'} of these can be used by ShipThis`}</Text>
           </Box>

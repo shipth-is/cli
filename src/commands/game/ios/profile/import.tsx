@@ -1,11 +1,13 @@
-import {Flags, Args} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {getProjectCredentials, importCredential} from '@cli/api/credentials/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+
 
 export default class GameIosProfileImport extends BaseGameCommand<typeof GameIosProfileImport> {
   static override args = {
@@ -20,8 +22,8 @@ export default class GameIosProfileImport extends BaseGameCommand<typeof GameIos
   static override examples = ['<%= config.bin %> <%= command.id %> profile.zip']
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     force: Flags.boolean({char: 'f'}),
+    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
   }
 
   public async run(): Promise<void> {
@@ -41,7 +43,7 @@ export default class GameIosProfileImport extends BaseGameCommand<typeof GameIos
       (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
     )
 
-    if (projectAppleProfileCredentials.length !== 0 && !force) {
+    if (projectAppleProfileCredentials.length > 0 && !force) {
       this.error('A Mobile Provisioning Profile already exists. Use --force to overwrite it.')
     }
 
@@ -52,16 +54,16 @@ export default class GameIosProfileImport extends BaseGameCommand<typeof GameIos
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Importing Mobile Provisioning Profile from ${file}...`}
-          msgComplete={`Mobile Provisioning Profile imported from ${file}`}
           executeMethod={() =>
             importCredential({
-              zipPath: file,
-              type: CredentialsType.CERTIFICATE,
               platform: Platform.IOS,
               projectId: game.id,
+              type: CredentialsType.CERTIFICATE,
+              zipPath: file,
             })
           }
+          msgComplete={`Mobile Provisioning Profile imported from ${file}`}
+          msgInProgress={`Importing Mobile Provisioning Profile from ${file}...`}
           onComplete={handleComplete}
         />
       </Command>,

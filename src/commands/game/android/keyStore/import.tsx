@@ -1,11 +1,13 @@
-import {Flags, Args} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 
-import {BaseGameAndroidCommand, BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {getProjectCredentials} from '@cli/api/credentials/index.js'
+import {BaseGameAndroidCommand, BaseGameCommand} from '@cli/baseCommands/index.js'
 import {CommandGame, ImportKeystore} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+
 
 export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof GameAndroidKeyStoreImport> {
   static override args = {
@@ -14,6 +16,7 @@ export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof Ga
       required: false,
     }),
   }
+
   static override description = 'Imports an Android Keystore to your ShipThis account for the specified game.'
 
   static override examples = [
@@ -23,16 +26,16 @@ export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof Ga
 
   static override flags = {
     ...BaseGameAndroidCommand.flags,
-    jksFile: Flags.string({description: 'Path to the JKS file to import (requires passwords)'}),
-    keystorePassword: Flags.string({
-      description: 'Keystore password (required when using --jksFile)',
-    }),
-    keyPassword: Flags.string({
-      description: 'Key alias password (required when using --jksFile)',
-    }),
     force: Flags.boolean({
       char: 'f',
       description: 'Overwrite any existing keystore without confirmation',
+    }),
+    jksFile: Flags.string({description: 'Path to the JKS file to import (requires passwords)'}),
+    keyPassword: Flags.string({
+      description: 'Key alias password (required when using --jksFile)',
+    }),
+    keystorePassword: Flags.string({
+      description: 'Keystore password (required when using --jksFile)',
     }),
   }
 
@@ -42,7 +45,7 @@ export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof Ga
 
     const zipFilePath = args.file
     const jksFilePath = flags.jksFile
-    const {keystorePassword, keyPassword} = flags
+    const {keyPassword, keystorePassword} = flags
 
     if (!zipFilePath && !jksFilePath) {
       this.error('You must provide either a ZIP file or a JKS file to import.')
@@ -79,9 +82,9 @@ export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof Ga
     render(
       <CommandGame command={this}>
         <ImportKeystore
+          importKeystoreProps={{jksFilePath, keyPassword, keystorePassword, zipFilePath}}
           onComplete={handleComplete}
           onError={(e) => this.error(e)}
-          importKeystoreProps={{zipFilePath, jksFilePath, keystorePassword, keyPassword}}
         />
       </CommandGame>,
     )

@@ -1,35 +1,34 @@
-import fs, {promises as fsAsync} from 'fs'
-import path from 'path'
+import fs, {promises as fsAsync} from 'node:fs'
+import path from 'node:path'
 
 import {Args, Flags} from '@oclif/core'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
 
 type Cookie = {
-  key: string
-  value: string
+  creation: string
   domain: string
+  expires?: string
+  hostOnly?: boolean
+  httpOnly?: boolean
+  key: string
+  lastAccessed: string
+  maxAge?: number
   path: string
   secure?: boolean
-  httpOnly?: boolean
-  hostOnly?: boolean
-  expires?: string
-  maxAge?: number
-  creation: string
-  lastAccessed: string
+  value: string
 }
 
 type CookieFile = {
-  version: string
-  storeType: string
-  rejectPublicSuffixes: boolean
   cookies: Cookie[]
+  rejectPublicSuffixes: boolean
+  storeType: string
+  version: string
 }
 
 function generateFastlaneSession(cookieData: CookieFile): string {
   return cookieData.cookies
-    .map((cookie) => {
-      return `- !ruby/object:HTTP::Cookie
+    .map((cookie) => `- !ruby/object:HTTP::Cookie
   name: ${cookie.key}
   value: ${cookie.value}
   domain: ${cookie.domain}
@@ -40,15 +39,14 @@ function generateFastlaneSession(cookieData: CookieFile): string {
   expires: ${cookie.expires ? `"${cookie.expires}"` : ''}
   max_age: ${cookie.maxAge || ''}
   created_at: ${cookie.creation}
-  accessed_at: ${cookie.lastAccessed}`
-    })
+  accessed_at: ${cookie.lastAccessed}`)
     .join('\n')
 }
 
 export default class AppleFastlane extends BaseCommand<typeof AppleFastlane> {
   static override args = {
-    username: Args.string({description: 'Your Apple email address', required: true}),
     file: Args.string({description: 'Path where the fastlane session will be written', required: true}),
+    username: Args.string({description: 'Your Apple email address', required: true}),
   }
 
   static override description = 'Output a fastlane session file which can be used with xcodes'
@@ -64,7 +62,7 @@ export default class AppleFastlane extends BaseCommand<typeof AppleFastlane> {
 
   public async run(): Promise<void> {
     const {args} = this
-    const {username, file} = args
+    const {file, username} = args
 
     const homeDirectory = this.config.home
     const inputFilePath = path.join(homeDirectory, '.app-store', 'auth', username, 'cookie')
@@ -81,7 +79,7 @@ export default class AppleFastlane extends BaseCommand<typeof AppleFastlane> {
     const outputFilePath = file
 
     // Read and parse the JSON file
-    const fileContent = await fsAsync.readFile(inputFilePath, 'utf-8')
+    const fileContent = await fsAsync.readFile(inputFilePath, 'utf8')
     const cookieData: CookieFile = JSON.parse(fileContent)
 
     // Generate the YAML content

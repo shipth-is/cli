@@ -1,5 +1,5 @@
-import {Box, Text, TextProps} from 'ink'
 import {TextInput, TextInputProps} from '@inkjs/ui'
+import {Box, Text, TextProps} from 'ink'
 
 interface FormTextInputProps extends TextInputProps {
   label: string

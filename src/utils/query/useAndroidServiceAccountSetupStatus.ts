@@ -1,11 +1,10 @@
-import axios, {AxiosError} from 'axios'
 import {UseQueryResult, useQuery} from '@tanstack/react-query'
-
-import {API_URL, cacheKeys} from '@cli/constants/index.js'
-import {castObjectDates} from '@cli/utils/index.js'
-import {AndroidServiceAccountSetupStatus} from '@cli/types'
+import axios, {AxiosError} from 'axios'
 
 import {getAuthedHeaders} from '@cli/api/index.js'
+import {API_URL, cacheKeys} from '@cli/constants/index.js'
+import {AndroidServiceAccountSetupStatus} from '@cli/types'
+import {castObjectDates} from '@cli/utils/index.js'
 
 export interface StatusQueryProps {
   projectId: string
@@ -26,12 +25,10 @@ export async function fetchStatus({projectId}: StatusQueryProps): Promise<Androi
 
 export const useAndroidServiceAccountSetupStatus = (
   props: StatusQueryProps,
-): UseQueryResult<AndroidServiceAccountSetupStatus> => {
-  return useQuery<AndroidServiceAccountSetupStatus, AxiosError>({
-    queryKey: cacheKeys.androidSetupStatus(props),
+): UseQueryResult<AndroidServiceAccountSetupStatus> => useQuery<AndroidServiceAccountSetupStatus, AxiosError>({
     queryFn: () => fetchStatus(props),
+    queryKey: cacheKeys.androidSetupStatus(props),
     // Status changes frequently, so we want to keep it fresh
     refetchInterval: 1000 * 5,
     staleTime: 1000 * 5,
   })
-}

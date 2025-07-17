@@ -1,12 +1,12 @@
 import {Box, Text, useInput} from 'ink'
-import {Markdown, StepProps} from '@cli/components/index.js'
 import {useState} from 'react'
 
+import {Markdown, StepProps} from '@cli/components/index.js'
 import {ImportKeystoreProps} from '@cli/utils/query/useImportKeystore.js'
 
 import {CreateKeystore} from './Create.js'
-import {ImportForm} from './ImportForm.js'
 import {ImportKeystore} from './Import.js'
+import {ImportForm} from './ImportForm.js'
 
 enum Stage {
   Choose,
@@ -38,7 +38,7 @@ export const CreateOrImport = ({onComplete, onError, ...boxProps}: StepProps): J
 
   const renderStage = () => {
     switch (stage) {
-      case Stage.Choose:
+      case Stage.Choose: {
         return (
           <>
             <Text>Would you like to create a new keystore or import an existing one?</Text>
@@ -46,14 +46,22 @@ export const CreateOrImport = ({onComplete, onError, ...boxProps}: StepProps): J
             <Text bold>Press I to import an existing keystore</Text>
           </>
         )
-      case Stage.Create:
+      }
+
+      case Stage.Create: {
         return <CreateKeystore onComplete={onComplete} onError={onError} />
-      case Stage.ImportForm:
-        return <ImportForm onSubmit={handleImportFormSubmit} importKeystoreProps={importKeystoreProps} />
-      case Stage.ImportKeystore:
-        return <ImportKeystore onComplete={onComplete} onError={onError} importKeystoreProps={importKeystoreProps} />
+      }
+
+      case Stage.ImportForm: {
+        return <ImportForm importKeystoreProps={importKeystoreProps} onSubmit={handleImportFormSubmit} />
+      }
+
+      case Stage.ImportKeystore: {
+        return <ImportKeystore importKeystoreProps={importKeystoreProps} onComplete={onComplete} onError={onError} />
+      }
     }
   }
+
   return (
     <Box flexDirection="column" gap={1} {...boxProps}>
       <Markdown filename="create-or-import-keystore.md" templateVars={{}} />

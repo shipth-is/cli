@@ -1,7 +1,8 @@
 import {Command} from '@oclif/core'
 
-import {BaseCommand} from './baseCommand.js'
 import {getSelf} from '@cli/api/index.js'
+
+import {BaseCommand} from './baseCommand.js'
 
 export abstract class BaseAuthenticatedCommand<T extends typeof Command> extends BaseCommand<T> {
   static override flags = {}
@@ -11,8 +12,9 @@ export abstract class BaseAuthenticatedCommand<T extends typeof Command> extends
     if (!this.hasAuthConfig()) {
       this.error('No auth config found. Please run `shipthis login` to authenticate.', {exit: 1})
     }
+
     const self = await getSelf()
-    const accepted = !!self.details?.hasAcceptedTerms
+    const accepted = Boolean(self.details?.hasAcceptedTerms)
     if (!accepted) {
       this.error('You must accept the terms and conditions. Please run `shipthis login --force` to re-authenticate', {
         exit: 1,

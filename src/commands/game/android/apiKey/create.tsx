@@ -1,9 +1,9 @@
-import {render} from 'ink'
 import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
-import {CommandGame, CreateServiceAccountKey} from '@cli/components/index.js'
-import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getProjectCredentials} from '@cli/api/index.js'
+import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
+import {CommandGame, CreateServiceAccountKey} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
 export default class GameAndroidApiKeyCreate extends BaseGameAndroidCommand<typeof GameAndroidApiKeyCreate> {
   static override args = {}
@@ -17,8 +17,8 @@ export default class GameAndroidApiKeyCreate extends BaseGameAndroidCommand<type
 
   static override flags = {
     ...BaseGameAndroidCommand.flags,
-    waitForAuth: Flags.boolean({char: 'w', description: 'Wait for Google Authentication (10 mins).'}),
     force: Flags.boolean({char: 'f'}),
+    waitForAuth: Flags.boolean({char: 'w', description: 'Wait for Google Authentication (10 mins).'}),
   }
 
   public async run(): Promise<void> {

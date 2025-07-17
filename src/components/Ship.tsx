@@ -1,21 +1,20 @@
+import {Box, Text, useInput} from 'ink'
+import open from 'open'
 import {useContext, useEffect, useState} from 'react'
 
-import {Text, Box, useInput} from 'ink'
-import open from 'open'
-
+import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 import {
   CommandContext,
   GameContext,
+  JobFollow,
   JobLogTail,
   JobProgress,
   JobStatusTable,
   Markdown,
-  JobFollow,
 } from '@cli/components/index.js'
-import {getShortUUID, useShip} from '@cli/utils/index.js'
-import {Job, ShipGameFlags} from '@cli/types/index.js'
-import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
+import {Job, ShipGameFlags} from '@cli/types/index.js'
+import {getShortUUID, useShip} from '@cli/utils/index.js'
 
 interface Props {
   onComplete: (completedJobs: Job[]) => void
@@ -51,14 +50,17 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   useInput(async (input) => {
     if (!gameId) return
     switch (input) {
-      case 'l':
+      case 'l': {
         setShowLog((prev) => !prev)
         break
-      case 'b':
-        const dashUrl = jobs?.length !== 1 ? `/games/${gameId}` : `/games/${gameId}/job/${jobs[0].id}`
+      }
+
+      case 'b': {
+        const dashUrl = jobs?.length === 1 ? `/games/${gameId}/job/${jobs[0].id}` : `/games/${gameId}`
         const url = await getShortAuthRequiredUrl(dashUrl)
         await open(url)
         break
+      }
     }
   })
 
@@ -92,7 +94,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   if (flags?.follow) {
     if (jobs && jobs.length > 0) {
       return (
-        <JobFollow projectId={gameId} jobId={jobs[0].id} onComplete={handleJobComplete} onFailure={handleJobFailure} />
+        <JobFollow jobId={jobs[0].id} onComplete={handleJobComplete} onFailure={handleJobFailure} projectId={gameId} />
       )
     }
 
@@ -104,14 +106,14 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
       {jobs == null && <Text>{shipLog}</Text>}
       {jobs &&
         jobs.map((job) => (
-          <Box key={job.id} flexDirection="column" marginBottom={1}>
-            <JobStatusTable jobId={job.id} projectId={job.project.id} isWatching={true} />
+          <Box flexDirection="column" key={job.id} marginBottom={1}>
+            <JobStatusTable isWatching={true} jobId={job.id} projectId={job.project.id} />
             <Box flexDirection="column">
               <JobProgress job={job} onComplete={handleJobComplete} onFailure={handleJobFailure} />
             </Box>
             {showLog && (
               <Box marginTop={1}>
-                <JobLogTail jobId={job.id} projectId={job.project.id} isWatching={true} length={10} />
+                <JobLogTail isWatching={true} jobId={job.id} length={10} projectId={job.project.id} />
               </Box>
             )}
           </Box>
@@ -125,12 +127,12 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
       )}
       {isComplete && (
         <>
-          {failedJobs.length == 0 && (
+          {failedJobs.length === 0 && (
             <Markdown
               filename="ship-success.md"
               templateVars={{
-                wasPublished: flags?.skipPublish ? false : true,
                 gameBuildsUrl: `${WEB_URL}games/${getShortUUID(gameId)}/builds`,
+                wasPublished: !flags?.skipPublish,
               }}
             />
           )}
@@ -144,7 +146,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
               />
               <Box marginTop={1}>
                 {failedJobs.map((fj) => (
-                  <JobLogTail key={fj.id} jobId={fj.id} projectId={fj.project.id} isWatching={false} length={10} />
+                  <JobLogTail isWatching={false} jobId={fj.id} key={fj.id} length={10} projectId={fj.project.id} />
                 ))}
               </Box>
             </>

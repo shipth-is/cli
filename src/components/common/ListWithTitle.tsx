@@ -1,11 +1,11 @@
-import React from 'react'
 import {Box, Text} from 'ink'
+import React from 'react'
 
 import {Title} from './Title.js'
 
 export interface ListWithTitleProps {
-  title: string
   listItems: string[]
+  title: string
 }
 
 export const ListWithTitle = ({listItems, title}: ListWithTitleProps) => {

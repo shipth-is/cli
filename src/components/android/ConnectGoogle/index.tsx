@@ -2,12 +2,12 @@ import {Box, Text, useInput} from 'ink'
 import open from 'open'
 import {useContext, useState} from 'react'
 
-import {WEB_URL} from '@cli/constants/index.js'
-import {useGoogleStatusWatching} from '@cli/utils/index.js'
-import {GoogleStatusResponse} from '@cli/types/api.js'
 import {GameContext, Markdown, StepProps} from '@cli/components/index.js'
+import {WEB_URL} from '@cli/constants/index.js'
+import {GoogleStatusResponse} from '@cli/types/api.js'
+import {useGoogleStatusWatching} from '@cli/utils/index.js'
 
-import {getConnectUrl, GoogleAuthQRCode} from './GoogleAuthQRCode.js'
+import {GoogleAuthQRCode, getConnectUrl} from './GoogleAuthQRCode.js'
 
 interface Props extends StepProps {
   helpPage?: boolean
@@ -22,33 +22,38 @@ interface ConnectWithGameProps extends Props {
   gameId: string
 }
 
-const ConnectForGame = ({onComplete, onError, helpPage, gameId, ...boxProps}: ConnectWithGameProps): JSX.Element => {
+const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: ConnectWithGameProps): JSX.Element => {
 
   const [showQRCode, setShowQRCode] = useState(false)
 
   useGoogleStatusWatching({
-    projectId: gameId,
     isWatching: true,
-    onGoogleStatusUpdate: (status: GoogleStatusResponse) => {
+    onGoogleStatusUpdate(status: GoogleStatusResponse) {
       if (status.isAuthenticated) return onComplete()
     },
+    projectId: gameId,
   })
 
   useInput(async (input) => {
     switch (input) {
-      case 'q':
+      case 'q': {
         setShowQRCode(true)
         return
-      case 'x':
+      }
+
+      case 'x': {
         setShowQRCode(false)
         return
-      case 'b':
+      }
+
+      case 'b': {
         if (!gameId) return
         const url = await getConnectUrl(gameId, true)
         await open(url)
-        return
+      }
+        
       default:
-        return
+        
     }
   })
 
@@ -73,7 +78,7 @@ const ConnectForGame = ({onComplete, onError, helpPage, gameId, ...boxProps}: Co
       {showQRCode && (
         <Box flexDirection="column" gap={1}>
           <Text>Scan the QR code below to connect your Google account to ShipThis:</Text>
-          {gameId && <GoogleAuthQRCode gameId={gameId} helpPage={!!helpPage} />}
+          {gameId && <GoogleAuthQRCode gameId={gameId} helpPage={Boolean(helpPage)} />}
            <Text bold color="#4CE64C">Press X to hide the QR code</Text>
         </Box>
       )}

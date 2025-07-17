@@ -1,9 +1,9 @@
 import {Args, Flags} from '@oclif/core'
 
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {isCWDGodotGame} from '@cli/utils/index.js'
 import {getProject} from '@cli/api/index.js'
-import {DEFAULT_SHIPPED_FILES_GLOBS, DEFAULT_IGNORED_FILES_GLOBS} from '@cli/constants/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/index.js'
+import {isCWDGodotGame} from '@cli/utils/index.js'
 
 export default class GameExport extends BaseAuthenticatedCommand<typeof GameExport> {
   static override args = {
@@ -38,9 +38,9 @@ export default class GameExport extends BaseAuthenticatedCommand<typeof GameExpo
     const project = await getProject(args.game_id)
 
     await this.setProjectConfig({
+      ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
       project,
       shippedFilesGlobs: DEFAULT_SHIPPED_FILES_GLOBS,
-      ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
     })
 
     await this.config.runCommand('game:status')

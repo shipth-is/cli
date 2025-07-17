@@ -1,11 +1,10 @@
-import {render} from 'ink'
 import {Flags} from '@oclif/core'
-
-import {Command, RunWithSpinner} from '@cli/components/index.js'
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {fetchBundleId} from '@cli/utils/index.js'
+import {render} from 'ink'
 
 import {CapabilityTypeOption} from '@cli/apple/expo.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
+import {fetchBundleId} from '@cli/utils/index.js'
 
 export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSync> {
   static override args = {}
@@ -15,9 +14,9 @@ export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSyn
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     force: Flags.boolean({char: 'f'}), // not used but don't remove or the wizard breaks
+    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
   }
 
   public async run(): Promise<void> {
@@ -36,8 +35,8 @@ export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSyn
 
       // TODO: any more which cant be edited?
       // TODO: important - what if they have set some manually?? (prompt for confirmation?)
-      const unRemovable = ['IN_APP_PURCHASE']
-      const toRemove = existing.filter((c) => !projectCapabilities.includes(c) && !unRemovable.includes(c))
+      const unRemovable = new Set(['IN_APP_PURCHASE'])
+      const toRemove = existing.filter((c) => !projectCapabilities.includes(c) && !unRemovable.has(c))
       const toAdd = projectCapabilities.filter((c) => !existing.includes(c))
 
       for (const capability of toRemove) {
@@ -64,9 +63,9 @@ export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSyn
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress="Syncing App Store BundleId capabilities"
-          msgComplete="App Store BundleId capabilities synced"
           executeMethod={syncCapabilities}
+          msgComplete="App Store BundleId capabilities synced"
+          msgInProgress="Syncing App Store BundleId capabilities"
           onComplete={handleComplete}
         />
       </Command>,

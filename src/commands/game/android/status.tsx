@@ -15,6 +15,7 @@ export default class GameAndroidStatus extends BaseGameCommand<typeof GameAndroi
   static override flags = {
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
   }
+
   public async run(): Promise<void> {
     const game = await this.getGame()
     await this.config.runCommand('game:status', ['--gameId', game.id, '--platform', 'android'])

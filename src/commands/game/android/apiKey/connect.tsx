@@ -1,9 +1,9 @@
-import {render} from 'ink'
 import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
-import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {disconnectGoogle, getGoogleStatus} from '@cli/api/index.js'
-import {ConnectGoogle, CommandGame} from '@cli/components/index.js'
+import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
+import {CommandGame, ConnectGoogle} from '@cli/components/index.js'
 
 export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typeof GameAndroidApiKeyConnect> {
   static override args = {}
@@ -19,8 +19,8 @@ export default class GameAndroidApiKeyConnect extends BaseGameAndroidCommand<typ
 
   static override flags = {
     ...BaseGameAndroidCommand.flags,
-    force: Flags.boolean({char: 'f'}),
     disconnect: Flags.boolean({char: 'd'}),
+    force: Flags.boolean({char: 'f'}),
   }
 
   public async run(): Promise<void> {

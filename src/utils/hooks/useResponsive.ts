@@ -5,15 +5,15 @@ const WIDE_BREAKPOINT = 100
 const TALL_BREAKPOINT = 35
 
 export function useResponsive() {
-  const { width, height } = useScreenSize()
+  const { height, width } = useScreenSize()
 
   const isWide = width >= WIDE_BREAKPOINT
   const isTall = height >= TALL_BREAKPOINT
 
   return {
-    width,
     height,
-    isWide,
     isTall,
+    isWide,
+    width,
   }
 }

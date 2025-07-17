@@ -1,22 +1,23 @@
-import {setOptions, parse} from 'marked'
+import fs from 'node:fs'
+import path from 'node:path'
+
 import {Text} from 'ink'
-import fs from 'fs'
+import {parse, setOptions} from 'marked'
 import TerminalRenderer, {TerminalRendererOptions} from 'marked-terminal'
-import path from 'path'
 import {useEffect, useState} from 'react'
 
 interface Props extends TerminalRendererOptions {
   filename: string
-  templateVars?: Record<string, string|boolean>
+  templateVars?: Record<string, boolean|string>
 }
 
-const cleanHyperlinks = (input: string): string => {
+const cleanHyperlinks = (input: string): string => 
   // When we run in a <ScrollArea> the links break
   // Remove OSC 8 hyperlink wrappers but preserve the styled content inside
-  return input
-    .replace(/\x1b]8;;[^\x07]*\x07/g, '') // remove OSC 8 start
-    .replace(/\x1b]8;;\x07/g, '') // remove OSC 8 end
-}
+   input
+    .replaceAll(/\u001B]8;;[^\u0007]*\u0007/g, '') // remove OSC 8 start
+    .replaceAll(']8;;', '') // remove OSC 8 end
+
 
 export const getRenderedMarkdown = ({filename, templateVars, ...options}: Props): string => {
   setOptions({
@@ -38,12 +39,10 @@ export const getRenderedMarkdown = ({filename, templateVars, ...options}: Props)
   // TODO: consider a different templating system
   if (templateVars) {
     // Conditional blocks: ${if key} ... ${endif}
-    markdown = markdown.replace(/\${if (.*?)\}([\s\S]*?)\${endif}/g, (_, key, content) => {
-      return templateVars[key.trim()] ? content : ''
-    })
+    markdown = markdown.replaceAll(/\${if (.*?)}([\S\s]*?)\${endif}/g, (_, key, content) => templateVars[key.trim()] ? content : '')
 
     // Variable replacement: ${key}
-    markdown = markdown.replace(/\${(.*?)}/g, (_, key) => {
+    markdown = markdown.replaceAll(/\${(.*?)}/g, (_, key) => {
       const trimmed = key.trim()
       return templateVars[trimmed] ? String(templateVars[trimmed]) : ''
     })

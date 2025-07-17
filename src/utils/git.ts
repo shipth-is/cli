@@ -1,18 +1,19 @@
+import {promises as fs} from 'node:fs'
+
 import git from 'isomorphic-git'
-import {promises as fs} from 'fs'
 
 export type GitInfo = {
-  gitCommitHash?: string
   gitBranch?: string
+  gitCommitHash?: string
 }
 
 // Checks if the current working directory is a git repository
 export async function isCWDGitRepo(): Promise<boolean> {
   const dir = process.cwd()
   try {
-    await git.log({fs, dir, depth: 1})
+    await git.log({depth: 1, dir, fs})
     return true
-  } catch (e) {
+  } catch {
     return false
   }
 }
@@ -22,17 +23,17 @@ export async function getCWDGitInfo(): Promise<GitInfo> {
   const dir = process.cwd()
   const empty: GitInfo = {}
   try {
-    const commits = await git.log({fs, dir, depth: 1})
+    const commits = await git.log({depth: 1, dir, fs})
     const branch = await git.currentBranch({
-      fs,
       dir,
+      fs,
       fullname: false,
     })
     return {
-      gitCommitHash: commits[0].oid,
       gitBranch: branch as string | undefined,
+      gitCommitHash: commits[0].oid,
     }
-  } catch (e) {
+  } catch {
     return empty
   }
 }

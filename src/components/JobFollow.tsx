@@ -2,24 +2,24 @@ import {Job, JobLogEntry, LogLevel} from '@cli/types/api.js'
 import {useJobWatching} from '@cli/utils/index.js'
 
 interface JobFollowProps {
-  projectId: string
   jobId: string
   onComplete?: (job: Job) => void
   onFailure?: (job: Job) => void
+  projectId: string
 }
 
 // Outputs job logs to stdout/stderr as they come in
-export const JobFollow = ({projectId, jobId, onComplete, onFailure}: JobFollowProps) => {
+export const JobFollow = ({jobId, onComplete, onFailure, projectId}: JobFollowProps) => {
   useJobWatching({
-    projectId,
-    jobId,
     isWatching: true,
-    onNewLogEntry: (logEntry: JobLogEntry) => {
+    jobId,
+    onComplete,
+    onFailure,
+    onNewLogEntry(logEntry: JobLogEntry) {
       if (logEntry.level == LogLevel.ERROR) console.error(logEntry.message)
       else console.log(logEntry.message)
     },
-    onComplete,
-    onFailure,
+    projectId,
   })
 
   return null

@@ -1,18 +1,18 @@
 import {ProgressBar} from '@inkjs/ui'
-import {Box, Text, BoxProps, TextProps} from 'ink'
-import Spinner from 'ink-spinner'
 import type {SpinnerName} from 'cli-spinners'
+import {Box, BoxProps, Text, TextProps} from 'ink'
+import Spinner from 'ink-spinner'
 
 interface Props {
-  progress?: number | null
-  label?: string
-  spinnerType?: SpinnerName
-  labelProps?: TextProps
   boxProps?: BoxProps
+  label?: string
+  labelProps?: TextProps
+  progress?: null | number
+  spinnerType?: SpinnerName
 }
 
 // A progress bar with a label and spinner
-export const ProgressSpinner = ({progress, label, spinnerType, labelProps, boxProps}: Props): JSX.Element => (
+export const ProgressSpinner = ({boxProps, label, labelProps, progress, spinnerType}: Props): JSX.Element => (
   <>
     <Box flexDirection="column" gap={1} {...boxProps}>
       <Box flexDirection="row" gap={1}>

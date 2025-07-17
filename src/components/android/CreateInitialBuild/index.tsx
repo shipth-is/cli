@@ -1,11 +1,11 @@
 import {Box, Text} from 'ink'
-import {useContext, useEffect, useRef, useState} from 'react'
 import Spinner from 'ink-spinner'
+import {useContext, useEffect, useRef, useState} from 'react'
 
-import {CommandContext, GameContext, StepProps, JobProgress, JobLogTail, Markdown} from '@cli/components/index.js'
-import {getShortUUID, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
-import {Job, JobStatus, Platform} from '@cli/types/api.js'
+import {CommandContext, GameContext, JobLogTail, JobProgress, Markdown, StepProps} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
+import {Job, JobStatus, Platform} from '@cli/types/api.js'
+import {getShortUUID, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
 
 export const CreateInitialBuild = (props: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)
@@ -16,12 +16,12 @@ interface CreateForGameProps extends StepProps {
   gameId: string
 }
 
-const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGameProps) => {
+const CreateForGame = ({gameId, onComplete, onError, ...boxProps}: CreateForGameProps) => {
   const {command} = useContext(CommandContext)
-  const {data: buildData, isLoading: isLoadingBuilds} = useBuilds({projectId: gameId, pageNumber: 0})
+  const {data: buildData, isLoading: isLoadingBuilds} = useBuilds({pageNumber: 0, projectId: gameId})
   const {data: jobData, isLoading: isLoadingJobs} = useJobs({
-    projectId: gameId,
     pageNumber: 0,
+    projectId: gameId,
   })
   const prevHasBuild = useRef<boolean>(false)
   const shipMutation = useShip()
@@ -86,7 +86,7 @@ const CreateForGame = ({onComplete, onError, gameId, ...boxProps}: CreateForGame
               }}
             />
             <Box marginTop={1}>
-              <JobLogTail jobId={failedJob.id} projectId={gameId} isWatching={false} length={10} />
+              <JobLogTail isWatching={false} jobId={failedJob.id} length={10} projectId={gameId} />
             </Box>
           </>
         )}

@@ -1,8 +1,8 @@
-import {Box, render} from 'ink'
 import {Flags} from '@oclif/core'
+import {Box, render} from 'ink'
 
-import {AppleAppDetails, AppleBundleIdDetails, CommandGame, GameStatusDetails} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {AppleAppDetails, AppleBundleIdDetails, CommandGame, GameStatusDetails} from '@cli/components/index.js'
 import {Platform} from '@cli/types/api.js'
 
 export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus> {
@@ -30,15 +30,15 @@ export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus>
       <CommandGame command={this}>
         <GameStatusDetails
           gameId={game.id}
-          platforms={[Platform.IOS]}
           onComplete={(exitCode) => {
             // TODO: this is a hack because the Apple components need time to load
             setTimeout(() => process.exit(exitCode), 2000)
           }}
+          platforms={[Platform.IOS]}
         >
-          <Box marginTop={1} flexDirection='column' gap={0}>
-            <AppleAppDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
-            <AppleBundleIdDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
+          <Box flexDirection='column' gap={0} marginTop={1}>
+            <AppleAppDetails ctx={ctx} iosBundleId={game.details?.iosBundleId} />
+            <AppleBundleIdDetails ctx={ctx} iosBundleId={game.details?.iosBundleId} />
           </Box>
         </GameStatusDetails>
       </CommandGame>,

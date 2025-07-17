@@ -1,14 +1,14 @@
 import {useEffect} from 'react'
 import {io} from 'socket.io-client'
 
-import {WS_URL} from '@cli/constants/index.js'
 import {getAuthToken} from '@cli/api/index.js'
+import {WS_URL} from '@cli/constants/index.js'
 
 export interface WebSocketListener {
-  // What we listen to
-  getPattern: () => string | string[]
   // What we run
   eventHandler: (pattern: string, data: any) => Promise<void>
+  // What we listen to
+  getPattern: () => string | string[]
 }
 
 export function useWebSocket(listeners: WebSocketListener[] = []) {
@@ -35,6 +35,7 @@ export function useWebSocket(listeners: WebSocketListener[] = []) {
         log('Subscribing to', pattern)
         socket.on(pattern, boundListener)
       }
+
       if (Array.isArray(pattern)) {
         pattern.forEach(bindSocket)
         continue

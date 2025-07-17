@@ -1,14 +1,14 @@
 export interface PageAndSortParams {
-  pageNumber?: number
-  pageSize?: number
   order?: 'asc' | 'desc'
   orderBy?: 'createdAt' | 'updatedAt'
+  pageNumber?: number
+  pageSize?: number
 }
 
 // Submit this to the /auth/exchange to get a Self back
 export interface ExchangeRequest {
-  userId: string
   otp: string
+  userId: string
 }
 
 // Params received by the /exchange page which then submits the ExchangeRequest

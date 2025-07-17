@@ -1,8 +1,8 @@
-import {render} from 'ink'
 import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
-import {Command, AppleAppDetails, AppleBundleIdDetails, NextSteps} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {AppleAppDetails, AppleBundleIdDetails, Command, NextSteps} from '@cli/components/index.js'
 
 export default class GameIosAppStatus extends BaseGameCommand<typeof GameIosAppStatus> {
   static override args = {}
@@ -25,8 +25,8 @@ export default class GameIosAppStatus extends BaseGameCommand<typeof GameIosAppS
 
     render(
       <Command command={this}>
-        <AppleAppDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
-        <AppleBundleIdDetails iosBundleId={game.details?.iosBundleId} ctx={ctx} />
+        <AppleAppDetails ctx={ctx} iosBundleId={game.details?.iosBundleId} />
+        <AppleBundleIdDetails ctx={ctx} iosBundleId={game.details?.iosBundleId} />
 
         <NextSteps steps={steps} />
       </Command>,

@@ -1,9 +1,8 @@
+import {promises as fsAsync} from 'node:fs'
+
 import axios from 'axios'
 
-import {promises as fsAsync} from 'fs'
-
 import {getAuthedHeaders} from '@cli/api/index.js'
-
 import {API_URL} from '@cli/constants/index.js'
 import {CredentialsType, Platform, ProjectCredential, UserCredential} from '@cli/types'
 
@@ -19,34 +18,34 @@ async function getNewImportTicket(projectId: string | undefined): Promise<Import
     : `${API_URL}/credentials/import/url`
   const headers = getAuthedHeaders()
   const {data: importInfo} = await axios({
+    headers,
     method: 'post',
     url,
-    headers,
   })
   return importInfo as ImportTicket
 }
 
 export interface ImportCredentialProps {
-  projectId?: string // Omit if importing a user certificate
-  zipPath: string
-  type: CredentialsType
   platform: Platform
+  projectId?: string // Omit if importing a user certificate
+  type: CredentialsType
+  zipPath: string
 }
 
 export async function importCredential({
-  projectId,
-  zipPath,
-  type,
   platform,
-}: ImportCredentialProps): Promise<UserCredential | ProjectCredential> {
+  projectId,
+  type,
+  zipPath,
+}: ImportCredentialProps): Promise<ProjectCredential | UserCredential> {
   // Request a new import
   const importTicket = await getNewImportTicket(projectId)
   // Upload zip to the given url
   const zipBuffer = await fsAsync.readFile(zipPath)
   await axios.put(importTicket.url, zipBuffer, {
     headers: {
-      'Content-length': zipBuffer.length,
       'Content-Type': 'application/zip',
+      'Content-length': zipBuffer.length,
     },
   })
 
@@ -56,14 +55,14 @@ export async function importCredential({
 
   // Trigger import for this import request
   const {data: publicCredential} = await axios({
+    data: {
+      platform,
+      type,
+      uuid: importTicket.uuid,
+    },
+    headers,
     method: 'post',
     url,
-    headers,
-    data: {
-      uuid: importTicket.uuid,
-      type,
-      platform,
-    },
   })
 
   if (projectId) {

@@ -1,13 +1,12 @@
-import {render, Box, Text} from 'ink'
 import {Flags} from '@oclif/core'
-
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {getProjectJobs} from '@cli/api/index.js'
-import {JobStatus, PageAndSortParams} from '@cli/types'
-
-import {Command, Table, Title} from '@cli/components/index.js'
-import {getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
+import {Box, Text, render} from 'ink'
 import {DateTime} from 'luxon'
+
+import {getProjectJobs} from '@cli/api/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Command, Table, Title} from '@cli/components/index.js'
+import {JobStatus, PageAndSortParams} from '@cli/types'
+import {getJobStatusColor, getJobSummary} from '@cli/utils/index.js'
 
 export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
   static override args = {}
@@ -21,20 +20,20 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
 
   static override flags = {
     ...super.flags,
-    pageNumber: Flags.integer({char: 'p', description: 'The page number to show (starts at 0)', default: 0}),
-    pageSize: Flags.integer({char: 's', description: 'The number of items to show per page', default: 10}),
-    orderBy: Flags.string({
-      char: 'o',
-      description: 'The field to order by',
-      default: 'createdAt',
-      options: ['createdAt', 'updatedAt'],
-    }),
     order: Flags.string({
       char: 'r',
-      description: 'The order to sort by',
       default: 'desc',
+      description: 'The order to sort by',
       options: ['asc', 'desc'],
     }),
+    orderBy: Flags.string({
+      char: 'o',
+      default: 'createdAt',
+      description: 'The field to order by',
+      options: ['createdAt', 'updatedAt'],
+    }),
+    pageNumber: Flags.integer({char: 'p', default: 0, description: 'The page number to show (starts at 0)'}),
+    pageSize: Flags.integer({char: 's', default: 10, description: 'The number of items to show per page'}),
   }
 
   public async run(): Promise<void> {
@@ -54,7 +53,7 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
       <Command command={this}>
         <Title>Jobs for this game</Title>
         {!hasJobs && (
-          <Box marginLeft={2} marginTop={1} flexDirection="column">
+          <Box flexDirection="column" marginLeft={2} marginTop={1}>
             <Text>You DO NOT have any jobs for this game.</Text>
           </Box>
         )}
@@ -68,7 +67,7 @@ export default class GameJobList extends BaseGameCommand<typeof GameJobList> {
           />
         )}
         {jobListResponse.pageCount > 1 && (
-          <Box marginTop={1} flexDirection="column">
+          <Box flexDirection="column" marginTop={1}>
             <Text>{`Showing page ${flags.pageNumber + 1} of ${jobListResponse.pageCount}.`}</Text>
             <Text>Use the --pageNumber parameter to see other pages.</Text>
           </Box>

@@ -1,8 +1,8 @@
-import {render} from 'ink'
 import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
-import {CommandGame, GameStatus as GameStatusComponent} from '@cli/components/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {CommandGame, GameStatus as GameStatusComponent} from '@cli/components/index.js'
 
 export default class GameStatus extends BaseAuthenticatedCommand<typeof GameStatus> {
   static override args = {}

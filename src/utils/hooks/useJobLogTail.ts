@@ -2,19 +2,21 @@ import {useEffect, useState} from 'react'
 
 import {JobLogEntry} from '@cli/types'
 import {useJobLogs} from '@cli/utils/query/useJobLogs.js'
+
 import {arrayToDictionary, dictionaryToArray} from '../dictionary.js'
+
 import {useJobWatching} from './useJobWatching.js'
 
 export interface JobLogTailProps {
-  projectId: string
+  isWatching: boolean
   jobId: string
   length: number
-  isWatching: boolean
+  projectId: string
 }
 
 export interface JobLogTailResult {
-  isLoading: boolean
   data: JobLogEntry[]
+  isLoading: boolean
 }
 
 // When received from the server the logs are not guaranteed to be in order
@@ -23,23 +25,23 @@ function getSortedJobLogs(logs: JobLogEntry[]) {
 }
 
 // Merges fetched job logs with those received from the websocket
-export function useJobLogTail({projectId, jobId, isWatching, length}: JobLogTailProps): JobLogTailResult {
+export function useJobLogTail({isWatching, jobId, length, projectId}: JobLogTailProps): JobLogTailResult {
   const [websocketLogs, setWebsocketLogs] = useState<JobLogEntry[]>([])
 
   // Updates our state with logs received from the websocket
   useJobWatching({
-    projectId,
-    jobId,
     isWatching,
-    onNewLogEntry: (logEntry: JobLogEntry) => {
+    jobId,
+    onNewLogEntry(logEntry: JobLogEntry) {
       setWebsocketLogs((prevLogs) => [...prevLogs, logEntry])
     },
+    projectId,
   })
 
-  const {isLoading, data: fetchedJobLogs} = useJobLogs({
-    projectId,
+  const {data: fetchedJobLogs, isLoading} = useJobLogs({
     jobId,
     pageSize: length,
+    projectId,
   })
 
   useEffect(() => {
@@ -58,7 +60,7 @@ export function useJobLogTail({projectId, jobId, isWatching, length}: JobLogTail
   const data = getSortedJobLogs(uniqueLogs).slice(-length)
 
   return {
-    isLoading,
     data,
+    isLoading,
   }
 }

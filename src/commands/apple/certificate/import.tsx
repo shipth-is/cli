@@ -1,11 +1,13 @@
-import {Flags, Args} from '@oclif/core'
-import {render} from 'ink'
-import * as fs from 'fs'
+import * as fs from 'node:fs'
 
-import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {Args, Flags} from '@oclif/core'
+import {render} from 'ink'
+
 import {getUserCredentials, importCredential} from '@cli/api/credentials/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
+
 
 export default class AppleCertificateImport extends BaseAuthenticatedCommand<typeof AppleCertificateImport> {
   static override args = {
@@ -38,7 +40,7 @@ export default class AppleCertificateImport extends BaseAuthenticatedCommand<typ
       (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
     )
 
-    if (userAppleDistCredentials.length !== 0 && !force) {
+    if (userAppleDistCredentials.length > 0 && !force) {
       this.error('An Apple Distribution Certificate already exists. Use --force to overwrite it.')
     }
 
@@ -49,11 +51,11 @@ export default class AppleCertificateImport extends BaseAuthenticatedCommand<typ
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Importing certificate from ${file}...`}
-          msgComplete={`Certificate imported from ${file}`}
           executeMethod={() =>
-            importCredential({zipPath: file, type: CredentialsType.CERTIFICATE, platform: Platform.IOS})
+            importCredential({platform: Platform.IOS, type: CredentialsType.CERTIFICATE, zipPath: file})
           }
+          msgComplete={`Certificate imported from ${file}`}
+          msgInProgress={`Importing certificate from ${file}...`}
           onComplete={handleComplete}
         />
       </Command>,

@@ -1,6 +1,6 @@
-import {useState} from 'react'
-import {Box} from 'ink'
 import {Alert} from '@inkjs/ui'
+import {Box} from 'ink'
+import {useState} from 'react'
 
 import {FormTextInput} from '@cli/components/index.js'
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const InviteForm = ({onSubmit}: Props): JSX.Element => {
-  const [error, setError] = useState<string | null>(null)
+  const [error, setError] = useState<null | string>(null)
   const [accountId, setAccountId] = useState<string>('')
 
   const handleSubmitAccountId = () => {
@@ -21,6 +21,7 @@ export const InviteForm = ({onSubmit}: Props): JSX.Element => {
       setError('Please enter a valid Google Play Account ID (10-20 digits)')
       return
     }
+
     return onSubmit(accountId)
   }
 
@@ -28,12 +29,12 @@ export const InviteForm = ({onSubmit}: Props): JSX.Element => {
     <>
       <Box flexDirection="column" marginLeft={1}>
         <FormTextInput
+          defaultValue={accountId}
           label="Please enter your Google Play Account ID:"
           labelProps={{bold: true}}
-          defaultValue={accountId}
-          placeholder="e.g. 8110853839480950872"
           onChange={setAccountId}
           onSubmit={handleSubmitAccountId}
+          placeholder="e.g. 8110853839480950872"
         />
         {error && <Alert variant="error">{error}</Alert>}
       </Box>

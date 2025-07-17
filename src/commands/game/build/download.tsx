@@ -1,11 +1,12 @@
-import {Flags, Args} from '@oclif/core'
+import * as fs from 'node:fs'
+
+import {Args, Flags} from '@oclif/core'
 import {render} from 'ink'
-import * as fs from 'fs'
 
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
-
-import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {downloadBuildById} from '@cli/api/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
+
 
 export default class GameBuildDownload extends BaseGameCommand<typeof GameBuildDownload> {
   static override args = {
@@ -27,7 +28,7 @@ export default class GameBuildDownload extends BaseGameCommand<typeof GameBuildD
 
   public async run(): Promise<void> {
     const {args, flags} = this
-    const {file, build_id} = args
+    const {build_id, file} = args
     const {force} = flags
 
     const alreadyExists = fs.existsSync(file)
@@ -45,9 +46,9 @@ export default class GameBuildDownload extends BaseGameCommand<typeof GameBuildD
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Downloading to ${file}...`}
-          msgComplete={`Downloaded build artifact to ${file}`}
           executeMethod={executeMethod}
+          msgComplete={`Downloaded build artifact to ${file}`}
+          msgInProgress={`Downloading to ${file}...`}
           onComplete={handleComplete}
         />
       </Command>,

@@ -1,10 +1,10 @@
-import {useContext} from 'react'
 import {Box} from 'ink'
 import Spinner from 'ink-spinner'
+import {useContext} from 'react'
 
-import {useInviteServiceAccount} from '@cli/utils/index.js'
 import {GameContext, Markdown, StepProps} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
+import {useInviteServiceAccount} from '@cli/utils/index.js'
 
 import {InviteForm} from './InviteForm.js'
 
@@ -15,7 +15,7 @@ export const InviteServiceAccount = ({onComplete, onError, ...boxProps}: StepPro
   const handleSubmit = async (developerId: string) => {
     try {
       if (!gameId) return
-      await inviteMutation.mutateAsync({projectId: gameId, developerId})
+      await inviteMutation.mutateAsync({developerId, projectId: gameId})
       onComplete()
     } catch (error: any) {
       onError(error)

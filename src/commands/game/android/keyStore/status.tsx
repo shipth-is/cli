@@ -1,8 +1,8 @@
-import {render} from 'ink'
 import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
-import {Command, ProjectCredentialsTable} from '@cli/components/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Command, ProjectCredentialsTable} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
 
 export default class GameAndroidKeyStoreStatus extends BaseGameCommand<typeof GameAndroidKeyStoreStatus> {
@@ -27,9 +27,9 @@ export default class GameAndroidKeyStoreStatus extends BaseGameCommand<typeof Ga
         <ProjectCredentialsTable
           credentialTypeName="Android Keystore"
           queryProps={{
+            platform: Platform.ANDROID,
             projectId: game.id,
             type: CredentialsType.CERTIFICATE,
-            platform: Platform.ANDROID,
           }}
         />
       </Command>,

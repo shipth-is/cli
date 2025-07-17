@@ -1,11 +1,11 @@
-import axios from 'axios'
 import {Flags} from '@oclif/core'
+import axios from 'axios'
 
+import {acceptTerms, setAuthToken} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {AuthConfig} from '@cli/types'
 import {getInput} from '@cli/utils/index.js'
-import {acceptTerms, setAuthToken} from '@cli/api/index.js'
 
 const TERMS_URL = new URL('/terms', WEB_URL).href
 const PRIVACY_URL = new URL('/privacy', WEB_URL).href
@@ -21,11 +21,11 @@ export default class Login extends BaseCommand<typeof Login> {
   ]
 
   static override flags = {
-    force: Flags.boolean({char: 'f'}),
     email: Flags.string({
       char: 'e',
       description: 'Your email address',
     }),
+    force: Flags.boolean({char: 'f'}),
   }
 
   public async run(): Promise<void> {
@@ -70,7 +70,7 @@ export default class Login extends BaseCommand<typeof Login> {
         ].join('\n')}\n`,
       )
       const accepted = await getInput('Do you accept the terms of these documents? (yes/no): ')
-      const answer = accepted.toLowerCase().trim().substring(0, 1)
+      const answer = accepted.toLowerCase().trim().slice(0, 1)
       return answer === 'y'
     }
 

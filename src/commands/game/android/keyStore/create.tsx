@@ -1,9 +1,9 @@
-import {render} from 'ink'
 import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
-import {CommandGame, CreateKeystore} from '@cli/components/index.js'
-import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getProjectCredentials} from '@cli/api/index.js'
+import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
+import {CommandGame, CreateKeystore} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types/api.js'
 
 export default class GameAndroidKeyStoreCreate extends BaseGameAndroidCommand<typeof GameAndroidKeyStoreCreate> {

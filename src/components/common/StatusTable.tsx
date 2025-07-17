@@ -1,19 +1,20 @@
-import React from 'react'
 import {Box, Text, TextProps} from 'ink'
+import React from 'react'
 
 import {Scalar, ScalarDict} from '@cli/types'
+
 import {Title} from './Title.js'
 
 export interface StatusTableProps extends React.ComponentPropsWithoutRef<typeof Box> {
-  title: string
-  statuses: ScalarDict
   colors?: {
     [key: string]: string
   }
+  statuses: ScalarDict
+  title: string
 }
 
 export const StatusRowLabel = ({label, width}: {label: string; width?: number}) => (
-  <Box width={width || 10} marginRight={2}>
+  <Box marginRight={2} width={width || 10}>
     <Text>{`${label}`}</Text>
   </Box>
 )
@@ -24,18 +25,16 @@ interface StatusRowProps extends TextProps {
   value: Scalar
 }
 
-export const StatusRow = ({label, labelWidth, value, ...textProps}: StatusRowProps) => {
-  return (
-    <Box flexDirection="row" alignItems="flex-end">
-      <StatusRowLabel width={labelWidth} label={label} />
+export const StatusRow = ({label, labelWidth, value, ...textProps}: StatusRowProps) => (
+    <Box alignItems="flex-end" flexDirection="row">
+      <StatusRowLabel label={label} width={labelWidth} />
       <Text bold {...textProps}>
         {value}
       </Text>
     </Box>
   )
-}
 
-export const StatusTable = ({title, statuses, colors, ...rest}: StatusTableProps) => {
+export const StatusTable = ({colors, statuses, title, ...rest}: StatusTableProps) => {
   const getColor = (key: string) => {
     const value = statuses[key]
     if (typeof value === 'boolean') return value ? 'green' : 'red'
@@ -58,7 +57,7 @@ export const StatusTable = ({title, statuses, colors, ...rest}: StatusTableProps
       <Title>{title}</Title>
       <Box flexDirection="column" marginLeft={2}>
         {Object.entries(statuses).map(([key, value]) => (
-          <StatusRow labelWidth={labelWidth} key={key} label={key} value={getText(key)} color={getColor(key)} />
+          <StatusRow color={getColor(key)} key={key} label={key} labelWidth={labelWidth} value={getText(key)} />
         ))}
       </Box>
     </Box>

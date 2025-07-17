@@ -1,50 +1,49 @@
-import React, {useEffect, useRef, useState} from 'react'
-import axios from 'axios'
 import {useQueryClient} from '@tanstack/react-query'
+import axios from 'axios'
+import React, {useEffect, useRef, useState} from 'react'
 
-import {AndroidServiceAccountSetupStatus, CredentialsType, Platform} from '@cli/types'
-import {API_URL, cacheKeys} from '@cli/constants/index.js'
-
-import {useAndroidServiceAccountSetupStatus, useProjectCredentials} from '@cli/utils/query/index.js'
 import {getAuthedHeaders, getGoogleStatus} from '@cli/api/index.js'
+import {API_URL, cacheKeys} from '@cli/constants/index.js'
+import {AndroidServiceAccountSetupStatus, CredentialsType, Platform} from '@cli/types'
+import {useAndroidServiceAccountSetupStatus, useProjectCredentials} from '@cli/utils/query/index.js'
 
-import {useWebSocket, WebSocketListener} from './useWebSocket.js'
+import {WebSocketListener, useWebSocket} from './useWebSocket.js'
 
 interface Props {
-  projectId: string
-  onError: (error: Error) => void
   onComplete: () => void
+  onError: (error: Error) => void
+  projectId: string
 }
 
 interface Output {
   handleStart: () => Promise<boolean>
-  setupStatus: AndroidServiceAccountSetupStatus | undefined
-  isCreating: boolean
   hasServiceAccountKey: boolean
+  isCreating: boolean
+  setupStatus: AndroidServiceAccountSetupStatus | undefined
 }
 
 const ERR_NOT_AUTHENTICATED = 'You must be connected to Google to create a Service Account Key'
 
 const useHasServiceAccountKey = (projectId: string) => {
-  const {data, isSuccess} = useProjectCredentials({projectId, platform: Platform.ANDROID})
+  const {data, isSuccess} = useProjectCredentials({platform: Platform.ANDROID, projectId})
   return (
     isSuccess &&
     data.data.some((cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type == CredentialsType.KEY)
   )
 }
 
-const useAndroidServiceAccount = ({projectId, onError, onComplete}: Props): Output => {
+const useAndroidServiceAccount = ({onComplete, onError, projectId}: Props): Output => {
   const queryClient = useQueryClient()
 
   const [isStarting, setIsStarting] = useState<boolean>(false)
   const hasServiceAccountKey = useHasServiceAccountKey(projectId)
 
   const listener: WebSocketListener = {
-    getPattern: () => `project.${projectId}:android-setup-status`,
-    eventHandler: async (pattern: string, data: any) => {
+    async eventHandler(pattern: string, data: any) {
       const key = cacheKeys.androidSetupStatus({projectId})
       queryClient.setQueryData(key, () => data)
     },
+    getPattern: () => `project.${projectId}:android-setup-status`,
   }
 
   useWebSocket([listener])
@@ -54,7 +53,7 @@ const useAndroidServiceAccount = ({projectId, onError, onComplete}: Props): Outp
   const prevSetupStatusRef = useRef<string>('unknown')
 
   useEffect(() => {
-    if (['running', 'queued'].includes(prevSetupStatusRef.current)) {
+    if (['queued', 'running'].includes(prevSetupStatusRef.current)) {
       if (setupStatus?.status === 'complete') onComplete()
       if (setupStatus?.status === 'error') onError(new Error(setupStatus.errorMessage))
     }
@@ -77,7 +76,7 @@ const useAndroidServiceAccount = ({projectId, onError, onComplete}: Props): Outp
       const {data: updatedStatus} = await axios.post(startUrl, {}, {headers})
 
       queryClient.invalidateQueries({
-        queryKey: cacheKeys.projectCredentials({projectId, pageNumber: 0}),
+        queryKey: cacheKeys.projectCredentials({pageNumber: 0, projectId}),
       })
 
       await queryClient.setQueryData(cacheKeys.androidSetupStatus({projectId}), (_) => updatedStatus)
@@ -96,9 +95,9 @@ const useAndroidServiceAccount = ({projectId, onError, onComplete}: Props): Outp
 
   return {
     handleStart,
-    setupStatus,
-    isCreating,
     hasServiceAccountKey,
+    isCreating,
+    setupStatus,
   }
 }
 

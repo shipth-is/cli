@@ -1,12 +1,13 @@
-import {Args, Command, Config, Flags} from '@oclif/core'
+import fs from 'node:fs'
+import path from 'node:path'
 
+import {Args, Command, Config, Flags} from '@oclif/core'
+import {Topic} from '@oclif/core/interfaces'
 import ejs from 'ejs'
-import path from 'path'
-import fs from 'fs'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
-import {Topic} from '@oclif/core/interfaces'
 import CustomHelp from '@cli/utils/help.js'
+
 
 const ROOT_TOPIC_NAME = 'shipthis'
 const ROOT_TOPIC_DESCRIPTION = 'Root topic'
@@ -88,12 +89,12 @@ const COMMAND_TEMPLATE_INCLUDE = `
 `.trim() // Remove the leading newline
 
 interface ReadmeTopic {
-  topic: Topic
-  filePath: string
-  subTopics: ReadmeTopic[]
   commands: ReadmeCommand[]
+  filePath: string
   includeTopicsAndCommands: boolean // Whether to include the topics and commands in the rendered output
   rendered?: string
+  subTopics: ReadmeTopic[]
+  topic: Topic
 }
 
 type TopicTree = Record<string, ReadmeTopic>
@@ -101,24 +102,24 @@ type TopicTree = Record<string, ReadmeTopic>
 interface ReadmeCommand {
   command: Command.Loadable
   filePath: string
-  renderedForInclude?: string
   renderedForFile?: string
+  renderedForInclude?: string
 }
 
 // This is ugly...
 function getTopicTree(topics: Topic[], commands: Command.Loadable[], separateFileDepth: number): TopicTree {
-  const commandIds = commands.map((command) => command.id)
+  const commandIds = new Set(commands.map((command) => command.id))
   // Remove the internal topic
   const nonInternalTopics = topics.filter((topic) => topic.name !== 'internal')
-  const nonCommandTopics = nonInternalTopics.filter((topic) => !commandIds.includes(topic.name))
+  const nonCommandTopics = nonInternalTopics.filter((topic) => !commandIds.has(topic.name))
 
-  let topicTree: TopicTree = {
+  const topicTree: TopicTree = {
     [ROOT_TOPIC_NAME]: {
-      filePath: ROOT_TOPIC_FILENAME,
-      topic: {name: ROOT_TOPIC_NAME, description: ROOT_TOPIC_DESCRIPTION},
-      subTopics: [],
       commands: [],
+      filePath: ROOT_TOPIC_FILENAME,
       includeTopicsAndCommands: separateFileDepth === 0,
+      subTopics: [],
+      topic: {description: ROOT_TOPIC_DESCRIPTION, name: ROOT_TOPIC_NAME},
     },
   }
 
@@ -132,20 +133,20 @@ function getTopicTree(topics: Topic[], commands: Command.Loadable[], separateFil
       const name = topicPath.slice(0, i + 1).join(':')
       const subTopic = currentParent.subTopics.find((subTopic) => subTopic.topic.name === name)
 
-      if (!subTopic) {
+      if (subTopic) {
+        currentParent = subTopic
+      } else {
         const currentDepth = i + 1
         const includeTopicsAndCommands = currentParent.includeTopicsAndCommands || currentDepth >= separateFileDepth
         const newSubTopic = {
-          topic: topicsByName[name],
-          subTopics: [],
           commands: [],
           filePath: `${path.join(...name.split(':'))}.md`,
           includeTopicsAndCommands,
+          subTopics: [],
+          topic: topicsByName[name],
         }
         currentParent.subTopics.push(newSubTopic)
         currentParent = newSubTopic
-      } else {
-        currentParent = subTopic
       }
     }
   }
@@ -161,6 +162,7 @@ function getTopicTree(topics: Topic[], commands: Command.Loadable[], separateFil
       if (!subTopic) throw new Error('Could not find topic for command: ' + command.id)
       currentParent = subTopic
     }
+
     currentParent.commands.push({command, filePath: `${path.join(...command.id.split(':'))}.md`})
   }
 
@@ -173,11 +175,11 @@ function renderTopic(readmeTopic: ReadmeTopic, config: Config): ReadmeTopic {
   const renderedCommands = readmeTopic.commands.map((readmeCommand) => renderCommand(readmeCommand, config))
   const topicTemplate = readmeTopic.includeTopicsAndCommands ? TOPIC_TEMPLATE_INCLUDE : TOPIC_TEMPLATE
   const rendered = ejs.render(topicTemplate, {
-    topic: readmeTopic.topic,
-    subTopics: renderedSubTopics,
     commands: renderedCommands,
+    subTopics: renderedSubTopics,
+    topic: readmeTopic.topic,
   })
-  return {...readmeTopic, subTopics: renderedSubTopics, commands: renderedCommands, rendered}
+  return {...readmeTopic, commands: renderedCommands, rendered, subTopics: renderedSubTopics}
 }
 
 // Given a command, render it. Rendering is setting the `rendered` property
@@ -254,17 +256,17 @@ export default class InternalReadme extends BaseCommand<typeof InternalReadme> {
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
+    depth: Flags.integer({char: 'd', description: 'The depth of the topic tree to render as separate files'}),
     // By default do nothing
     notDryRun: Flags.boolean({char: 'n', description: 'Set to actually write the files (will not overwrite)'}),
-    overWrite: Flags.boolean({char: 'o', description: 'Overwrite existing files'}),
-    depth: Flags.integer({char: 'd', description: 'The depth of the topic tree to render as separate files'}),
     only: Flags.string({char: 'l', description: 'Glob pattern - will only write the files which match'}),
+    overWrite: Flags.boolean({char: 'o', description: 'Overwrite existing files'}),
   }
 
   public async run(): Promise<void> {
     const {outputDir} = this.args
 
-    const {notDryRun, overWrite, depth, only} = this.flags
+    const {depth, notDryRun, only, overWrite} = this.flags
 
     const dryRun = !notDryRun
 
@@ -280,10 +282,10 @@ export default class InternalReadme extends BaseCommand<typeof InternalReadme> {
 
     if (writeOutput.created.length > 0)
       console.log(dryRun ? 'Would create the following files:' : 'Created the following files:')
-    writeOutput.created.forEach((file) => console.log(`- ${file}`))
+    for (const file of writeOutput.created) console.log(`- ${file}`)
 
     if (writeOutput.overwritten.length > 0)
       console.log(notDryRun && overWrite ? 'Overwritten the following files:' : 'Would overwrite the following files:')
-    writeOutput.overwritten.forEach((file) => console.log(`- ${file}`))
+    for (const file of writeOutput.overwritten) console.log(`- ${file}`)
   }
 }

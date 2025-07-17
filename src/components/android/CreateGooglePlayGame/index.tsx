@@ -1,23 +1,23 @@
 import {Box, Text, useInput} from 'ink'
-import {useContext, useEffect, useRef} from 'react'
 import Spinner from 'ink-spinner'
 import open from 'open'
+import {useContext, useEffect, useRef} from 'react'
 
+import {getShortAuthRequiredUrl} from '@cli/api/index.js'
+import {GameContext, Markdown} from '@cli/components/index.js'
+import {WEB_URL, cacheKeys} from '@cli/constants/index.js'
+import {BuildType, Platform} from '@cli/types/api.js'
 import {
-  getBuildSummary,
-  getShortUUID,
   KeyTestError,
   KeyTestResult,
   KeyTestStatus,
+  getBuildSummary,
+  getShortUUID,
   queryClient,
   scriptDir,
   useAndroidServiceAccountTestResult,
   useBuilds,
 } from '@cli/utils/index.js'
-import {cacheKeys, WEB_URL} from '@cli/constants/index.js'
-import {GameContext, Markdown} from '@cli/components/index.js'
-import {BuildType, Platform} from '@cli/types/api.js'
-import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 
 import {StepProps} from '../../index.js'
 
@@ -42,9 +42,9 @@ interface Props extends StepProps {
   gameId: string
 }
 
-const Create = ({onComplete, onError, gameId, ...boxProps}: Props): JSX.Element => {
+const Create = ({gameId, onComplete, onError, ...boxProps}: Props): JSX.Element => {
   const {data: result, isFetching} = useAndroidServiceAccountTestResult({projectId: gameId})
-  const {data: builds} = useBuilds({projectId: gameId, pageNumber: 0})
+  const {data: builds} = useBuilds({pageNumber: 0, projectId: gameId})
   const previousIsFound = useRef<boolean>(false)
 
   // Trigger onComplete when the app is found
@@ -53,22 +53,26 @@ const Create = ({onComplete, onError, gameId, ...boxProps}: Props): JSX.Element 
     if (previousIsFound.current === false && isFound) {
       onComplete()
     }
+
     previousIsFound.current = isFound
   }, [result])
 
   useInput(async (input) => {
     if (!gameId) return
     switch (input) {
-      case 'r':
+      case 'r': {
         // Refresh when R is pressed
         queryClient.invalidateQueries({
           queryKey: cacheKeys.androidKeyTestResult({projectId: gameId}),
         })
         break
-      case 'd':
+      }
+
+      case 'd': {
         // Open the dashboard to download the game when D is pressed
         const dashUrl = await getShortAuthRequiredUrl(`/games/${getShortUUID(gameId)}/builds`)
         await open(dashUrl)
+      }
     }
 
     if (input !== 'r') return
@@ -77,15 +81,13 @@ const Create = ({onComplete, onError, gameId, ...boxProps}: Props): JSX.Element 
     })
   })
 
-  const initialBuild = builds?.data.find((build) => {
-    return build.platform === Platform.ANDROID && build.buildType === BuildType.AAB
-  })
+  const initialBuild = builds?.data.find((build) => build.platform === Platform.ANDROID && build.buildType === BuildType.AAB)
 
   const downloadCmd = initialBuild ? `${getBuildSummary(initialBuild).cmd}` : 'Initial AAB build not found!'
 
   const templateVars = {
-    downloadCmd,
     dashboardURL: new URL(`/games/${getShortUUID(gameId)}/builds`, WEB_URL).toString(),
+    downloadCmd,
   }
 
   return (

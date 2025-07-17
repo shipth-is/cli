@@ -1,5 +1,6 @@
-import {Build, Job} from '@cli/types'
 import {DateTime, DateTimeFormatOptions} from 'luxon'
+
+import {Build, Job} from '@cli/types'
 
 export const DEFAULT_LOCALE = 'en-US'
 
@@ -43,16 +44,16 @@ export function castJobDates(jobObject: any) {
  * This function needs testing in different locales and environments to ensure accuracy.
  */
 export function getDateLocale() {
-  const fallback = Intl.DateTimeFormat().resolvedOptions().locale.replace(/_/g, '-') || DEFAULT_LOCALE
+  const fallback = Intl.DateTimeFormat().resolvedOptions().locale.replaceAll('_', '-') || DEFAULT_LOCALE
   try {
-    const env = process.env
+    const {env} = process
     const fullLocale = env.LC_TIME || env.LANG || env.LANGUAGE || env.LC_ALL || env.LC_MESSAGES
-    const shortLocale = fullLocale?.split('.')[0].replace(/_/g, '-')
+    const shortLocale = fullLocale?.split('.')[0].replaceAll('_', '-')
     const finalLocal = shortLocale || fallback
     // Check it doesn't throw an error
     const _ = DateTime.now().toLocaleString(DateTime.DATE_SHORT, {locale: finalLocal})
     return finalLocal
-  } catch (e) {
+  } catch {
     return fallback
   }
 }

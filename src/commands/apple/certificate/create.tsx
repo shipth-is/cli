@@ -1,11 +1,11 @@
 import {Flags} from '@oclif/core'
 import {render} from 'ink'
 
+import {UserCertificate_iOS, getUserCredentials, uploadUserCredentials} from '@cli/api/credentials/index.js'
+import {createCertificate, exportCertificate} from '@cli/apple/certificate.js'
 import {BaseAppleCommand} from '@cli/baseCommands/index.js'
-import {getUserCredentials, uploadUserCredentials, UserCertificate_iOS} from '@cli/api/credentials/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {CredentialsType, Platform} from '@cli/types'
-import {createCertificate, exportCertificate} from '@cli/apple/certificate.js'
 
 export default class AppleCertificateCreate extends BaseAppleCommand<typeof AppleCertificateCreate> {
   static override args = {}
@@ -29,7 +29,7 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
       (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
     )
 
-    if (userAppleDistCredentials.length !== 0 && !force) {
+    if (userAppleDistCredentials.length > 0 && !force) {
       this.error('An Apple Distribution Certificate already exists. Use --force to overwrite it.')
     }
 
@@ -39,15 +39,15 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
     const createCert = async () => {
       const {certificate, privateKey} = await createCertificate(ctx)
       const exported = exportCertificate(certificate, privateKey)
-      const serialNumber = certificate.attributes.serialNumber
+      const {serialNumber} = certificate.attributes
       await uploadUserCredentials({
-        platform: Platform.IOS,
-        type: CredentialsType.CERTIFICATE,
         contents: {
           serialNumber,
           ...exported,
         } as UserCertificate_iOS,
+        platform: Platform.IOS,
         serialNumber,
+        type: CredentialsType.CERTIFICATE,
       })
     }
 
@@ -60,9 +60,9 @@ export default class AppleCertificateCreate extends BaseAppleCommand<typeof Appl
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress={`Creating certificate in the Apple Developer Portal...`}
-          msgComplete={`Certificate created and saved to ShipThis`}
           executeMethod={createCert}
+          msgComplete={`Certificate created and saved to ShipThis`}
+          msgInProgress={`Creating certificate in the Apple Developer Portal...`}
           onComplete={handleComplete}
         />
       </Command>,

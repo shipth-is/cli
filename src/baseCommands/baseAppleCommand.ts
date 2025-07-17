@@ -1,4 +1,5 @@
 import {Command} from '@oclif/core'
+
 import {BaseAuthenticatedCommand} from './baseAuthenticatedCommand.js'
 
 export abstract class BaseAppleCommand<T extends typeof Command> extends BaseAuthenticatedCommand<T> {

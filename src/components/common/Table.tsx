@@ -1,7 +1,8 @@
 // Table.tsx
+import {Box, Text, TextProps} from 'ink'
 // From https://github.com/maticzav/ink-table/issues/268 and modified
 import React from 'react'
-import {Box, Text, TextProps} from 'ink'
+
 import {Scalar, ScalarDict} from '@cli/types'
 
 type Column = {
@@ -10,8 +11,8 @@ type Column = {
 }
 
 const BASE_HEADER_PROPS: TextProps = {
-  color: 'blue',
   bold: true,
+  color: 'blue',
 }
 
 const BASE_TEXT_PROPS: TextProps = {
@@ -23,27 +24,27 @@ type ColumnTextProps = {
 }
 
 export type TableProps = {
-  data: ScalarDict[]
-  showHeaders?: boolean
-  headerTextProps?: TextProps
   columnTextProps?: ColumnTextProps
+  data: ScalarDict[]
   getTextProps?: (column: Column, value: Scalar) => TextProps | undefined
+  headerTextProps?: TextProps
+  showHeaders?: boolean
 }
 
 // Helper function to generate headers from data
 function generateHeaders(data: ScalarDict[]): ScalarDict {
-  let headers: ScalarDict = {}
+  const headers: ScalarDict = {}
 
-  data.forEach((row) => {
-    Object.keys(row).forEach((key) => {
+  for (const row of data) {
+    for (const key of Object.keys(row)) {
       headers[key] = key
-    })
-  })
+    }
+  }
 
   return headers
 }
 
-export const Table = ({data, showHeaders = true, headerTextProps, columnTextProps, getTextProps}: TableProps) => {
+export const Table = ({columnTextProps, data, getTextProps, headerTextProps, showHeaders = true}: TableProps) => {
   // Determine columns and their widths
   const columns: Column[] = getColumns(data)
 
@@ -76,17 +77,17 @@ export const Table = ({data, showHeaders = true, headerTextProps, columnTextProp
 
 // Helper function to determine columns and their widths
 function getColumns(data: ScalarDict[]): Column[] {
-  let columnWidths: {[key: string]: number} = {}
+  const columnWidths: {[key: string]: number} = {}
 
-  data.forEach((row) => {
-    Object.keys(row).forEach((key) => {
+  for (const row of data) {
+    for (const key of Object.keys(row)) {
       const valueLength = row[key]?.toString().length || 0
       columnWidths[key] = Math.max(columnWidths[key] || key.length, valueLength)
-    })
-  })
+    }
+  }
 
   return Object.keys(columnWidths).map((key) => ({
-    key: key,
+    key,
     width: (columnWidths[key] ?? 0) + 2, // adding padding
   }))
 }
@@ -128,7 +129,7 @@ function renderRow(
           <React.Fragment key={column.key}>
             {index !== 0 && <Text>│</Text>}
             {/* Add separator before each cell except the first one */}
-            <Box width={column.width} justifyContent="center">
+            <Box justifyContent="center" width={column.width}>
               <Text {...cellTextProps}>{getDisplayValue(row, column)}</Text>
             </Box>
           </React.Fragment>

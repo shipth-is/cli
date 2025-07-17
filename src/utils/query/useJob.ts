@@ -1,15 +1,15 @@
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
 import {AxiosError} from 'axios'
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
 import {DateTime} from 'luxon'
 
-import {cacheKeys} from '@cli/constants/index.js'
 import {getJob} from '@cli/api/index.js'
+import {cacheKeys} from '@cli/constants/index.js'
 import {Job, JobDetails, JobStatus, ScalarDict} from '@cli/types'
 import {getPlatformName, getShortDateTime, getShortTimeDelta, getShortUUID} from '@cli/utils/index.js'
 
 export interface JobQueryProps {
-  projectId: string
   jobId: string
+  projectId: string
 }
 
 export function getJobDetailsSummary(jobDetails: JobDetails): ScalarDict {
@@ -18,8 +18,8 @@ export function getJobDetailsSummary(jobDetails: JobDetails): ScalarDict {
   const gitCommit = jobDetails?.gitCommitHash ? getShortUUID(jobDetails?.gitCommitHash) : ''
   const gitBranch = jobDetails?.gitBranch || ''
   return {
-    version: `${semanticVersion} (${buildNumber})`,
     gitInfo: gitCommit ? `${gitCommit} (${gitBranch})` : '',
+    version: `${semanticVersion} (${buildNumber})`,
   }
 }
 
@@ -28,16 +28,14 @@ export function getJobSummary(job: Job, timeNow: DateTime): ScalarDict {
   return {
     id: getShortUUID(job.id),
     ...getJobDetailsSummary(job.details),
-    platform: getPlatformName(job.type),
-    status: job.status,
     createdAt: getShortDateTime(job.createdAt),
+    platform: getPlatformName(job.type),
     runtime: getShortTimeDelta(job.createdAt, inProgress ? timeNow : job.updatedAt),
+    status: job.status,
   }
 }
 
-export const useJob = (props: JobQueryProps): UseQueryResult<Job, AxiosError> => {
-  return useQuery<Job, AxiosError>({
-    queryKey: cacheKeys.job(props),
+export const useJob = (props: JobQueryProps): UseQueryResult<Job, AxiosError> => useQuery<Job, AxiosError>({
     queryFn: () => getJob(props.jobId, props.projectId),
+    queryKey: cacheKeys.job(props),
   })
-}

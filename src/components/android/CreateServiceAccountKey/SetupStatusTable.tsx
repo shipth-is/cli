@@ -1,14 +1,14 @@
-import {ScalarDict, AndroidServiceAccountSetupStatus as SetupStatus} from '@cli/types/api.js'
 import {StatusTable} from '@cli/components/index.js'
+import {ScalarDict, AndroidServiceAccountSetupStatus as SetupStatus} from '@cli/types/api.js'
 
 function statusToDict(status: SetupStatus): ScalarDict {
   return {
-    'Has Signed In': status.hasSignedIn,
+    'Has Enabled API': status.hasEnabledApi,
+    'Has Key': status.hasKey,
     'Has Project': status.hasProject,
     'Has Service Account': status.hasServiceAccount,
-    'Has Key': status.hasKey,
+    'Has Signed In': status.hasSignedIn,
     'Has Uploaded Key': status.hasUploadedKey,
-    'Has Enabled API': status.hasEnabledApi,
     Progress: status.progress,
   }
 }
@@ -17,6 +17,4 @@ interface Props {
   setupStatus: SetupStatus
 }
 
-export const SetupStatusTable = ({setupStatus}: Props) => {
-  return <StatusTable title="Setup Status" statuses={statusToDict(setupStatus)} />
-}
+export const SetupStatusTable = ({setupStatus}: Props) => <StatusTable statuses={statusToDict(setupStatus)} title="Setup Status" />

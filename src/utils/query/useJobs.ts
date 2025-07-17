@@ -1,11 +1,10 @@
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
 
-import {OffsetPaginatedResponse, PageAndSortParams, Job} from '@cli/types'
-
-import {API_URL, cacheKeys} from '@cli/constants/index.js'
-import {castArrayObjectDates} from '@cli/utils/index.js'
 import {getAuthedHeaders} from '@cli/api/index.js'
+import {API_URL, cacheKeys} from '@cli/constants/index.js'
+import {Job, OffsetPaginatedResponse, PageAndSortParams} from '@cli/types'
+import {castArrayObjectDates} from '@cli/utils/index.js'
 
 export interface JobsQueryProps extends PageAndSortParams {
   projectId: string
@@ -30,8 +29,8 @@ export async function queryJobs({projectId, ...pageAndSortParams}: JobsQueryProp
 
 export const useJobs = (props: JobsQueryProps): UseQueryResult<JobsQueryResponse, AxiosError> => {
   const queryResult = useQuery<JobsQueryResponse, AxiosError>({
-    queryKey: cacheKeys.jobs(props),
     queryFn: async () => queryJobs(props),
+    queryKey: cacheKeys.jobs(props),
   })
 
   return queryResult

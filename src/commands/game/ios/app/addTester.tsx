@@ -1,9 +1,9 @@
-import {render} from 'ink'
 import {Flags} from '@oclif/core'
+import {render} from 'ink'
 
-import {Command, RunWithSpinner} from '@cli/components/index.js'
-import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {BetaGroup} from '@cli/apple/expo.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
+import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {getInput, queryAppleApp} from '@cli/utils/index.js'
 
 const TEST_GROUP_NAME = 'ShipThis Test Group'
@@ -16,9 +16,9 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
   static override examples = ['<%= config.bin %> <%= command.id %>']
 
   static override flags = {
-    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     email: Flags.string({char: 'e', description: 'The email address of the tester'}),
     firstName: Flags.string({char: 'f', description: 'The first name of the tester'}),
+    gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     lastName: Flags.string({char: 'l', description: 'The last name of the tester'}),
   }
 
@@ -36,6 +36,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
       if (!enteredEmail) {
         this.error('No email address provided')
       }
+
       return enteredEmail
     }
 
@@ -73,8 +74,8 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
       if (!shipThisGroup) {
         shipThisGroup = await BetaGroup.createAsync(ctx, {
           id: app.id,
-          name: TEST_GROUP_NAME,
           isInternalGroup: true,
+          name: TEST_GROUP_NAME,
           publicLinkEnabled: false,
           publicLinkLimit: 1,
           publicLinkLimitEnabled: false,
@@ -98,9 +99,9 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     render(
       <Command command={this}>
         <RunWithSpinner
-          msgInProgress="Adding test user..."
-          msgComplete="Added test user"
           executeMethod={addTestUser}
+          msgComplete="Added test user"
+          msgInProgress="Adding test user..."
           onComplete={handleComplete}
         />
       </Command>,

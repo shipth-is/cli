@@ -1,6 +1,8 @@
+import {UseQueryResult, useQuery} from '@tanstack/react-query'
 import axios, {AxiosError} from 'axios'
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
 
+import {getAuthedHeaders} from '@cli/api/index.js'
+import {API_URL, cacheKeys} from '@cli/constants/index.js'
 import {
   CredentialsType,
   OffsetPaginatedResponse,
@@ -9,10 +11,7 @@ import {
   ScalarDict,
   UserCredential,
 } from '@cli/types'
-
-import {API_URL, cacheKeys} from '@cli/constants/index.js'
 import {castArrayObjectDates, getShortDate, getShortUUID} from '@cli/utils/index.js'
-import {getAuthedHeaders} from '@cli/api/index.js'
 
 export interface UserCredentialsQueryProps extends PageAndSortParams {
   platform?: Platform
@@ -39,11 +38,11 @@ export async function queryUserCredentials(params: PageAndSortParams): Promise<U
 // How we typically display a user credential
 export function getUserCredentialSummary(credential: UserCredential): ScalarDict {
   return {
-    id: getShortUUID(credential.id),
-    type: credential.type,
-    serial: credential.serialNumber,
-    isActive: credential.isActive,
     createdAt: getShortDate(credential.createdAt),
+    id: getShortUUID(credential.id),
+    isActive: credential.isActive,
+    serial: credential.serialNumber,
+    type: credential.type,
   }
 }
 
@@ -53,16 +52,14 @@ export const useUserCredentials = ({
   ...pageAndSortParams
 }: UserCredentialsQueryProps): UseQueryResult<UserCredentialsQueryResponse, AxiosError> => {
   const queryResult = useQuery<UserCredentialsQueryResponse, AxiosError>({
-    queryKey: cacheKeys.userCredentials(pageAndSortParams),
     queryFn: async () => queryUserCredentials(pageAndSortParams),
-    select: (data) => {
+    queryKey: cacheKeys.userCredentials(pageAndSortParams),
+    select(data) {
       // The api doesn't support filtering by platform or type, so we do it here
       if (!(platform || type)) return data
       return {
         ...data,
-        data: data.data.filter((credential) => {
-          return (!platform || credential.platform === platform) && (!type || credential.type === type)
-        }),
+        data: data.data.filter((credential) => (!platform || credential.platform === platform) && (!type || credential.type === type)),
       }
     },
   })

@@ -13,9 +13,9 @@ export * from './upload.js'
 export async function getUserCredentials(pageSize = 100): Promise<UserCredential[]> {
   const headers = getAuthedHeaders()
   const {data} = await axios({
+    headers,
     method: 'get',
     url: `${API_URL}/credentials?pageSize=${pageSize}`,
-    headers,
   })
   return castArrayObjectDates<UserCredential>(data.data)
 }
@@ -23,9 +23,9 @@ export async function getUserCredentials(pageSize = 100): Promise<UserCredential
 export async function getProjectCredentials(projectId: string, pageSize = 100): Promise<ProjectCredential[]> {
   const headers = getAuthedHeaders()
   const {data} = await axios({
+    headers,
     method: 'get',
     url: `${API_URL}/projects/${projectId}/credentials?pageSize=${pageSize}`,
-    headers,
   })
   return castArrayObjectDates<ProjectCredential>(data.data)
 }
