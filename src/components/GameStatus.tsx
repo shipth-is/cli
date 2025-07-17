@@ -54,15 +54,17 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
   const statuses: Partial<Record<Platform, ProjectPlatformProgress>> = {}
 
   for (const platform of platforms) {
+    // The platform is considered enabled if it has the identifier set
     const hasEnabled = platform === Platform.IOS ? !!game.details?.iosBundleId : !!game.details?.androidPackageName
     isEnabled[platform] = hasEnabled
     if (hasEnabled) {
+      // Call the backend to tell us the status of the platform for this game
       statuses[platform] = await getProjectPlatformProgress(game.id, platform)
     }
   }
 
+  // Collate the steps that the user should take based on the platform statuses
   let steps: string[] = []
-
   for (const platform of platforms) {
     steps = steps.concat(getSteps(platform, statuses[platform]))
   }
@@ -76,9 +78,9 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
     if (hasConfigError) exitCode = exitCode || 1
   }
 
-  // if specifically checking android and android is not enabled, exit with code 1
-  // if checking both and both are not enabled, exit with code 1
-
+  // If specifically checking android and android is not enabled, exit with code 1
+  // If checking both and both are not enabled, exit with code 1
+  // This is for use in other pipeline tools - e.g. github action
   if (platforms.length === 1 && !isEnabled[platforms[0]]) {
     exitCode = exitCode || 1
   } else if (platforms.length > 1 && !isEnabled[Platform.IOS] && !isEnabled[Platform.ANDROID]) {
@@ -106,11 +108,10 @@ export const GameStatusDetails = ({gameId, platforms, onComplete, onError, child
     fetchGameStatus(gameId, platforms)
       .then((res) => {
         setState(res)
+        // TODO: do we need the setTimeout here?
         setTimeout(() => onComplete?.(res.exitCode), 0)
       })
-      .catch((e) => {
-        onError?.(e)
-      })
+      .catch((e) => onError?.(e))
   }, [])
 
   if (!state) return <Text></Text>
