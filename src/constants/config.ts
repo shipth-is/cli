@@ -1,3 +1,6 @@
+export const AUTH_ENV_VAR_NAME = 'SHIPTHIS_TOKEN'
+export const DOMAIN_ENV_VAR_NAME = 'SHIPTHIS_DOMAIN'
+
 export const DEFAULT_SHIPPED_FILES_GLOBS = ['**/*']
 
 // Generated from the Godot gitignore https://github.com/github/gitignore/blob/main/Godot.gitignore
@@ -15,7 +18,7 @@ export const DEFAULT_IGNORED_FILES_GLOBS = [
   '*.translation',
   '.mono/**',
   'data_*/**',
-  'mono_crash.*.json'
+  'mono_crash.*.json',
 ]
 
 const PRIMARY_DOMAIN = 'shipth.is'
@@ -36,7 +39,6 @@ function getUrlsForDomain(domain: string): BackendUrls {
   }
 }
 
-export const DOMAIN_ENV_VAR_NAME = 'SHIPTHIS_DOMAIN'
 export const DOMAIN = process.env[DOMAIN_ENV_VAR_NAME] || PRIMARY_DOMAIN
 export const BACKEND_URLS = getUrlsForDomain(DOMAIN)
 

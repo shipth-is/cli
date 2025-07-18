@@ -4,13 +4,13 @@ import path from 'node:path'
 import {Command, Flags, Interfaces} from '@oclif/core'
 import {SerializedCookieJar} from 'tough-cookie'
 
-import {setAuthToken} from '@cli/api/index.js'
+import {getSelf, setAuthToken} from '@cli/api/index.js'
 import {Auth} from '@cli/apple/expo.js'
 import {AuthConfig, ProjectConfig} from '@cli/types'
 import {isCWDGodotGame} from '@cli/utils/index.js'
 
-
 import {DetailsFlags} from './index.js'
+import {AUTH_ENV_VAR_NAME} from '@cli/constants/config.js'
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<(typeof BaseCommand)['baseFlags'] & T['flags']>
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
@@ -46,7 +46,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   }
 
   protected ensureWeHaveAppleCookies(): void {
-    if (!this.hasAuthConfig()) {
+    if (!this.hasAuthConfigFile()) {
       this.error('You must be authenticated with Apple in to use this command. Please run shipthis apple login', {
         exit: 1,
       })
@@ -65,15 +65,37 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return authConfig.appleCookies
   }
 
+  // Returns the current auth config - prefers to use the env var
   public async getAuthConfig(): Promise<AuthConfig> {
+    const envVarValue = process.env[AUTH_ENV_VAR_NAME]
+    if (!envVarValue) return await this.getAuthConfigFromFile()
+
+    setAuthToken(envVarValue)
+    const self = await getSelf()
+    const selfWithJwt = {
+      ...self,
+      jwt: envVarValue,
+    }
+    return {
+      shipThisUser: selfWithJwt,
+    }
+  }
+
+  // Loads the auth config from the file system
+  public async getAuthConfigFromFile(): Promise<AuthConfig> {
     const baseConfig = {} as AuthConfig
     const configPath = this.getAuthConfigPath()
     if (!fs.existsSync(configPath)) return baseConfig
     const raw = await fs.promises.readFile(configPath, 'utf8')
-    const typesConfig = JSON.parse(raw)
+    const parsed = JSON.parse(raw)
+
+    if (parsed.shipThisUser) {
+      setAuthToken(parsed.shipThisUser.jwt)
+    }
+
     return {
       ...baseConfig,
-      ...typesConfig,
+      ...parsed,
     }
   }
 
@@ -113,7 +135,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return JSON.parse(raw)
   }
 
-  public hasAuthConfig(): boolean {
+  public hasAuthConfigFile(): boolean {
     const configPath = this.getAuthConfigPath()
     return fs.existsSync(configPath)
   }
@@ -149,17 +171,13 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     this.flags = flags as Flags<T>
     this.args = args as Args<T>
 
-    if (this.hasAuthConfig()) await this.loadAuthConfig()
+    // We get the auth config once here so that the JWT is loaded
+    const authConfig = await this.getAuthConfig()
   }
 
-  public async loadAuthConfig(): Promise<void> {
+  public async isAuthenticated(): Promise<boolean> {
     const authConfig = await this.getAuthConfig()
-    if (!authConfig.shipThisUser) {
-      throw new Error('You must be logged in to use this command')
-    }
-
-    // This sets the auth token for all API requests
-    setAuthToken(authConfig.shipThisUser.jwt)
+    return Boolean(authConfig.shipThisUser?.jwt)
   }
 
   protected async refreshAppleAuthState(): Promise<any> {
@@ -183,6 +201,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     await this.setAuthConfig({...authConfig, appleCookies: cookies})
   }
 
+  // This is called after login to persist the JWT and user details
   public async setAuthConfig(config: AuthConfig): Promise<void> {
     const configPath = this.getAuthConfigPath()
     await fs.promises.writeFile(configPath, JSON.stringify(config, null, 2))

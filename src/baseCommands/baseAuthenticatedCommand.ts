@@ -9,7 +9,7 @@ export abstract class BaseAuthenticatedCommand<T extends typeof Command> extends
 
   public async init(): Promise<void> {
     await super.init()
-    if (!this.hasAuthConfig()) {
+    if (!this.isAuthenticated()) {
       this.error('No auth config found. Please run `shipthis login` to authenticate.', {exit: 1})
     }
 
