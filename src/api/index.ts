@@ -22,25 +22,21 @@ import {
 } from '@cli/types'
 import {castArrayObjectDates, castJobDates, castObjectDates} from '@cli/utils/dates.js'
 
-
-
 export * from './credentials/index.js'
 
-const AUTH_ENV_VAR_NAME = 'SHIPTHIS_TOKEN'
+var currentAuthToken: string | undefined
 
-// Most API functions will use getAuthedHeaders or process.env.SHIPTHIS_TOKEN
-// When the commands run, the value for token will be read from the auth config
 export function setAuthToken(token: string) {
-  process.env[AUTH_ENV_VAR_NAME] = token
+  currentAuthToken = token
 }
 
 export function getAuthToken() {
-  return process.env[AUTH_ENV_VAR_NAME]
+  return currentAuthToken
 }
 
 export function getAuthedHeaders() {
   return {
-    Authorization: `Bearer ${process.env[AUTH_ENV_VAR_NAME]}`,
+    Authorization: `Bearer ${currentAuthToken}`,
   }
 }
 
