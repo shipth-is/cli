@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node --no-deprecation
+#!/usr/bin/env -S node --no-deprecation --experimental-json-modules
 
 import {execute} from '@oclif/core'
 
