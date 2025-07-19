@@ -1,6 +1,6 @@
 import {Box, Text, useInput} from 'ink'
 import open from 'open'
-import {useContext, useState} from 'react'
+import {useContext, useEffect, useState} from 'react'
 
 import {GameContext, Markdown, StepProps} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/index.js'
@@ -23,8 +23,16 @@ interface ConnectWithGameProps extends Props {
 }
 
 const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: ConnectWithGameProps): JSX.Element => {
-
   const [showQRCode, setShowQRCode] = useState(false)
+  const [connectUrl, setConnectUrl] = useState<string | null>(null)
+
+  useEffect(() => {
+    const fetchConnectUrl = async () => {
+      const url = await getConnectUrl(gameId, Boolean(helpPage))
+      setConnectUrl(url)
+    }
+    if (!connectUrl) fetchConnectUrl()
+  }, [])
 
   useGoogleStatusWatching({
     isWatching: true,
@@ -35,7 +43,8 @@ const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: Co
   })
 
   useInput(async (input) => {
-    switch (input) {
+    const i = input.toLowerCase()
+    switch (i) {
       case 'q': {
         setShowQRCode(true)
         return
@@ -48,12 +57,12 @@ const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: Co
 
       case 'b': {
         if (!gameId) return
-        const url = await getConnectUrl(gameId, true)
-        await open(url)
+        if (!connectUrl) return
+        await open(connectUrl)
+        return
       }
-        
+
       default:
-        
     }
   })
 
@@ -66,9 +75,11 @@ const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: Co
       {!showQRCode && (
         <Box flexDirection="column" gap={1}>
           <Markdown filename="privacy-notification.md" templateVars={templateVars} />
-          <Text bold color="#4CE64C">
-            Press B to open your browser and connect your Google account to ShipThis
-          </Text>
+          {connectUrl && (
+            <Text bold color="#4CE64C">
+              {`Press B to open ${connectUrl} in your browser and connect your Google account to ShipThis`}
+            </Text>
+          )}
           <Text bold color="#4CE64C">
             Press Q to show a QR-code to connect using your mobile phone
           </Text>
@@ -79,7 +90,9 @@ const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: Co
         <Box flexDirection="column" gap={1}>
           <Text>Scan the QR code below to connect your Google account to ShipThis:</Text>
           {gameId && <GoogleAuthQRCode gameId={gameId} helpPage={Boolean(helpPage)} />}
-           <Text bold color="#4CE64C">Press X to hide the QR code</Text>
+          <Text bold color="#4CE64C">
+            Press X to hide the QR code
+          </Text>
         </Box>
       )}
     </Box>
