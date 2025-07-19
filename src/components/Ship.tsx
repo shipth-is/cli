@@ -1,4 +1,4 @@
-import {Box, Text, useInput} from 'ink'
+import {Box, Text} from 'ink'
 import open from 'open'
 import {useContext, useEffect, useState} from 'react'
 
@@ -14,7 +14,7 @@ import {
 } from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 import {Job, ShipGameFlags} from '@cli/types/index.js'
-import {getShortUUID, useShip} from '@cli/utils/index.js'
+import {getShortUUID, useSafeInput, useShip} from '@cli/utils/index.js'
 
 interface Props {
   onComplete: (completedJobs: Job[]) => void
@@ -47,7 +47,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
     handleStartOnMount().catch(onError)
   }, [])
 
-  useInput(async (input) => {
+  useSafeInput(async (input) => {
     if (!gameId) return
     const i = input.toLowerCase()
     switch (i) {
