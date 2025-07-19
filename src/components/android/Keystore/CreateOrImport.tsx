@@ -27,8 +27,9 @@ export const CreateOrImport = ({onComplete, onError, ...boxProps}: StepProps): J
 
   useInput(async (input) => {
     if (stage !== Stage.Choose) return
-    if (input === 'c') return setStage(Stage.Create)
-    if (input === 'i') return setStage(Stage.ImportForm)
+    const i = input.toLowerCase()
+    if (i === 'c') return setStage(Stage.Create)
+    if (i === 'i') return setStage(Stage.ImportForm)
   })
 
   const handleImportFormSubmit = (newImportProps: ImportKeystoreProps) => {

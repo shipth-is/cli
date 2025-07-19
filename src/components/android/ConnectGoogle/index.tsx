@@ -35,7 +35,8 @@ const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: Co
   })
 
   useInput(async (input) => {
-    switch (input) {
+    const i = input.toLowerCase()
+    switch (i) {
       case 'q': {
         setShowQRCode(true)
         return

@@ -49,7 +49,8 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
 
   useInput(async (input) => {
     if (!gameId) return
-    switch (input) {
+    const i = input.toLowerCase()
+    switch (i) {
       case 'l': {
         setShowLog((prev) => !prev)
         break
