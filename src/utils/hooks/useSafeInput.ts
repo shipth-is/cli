@@ -5,7 +5,7 @@ type Options = {isActive?: boolean}
 type Handler = (input: string, key: Key) => void
 
 // When we use useInput, it will only work if we are in raw mode (interactive terminal)
-// We also usually to handle the input in lower case
+// We also usually need to handle the input in lower case
 export const useSafeInput = (handler: Handler, options: Options = {isActive: true}) => {
   const {isRawModeSupported} = useStdin()
   const isActive = (isRawModeSupported === true) && options.isActive !== false
