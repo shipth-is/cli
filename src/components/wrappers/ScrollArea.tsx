@@ -1,9 +1,10 @@
 // This is from https://gist.github.com/Carnageous/1a55a8747f12e1c4fc86ebe2d05a0a55
 // Following from this discussion https://github.com/vadimdemedes/ink/issues/432
 
-import {Box, DOMElement, measureElement, useFocus, useInput} from 'ink'
+import {Box, DOMElement, measureElement, useFocus} from 'ink'
 import {useEffect, useReducer, useRef} from 'react'
 
+import { useSafeInput } from '@cli/utils/index.js'
 interface ScrollAreaState {
   height: number
   innerHeight: number
@@ -84,7 +85,7 @@ export function ScrollArea({children, height}: ScrollAreaProps) {
     })
   }, [])
 
-  useInput((_input, key) => {
+  useSafeInput((_input, key) => {
     if (key.downArrow) {
       dispatch({
         type: 'SCROLL_DOWN',

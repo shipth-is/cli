@@ -1,4 +1,4 @@
-import {Box, Text, useInput} from 'ink'
+import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 import open from 'open'
 import {useContext, useEffect, useRef} from 'react'
@@ -17,6 +17,7 @@ import {
   scriptDir,
   useAndroidServiceAccountTestResult,
   useBuilds,
+  useSafeInput,
 } from '@cli/utils/index.js'
 
 import {StepProps} from '../../index.js'
@@ -57,10 +58,9 @@ const Create = ({gameId, onComplete, onError, ...boxProps}: Props): JSX.Element 
     previousIsFound.current = isFound
   }, [result])
 
-  useInput(async (input) => {
+  useSafeInput(async (input) => {
     if (!gameId) return
-    const i = input.toLowerCase()
-    switch (i) {
+    switch (input) {
       case 'r': {
         // Refresh when R is pressed
         queryClient.invalidateQueries({
@@ -73,16 +73,14 @@ const Create = ({gameId, onComplete, onError, ...boxProps}: Props): JSX.Element 
         // Open the dashboard to download the game when D is pressed
         const dashUrl = await getShortAuthRequiredUrl(`/games/${getShortUUID(gameId)}/builds`)
         await open(dashUrl)
+        break
       }
     }
-
-    if (input !== 'r') return
-    queryClient.invalidateQueries({
-      queryKey: cacheKeys.androidKeyTestResult({projectId: gameId}),
-    })
   })
 
-  const initialBuild = builds?.data.find((build) => build.platform === Platform.ANDROID && build.buildType === BuildType.AAB)
+  const initialBuild = builds?.data.find(
+    (build) => build.platform === Platform.ANDROID && build.buildType === BuildType.AAB,
+  )
 
   const downloadCmd = initialBuild ? `${getBuildSummary(initialBuild).cmd}` : 'Initial AAB build not found!'
 
