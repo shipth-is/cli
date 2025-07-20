@@ -59,7 +59,8 @@ const Create = ({gameId, onComplete, onError, ...boxProps}: Props): JSX.Element 
 
   useInput(async (input) => {
     if (!gameId) return
-    switch (input) {
+    const i = input.toLowerCase()
+    switch (i) {
       case 'r': {
         // Refresh when R is pressed
         queryClient.invalidateQueries({
