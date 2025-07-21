@@ -1,8 +1,9 @@
-import {Box, Text, useInput} from 'ink'
+import {Box, Text} from 'ink'
 import {useState} from 'react'
 
 import {Markdown, StepProps} from '@cli/components/index.js'
 import {ImportKeystoreProps} from '@cli/utils/query/useImportKeystore.js'
+import {useSafeInput} from '@cli/utils/index.js'
 
 import {CreateKeystore} from './Create.js'
 import {ImportKeystore} from './Import.js'
@@ -25,11 +26,10 @@ export const CreateOrImport = ({onComplete, onError, ...boxProps}: StepProps): J
     keystorePassword: '',
   })
 
-  useInput(async (input) => {
+  useSafeInput(async (input) => {
     if (stage !== Stage.Choose) return
-    const i = input.toLowerCase()
-    if (i === 'c') return setStage(Stage.Create)
-    if (i === 'i') return setStage(Stage.ImportForm)
+    if (input === 'c') return setStage(Stage.Create)
+    if (input === 'i') return setStage(Stage.ImportForm)
   })
 
   const handleImportFormSubmit = (newImportProps: ImportKeystoreProps) => {
