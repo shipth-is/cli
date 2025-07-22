@@ -110,7 +110,9 @@ function renderRow(
     const {key} = column
     const value = row[key]
     const columnTextPropsForCell = columnTextProps?.[key] || {}
-    const valueBasedProps = typeof row[column.key] === 'boolean' ? {color: value === false ? 'red' : 'green'} : {}
+
+    /* eslint-disable  eqeqeq */
+    const valueBasedProps = typeof row[column.key] === 'boolean' ? {color: value == false ? 'red' : 'green'} : {}
     const callbackBasedProps = getTextProps ? getTextProps(column, value) : {}
     return {
       ...baseCellTextProps,
