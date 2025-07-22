@@ -2,7 +2,7 @@ import fs from 'node:fs'
 
 import {useMutation} from '@tanstack/react-query'
 import {v4 as uuid} from 'uuid'
-import yazl from 'yazl'
+import {ZipFile} from 'yazl'
 
 import {importCredential} from '@cli/api/index.js'
 import {cacheKeys} from '@cli/constants/index.js'
@@ -42,7 +42,7 @@ export async function importKeystore({log = () => {}, ...opt}: ImportOptions): P
   // If we are doing a JKS import then we need to create the zip file
   if (opt.jksFilePath) {
     log('Creating zip file from jks file...')
-    const outputZipToFile = (zip: yazl.ZipFile, fileName: string) =>
+    const outputZipToFile = (zip: ZipFile, fileName: string) =>
       new Promise<void>((resolve) => {
         const outputStream = fs.createWriteStream(fileName)
         zip.outputStream.pipe(outputStream).on('close', () => resolve())
@@ -50,7 +50,7 @@ export async function importKeystore({log = () => {}, ...opt}: ImportOptions): P
       })
 
     // Create a zip file with the jks file
-    const zipFile = new yazl.ZipFile()
+    const zipFile = new ZipFile()
     log('Adding keyStore.jks to zip file...')
     zipFile.addFile(opt.jksFilePath, 'keyStore.jks')
 
