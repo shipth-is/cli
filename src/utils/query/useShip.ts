@@ -1,10 +1,11 @@
 import fs from 'node:fs'
 
+import {Command} from '@oclif/core'
 import {useMutation} from '@tanstack/react-query'
 import axios from 'axios'
 import fg from 'fast-glob'
 import {v4 as uuid} from 'uuid'
-import yazl from 'yazl'
+import {ZipFile} from 'yazl'
 
 import {getNewUploadTicket, startJobsFromUpload} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/index.js'
@@ -13,9 +14,9 @@ import {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/t
 import {getCWDGitInfo, getFileHash, queryClient} from '@cli/utils/index.js'
 
 // Takes the current command so we can get the project config
-// TODO: refactor to make more composable
+// This could be made more composable
 interface ShipOptions {
-  command: BaseCommand<any>
+  command: BaseCommand<typeof Command>,
   log?: (message: string) => void
   shipFlags?: ShipGameFlags // If provided, will override command flags
 }
@@ -43,12 +44,12 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
   const files = await fg(shippedFilesGlobs, {dot: true, ignore: ignoredFilesGlobs})
 
   log(`Found ${files.length} files, adding to zip...`)
-  const zipFile = new yazl.ZipFile()
+  const zipFile = new ZipFile()
   for (const file of files) {
     zipFile.addFile(file, file)
   }
 
-  const outputZipToFile = (zip: yazl.ZipFile, fileName: string) =>
+  const outputZipToFile = (zip: ZipFile, fileName: string) =>
     new Promise<void>((resolve) => {
       const outputStream = fs.createWriteStream(fileName)
       zip.outputStream.pipe(outputStream).on('close', () => resolve())
