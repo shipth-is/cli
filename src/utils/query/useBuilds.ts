@@ -35,7 +35,7 @@ export async function queryBuilds({projectId, ...pageAndSortParams}: BuildsQuery
 
 // How we typically display a project build
 export function getBuildSummary(build: Build): ScalarDict {
-  const ext = build.buildType || (build.platform == Platform.IOS ? 'IPA' : 'AAB')
+  const ext = build.buildType || (build.platform === Platform.IOS ? 'IPA' : 'AAB')
   const filename = `game.${ext.toLowerCase()}`
 
   return {

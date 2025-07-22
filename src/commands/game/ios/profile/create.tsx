@@ -43,7 +43,7 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
 
     const projectCredentials = await getProjectCredentials(game.id)
     const projectAppleProfileCredentials = projectCredentials.filter(
-      (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
+      (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.CERTIFICATE,
     )
 
     if (projectAppleProfileCredentials.length > 0 && !force) {
@@ -70,7 +70,7 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
       // Find the apple cert which we can user
       const userCerts = await getUserCredentials()
       const validCert = userCerts.find(
-        (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.CERTIFICATE && cred.isActive == true,
+        (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.CERTIFICATE && cred.isActive === true,
       )
 
       const validAppleCert = appleCerts.find(

@@ -37,7 +37,7 @@ export default class GameAndroidKeyStoreExport extends BaseGameCommand<typeof Ga
 
     const projectCredentials = await getProjectCredentials(game.id)
     const projectAndroidKeyStoreCreds = projectCredentials.filter(
-      (cred) => cred.platform == Platform.ANDROID && cred.type == CredentialsType.CERTIFICATE && cred.isActive,
+      (cred) => cred.platform === Platform.ANDROID && cred.type === CredentialsType.CERTIFICATE && cred.isActive,
     )
 
     if (projectAndroidKeyStoreCreds.length === 0) {

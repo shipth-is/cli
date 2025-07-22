@@ -28,7 +28,7 @@ const useHasServiceAccountKey = (projectId: string) => {
   const {data, isSuccess} = useProjectCredentials({platform: Platform.ANDROID, projectId})
   return (
     isSuccess &&
-    data.data.some((cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type == CredentialsType.KEY)
+    data.data.some((cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type === CredentialsType.KEY)
   )
 }
 

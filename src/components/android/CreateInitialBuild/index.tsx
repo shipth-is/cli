@@ -68,7 +68,7 @@ const CreateForGame = ({gameId, onComplete, onError, ...boxProps}: CreateForGame
           <Text>Create an initial build...</Text>
           {(isLoadingBuilds || isLoadingJobs || shipMutation.isPending) && <Spinner type="dots" />}
         </Box>
-        {androidJob == null && <Text>{shipLog}</Text>}
+        {androidJob === null && <Text>{shipLog}</Text>}
         {androidJob && <JobProgress job={androidJob} onComplete={onComplete} onFailure={(j: Job) => {
           setFailedJob(j)
           // Wait before triggering the error to allow the job log to be displayed

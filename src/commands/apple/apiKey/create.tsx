@@ -26,7 +26,7 @@ export default class AppleApiKeyCreate extends BaseAppleCommand<typeof AppleApiK
 
     const userCredentials = await getUserCredentials()
     const userAppleApiKeyCredentials = userCredentials.filter(
-      (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.KEY,
+      (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.KEY,
     )
 
     if (userAppleApiKeyCredentials.length > 0 && !force) {

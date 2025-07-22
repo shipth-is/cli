@@ -37,7 +37,7 @@ export default class AppleCertificateImport extends BaseAuthenticatedCommand<typ
 
     const userCredentials = await getUserCredentials()
     const userAppleDistCredentials = userCredentials.filter(
-      (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
+      (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.CERTIFICATE,
     )
 
     if (userAppleDistCredentials.length > 0 && !force) {

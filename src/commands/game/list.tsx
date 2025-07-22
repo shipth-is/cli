@@ -46,7 +46,7 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
 
     render(
       <Command command={this}>
-        {data.length === 0 && params.pageNumber == 0 && (
+        {data.length === 0 && params.pageNumber === 0 && (
           <Box flexDirection="column">
             <Text>No games found. Create one now with:</Text>
             <Box flexDirection="column" marginLeft={2} marginTop={1}>

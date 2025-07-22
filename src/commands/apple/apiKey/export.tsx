@@ -34,7 +34,7 @@ export default class AppleApiKeyExport extends BaseAuthenticatedCommand<typeof A
 
     const userCredentials = await getUserCredentials()
     const userAppleApiKeyCredentials = userCredentials.filter(
-      (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.KEY,
+      (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.KEY,
     )
 
     if (userAppleApiKeyCredentials.length === 0) {
