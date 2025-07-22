@@ -40,7 +40,7 @@ export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<type
 
     const projectCredentials = await getProjectCredentials(game.id)
     const hasAndroidApiKey = projectCredentials.some(
-      (cred) => cred.platform == Platform.ANDROID && cred.isActive && cred.type == CredentialsType.KEY,
+      (cred) => cred.platform === Platform.ANDROID && cred.isActive && cred.type === CredentialsType.KEY,
     )
 
     if (hasAndroidApiKey && !force) {

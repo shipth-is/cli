@@ -1,4 +1,4 @@
-import {useInput, Key, useStdin} from 'ink'
+import {Key, useInput, useStdin} from 'ink'
 
 // These are copied from ink/build/hooks/use-input.d.ts
 type Options = {isActive?: boolean}

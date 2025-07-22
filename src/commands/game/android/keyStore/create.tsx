@@ -26,7 +26,7 @@ export default class GameAndroidKeyStoreCreate extends BaseGameAndroidCommand<ty
 
     const projectCredentials = await getProjectCredentials(game.id)
     const hasKeystore = projectCredentials.some(
-      (cred) => cred.platform == Platform.ANDROID && cred.isActive && cred.type == CredentialsType.CERTIFICATE,
+      (cred) => cred.platform === Platform.ANDROID && cred.isActive && cred.type === CredentialsType.CERTIFICATE,
     )
 
     if (hasKeystore && !this.flags.force) {

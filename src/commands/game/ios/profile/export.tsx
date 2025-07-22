@@ -37,7 +37,7 @@ export default class GameIosProfileExport extends BaseGameCommand<typeof GameIos
 
     const projectCredentials = await getProjectCredentials(game.id)
     const userAppleProfileCredentials = projectCredentials.filter(
-      (cred) => cred.platform == Platform.IOS && cred.type == CredentialsType.CERTIFICATE,
+      (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.CERTIFICATE,
     )
 
     if (userAppleProfileCredentials.length === 0) {

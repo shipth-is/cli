@@ -42,7 +42,7 @@ export function getGodotProjectCapabilities(platform: Platform) {
 
   for (const capability of GODOT_CAPABILITIES) {
     if (!(capability.key in options)) continue
-    if (`${options[capability.key]}`.toLocaleLowerCase() == 'true') capabilities.push(capability.type)
+    if (`${options[capability.key]}`.toLocaleLowerCase() === 'true') capabilities.push(capability.type)
   }
 
   return capabilities

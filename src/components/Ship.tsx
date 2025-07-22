@@ -104,7 +104,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
 
   return (
     <Box flexDirection="column">
-      {jobs == null && <Text>{shipLog}</Text>}
+      {jobs === null && <Text>{shipLog}</Text>}
       {jobs &&
         jobs.map((job) => (
           <Box flexDirection="column" key={job.id} marginBottom={1}>

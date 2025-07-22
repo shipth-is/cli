@@ -20,7 +20,7 @@ export async function queryAppleApiKeys({ctx}: AppleApiKeysQueryProps) {
 // Tells us if the Apple API Key can be used to ship a game
 export const canAppleApiKeyBeUsed = (key: any, userCredentials: UserCredential[]): boolean => {
   if (!key.attributes.isActive) return false
-  return userCredentials.some((cred) => cred.isActive && cred.serialNumber == key.id)
+  return userCredentials.some((cred) => cred.isActive && cred.serialNumber === key.id)
 }
 
 // How we typically display an Apple API Key - needs the userCredentials to determine if it can be used

@@ -24,7 +24,7 @@ import {castArrayObjectDates, castJobDates, castObjectDates} from '@cli/utils/da
 
 export * from './credentials/index.js'
 
-var currentAuthToken: string | undefined
+let currentAuthToken: string | undefined
 
 export function setAuthToken(token: string) {
   currentAuthToken = token

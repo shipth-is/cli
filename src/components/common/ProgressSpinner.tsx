@@ -16,7 +16,7 @@ export const ProgressSpinner = ({boxProps, label, labelProps, progress, spinnerT
   <>
     <Box flexDirection="column" gap={1} {...boxProps}>
       <Box flexDirection="row" gap={1}>
-        {label && label != '' && <Text {...labelProps}>{label}</Text>}
+        {label && label !== '' && <Text {...labelProps}>{label}</Text>}
         <ProgressBar value={progress || 0} />
         <Box width={4}>
           <Text>{Math.floor(progress || 0)}%</Text>

@@ -81,13 +81,13 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
 
   const projectCredentials = hasShipThisProject ? await getProjectCredentials(project.id) : []
   const hasAndroidKeystore = projectCredentials.some(
-    (cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type == CredentialsType.CERTIFICATE,
+    (cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type === CredentialsType.CERTIFICATE,
   )
   const googleStatus = await getGoogleStatus()
   const hasGoogleConnection = googleStatus.isAuthenticated
 
   const hasServiceAccountKey = projectCredentials.some(
-    (cred) => cred.isActive && cred.platform == Platform.ANDROID && cred.type == CredentialsType.KEY,
+    (cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type === CredentialsType.KEY,
   )
 
   const buildsResponse = Boolean(projectId) && hasShipThisProject && (await queryBuilds({pageNumber: 0, projectId}))

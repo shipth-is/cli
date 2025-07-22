@@ -26,8 +26,8 @@ export async function queryAppleCertificates({ctx}: AppleCertificatesQueryProps)
 // Tells us if the Apple Cert can be used to ship a game
 export const canAppleCertificateBeUsed = (cert: Cert, userCredentials: UserCredential[]): boolean => {
   // NB: different from the check for Apple API Keys
-  if (cert.attributes.status != 'Issued') return false
-  return userCredentials.some((cred) => cred.isActive && cred.serialNumber == cert.attributes.serialNumber)
+  if (cert.attributes.status !== 'Issued') return false
+  return userCredentials.some((cred) => cred.isActive && cred.serialNumber === cert.attributes.serialNumber)
 }
 
 // How we typically display an Apple Cert - needs the userCredentials to determine if it can be used

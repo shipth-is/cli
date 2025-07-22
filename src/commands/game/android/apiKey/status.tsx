@@ -39,7 +39,7 @@ export default class GameAndroidApiKeyStatus extends BaseGameAndroidCommand<type
         <Table
           data={[
             {
-              'Key Works?': testResult.status == KeyTestStatus.SUCCESS,
+              'Key Works?': testResult.status === KeyTestStatus.SUCCESS,
               ...testResult,
               error: niceError(testResult.error),
             },

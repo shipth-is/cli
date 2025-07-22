@@ -16,7 +16,7 @@ export const JobFollow = ({jobId, onComplete, onFailure, projectId}: JobFollowPr
     onComplete,
     onFailure,
     onNewLogEntry(logEntry: JobLogEntry) {
-      if (logEntry.level == LogLevel.ERROR) console.error(logEntry.message)
+      if (logEntry.level === LogLevel.ERROR) console.error(logEntry.message)
       else console.log(logEntry.message)
     },
     projectId,

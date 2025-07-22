@@ -24,13 +24,14 @@ interface ConnectWithGameProps extends Props {
 
 const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: ConnectWithGameProps): JSX.Element => {
   const [showQRCode, setShowQRCode] = useState(false)
-  const [connectUrl, setConnectUrl] = useState<string | null>(null)
+  const [connectUrl, setConnectUrl] = useState<null | string>(null)
 
   useEffect(() => {
     const fetchConnectUrl = async () => {
       const url = await getConnectUrl(gameId, Boolean(helpPage))
       setConnectUrl(url)
     }
+
     if (!connectUrl) fetchConnectUrl()
   }, [])
 
@@ -58,7 +59,6 @@ const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: Co
         if (!gameId) return
         if (!connectUrl) return
         await open(connectUrl)
-        return
       }
 
       default:
