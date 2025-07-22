@@ -29,6 +29,12 @@
         },
         "newlines-between": "always"
       }
+    ],
+    "unicorn/filename-case": [
+      "error",
+      {
+        "case": "camelCase"
+      }
     ]
   }
 }
