@@ -116,7 +116,7 @@ export function getGodotExportPresets(platform: Platform) {
     const exportPresetsContent = fs.readFileSync(exportPresetsPath, 'utf8')
     const exportPresetsIni = parse(exportPresetsContent)
     // Find the preset with the same name in the existing config
-    const presetIndexes = Object.keys(exportPresetsIni.preset)
+    const presetIndexes = Object.keys(exportPresetsIni.preset || {})
     const presetIndex = presetIndexes.find((index) => {
       const current = exportPresetsIni.preset[index]
       return `${current.name}`.toUpperCase() === platform
