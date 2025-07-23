@@ -25,6 +25,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
       description: 'Add yourself as a tester (uses your Apple ID email and name)',
       default: false,
     }),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
   }
 
   public async run(): Promise<void> {
@@ -93,6 +94,8 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     }
 
     const handleComplete = async () => {}
+
+    if (flags.quiet) return await addTestUser()
 
     render(
       <Command command={this}>
