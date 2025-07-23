@@ -60,8 +60,6 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     const firstName = await getFirstName()
     const lastName = await getLastName()
 
-    console.warn('This command does not yet work. It fails with an assertion error.')
-
     const addTestUser = async () => {
       const {app} = await queryAppleApp({ctx, iosBundleId: game.details?.iosBundleId})
       if (!app) return this.error('No app found')
@@ -76,15 +74,10 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
           id: app.id,
           isInternalGroup: true,
           name: TEST_GROUP_NAME,
-          publicLinkEnabled: false,
-          publicLinkLimit: 1,
-          publicLinkLimitEnabled: false,
+          hasAccessToAllBuilds: true,
         })
       }
 
-      // TODO: this should work but fails with:
-      // AssertionError [ERR_ASSERTION]: No type class found for "bulkBetaTesterAssignments"
-      // We may have to use a different app store connect library or call the API directly?
       await shipThisGroup.createBulkBetaTesterAssignmentsAsync([
         {
           email,
