@@ -105,6 +105,10 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     throw new Error('No jobs were created. Please check your game configuration and try again.')
   }
 
+  if (finalFlags?.follow) {
+    log('Waiting for job to start...')
+  }
+
   return jobs
 }
 
