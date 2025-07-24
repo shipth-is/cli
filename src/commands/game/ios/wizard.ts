@@ -103,6 +103,11 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
         shouldRun: async () => true,
       },
       {
+        args: ['--quiet', '--self'],
+        command: 'game:ios:app:addTester',
+        shouldRun: async () => true,
+      },
+      {
         args: ['--quiet'],
         command: 'game:ios:profile:create',
         async shouldRun() {

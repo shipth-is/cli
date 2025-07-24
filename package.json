@@ -8,7 +8,7 @@
   },
   "bugs": "https://github.com/shipth-is/cli/issues",
   "dependencies": {
-    "@expo/apple-utils": "2.0.3",
+    "@expo/apple-utils": "^2.1.12",
     "@expo/json-file": "^8.3.3",
     "@inkjs/ui": "^2.0.0",
     "@oclif/core": "^4",

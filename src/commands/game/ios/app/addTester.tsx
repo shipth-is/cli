@@ -20,6 +20,12 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     firstName: Flags.string({char: 'f', description: 'The first name of the tester'}),
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     lastName: Flags.string({char: 'l', description: 'The last name of the tester'}),
+    self: Flags.boolean({
+      char: 's',
+      description: 'Add yourself as a tester (uses your Apple ID email and name)',
+      default: false,
+    }),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
   }
 
   public async run(): Promise<void> {
@@ -30,17 +36,16 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     const {flags} = this
 
     const getEmail = async (): Promise<string> => {
+      if (flags.self) return authState.session.user.emailAddress
       if (flags.email) return flags.email
       const question = `Please enter the email address of the tester: `
       const enteredEmail = await getInput(question)
-      if (!enteredEmail) {
-        this.error('No email address provided')
-      }
-
+      if (!enteredEmail) this.error('No email address provided')
       return enteredEmail
     }
 
     const getFirstName = async (): Promise<string> => {
+      if (flags.self) return authState.session.user.firstName
       if (flags.firstName) return flags.firstName
       const suggestedName = 'John'
       const question = `Please enter the first name of the tester, or press enter to use ${suggestedName}: `
@@ -49,6 +54,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     }
 
     const getLastName = async (): Promise<string> => {
+      if (flags.self) return authState.session.user.lastName
       if (flags.lastName) return flags.lastName
       const suggestedName = 'Doe'
       const question = `Please enter the last name of the tester, or press enter to use ${suggestedName}: `
@@ -59,8 +65,6 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     const email = await getEmail()
     const firstName = await getFirstName()
     const lastName = await getLastName()
-
-    console.warn('This command does not yet work. It fails with an assertion error.')
 
     const addTestUser = async () => {
       const {app} = await queryAppleApp({ctx, iosBundleId: game.details?.iosBundleId})
@@ -76,15 +80,10 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
           id: app.id,
           isInternalGroup: true,
           name: TEST_GROUP_NAME,
-          publicLinkEnabled: false,
-          publicLinkLimit: 1,
-          publicLinkLimitEnabled: false,
+          hasAccessToAllBuilds: true,
         })
       }
 
-      // TODO: this should work but fails with:
-      // AssertionError [ERR_ASSERTION]: No type class found for "bulkBetaTesterAssignments"
-      // We may have to use a different app store connect library or call the API directly?
       await shipThisGroup.createBulkBetaTesterAssignmentsAsync([
         {
           email,
@@ -95,6 +94,8 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     }
 
     const handleComplete = async () => {}
+
+    if (flags.quiet) return await addTestUser()
 
     render(
       <Command command={this}>
