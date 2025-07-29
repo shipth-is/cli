@@ -150,6 +150,7 @@
     "./dist/commands/internal/fastlane.js",
     "./dist/commands/apiKey/list.js",
     "./dist/commands/apiKey/create.js",
+    "./dist/commands/apiKey/revoke.js",
     "./dist/commands/status.js",
     "./dist/commands/dashboard.js",
     "./dist/commands/login.js"
@@ -166,6 +167,9 @@
     "topics": {
       "internal": {
         "description": "Internal commands"
+      },
+      "apiKey": {
+        "description": "Commands related to ShipThis API Keys"
       },
       "apple": {
         "description": "Commands related to Apple Developer Portal"
