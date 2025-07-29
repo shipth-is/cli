@@ -237,3 +237,10 @@ export interface APIKey {
   lastUsedAt?: DateTime
   expiresAt: DateTime
 }
+export interface APIKeyWithSecret extends APIKey {
+  secret: string
+}
+export interface APIKeyCreateRequest {
+  name: string
+  durationDays: number
+}

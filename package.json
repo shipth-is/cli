@@ -149,6 +149,7 @@
     "./dist/commands/internal/readme.js",
     "./dist/commands/internal/fastlane.js",
     "./dist/commands/apiKey/list.js",
+    "./dist/commands/apiKey/create.js",
     "./dist/commands/status.js",
     "./dist/commands/dashboard.js",
     "./dist/commands/login.js"

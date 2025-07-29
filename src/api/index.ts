@@ -7,6 +7,8 @@ import {v4 as uuid} from 'uuid'
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
   APIKey,
+  APIKeyCreateRequest,
+  APIKeyWithSecret,
   Build,
   EditableProject,
   GoogleAuthResponse,
@@ -279,4 +281,20 @@ export async function getAPIKeys(params: PageAndSortParams): Promise<ListRespons
     data,
     pageCount: rawData.pageCount,
   }
+}
+
+// Create a new API key
+export async function createAPIKey(createProps: APIKeyCreateRequest): Promise<APIKeyWithSecret> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.post(`${API_URL}/me/keys`, createProps, opt)
+  // The only time we get the secret is when we create a new API key
+  return castObjectDates<APIKeyWithSecret>(data)
+}
+
+// Revoke (HTTP DELETE) an API key by ID
+export async function revokeAPIKey(apiKeyId: string): Promise<void> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  await axios.delete(`${API_URL}/me/keys/${apiKeyId}`, opt)
 }
