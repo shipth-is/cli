@@ -6,7 +6,7 @@ import {v4 as uuid} from 'uuid'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {getShortDate} from '@cli/utils/dates.js'
 import {getShortUUID} from '@cli/utils/index.js'
-import {Command, RunWithSpinner} from '@cli/components/index.js'
+import {Command, getRenderedMarkdown, RunWithSpinner} from '@cli/components/index.js'
 
 export default class ApiKeyCreate extends BaseAuthenticatedCommand<typeof ApiKeyCreate> {
   static override args = {}
@@ -35,20 +35,29 @@ export default class ApiKeyCreate extends BaseAuthenticatedCommand<typeof ApiKey
   }
 
   public async run(): Promise<void> {
-
     const {name, durationDays} = this.flags
 
     const createKey = async () => {
       // Name is optional, if not provided, a random name will be generated
       const apiKeyName = name ? (name as string) : `api-key-${getShortUUID(uuid())}`
       const apiKeyWithSecret = await createAPIKey({name: apiKeyName, durationDays})
-      console.log(`Created API key with name: ${apiKeyWithSecret.name} and ID: ${getShortUUID(apiKeyWithSecret.id)}`)
-      console.log(`Expires at: ${getShortDate(apiKeyWithSecret.expiresAt)}`)
-      console.log(`Secret: ${apiKeyWithSecret.secret}`)
-    }
 
-    const handleComplete = async () => {
-      process.exit(0)
+      const successMessage = getRenderedMarkdown({
+        filename: 'apikey-create.md',
+        templateVars: {
+          keyId: getShortUUID(apiKeyWithSecret.id),
+          keyName: apiKeyWithSecret.name,
+          keyExpiry: getShortDate(apiKeyWithSecret.expiresAt),
+          keySecret: apiKeyWithSecret.secret,
+        },
+      })
+
+      if (this.flags.quiet) {
+        this.log(apiKeyWithSecret.secret)
+        return
+      }
+
+      this.log(successMessage)
     }
 
     if (this.flags.quiet) return await createKey()
@@ -57,9 +66,8 @@ export default class ApiKeyCreate extends BaseAuthenticatedCommand<typeof ApiKey
       <Command command={this}>
         <RunWithSpinner
           executeMethod={createKey}
-          msgComplete="ShipThis API key created successfully"
           msgInProgress="Creating ShipThis API key..."
-          onComplete={handleComplete}
+          onComplete={() => process.exit(0)}
         />
       </Command>,
     )

@@ -1,7 +1,7 @@
 import {Args, Flags} from '@oclif/core'
 import {render} from 'ink'
 
-import { revokeAPIKey} from '@cli/api/index.js'
+import {revokeAPIKey} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {getShortUUID} from '@cli/utils/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
