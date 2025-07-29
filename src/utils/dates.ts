@@ -13,6 +13,7 @@ export function castObjectDates<T>(apiObject: any, keys = ['createdAt', 'updated
   const datesOnly = Object.keys(apiObject)
     .filter((k) => keys.includes(k))
     .reduce((a: any, c: string) => {
+      if (!apiObject[c]) return a
       a[c] = DateTime.fromISO(apiObject[c])
       return a
     }, {})
