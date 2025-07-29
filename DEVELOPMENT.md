@@ -19,7 +19,7 @@ shipthis login
 When you add or remove a command you will need to update the `"exports"` section in the `package.json` file using:
 
 ```bash
-find src/commands/ -type f | sed "s/src\([^\.]*\)\..*$/dist\1.js/g"
+find src/commands/ -type f | sed "s/src\([^\.]*\)\..*$/\"\.\/dist\1.js\",/g"
 ```
 
 ## To ensure you are using your local dev

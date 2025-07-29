@@ -6,6 +6,7 @@ import {v4 as uuid} from 'uuid'
 
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
+  APIKey,
   Build,
   EditableProject,
   GoogleAuthResponse,
@@ -266,4 +267,16 @@ export async function downloadBuildById(projectId: string, buildId: string, file
     writer.on('finish', resolve)
     writer.on('error', reject)
   })
+}
+
+// get page of ShipThis APIkeys for use in CI
+export async function getAPIKeys(params: PageAndSortParams): Promise<ListResponse<APIKey>> {
+  const headers = getAuthedHeaders()
+  const opt = {headers, params}
+  const {data: rawData} = await axios.get(`${API_URL}/me/keys`, opt)
+  const data = castArrayObjectDates<APIKey>(rawData.data)
+  return {
+    data,
+    pageCount: rawData.pageCount,
+  }
 }
