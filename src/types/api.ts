@@ -236,6 +236,7 @@ export interface APIKey {
   updatedAt: DateTime
   lastUsedAt?: DateTime
   expiresAt: DateTime
+  revokedAt?: DateTime
 }
 export interface APIKeyWithSecret extends APIKey {
   secret: string

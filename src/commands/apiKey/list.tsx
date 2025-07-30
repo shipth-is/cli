@@ -47,9 +47,9 @@ export default class ApiKeyList extends BaseAuthenticatedCommand<typeof ApiKeyLi
     const data = apiKeysListResponse.data.map((apiKey) => ({
       id: getShortUUID(apiKey.id),
       name: apiKey.name,
-      createdAt: getShortDate(apiKey.createdAt),
       expiresAt: getShortDate(apiKey.expiresAt),
       lastUsedAt: apiKey.lastUsedAt ? getShortDate(apiKey.lastUsedAt) : 'Never',
+      revokedAt: apiKey.revokedAt ? getShortDate(apiKey.revokedAt) : 'Active',
     }))
 
     const emptyState = (

@@ -271,12 +271,15 @@ export async function downloadBuildById(projectId: string, buildId: string, file
   })
 }
 
+
+const APIKEYS_DATE_FIELDS = ['createdAt', 'updatedAt', 'expiresAt', 'lastUsedAt', 'revokedAt']
+
 // get page of ShipThis APIkeys for use in CI
 export async function getAPIKeys(params: PageAndSortParams): Promise<ListResponse<APIKey>> {
   const headers = getAuthedHeaders()
   const opt = {headers, params}
   const {data: rawData} = await axios.get(`${API_URL}/me/keys`, opt)
-  const data = castArrayObjectDates<APIKey>(rawData.data, ['createdAt', 'updatedAt', 'expiresAt', 'lastUsedAt'])
+  const data = castArrayObjectDates<APIKey>(rawData.data, APIKEYS_DATE_FIELDS)
   return {
     data,
     pageCount: rawData.pageCount,
@@ -289,7 +292,7 @@ export async function createAPIKey(createProps: APIKeyCreateRequest): Promise<AP
   const opt = {headers}
   const {data} = await axios.post(`${API_URL}/me/keys`, createProps, opt)
   // The only time we get the secret is when we create a new API key
-  return castObjectDates<APIKeyWithSecret>(data, ['createdAt', 'updatedAt', 'expiresAt', 'lastUsedAt'])
+  return castObjectDates<APIKeyWithSecret>(data, APIKEYS_DATE_FIELDS)
 }
 
 // Revoke (HTTP DELETE) an API key by ID
