@@ -11,7 +11,7 @@ USAGE
   $ shipthis apiKey create [-n <value>] [-d <value>] [-q]
 
 FLAGS
-  -d, --durationDays=<value>  [default: 30] duration of the API key in days
+  -d, --durationDays=<value>  [default: 365] duration of the API key in days
   -n, --name=<value>          name to apply to the API key (if not provided, a random name will be generated)
   -q, --quiet                 Outputs just the secret value
 

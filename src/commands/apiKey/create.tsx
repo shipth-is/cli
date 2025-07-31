@@ -25,7 +25,7 @@ export default class ApiKeyCreate extends BaseAuthenticatedCommand<typeof ApiKey
     durationDays: Flags.integer({
       char: 'd',
       description: 'duration of the API key in days',
-      default: 30,
+      default: 365,
     }),
     quiet: Flags.boolean({
       char: 'q',
