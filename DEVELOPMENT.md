@@ -22,6 +22,12 @@ When you add or remove a command you will need to update the `"exports"` section
 find src/commands/ -type f | sed "s/src\([^\.]*\)\..*$/\"\.\/dist\1.js\",/g"
 ```
 
+NB: also be sure to include the custom help class in the exports (the find excludes this)
+
+```json
+  "./dist/utils/help.js",
+```
+
 ## To ensure you are using your local dev
 
 ```bash
