@@ -4,7 +4,7 @@
 - Name: **${keyName}**
 - Expiry: **${keyExpiry}**
 
-**The secret not be shown again. Store it securely.**
+**The secret will not be shown again. Store it securely.**
 
 ## Secret value
 
