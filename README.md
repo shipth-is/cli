@@ -199,18 +199,19 @@ ShipThis is currently in open-beta as so it is completely free to use. You can s
 
 ### 🗂 Topics
 
-- [apple](https://shipth.is/docs/reference/apple) – Commands that relate to linking your ShipThis account with your Apple Developer Account
-- [game](https://shipth.is/docs/reference/game) – Commands that relate to configuring the specific game in the current working directory.
+- [apiKey](https://shipth.is/docs/reference/apiKey) - Commands related to ShipThis API Keys
+- [apple](https://shipth.is/docs/reference/apple) - Commands that relate to linking your ShipThis account with your Apple Developer Account
+- [game](https://shipth.is/docs/reference/game) - Commands that relate to configuring the specific game in the current working directory.
 
 ### 🔧 Commands
 
-- [dashboard](https://shipth.is/docs/reference/dashboard) – Opens the web browser to your shipth.is dashboard
-- [login](https://shipth.is/docs/reference/login) – Sign in or create a new account
-- [status](https://shipth.is/docs/reference/status) – Display your overall ShipThis account status
-- [help](https://shipth.is/docs/reference/help) – Display help for a specific topic or command
+- [dashboard](https://shipth.is/docs/reference/dashboard) - Opens the web browser to your shipth.is dashboard
+- [login](https://shipth.is/docs/reference/login) - Sign in or create a new account
+- [status](https://shipth.is/docs/reference/status) - Display your overall ShipThis account status
+- [help](https://shipth.is/docs/reference/help) - Display help for a specific topic or command
 
 ## 🌍 Community
 
 - 💬 [Join us on Discord](https://discord.gg/gPjn3S99k4)
 - 🐛 [Report an issue](https://github.com/shipth-is/cli/issues)
-- 📣 Feature ideas? Feedback? We’d love to hear from you – email support@shipth.is
+- 📣 Feature ideas? Feedback? We’d love to hear from you - email support@shipth.is

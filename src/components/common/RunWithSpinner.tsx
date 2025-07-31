@@ -5,7 +5,7 @@ import React from 'react'
 
 interface Props {
   executeMethod: () => Promise<any>
-  msgComplete: string
+  msgComplete?: string
   msgInProgress: string
   onComplete: () => void
   spinnerType?: SpinnerName
@@ -27,6 +27,8 @@ export const RunWithSpinner = ({
       return onComplete()
     })
   }, [])
+
+  if (!isInProgress && !msgComplete) return <></>
 
   return (
     <Box>

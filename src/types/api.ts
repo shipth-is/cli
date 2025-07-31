@@ -228,3 +228,20 @@ export interface GoogleStatusResponse {
   orgName?: string
   projectId?: string
 }
+
+export interface APIKey {
+  id: string
+  name: string
+  createdAt: DateTime
+  updatedAt: DateTime
+  lastUsedAt?: DateTime
+  expiresAt: DateTime
+  revokedAt?: DateTime
+}
+export interface APIKeyWithSecret extends APIKey {
+  secret: string
+}
+export interface APIKeyCreateRequest {
+  name: string
+  durationDays: number
+}
