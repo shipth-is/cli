@@ -1,10 +1,20 @@
 # Topic: `apiKey`
 
-Commands related to ShipThis API Keys
+## Description
 
+Commands in the **apiKey** topic are prefixed with `shipthis apiKey`. These commands let you create new keys, list existing ones, and revoke keys you no longer need.
+
+:::info
+ShipThis API keys are securely generated, random tokens used to authenticate requests to the ShipThis API. They are intended for automated environments, like CI pipelines, where manual login is not practical.  
+The raw key is only shown once when created, so make sure to copy and store it securely.
+:::
+
+
+## Example
+
+[![asciicast](https://asciinema.org/a/bfCPQIvDNt5zlgcEQhcs7o6Fr.svg)](https://asciinema.org/a/bfCPQIvDNt5zlgcEQhcs7o6Fr#shipthis-col80row24)
 
 ## Commands
-
 
 ### `apiKey create`
 
