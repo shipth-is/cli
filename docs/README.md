@@ -1,6 +1,6 @@
 # ShipThis CLI Reference
 
-**ShipThis** is a **command-line tool** which manages releasing your [Godot](https://godotengine.org/) games to the **iOS App Store**.
+**ShipThis** is a **command-line tool** which manages releasing your [Godot](https://godotengine.org/) games to the **iOS App Store** and **Google Play**.
 
 :::tip New to ShipThis?
 Begin with our [Quickstart Guide](https://shipth.is/docs/guides/quick-start).
@@ -8,8 +8,9 @@ Begin with our [Quickstart Guide](https://shipth.is/docs/guides/quick-start).
 
 ## Topics
 
+- [apiKey](https://shipth.is/docs/reference/apiKey) - Commands that relate to ShipThis API keys
 - [apple](https://shipth.is/docs/reference/apple) - Commands that relate to linking your ShipThis account with your Apple Developer Account
-- [game](https://shipth.is/docs/reference/game) - Commands that relate to configuring the specific game in the current working directory.
+- [game](https://shipth.is/docs/reference/game) - Commands that relate to configuring the specific game in the current working directory
 
 ## Commands
 
