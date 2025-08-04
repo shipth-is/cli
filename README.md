@@ -1,21 +1,12 @@
-<h1 align="center">
-  <a href="https://shipth.is">
-    <picture>
-      <source height="56" width="260" srcset="docs/assets/logo_dark.svg" media="(prefers-color-scheme: dark)">
-      <img height="56" width="260" alt="ShipThis Home" src="docs/assets/logo_light.svg">
-    </picture>
-  </a>
-  <br>
-  <a href="https://discord.gg/gPjn3S99k4">
-    <img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7">
-  </a>
-</h1>
-<p align="center">
-  <b>ShipThis</b> is a <b>command line tool</b> for building and uploading your <a href="https://godotengine.org/">Godot</a> mobile games to the <b>Apple App Store</b> and <b>Google Play</b>.
-</p>
-<p align="center">
-  ShipThis compiles your game on managed cloud servers. You do not need Xcode, Android Studio, or SDK installations. You can run it manually or from CI.
-</p>
+
+
+# ShipThis CLI <a href="https://discord.gg/gPjn3S99k4"><img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7"></a><a href="https://github.com/shipth-is/cli"><img src="docs/assets/st.png" align="right" height="80" alt="ShipThis" /></a>
+
+What is the [ShipThis](https://shipth.is) CLI?
+
+- A tool for building and publishing Godot mobile games to the **Apple App Store** and **Google Play**.
+- A simple way to manage certificates, keystores, API keys, and provisioning profiles.
+- A cloud build service which is free for most solo-devs.
 
 <p align="center">
   <picture>
@@ -26,16 +17,6 @@
 
 > [!IMPORTANT]
 > ShipThis is in open beta. While in beta, it is completely free to use.
-
----
-
-## Why use ShipThis?
-
-- **Always a free tier** - Enough build minutes for most solo devs
-- **One-command setup** - Use the interactive [`wizard`](https://shipth.is/docs/reference/game/wizard) to configure your game
-- **No additional tools** - No Xcode, Android Studio, or SDK installation required
-- **Simplified provisioning** - We handle iOS certificates, Android keystores, app signing, and API keys
-- **One-command deployment** - Publish to TestFlight or Google Play with a single command
 
 ## FAQ
 
@@ -72,7 +53,6 @@ shipthis game ship --follow --platform android --skipPublish --download game.aab
 
 
 ```
-
 
 </details>
 
@@ -122,7 +102,7 @@ If you provide an **export_presets.cfg** file, the desired preset values will be
 
 ---
 
-ShipThis is currently in open-beta as so it is completely free to use. You can see our planned pricing on the [pricing page](https://shipth.is/pricing).
+ShipThis is in open beta. While in beta, it is completely free to use. You can see our planned pricing on the [pricing page](https://shipth.is/pricing).
 
 </details>
 
