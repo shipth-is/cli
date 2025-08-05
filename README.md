@@ -1,8 +1,8 @@
 
 
-# ShipThis CLI <a href="https://discord.gg/gPjn3S99k4"><img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7"></a><a href="https://github.com/shipth-is/cli"><img src="docs/assets/st.png" align="right" height="80" alt="ShipThis" /></a>
+# ShipThis <a href="https://discord.gg/gPjn3S99k4"><img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7"></a><a href="https://github.com/shipth-is/cli"><img src="docs/assets/st.png" align="right" height="80" alt="ShipThis" /></a>
 
-What is the [ShipThis](https://shipth.is) CLI?
+What is [ShipThis](https://shipth.is)?
 
 - A tool for building and publishing Godot mobile games to the **Apple App Store** and **Google Play**.
 - A simple way to manage certificates, keystores, API keys, and provisioning profiles.
