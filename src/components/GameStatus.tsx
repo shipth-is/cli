@@ -59,7 +59,8 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
 
   for (const platform of platforms) {
     // The platform is considered enabled if it has the identifier set
-    isEnabled[platform] = platform === Platform.IOS ? Boolean(game.details?.iosBundleId) : Boolean(game.details?.androidPackageName)
+    isEnabled[platform] =
+      platform === Platform.IOS ? Boolean(game.details?.iosBundleId) : Boolean(game.details?.androidPackageName)
     if (isEnabled[platform]) {
       // Call the backend to tell us the status of the platform for this game
       statuses[platform] = await getProjectPlatformProgress(game.id, platform)
@@ -121,19 +122,17 @@ export const GameStatusDetails = ({children, gameId, onComplete, onError, platfo
 
   const {game, statuses, steps} = state
 
+  const gameDetails: Record<string, string> = {}
+  gameDetails['Game ID'] = getShortUUID(game.id)
+  gameDetails['Name'] = game.name
+  gameDetails['Version'] = game.details?.semanticVersion || '0.0.1'
+  gameDetails['Build Number'] = `${game.details?.buildNumber || 1}`
+  gameDetails['Created At'] = getShortDate(game.createdAt)
+  gameDetails['Game Engine'] = `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.3'}`
+
   return (
     <Box flexDirection="column">
-      <StatusTable
-        statuses={{
-          'Build Number': `${game.details?.buildNumber || 1}`,
-          'Created At': getShortDate(game.createdAt),
-          'Game Engine': `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.3'}`,
-          'Game ID': getShortUUID(game.id),
-          Name: game.name,
-          Version: game.details?.semanticVersion || '0.0.1',
-        }}
-        title="Game Details"
-      />
+      <StatusTable statuses={gameDetails} title="Game Details" />
 
       {platforms.map((platform) => {
         const status = statuses[platform]
