@@ -124,8 +124,8 @@ export const GameStatusDetails = ({children, gameId, onComplete, onError, platfo
 
   const gameDetails: Record<string, string> = {}
   gameDetails['Game ID'] = getShortUUID(game.id)
-  gameDetails['Name'] = game.name
-  gameDetails['Version'] = game.details?.semanticVersion || '0.0.1'
+  gameDetails.Name = game.name
+  gameDetails.Version = game.details?.semanticVersion || '0.0.1'
   gameDetails['Build Number'] = `${game.details?.buildNumber || 1}`
   gameDetails['Created At'] = getShortDate(game.createdAt)
   gameDetails['Game Engine'] = `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.3'}`

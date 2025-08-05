@@ -46,13 +46,16 @@ export async function queryProjectCredentials({
 
 // How we typically display a project credential
 export function getProjectCredentialSummary(credential: ProjectCredential): ScalarDict {
-  return {
-    createdAt: getShortDate(credential.createdAt),
-    id: getShortUUID(credential.id),
-    isActive: credential.isActive,
-    serial: credential.serialNumber.slice(0, 30) + (credential.serialNumber.length > 30 ? '…' : ''),
-    type: credential.type,
-  }
+  const trimLength = 25
+  const summary: ScalarDict = {}
+  // So that the order is maintained in the table (the linter will reorder if it is an object)
+  summary.id = getShortUUID(credential.id)
+  summary.type = credential.type
+  summary.serial =
+    credential.serialNumber.slice(0, trimLength) + (credential.serialNumber.length > trimLength ? '…' : '')
+  summary.isActive = credential.isActive
+  summary.createdAt = getShortDate(credential.createdAt)
+  return summary
 }
 
 export const useProjectCredentials = ({
@@ -68,7 +71,9 @@ export const useProjectCredentials = ({
       if (!(platform || type)) return data
       return {
         ...data,
-        data: data.data.filter((credential) => (!platform || credential.platform === platform) && (!type || credential.type === type)),
+        data: data.data.filter(
+          (credential) => (!platform || credential.platform === platform) && (!type || credential.type === type),
+        ),
       }
     },
   })
