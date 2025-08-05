@@ -20,12 +20,12 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     firstName: Flags.string({char: 'f', description: 'The first name of the tester'}),
     gameId: Flags.string({char: 'g', description: 'The ID of the game'}),
     lastName: Flags.string({char: 'l', description: 'The last name of the tester'}),
+    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
     self: Flags.boolean({
       char: 's',
-      description: 'Add yourself as a tester (uses your Apple ID email and name)',
       default: false,
+      description: 'Add yourself as a tester (uses your Apple ID email and name)',
     }),
-    quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
   }
 
   public async run(): Promise<void> {
@@ -77,10 +77,10 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
       )
       if (!shipThisGroup) {
         shipThisGroup = await BetaGroup.createAsync(ctx, {
+          hasAccessToAllBuilds: true,
           id: app.id,
           isInternalGroup: true,
           name: TEST_GROUP_NAME,
-          hasAccessToAllBuilds: true,
         })
       }
 

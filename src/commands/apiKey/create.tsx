@@ -1,12 +1,12 @@
-import {createAPIKey} from '@cli/api/index.js'
 import {Flags} from '@oclif/core'
 import {render} from 'ink'
 import {v4 as uuid} from 'uuid'
 
+import {createAPIKey} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {Command, RunWithSpinner, getRenderedMarkdown} from '@cli/components/index.js'
 import {getShortDate} from '@cli/utils/dates.js'
 import {getShortUUID} from '@cli/utils/index.js'
-import {Command, getRenderedMarkdown, RunWithSpinner} from '@cli/components/index.js'
 
 export default class ApiKeyCreate extends BaseAuthenticatedCommand<typeof ApiKeyCreate> {
   static override args = {}
@@ -18,36 +18,36 @@ export default class ApiKeyCreate extends BaseAuthenticatedCommand<typeof ApiKey
   ]
 
   static override flags = {
+    durationDays: Flags.integer({
+      char: 'd',
+      default: 365,
+      description: 'duration of the API key in days',
+    }),
     name: Flags.string({
       char: 'n',
       description: 'name to apply to the API key (if not provided, a random name will be generated)',
     }),
-    durationDays: Flags.integer({
-      char: 'd',
-      description: 'duration of the API key in days',
-      default: 365,
-    }),
     quiet: Flags.boolean({
       char: 'q',
-      description: 'Outputs just the secret value',
       default: false,
+      description: 'Outputs just the secret value',
     }),
   }
 
   public async run(): Promise<void> {
-    const {name, durationDays} = this.flags
+    const {durationDays, name} = this.flags
 
     const createKey = async () => {
       // Name is optional, if not provided, a random name will be generated
       const apiKeyName = name ? (name as string) : `api-key-${getShortUUID(uuid())}`
-      const apiKeyWithSecret = await createAPIKey({name: apiKeyName, durationDays})
+      const apiKeyWithSecret = await createAPIKey({durationDays, name: apiKeyName})
 
       const successMessage = getRenderedMarkdown({
         filename: 'apikey-create.md',
         templateVars: {
+          keyExpiry: getShortDate(apiKeyWithSecret.expiresAt),
           keyId: getShortUUID(apiKeyWithSecret.id),
           keyName: apiKeyWithSecret.name,
-          keyExpiry: getShortDate(apiKeyWithSecret.expiresAt),
           keySecret: apiKeyWithSecret.secret,
         },
       })

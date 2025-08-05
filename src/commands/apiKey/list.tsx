@@ -1,14 +1,12 @@
-import {getAPIKeys} from '@cli/api/index.js'
 import {Flags} from '@oclif/core'
 import {Box, Text, render} from 'ink'
 
+import {getAPIKeys} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-
+import {Command, Table} from '@cli/components/index.js'
 import {PageAndSortParams} from '@cli/types/request.js'
 import {getShortDate} from '@cli/utils/dates.js'
 import {getShortUUID} from '@cli/utils/index.js'
-
-import {Command, Table} from '@cli/components/index.js'
 
 export default class ApiKeyList extends BaseAuthenticatedCommand<typeof ApiKeyList> {
   static override args = {}
@@ -45,10 +43,10 @@ export default class ApiKeyList extends BaseAuthenticatedCommand<typeof ApiKeyLi
     const apiKeysListResponse = await getAPIKeys(params)
 
     const data = apiKeysListResponse.data.map((apiKey) => ({
-      id: getShortUUID(apiKey.id),
-      name: apiKey.name,
       expiresAt: getShortDate(apiKey.expiresAt),
+      id: getShortUUID(apiKey.id),
       lastUsedAt: apiKey.lastUsedAt ? getShortDate(apiKey.lastUsedAt) : 'Never',
+      name: apiKey.name,
       revokedAt: apiKey.revokedAt ? getShortDate(apiKey.revokedAt) : 'Active',
     }))
 

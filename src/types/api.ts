@@ -230,18 +230,18 @@ export interface GoogleStatusResponse {
 }
 
 export interface APIKey {
-  id: string
-  name: string
   createdAt: DateTime
-  updatedAt: DateTime
-  lastUsedAt?: DateTime
   expiresAt: DateTime
+  id: string
+  lastUsedAt?: DateTime
+  name: string
   revokedAt?: DateTime
+  updatedAt: DateTime
 }
 export interface APIKeyWithSecret extends APIKey {
   secret: string
 }
 export interface APIKeyCreateRequest {
-  name: string
   durationDays: number
+  name: string
 }
