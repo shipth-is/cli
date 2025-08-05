@@ -38,11 +38,13 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
     const params = flags as PageAndSortParams
     const gameListResponse = await getProjects(params)
 
-    const data = gameListResponse.data.map((game) => ({
-        createdAt: getShortDate(game.createdAt),
-        id: getShortUUID(game.id),
-        name: game.name,
-      }))
+    const data = gameListResponse.data.map((game) => {
+      const item: Record<string, string> = {}
+      item.id = getShortUUID(game.id)
+      item.name = game.name
+      item.createdAt = getShortDate(game.createdAt)
+      return item
+    })
 
     render(
       <Command command={this}>
