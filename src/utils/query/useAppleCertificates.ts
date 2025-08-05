@@ -32,13 +32,13 @@ export const canAppleCertificateBeUsed = (cert: Cert, userCredentials: UserCrede
 
 // How we typically display an Apple Cert - needs the userCredentials to determine if it can be used
 export function getAppleCertificateSummary(cert: Cert, userCredentials: UserCredential[]): ScalarDict {
-  return {
-    canBeUsed: canAppleCertificateBeUsed(cert, userCredentials),
-    expires: getShortDate(DateTime.fromISO(cert.attributes.expirationDate)),
-    id: getShortUUID(cert.id),
-    name: cert.attributes.name,
-    serial: cert.attributes.serialNumber,
-  }
+  const summary: ScalarDict = {};
+  summary.id = getShortUUID(cert.id);
+  summary.name = cert.attributes.name;
+  summary.serial = cert.attributes.serialNumber;
+  summary.expires = getShortDate(DateTime.fromISO(cert.attributes.expirationDate));
+  summary.canBeUsed = canAppleCertificateBeUsed(cert, userCredentials);
+  return summary;
 }
 
 export const useAppleCertificates = (

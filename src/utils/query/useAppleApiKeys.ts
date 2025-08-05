@@ -25,14 +25,16 @@ export const canAppleApiKeyBeUsed = (key: any, userCredentials: UserCredential[]
 
 // How we typically display an Apple API Key - needs the userCredentials to determine if it can be used
 export function getAppleApiKeySummary(key: any, userCredentials: UserCredential[]): ScalarDict {
-  return {
-    canBeUsed: canAppleApiKeyBeUsed(key, userCredentials),
-    keyID: key.id,
-    lastUsed: getShortDate(DateTime.fromISO(key.attributes.lastUsed)),
-    name: key.attributes.nickname,
-    roles: key.attributes.roles?.join(', '),
-  }
+  const summary: ScalarDict = {};
+  // To maintain the order in the table (the linter will reorder if it is an object)
+  summary.keyID = key.id;
+  summary.name = key.attributes.nickname;
+  summary.roles = key.attributes.roles?.join(', ');
+  summary.lastUsed = getShortDate(DateTime.fromISO(key.attributes.lastUsed));
+  summary.canBeUsed = canAppleApiKeyBeUsed(key, userCredentials);
+  return summary;
 }
+
 
 export const useAppleApiKeys = (props: AppleApiKeysQueryProps): UseQueryResult<AppleApiKeyQueryResponse> => {
   const queryResult = useQuery<AppleApiKeyQueryResponse>({

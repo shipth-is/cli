@@ -216,6 +216,7 @@
     "build-tsc-alias": "shx rm -rf dist && npx tsc --build && npx tsc-alias -p tsconfig.json",
     "build": "pkgroll --clean-dist",
     "lint": "eslint . --ext .ts,.tsx",
+    "lint-fix": "eslint . --ext .ts,.tsx --fix",
     "posttest": "npm run lint",
     "prepack": "cp package-lock.json package-lock.dev.json || true && npm run readme && oclif manifest && npm shrinkwrap",
     "postpack": "mv package-lock.dev.json package-lock.json || true && shx rm -f oclif.manifest.json && shx rm -f npm-shrinkwrap.json",

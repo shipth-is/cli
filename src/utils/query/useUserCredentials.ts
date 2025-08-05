@@ -37,13 +37,14 @@ export async function queryUserCredentials(params: PageAndSortParams): Promise<U
 
 // How we typically display a user credential
 export function getUserCredentialSummary(credential: UserCredential): ScalarDict {
-  return {
-    createdAt: getShortDate(credential.createdAt),
-    id: getShortUUID(credential.id),
-    isActive: credential.isActive,
-    serial: credential.serialNumber,
-    type: credential.type,
-  }
+  const summary: ScalarDict = {};
+  // So that the order is maintained in the table (the linter will reorder if it is an object)
+  summary.id = getShortUUID(credential.id);
+  summary.type = credential.type;
+  summary.serial = credential.serialNumber;
+  summary.isActive = credential.isActive;
+  summary.createdAt = getShortDate(credential.createdAt);
+  return summary;
 }
 
 export const useUserCredentials = ({

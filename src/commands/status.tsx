@@ -32,15 +32,12 @@ export default class Status extends BaseCommand<typeof Status> {
 
     if (steps.length === 0) steps = ['shipthis game status']
 
-    const statusProps = {
-      statuses: {
-        'Git repository detected (not required)': isGitRepo,
-        'Godot project detected': isGodotGame,
-        'Logged in': isLoggedIn,
-        'ShipThis project configured': isShipThisConfigured,
-      },
-      title: 'Status',
-    }
+    const statuses: Record<string, boolean> = {}
+    statuses['Logged in'] = isLoggedIn
+    statuses['Godot project detected'] = isGodotGame
+    statuses['ShipThis project configured'] = isShipThisConfigured
+    statuses['Git repository detected (not required)'] = isGitRepo
+    const statusProps = {statuses, title: 'Status'}
 
     render(
       <Command command={this}>

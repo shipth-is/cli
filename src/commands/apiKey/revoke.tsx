@@ -3,8 +3,8 @@ import {render} from 'ink'
 
 import {revokeAPIKey} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {getShortUUID} from '@cli/utils/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
+import {getShortUUID} from '@cli/utils/index.js'
 
 export default class ApiKeyRevoke extends BaseAuthenticatedCommand<typeof ApiKeyRevoke> {
   static override args = {
@@ -13,6 +13,7 @@ export default class ApiKeyRevoke extends BaseAuthenticatedCommand<typeof ApiKey
       required: true,
     }),
   }
+
   static override description = 'Revokes a specific ShipThis API key.'
   static override examples = [
     '<%= config.bin %> <%= command.id %> abcd1234',
@@ -22,14 +23,14 @@ export default class ApiKeyRevoke extends BaseAuthenticatedCommand<typeof ApiKey
   static override flags = {
     quiet: Flags.boolean({
       char: 'q',
-      description: 'Suppress output except for errors',
       default: false,
+      description: 'Suppress output except for errors',
     }),
   }
 
   public async run(): Promise<void> {
     const revokeKey = async () => {
-      const apiKeyId = this.args.apiKeyId
+      const {apiKeyId} = this.args
       await revokeAPIKey(apiKeyId)
       console.log(`Revoked API key with ID: ${getShortUUID(apiKeyId)}`)
     }
