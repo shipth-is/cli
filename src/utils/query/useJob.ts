@@ -15,27 +15,35 @@ export interface JobQueryProps {
 export function getJobDetailsSummary(jobDetails: JobDetails): ScalarDict {
   const semanticVersion = jobDetails?.semanticVersion || 'N/A'
   const buildNumber = jobDetails?.buildNumber || 'N/A'
-  const gitCommit = jobDetails?.gitCommitHash ? getShortUUID(jobDetails?.gitCommitHash) : ''
+  const gitCommit = jobDetails?.gitCommitHash ? getShortUUID(jobDetails.gitCommitHash) : ''
   const gitBranch = jobDetails?.gitBranch || ''
-  return {
-    gitInfo: gitCommit ? `${gitCommit} (${gitBranch})` : '',
-    version: `${semanticVersion} (${buildNumber})`,
-  }
+
+  // To maintain order
+  const details: ScalarDict = {}
+  details.version = `${semanticVersion} (${buildNumber})`
+  details.gitInfo = gitCommit ? `${gitCommit} (${gitBranch})` : ''
+
+  return details
 }
 
 export function getJobSummary(job: Job, timeNow: DateTime): ScalarDict {
-  const inProgress = ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
-  return {
-    id: getShortUUID(job.id),
-    ...getJobDetailsSummary(job.details),
-    createdAt: getShortDateTime(job.createdAt),
-    platform: getPlatformName(job.type),
-    runtime: getShortTimeDelta(job.createdAt, inProgress ? timeNow : job.updatedAt),
-    status: job.status,
-  }
+  const inProgress = ![JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status);
+  const details = getJobDetailsSummary(job.details);
+  const summary: ScalarDict = {};
+  // To maintain order
+  summary.id = getShortUUID(job.id);
+  summary.version = details.version;
+  summary.gitInfo = details.gitInfo;
+  summary.platform = getPlatformName(job.type);
+  summary.status = job.status;
+  summary.createdAt = getShortDateTime(job.createdAt);
+  summary.runtime = getShortTimeDelta(job.createdAt, inProgress ? timeNow : job.updatedAt);
+
+  return summary;
 }
 
-export const useJob = (props: JobQueryProps): UseQueryResult<Job, AxiosError> => useQuery<Job, AxiosError>({
+export const useJob = (props: JobQueryProps): UseQueryResult<Job, AxiosError> =>
+  useQuery<Job, AxiosError>({
     queryFn: () => getJob(props.jobId, props.projectId),
     queryKey: cacheKeys.job(props),
   })
