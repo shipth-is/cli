@@ -1,10 +1,20 @@
 # Topic: `game android keyStore`
 
+## Description
+
 Commands related to the Android KeyStore for a specific game
 
+:::info
+An Android **keystore** is a secure file where you keep the private key that signs your app. When you build and publish an APK or AAB, this key proves to Google Play (and your users) that the app really comes from you.  
+
+If you have already published your game on Google Play, you will need to [import](#game-android-keystore-import) the same keystore you used before.
+:::
+
+## Example
+
+[![asciicast](https://asciinema.org/a/S3R73FuaGMCwu2C0dHSC0BrJB.svg)](https://asciinema.org/a/S3R73FuaGMCwu2C0dHSC0BrJB#shipthis-col80row24)
 
 ## Commands
-
 
 ### `game android keyStore create`
 
@@ -61,14 +71,14 @@ EXAMPLES
 
 #### Description
 
-Imports an Android Keystore to your ShipThis account for the specified game.
+Imports an Android Keystore to your ShipThis account for the specified game. You can import as JKS and password parameters or as a ZIP file.
 
 #### Help Output
 
 ```help
 USAGE
-  $ shipthis game android keyStore import [FILE] [-g <value>] [--jksFile <value>] [--keystorePassword <value>] [--keyPassword
-    <value>] [-f]
+  $ shipthis game android keyStore import [FILE] [-g <value>] [-f] [--jksFile <value>] [--keyPassword <value>] [--keystorePassword <value>]
+
 
 ARGUMENTS
   FILE  Path to the ZIP file to import (must be in the same format as the export)
