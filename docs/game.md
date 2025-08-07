@@ -3,7 +3,13 @@
 Commands in the game topic are prefixed `shipthis game`. They relate to configuring
 the specific game in the current working directory.
 
-You will need to be authenticated against ShipThis (by running [`shipthis login`](login)) before running the Game commands.
+:::tip
+You will need to be authenticated against ShipThis before you can use these commands. To do that please run the following command first:
+
+- [`shipthis login`](/docs/reference/login)
+
+:::
+
 
 ## Topics
 
