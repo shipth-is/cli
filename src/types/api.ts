@@ -94,9 +94,9 @@ export enum JobStatus {
 }
 
 export type JobDetails = {
-    skipPublish?: boolean // If true, don't publish the build to the store
-  } &
-  ProjectDetails & UploadDetails
+  skipPublish?: boolean // If true, don't publish the build to the store
+} & ProjectDetails &
+  UploadDetails
 
 export interface Job {
   builds?: Build[]
@@ -221,11 +221,14 @@ export interface AndroidServiceAccountSetupStatus {
   status: 'complete' | 'error' | 'queued' | 'running' | 'unknown'
 }
 
+// Reply when you connect to Google - this is the status of the user
 export interface GoogleStatusResponse {
   isAuthenticated: boolean
   isOrg?: boolean
+  needsPolicyChange?: boolean
   orgCreatedAt?: string
   orgName?: string
+  orgResourceName?: string // e.g. "organizations/1234"
   projectId?: string
 }
 

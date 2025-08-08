@@ -1,0 +1,30 @@
+# Google Organization Policy: Disable Service Account Key Creation
+
+**Organization:** `${orgName}`  
+**Resource:** `${orgResourceName}`  
+**Created:** `${orgCreatedAt}`  
+**Policy Change Needed:** `${needsPolicyChange ? 'Yes' : 'No'}`
+
+Note: If your organization was created on or after **May 3, 2024**, this constraint is enforced by default.  
+Learn more: <https://cloud.google.com/resource-manager/docs/organization-policy/restricting-service-accounts?authuser=2#disable_service_account_key_creation>
+
+If you would like to change this policy manually, please see:
+
+- <https://www.youtube.com/watch?v=ABIiOM9X5kM>
+
+${if needsPolicyChange}
+This organization currently **enforces** the policy that disables service account key creation.
+
+To create an API key, you must **revoke** this policy:
+
+```bash
+shipthis game ship android apiKey policy --revoke
+```
+
+You can re-enable the policy at any time:
+
+```bash
+shipthis game ship android apiKey policy --enforce
+```
+
+${endif}
