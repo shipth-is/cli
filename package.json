@@ -140,6 +140,7 @@
     "./dist/commands/game/android/keyStore/import.js",
     "./dist/commands/game/android/apiKey/export.js",
     "./dist/commands/game/android/apiKey/create.js",
+    "./dist/commands/game/android/apiKey/policy.js",
     "./dist/commands/game/android/apiKey/status.js",
     "./dist/commands/game/android/apiKey/import.js",
     "./dist/commands/game/android/apiKey/invite.js",
