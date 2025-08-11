@@ -43,7 +43,7 @@ export default class ApiKeyCreate extends BaseAuthenticatedCommand<typeof ApiKey
       const apiKeyWithSecret = await createAPIKey({durationDays, name: apiKeyName})
 
       const successMessage = getRenderedMarkdown({
-        filename: 'apikey-create.md',
+        filename: 'apikey-create.md.ejs',
         templateVars: {
           keyExpiry: getShortDate(apiKeyWithSecret.expiresAt),
           keyId: getShortUUID(apiKeyWithSecret.id),

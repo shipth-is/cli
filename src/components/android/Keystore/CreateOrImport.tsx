@@ -65,7 +65,7 @@ export const CreateOrImport = ({onComplete, onError, ...boxProps}: StepProps): J
 
   return (
     <Box flexDirection="column" gap={1} {...boxProps}>
-      <Markdown filename="create-or-import-keystore.md" templateVars={{}} />
+      <Markdown filename="create-or-import-keystore.md.ejs" templateVars={{}} />
       {renderStage()}
     </Box>
   )

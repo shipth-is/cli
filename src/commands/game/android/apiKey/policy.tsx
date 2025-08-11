@@ -19,21 +19,33 @@ export default class GameAndroidApiKeyPolicy extends BaseGameAndroidCommand<type
 
   static override flags = {
     ...BaseGameAndroidCommand.flags,
-    enforce: Flags.boolean({char: 'e', description: 'Enforces the policy to disable service account key creation'}),
-    revoke: Flags.boolean({char: 'r', description: 'Revokes the policy to disable service account key creation'}),
+    enforce: Flags.boolean({
+      char: 'e',
+      description: 'Enforces the policy to disable service account key creation',
+      exclusive: ['revoke'],
+    }),
+    revoke: Flags.boolean({
+      char: 'r',
+      description: 'Revokes the policy to disable service account key creation',
+      exclusive: ['enforce'],
+    }),
+    waitForAuth: Flags.boolean({char: 'w', description: 'Wait for Google Authentication (10 mins).'}),
   }
 
-
   public async run(): Promise<void> {
+    const {enforce, revoke, waitForAuth} = this.flags
+
+    this.checkGoogleAuth(waitForAuth)
+
     const googleStatus = await getGoogleStatus()
 
     const msg = getRenderedMarkdown({
-      filename: 'service-account-policy.md',
+      filename: 'service-account-policy.md.ejs',
       templateVars: {
+        needsPolicyChange: `${googleStatus.needsPolicyChange}`,
+        orgCreatedAt: `${googleStatus.orgCreatedAt}`,
         orgName: `${googleStatus.orgName}`,
         orgResourceName: `${googleStatus.orgResourceName}`,
-        orgCreatedAt: `${googleStatus.orgCreatedAt}`,
-        needsPolicyChange: `${googleStatus.needsPolicyChange}`,
       },
     })
 

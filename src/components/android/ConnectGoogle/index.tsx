@@ -73,7 +73,7 @@ const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: Co
     <Box flexDirection="column" gap={1} {...boxProps}>
       {!showQRCode && (
         <Box flexDirection="column" gap={1}>
-          <Markdown filename="privacy-notification.md" templateVars={templateVars} />
+          <Markdown filename="privacy-notification.md.ejs" templateVars={templateVars} />
           {connectUrl && (
             <Text bold color="#4CE64C">
               {`Press B to open ${connectUrl} in your browser and connect your Google account to ShipThis`}

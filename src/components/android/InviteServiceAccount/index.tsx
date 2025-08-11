@@ -29,7 +29,7 @@ export const InviteServiceAccount = ({onComplete, onError, ...boxProps}: StepPro
   return (
     <>
       <Box flexDirection="column" gap={1} {...boxProps}>
-        <Markdown filename="invite-service-account.md" templateVars={templateVars} />
+        <Markdown filename="invite-service-account.md.ejs" templateVars={templateVars} />
         <Box>
           {inviteMutation.isPending && <Spinner type="dots" />}
           {!inviteMutation.isPending && <InviteForm onSubmit={handleSubmit} />}

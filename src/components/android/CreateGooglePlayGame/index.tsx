@@ -98,7 +98,7 @@ const Create = ({gameId, onComplete, onError, ...boxProps}: Props): JSX.Element 
           </Text>
           {isFetching && <Spinner type="dots" />}
         </Box>
-        <Markdown filename="create-google-play-game.md" templateVars={templateVars} />
+        <Markdown filename="create-google-play-game.md.ejs" templateVars={templateVars} />
       </Box>
     </>
   )

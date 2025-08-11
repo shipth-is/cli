@@ -88,7 +88,7 @@ export const AndroidWizard = (props: StepProps) => {
       )}
       {showSuccess && (
         <Box marginTop={1}>
-          <Markdown filename="android-success.md" templateVars={templateVars} />
+          <Markdown filename="android-success.md.ejs" templateVars={templateVars} />
         </Box>
       )}
     </GameProvider>
