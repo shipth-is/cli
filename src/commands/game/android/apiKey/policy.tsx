@@ -8,7 +8,7 @@ export default class GameAndroidApiKeyPolicy extends BaseGameAndroidCommand<type
   static override args = {}
 
   static override description =
-    'Gets and sets the constraints/iam.disableServiceAccountKeyCreation policy for your Google Organization'
+    'Gets and sets the iam.disableServiceAccountKeyCreation policy for your Google Organization'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
@@ -20,12 +20,12 @@ export default class GameAndroidApiKeyPolicy extends BaseGameAndroidCommand<type
     ...BaseGameAndroidCommand.flags,
     enforce: Flags.boolean({
       char: 'e',
-      description: 'Enforces the policy to disable service account key creation',
+      description: 'Enforces the policy',
       exclusive: ['revoke'],
     }),
     revoke: Flags.boolean({
       char: 'r',
-      description: 'Revokes the policy to disable service account key creation',
+      description: 'Revokes the policy',
       exclusive: ['enforce'],
     }),
     waitForAuth: Flags.boolean({char: 'w', description: 'Wait for Google Authentication (10 mins).'}),
