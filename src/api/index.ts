@@ -241,7 +241,7 @@ export async function getGoogleStatus(): Promise<GoogleStatusResponse> {
 export async function enforcePolicy(): Promise<GoogleStatusResponse> {
   const headers = getAuthedHeaders()
   const opt = {headers}
-  const {data} = await axios.post(`${API_URL}/me/google/policy`, opt)
+  const {data} = await axios.post(`${API_URL}/me/google/policy`, null, opt)
   return data as GoogleStatusResponse
 }
 

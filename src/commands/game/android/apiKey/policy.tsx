@@ -1,9 +1,8 @@
 import {Flags} from '@oclif/core'
-import {render} from 'ink'
 
-import {disconnectGoogle, getGoogleStatus} from '@cli/api/index.js'
+import {enforcePolicy, getGoogleStatus, revokePolicy} from '@cli/api/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
-import {CommandGame, ConnectGoogle, getRenderedMarkdown} from '@cli/components/index.js'
+import {getRenderedMarkdown} from '@cli/components/index.js'
 
 export default class GameAndroidApiKeyPolicy extends BaseGameAndroidCommand<typeof GameAndroidApiKeyPolicy> {
   static override args = {}
@@ -37,12 +36,20 @@ export default class GameAndroidApiKeyPolicy extends BaseGameAndroidCommand<type
 
     this.checkGoogleAuth(waitForAuth)
 
+    if (enforce) {
+      console.log('Enforcing policy...')
+      await enforcePolicy()
+    } else if (revoke) {
+      console.log('Revoking policy...')
+      await revokePolicy()
+    }
+
     const googleStatus = await getGoogleStatus()
 
     const msg = getRenderedMarkdown({
       filename: 'service-account-policy.md.ejs',
       templateVars: {
-        needsPolicyChange: `${googleStatus.needsPolicyChange}`,
+        needsPolicyChange: !!googleStatus.needsPolicyChange,
         orgCreatedAt: `${googleStatus.orgCreatedAt}`,
         orgName: `${googleStatus.orgName}`,
         orgResourceName: `${googleStatus.orgResourceName}`,
