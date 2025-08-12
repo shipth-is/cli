@@ -237,6 +237,22 @@ export async function getGoogleStatus(): Promise<GoogleStatusResponse> {
   return data as GoogleStatusResponse
 }
 
+// enforce constraints/iam.disableServiceAccountKeyCreation for orgs`
+export async function enforcePolicy(): Promise<GoogleStatusResponse> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.post(`${API_URL}/me/google/policy`, null, opt)
+  return data as GoogleStatusResponse
+}
+
+// revoke constraints/iam.disableServiceAccountKeyCreation for orgs
+export async function revokePolicy(): Promise<GoogleStatusResponse> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.delete(`${API_URL}/me/google/policy`, opt)
+  return data as GoogleStatusResponse
+}
+
 export async function inviteServiceAccount(projectId: string, developerId: string) {
   try {
     const headers = getAuthedHeaders()
@@ -270,7 +286,6 @@ export async function downloadBuildById(projectId: string, buildId: string, file
     writer.on('error', reject)
   })
 }
-
 
 const APIKEYS_DATE_FIELDS = ['createdAt', 'updatedAt', 'expiresAt', 'lastUsedAt', 'revokedAt']
 

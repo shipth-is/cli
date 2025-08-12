@@ -131,7 +131,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
         <>
           {failedJobs.length === 0 && (
             <Markdown
-              filename="ship-success.md"
+              filename="ship-success.md.ejs"
               templateVars={{
                 gameBuildsUrl: `${WEB_URL}games/${getShortUUID(gameId)}/builds`,
                 wasPublished: !flags?.skipPublish,
@@ -141,7 +141,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
           {failedJobs.length > 0 && (
             <>
               <Markdown
-                filename="ship-failure.md"
+                filename="ship-failure.md.ejs"
                 templateVars={{
                   jobDashboardUrl: `${WEB_URL}games/${getShortUUID(gameId)}/job/${getShortUUID(failedJobs[0].id)}`,
                 }}

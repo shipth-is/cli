@@ -80,7 +80,7 @@ const CreateForGame = ({gameId, onComplete, onError, ...boxProps}: CreateForGame
         {failedJob && (
           <>
             <Markdown
-              filename="ship-failure.md"
+              filename="ship-failure.md.ejs"
               templateVars={{
                 jobDashboardUrl: `${WEB_URL}games/${getShortUUID(gameId)}/job/${getShortUUID(failedJob.id)}`,
               }}

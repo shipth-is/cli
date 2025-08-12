@@ -137,7 +137,7 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
     }
 
     const successMessage = getRenderedMarkdown({
-      filename: 'ios-success.md',
+      filename: 'ios-success.md.ejs',
       templateVars: {
         androidSetupURL: new URL('/docs/android', WEB_URL).toString(),
         docsURL: new URL('/docs', WEB_URL).toString(),
