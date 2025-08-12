@@ -34,7 +34,7 @@ export default class GameAndroidApiKeyPolicy extends BaseGameAndroidCommand<type
   public async run(): Promise<void> {
     const {enforce, revoke, waitForAuth} = this.flags
 
-    this.checkGoogleAuth(waitForAuth)
+    await this.checkGoogleAuth(waitForAuth)
 
     if (enforce) {
       console.log('Enforcing policy...')
