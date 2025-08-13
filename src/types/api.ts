@@ -226,7 +226,7 @@ export interface GoogleStatusResponse {
   isAuthenticated: boolean
   isOrg?: boolean
   needsPolicyChange?: boolean
-  orgCreatedAt?: string
+  orgCreatedAt?: DateTime
   orgName?: string
   orgResourceName?: string // e.g. "organizations/1234"
   projectId?: string

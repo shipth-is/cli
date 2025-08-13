@@ -49,7 +49,7 @@ export default class GameAndroidApiKeyPolicy extends BaseGameAndroidCommand<type
     const msg = getRenderedMarkdown({
       filename: 'service-account-policy.md.ejs',
       templateVars: {
-        needsPolicyChange: !!googleStatus.needsPolicyChange,
+        needsPolicyChange: Boolean(googleStatus.needsPolicyChange),
         orgCreatedAt: `${googleStatus.orgCreatedAt}`,
         orgName: `${googleStatus.orgName}`,
         orgResourceName: `${googleStatus.orgResourceName}`,
