@@ -234,7 +234,7 @@ export async function getGoogleStatus(): Promise<GoogleStatusResponse> {
   const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.get(`${API_URL}/me/google/status`, opt)
-  return data as GoogleStatusResponse
+  return castObjectDates<GoogleStatusResponse>(data, ['orgCreatedAt'])
 }
 
 // enforce constraints/iam.disableServiceAccountKeyCreation for orgs`
@@ -242,7 +242,7 @@ export async function enforcePolicy(): Promise<GoogleStatusResponse> {
   const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.post(`${API_URL}/me/google/policy`, null, opt)
-  return data as GoogleStatusResponse
+  return castObjectDates<GoogleStatusResponse>(data, ['orgCreatedAt'])
 }
 
 // revoke constraints/iam.disableServiceAccountKeyCreation for orgs
@@ -250,7 +250,7 @@ export async function revokePolicy(): Promise<GoogleStatusResponse> {
   const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.delete(`${API_URL}/me/google/policy`, opt)
-  return data as GoogleStatusResponse
+  return castObjectDates<GoogleStatusResponse>(data, ['orgCreatedAt'])
 }
 
 export async function inviteServiceAccount(projectId: string, developerId: string) {
