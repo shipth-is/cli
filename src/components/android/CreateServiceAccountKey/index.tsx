@@ -40,7 +40,7 @@ const CreateForGame = ({gameId, onComplete, onError, ...boxProps}: CreateForGame
     if (!googleStatus.needsPolicyChange) {
       startedRef.current = true
       // If no policy change is needed, we can start the process
-      handleStart().then(() => setDidStart(true))
+      handleStart().then(() => setDidStart(true)).catch((error) => onError(error));
     }
   }, [googleStatus])
 
