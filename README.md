@@ -4,135 +4,37 @@
 
 What is [ShipThis](https://shipth.is)?
 
-- A tool for building and publishing Godot mobile games to the **Apple App Store** and **Google Play**.
-- A simple way to manage certificates, keystores, API keys, and provisioning profiles.
-- A cloud build service which is free for most solo-devs.
+- Build and publish Godot mobile games to the **App Store** and **Google Play**
+- Handles certificates, keystores, API keys, and provisioning profiles
+- Cloud builds are free for most solo-devs
 
 <p align="center">
-  <picture>
-    <img height="266" width="504" alt="ShipThis Command - ship output" src="docs/assets/ship-outputx0.8.gif">
-  </picture>
+  <a href="https://shipth.is/docs/reference/game/ship">
+    <picture>
+      <img height="266" width="504" alt="ShipThis Command - ship output" src="docs/assets/ship-outputx0.8.gif">
+    </picture>
+  </a>
 </p>
 
 
 > [!IMPORTANT]
 > ShipThis is in open beta. While in beta, it is completely free to use.
-
-## FAQ
-
-<details>
-<summary><strong>Can I build my game as APK/AAB without a Google Play account?</strong></summary>
-
----
-
-Yes.
-
-Running the wizard command will create a Service Account Key for automatic publishing, you might not need this when initially building your game.
-
-You can run the steps below to create a ShipThis account, create the game, create a keystore, and then run the ship command. Later, when you need to setup publishing you can re-run the wizard command.
-
-
-```bash
-# Create or login to your shipthis account (OTP based login)
-shipthis login --email me@email.com
-
-# Create a ShipThis game - run this in a dir with a project.godot file
-shipthis game create --name "My Game" --androidPackageName "com.my.game"
-
-# Create a keystore for signing
-shipthis game android keyStore create
-
-# By default ShipThis generates APK & AAB at the same time - see:
-# https://shipth.is/docs/guides/android-build-methods
-
-# Run the build, skip the publish step, and download as game.apk
-shipthis game ship --follow --platform android --skipPublish --downloadAPK game.apk
-
-# The same but downloading the AAB file
-shipthis game ship --follow --platform android --skipPublish --download game.aab
-
-
-```
-
-</details>
-
-
-<details>
-<summary><strong>Do I need a Mac to build for iOS?</strong></summary>
-
----
-
-No, you do not need a Mac, but you will need an Apple Developer Account.
-
-ShipThis handles iOS builds on managed macOS cloud servers. The command-line tool communicates with the Apple Developer Portal to configure everything on your behalf.
-
-</details>
-
-<details>
-<summary><strong>Which versions of Godot are supported?</strong></summary>
-
----
-
-We support **all stable Godot versions since 3.6**, including:
-
-| 3.6     | 4.0      | 4.1      | 4.2    | 4.3 | 4.4    |
-|---------|----------|----------|--------|-----|--------|
-| 3.6.1   | 4.0.1    | 4.1.1    | 4.2.1  |     | 4.4.1  |
-|         | 4.0.2    | 4.1.2    | 4.2.2  |     |        |
-|         | 4.0.3    | 4.1.3    |        |     |        |
-|         | 4.0.4    | 4.1.4    |        |     |        |
-
-You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning).
-
-</details>
-
-<details>
-<summary><strong>Do I need to create an export_presets.cfg file?</strong></summary>
-
----
-
-No, the ShipThis build server will generate a valid **export_presets.cfg** for your game.
-
-If you provide an **export_presets.cfg** file, the desired preset values will be merged with the generated file.
-
-</details>
-
-<details>
-<summary><strong>How much does it cost to use ShipThis?</strong></summary>
-
----
-
-ShipThis is in open beta. While in beta, it is completely free to use. You can see our planned pricing on the [pricing page](https://shipth.is/pricing).
-
-</details>
-
-
-<details>
-<summary><strong>Can I use ShipThis to generate credentials to use locally or in my own pipeline?</strong></summary>
-
----
-
-# TODO
-
-```bash
-# TODO
-```
-
-</details>
+> It will **always** be free for most solo devs.
 
 
 ## Quick start
 
 ### Requirements
 
-- A Godot 3.6 or 4.X game
+- A Godot 3.6 or 4.x game
 - [Node.js](https://nodejs.org/en/download/) version 18.0 or above
 - **To publish an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup) (not required for building an APK/AAB)
 - **To build an iOS game** - an [Apple Developer account](https://developer.apple.com)
 
 ### 1. Install ShipThis
 
-ShipThis can be installed as a package via the [NPM package manager](https://www.npmjs.com/). Run the following at the command line:
+
+Install via the [NPM package manager](https://www.npmjs.com/):
 
 ```bash
 npm install -g shipthis
@@ -142,7 +44,6 @@ npm install -g shipthis
 
 Set up an account with ShipThis by logging in for the first time using the [`shipthis login`](https://shipth.is/docs/reference/login) command.
 
-> 🛠 All builds run on managed cloud servers - no need to install Xcode or Android Studio locally.
 
 ```bash
 shipthis login
@@ -196,6 +97,62 @@ shipthis game ship
 
 - Having issues? Check the [Troubleshooting](https://shipth.is/docs/troubleshooting) or [join our Discord](https://discord.gg/gPjn3S99k4)
 - For detailed documentation, visit [shipth.is/docs](https://shipth.is/docs)
+
+
+## FAQ
+
+### Do I need a Mac to build for iOS?
+
+No, you do not need a Mac, but you will need an Apple Developer Account.
+
+ShipThis handles iOS builds on managed macOS cloud servers. The CLI connects to the Apple Developer Portal and sets everything up for you.
+
+### Which versions of Godot are supported?
+
+We support **all stable Godot versions since 3.6**, including:
+
+| 3.6     | 4.0      | 4.1      | 4.2    | 4.3 | 4.4    |
+|---------|----------|----------|--------|-----|--------|
+| 3.6.1   | 4.0.1    | 4.1.1    | 4.2.1  |     | 4.4.1  |
+|         | 4.0.2    | 4.1.2    | 4.2.2  |     |        |
+|         | 4.0.3    | 4.1.3    |        |     |        |
+|         | 4.0.4    | 4.1.4    |        |     |        |
+
+You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning).
+
+
+### Can I build my game as APK without a Google Play account?
+
+Yes.
+
+Running the wizard command will create a Service Account Key for automatic publishing, but you might not need this when initially building your game.
+
+You can create a ShipThis account, create the game, create a keystore, and then run the ship command. Later, when you need to set up publishing, you can re-run the wizard command.
+
+```bash
+# Create or login to your shipthis account (OTP based login)
+shipthis login --email me@email.com
+
+# Create a ShipThis game - run this in a dir with a project.godot file
+shipthis game create --name "My Game" --androidPackageName "com.my.game"
+
+# Create a keystore for signing the APK
+shipthis game android keyStore create
+
+# Run the build, skip the publish step, and download as game.apk
+shipthis game ship --follow --platform android --skipPublish --downloadAPK game.apk
+```
+
+### Do I need to create an export_presets.cfg file?
+
+No, the ShipThis build server will generate a valid **export_presets.cfg** for your game.
+
+If you provide an **export_presets.cfg** file, the desired preset values will be merged with the generated file.
+
+### How much does it cost to use ShipThis?
+
+Currently free while in open beta. Planned pricing is on the [pricing page](https://shipth.is/pricing).
+
 
 ## 📖 Command Reference
 
