@@ -1,8 +1,6 @@
 
 
-# ShipThis <a href="https://discord.gg/gPjn3S99k4"><img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7"></a><a href="https://github.com/shipth-is/cli"><img src="docs/assets/st.png" align="right" height="80" alt="ShipThis" /></a>
-
-What is [ShipThis](https://shipth.is/?ref=github_readme)?
+# ShipThis <a href="https://discord.gg/gPjn3S99k4"><img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7"></a><a href="https://shipth.is/?ref=github_readme"><img src="docs/assets/st.png" align="right" height="80" alt="ShipThis" /></a>
 
 - Build and publish Godot mobile games to the **App Store** and **Google Play**
 - Handles certificates, keystores, API keys, and provisioning profiles
@@ -16,10 +14,8 @@ What is [ShipThis](https://shipth.is/?ref=github_readme)?
   </a>
 </p>
 
-
 > [!IMPORTANT]
 > Currently in open beta and free to use. It will **always** be free for most solo devs.
-
 
 ## Quick start
 
