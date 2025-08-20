@@ -2,14 +2,14 @@
 
 # ShipThis <a href="https://discord.gg/gPjn3S99k4"><img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7"></a><a href="https://github.com/shipth-is/cli"><img src="docs/assets/st.png" align="right" height="80" alt="ShipThis" /></a>
 
-What is [ShipThis](https://shipth.is)?
+What is [ShipThis](https://shipth.is/?ref=github_readme)?
 
 - Build and publish Godot mobile games to the **App Store** and **Google Play**
 - Handles certificates, keystores, API keys, and provisioning profiles
 - Cloud builds are free for most solo-devs
 
 <p align="center">
-  <a href="https://shipth.is/docs/reference/game/ship">
+  <a href="https://shipth.is/docs/reference/game/ship?ref=github_readme">
     <picture>
       <img height="266" width="504" alt="ShipThis Command - ship output" src="docs/assets/ship-outputx0.8.gif">
     </picture>
@@ -41,7 +41,7 @@ npm install -g shipthis
 
 ### 2. Create an account
 
-Set up an account with ShipThis by logging in for the first time using the [`shipthis login`](https://shipth.is/docs/reference/login) command.
+Set up an account with ShipThis by logging in for the first time using the [`shipthis login`](https://shipth.is/docs/reference/login?ref=github_readme) command.
 
 
 ```bash
@@ -50,7 +50,7 @@ shipthis login
 
 ### 3. Set up your game
 
-Run the [wizard command](https://shipth.is/docs/reference/game/wizard) to configure your game on ShipThis. The command takes a platform parameter - this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
+Run the [wizard command](https://shipth.is/docs/reference/game/wizard?ref=github_readme) to configure your game on ShipThis. The command takes a platform parameter - this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
 
 #### Set up an Android game
 
@@ -88,14 +88,14 @@ shipthis game wizard ios
 
 ### 4. Ship
 
-Now you can publish new versions of your game to TestFlight or Google Play with the [`shipthis game ship`](https://shipth.is/docs/reference/game/ship) command:
+Now you can publish new versions of your game to TestFlight or Google Play with the [`shipthis game ship`](https://shipth.is/docs/reference/game/ship?ref=github_readme) command:
 
 ```bash
 shipthis game ship
 ```
 
-- Having issues? Check the [Troubleshooting](https://shipth.is/docs/troubleshooting) or [join our Discord](https://discord.gg/gPjn3S99k4)
-- For detailed documentation, visit [shipth.is/docs](https://shipth.is/docs)
+- Having issues? Check the [Troubleshooting](https://shipth.is/docs/troubleshooting?ref=github_readme) or [join our Discord](https://discord.gg/gPjn3S99k4)
+- For detailed documentation, visit [shipth.is/docs](https://shipth.is/docs?ref=github_readme)
 
 
 ## FAQ
@@ -117,7 +117,7 @@ We support **all stable Godot versions since 3.6**, including:
 |         | 4.0.3    | 4.1.3    |        |     |        |
 |         | 4.0.4    | 4.1.4    |        |     |        |
 
-You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning).
+You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning?ref=github_readme).
 
 
 ### Can I build my game as APK without a Google Play account?
@@ -150,23 +150,23 @@ If you provide an **export_presets.cfg** file, the desired preset values will be
 
 ### How much does it cost to use ShipThis?
 
-Currently free while in open beta. Planned pricing is on the [pricing page](https://shipth.is/pricing).
+Currently free while in open beta. Planned pricing is on the [pricing page](https://shipth.is/pricing?ref=github_readme).
 
 
 ## 📖 Command Reference
 
 ### 🗂 Topics
 
-- [apiKey](https://shipth.is/docs/reference/apiKey) - Commands related to ShipThis API Keys
-- [apple](https://shipth.is/docs/reference/apple) - Commands that relate to linking your ShipThis account with your Apple Developer Account
-- [game](https://shipth.is/docs/reference/game) - Commands that relate to configuring the specific game in the current working directory.
+- [apiKey](https://shipth.is/docs/reference/apiKey?ref=github_readme) - Commands related to ShipThis API Keys
+- [apple](https://shipth.is/docs/reference/apple?ref=github_readme) - Commands that relate to linking your ShipThis account with your Apple Developer Account
+- [game](https://shipth.is/docs/reference/game?ref=github_readme) - Commands that relate to configuring the specific game in the current working directory.
 
 ### 🔧 Commands
 
-- [dashboard](https://shipth.is/docs/reference/dashboard) - Opens the web browser to your shipth.is dashboard
-- [login](https://shipth.is/docs/reference/login) - Sign in or create a new account
-- [status](https://shipth.is/docs/reference/status) - Display your overall ShipThis account status
-- [help](https://shipth.is/docs/reference/help) - Display help for a specific topic or command
+- [dashboard](https://shipth.is/docs/reference/dashboard?ref=github_readme) - Opens the web browser to your shipth.is dashboard
+- [login](https://shipth.is/docs/reference/login?ref=github_readme) - Sign in or create a new account
+- [status](https://shipth.is/docs/reference/status?ref=github_readme) - Display your overall ShipThis account status
+- [help](https://shipth.is/docs/reference/help?ref=github_readme) - Display help for a specific topic or command
 
 ## 🌍 Community
 
