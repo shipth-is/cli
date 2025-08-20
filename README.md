@@ -18,8 +18,7 @@ What is [ShipThis](https://shipth.is)?
 
 
 > [!IMPORTANT]
-> ShipThis is in open beta. While in beta, it is completely free to use.
-> It will **always** be free for most solo devs.
+> Currently in open beta and free to use. It will **always** be free for most solo devs.
 
 
 ## Quick start
