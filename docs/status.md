@@ -17,7 +17,7 @@ Displays the current overall status.
 
 ## Example
 
-[![asciicast](https://asciinema.org/a/GsqLxzyvFApORKUDfJl5DsNo7.svg)](https://asciinema.org/a/GsqLxzyvFApORKUDfJl5DsNo7)
+[![asciicast](https://asciinema.org/a/i5chSgJubWSXlAzjYdht98fLj.svg)](https://asciinema.org/a/i5chSgJubWSXlAzjYdht98fLj)
 
 ## Help Output
 

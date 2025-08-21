@@ -4,6 +4,7 @@ import {BaseCommand} from '@cli/baseCommands/index.js'
 import {Command, NextSteps, StatusTable} from '@cli/components/index.js'
 import {AuthConfig} from '@cli/types'
 import {isCWDGitRepo, isCWDGodotGame} from '@cli/utils/index.js'
+import chalk from 'chalk'
 
 export default class Status extends BaseCommand<typeof Status> {
   static override args = {}
@@ -18,6 +19,7 @@ export default class Status extends BaseCommand<typeof Status> {
     const authConfig: AuthConfig = await this.getAuthConfig()
 
     const isLoggedIn = Boolean(authConfig.shipThisUser)
+    const email = authConfig.shipThisUser?.email
     const isGodotGame = isCWDGodotGame()
     const isShipThisConfigured = await this.hasProjectConfig()
     const isGitRepo = await isCWDGitRepo()
@@ -33,7 +35,7 @@ export default class Status extends BaseCommand<typeof Status> {
     if (steps.length === 0) steps = ['shipthis game status']
 
     const statuses: Record<string, boolean> = {}
-    statuses['Logged in'] = isLoggedIn
+    statuses[email ? `Logged in ${chalk.bold(email)}` : 'Logged in'] = isLoggedIn
     statuses['Godot project detected'] = isGodotGame
     statuses['ShipThis project configured'] = isShipThisConfigured
     statuses['Git repository detected (not required)'] = isGitRepo
