@@ -214,12 +214,6 @@ The Android wizard command runs through a set of steps, as described in the [And
     shipthis game android apiKey invite XXXXXXXXX
     ```
 
-You are now ready to ship your game to Google Play with a single command.
-
-```bash
-shipthis game ship --platform android --follow
-```
-
 </details>
 
 ### What does the `shipthis game wizard ios` command do?
