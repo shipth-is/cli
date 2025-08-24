@@ -151,6 +151,7 @@ Currently free while in open beta. Planned pricing is on the [pricing page](http
 The wizard command runs different steps for Android and iOS. Each "step" is another ShipThis command - meaning you can run each step by itself. The wizard can be re-run any number of times.
 
 The Android steps are described in the [Android set-up guide](https://shipth.is/docs/android?ref=github_readme).
+The iOS steps are described in the [iOS setup guide](https://shipth.is/docs/ios).
 
 <details>
 <summary><strong>The commands run for Android</strong></summary>
@@ -208,19 +209,6 @@ The Android steps are described in the [Android set-up guide](https://shipth.is/
 </details>
 
 <details>
-<summary><strong>Watch: Set up ShipThis for Android</strong></summary>
-
-<p align="center">
-  <picture>
-    <img height="431" width="672" alt="ShipThis Command - Android Wizard - published game" src="docs/assets/wizard-android-existingx0.5.gif">
-  </picture>
-</p>
-
-</details>
-
-The iOS steps are described in the [iOS setup guide](https://shipth.is/docs/ios).
-
-<details>
 <summary><strong>The commands run for iOS</strong></summary>
 
 1. Create a new ShipThis game
@@ -276,6 +264,29 @@ The iOS steps are described in the [iOS setup guide](https://shipth.is/docs/ios)
     ```
 
 </details>
+
+<details>
+<summary><strong>Watch: The wizard run for Android</strong></summary>
+
+<p align="center">
+  <picture>
+    <img height="431" width="672" alt="ShipThis Command - Android Wizard - published game" src="docs/assets/wizard-android-existingx0.5.gif">
+  </picture>
+</p>
+
+</details>
+
+<details>
+<summary><strong>Watch: The wizard run for iOS</strong></summary>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=ijTUFVk1duw" target="_blank">
+    <img src="https://img.youtube.com/vi/ijTUFVk1duw/0.jpg" alt="Watch the iOS setup video" width="640" height="480">
+  </a>
+</p>
+
+</details>
+
 
 ### How do I debug a failed build?
 
