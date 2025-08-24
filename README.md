@@ -288,6 +288,21 @@ The iOS wizard walks you through the steps from the [iOS setup guide](https://sh
 
 </details>
 
+### How do I debug a failed build?
+
+If a build fails, rerun it for only the failing platform with the `--follow` flag to view the logs in real time:
+
+```bash
+shipthis game ship --platform android --follow
+```
+
+You can also review logs at any time in the [dashboard](https://shipth.is/dashboard?ref=github_readme).
+
+See the [Troubleshooting Guide](https://shipthis.cc/docs/troubleshooting?ref=github_readme) for common checks.
+
+If the issue persists, we can help you directly in our [Discord](https://discord.gg/gPjn3S99k4).
+
+
 ## 📖 Command Reference
 
 ### 🗂 Topics
