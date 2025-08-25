@@ -4,7 +4,7 @@ import {render} from 'ink'
 import {downloadBuildById, getJob} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {CommandGame, Ship} from '@cli/components/index.js'
-import {Build, Job} from '@cli/types/api.js'
+import {Job} from '@cli/types/api.js'
 import {getErrorMessage} from '@cli/utils/errors.js'
 
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
@@ -18,6 +18,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     '<%= config.bin %> <%= command.id %> --platform android --skipPublish',
     '<%= config.bin %> <%= command.id %> --platform android --download game.aab',
     '<%= config.bin %> <%= command.id %> --platform android --follow --downloadAPK game.apk',
+    '<%= config.bin %> <%= command.id %> --platform ios --follow --verbose',
   ]
 
   static override flags = {
@@ -45,6 +46,11 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     skipPublish: Flags.boolean({
       default: false,
       description: 'Skip the publish step',
+      required: false,
+    }),
+    verbose: Flags.boolean({
+      default: false,
+      description: 'Enable verbose logging',
       required: false,
     }),
   }

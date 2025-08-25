@@ -16,13 +16,15 @@ import {getCWDGitInfo, getFileHash, queryClient} from '@cli/utils/index.js'
 // Takes the current command so we can get the project config
 // This could be made more composable
 interface ShipOptions {
-  command: BaseCommand<typeof Command>,
+  command: BaseCommand<typeof Command>
   log?: (message: string) => void
   shipFlags?: ShipGameFlags // If provided, will override command flags
 }
 
 export async function ship({command, log = () => {}, shipFlags}: ShipOptions): Promise<Job[]> {
-  log('Fetching game config...')
+  const verbose = Boolean(shipFlags?.verbose || command.getFlags().verbose)
+
+  verbose && log('Fetching game config...')
   const projectConfig: ProjectConfig = await command.getProjectConfig()
 
   if (!projectConfig.project) throw new Error('No project found in project config')
@@ -36,14 +38,14 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     )
   }
 
-  log('Retrieving file globs...')
+  verbose && log('Retrieving file globs...')
   const shippedFilesGlobs = projectConfig.shippedFilesGlobs || DEFAULT_SHIPPED_FILES_GLOBS
   const ignoredFilesGlobs = projectConfig.ignoredFilesGlobs || DEFAULT_IGNORED_FILES_GLOBS
 
-  log('Finding files to include in zip...')
+  verbose && log('Finding files to include in zip...')
   const files = await fg(shippedFilesGlobs, {dot: true, ignore: ignoredFilesGlobs})
 
-  log(`Found ${files.length} files, adding to zip...`)
+  verbose && log(`Found ${files.length} files, adding to zip...`)
   const zipFile = new ZipFile()
   for (const file of files) {
     zipFile.addFile(file, file)
@@ -60,11 +62,11 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
   log(`Creating zip file: ${tmpZipFile}`)
   await outputZipToFile(zipFile, tmpZipFile)
 
-  log('Reading zip file buffer...')
+  verbose && log('Reading zip file buffer...')
   const zipBuffer = fs.readFileSync(tmpZipFile)
   const {size} = fs.statSync(tmpZipFile)
 
-  log('Requesting upload ticket...')
+  verbose && log('Requesting upload ticket...')
   const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
 
   log('Uploading zip file...')
@@ -75,16 +77,16 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     },
   })
 
-  log('Fetching Git info...')
+  verbose && log('Fetching Git info...')
   const gitInfo = await getCWDGitInfo()
-  log('Computing file hash...')
+  verbose && log('Computing file hash...')
   const zipFileMd5 = await getFileHash(tmpZipFile)
   const uploadDetails: UploadDetails = {
     ...gitInfo,
     zipFileMd5,
   }
 
-  log('Starting jobs from upload...')
+  verbose && log('Starting jobs from upload...')
 
   const finalFlags = shipFlags || (command.getFlags() as ShipGameFlags)
 
@@ -92,14 +94,15 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     ...uploadDetails,
     platform: finalFlags.platform?.toUpperCase() as Platform,
     skipPublish: finalFlags.skipPublish,
+    verbose: finalFlags.verbose,
   }
 
   const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
 
-  log('Cleaning up temporary zip file...')
+  verbose && log('Cleaning up temporary zip file...')
   fs.unlinkSync(tmpZipFile)
 
-  log('Job submission complete.')
+  verbose && log('Job submission complete.')
 
   if (jobs.length === 0) {
     throw new Error('No jobs were created. Please check your game configuration and try again.')
@@ -112,7 +115,8 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
   return jobs
 }
 
-export const useShip = () => useMutation({
+export const useShip = () =>
+  useMutation({
     mutationFn: ship,
     async onSuccess(data: Job[]) {
       queryClient.invalidateQueries({
