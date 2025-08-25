@@ -21,18 +21,15 @@ When run like this, pressing **L** will show or hide the last few lines of the l
 
 [![asciicast](https://asciinema.org/a/7e1jPMx5i69VyM6TynkeFU0dI.svg)](https://asciinema.org/a/7e1jPMx5i69VyM6TynkeFU0dI#shipthis-col80row24)
 
-
 ### Follow mode
 
 When using ShipThis in a CI environment, it is most useful to use the `--follow` to collect the full output. This flag requires you to specify the `--platform` flag too.
 
 [![asciicast](https://asciinema.org/a/gKmZ0E1rJ4oiT9SyuSivXBZfY.svg)](https://asciinema.org/a/gKmZ0E1rJ4oiT9SyuSivXBZfY#shipthis-col80row24)
 
-
 ### Advanced usage - follow, do not publish, and then download APK
 
 [![asciicast](https://asciinema.org/a/GNf0t8niOlrMDsgPKqmBcuqQh.svg)](https://asciinema.org/a/GNf0t8niOlrMDsgPKqmBcuqQh#shipthis-col80row24)
-
 
 ## Help Output
 
@@ -40,7 +37,7 @@ When using ShipThis in a CI environment, it is most useful to use the `--follow`
 Builds the app (for all platforms with valid credentials) and ships it to the stores.
 
 USAGE
-  $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ] [--follow ] [--skipPublish]
+  $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ] [--follow ] [--skipPublish] [--verbose]
 
 FLAGS
   -g, --gameId=<value>       The ID of the game
@@ -50,6 +47,7 @@ FLAGS
       --platform=<option>    The platform to ship the game to. This can be "android" or "ios"
                              <options: android|ios>
       --skipPublish          Skip the publish step
+      --verbose              Enable verbose logging
 
 DESCRIPTION
   Builds the app (for all platforms with valid credentials) and ships it to the stores.
@@ -64,5 +62,7 @@ EXAMPLES
   $ shipthis game ship --platform android --download game.aab
 
   $ shipthis game ship --platform android --follow --downloadAPK game.apk
+
+  $ shipthis game ship --platform ios --follow --verbose
 
 ```
