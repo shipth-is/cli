@@ -287,7 +287,6 @@ The iOS steps are described in the [iOS setup guide](https://shipth.is/docs/ios)
 
 </details>
 
-
 ### How do I debug a failed build?
 
 If a build fails, rerun it for only the failing platform with the `--follow` flag to view the logs in real time:
@@ -302,6 +301,28 @@ See the [Troubleshooting Guide](https://shipthis.cc/docs/troubleshooting?ref=git
 
 If the issue persists, we can help you directly in our [Discord](https://discord.gg/gPjn3S99k4).
 
+## Does ShipThis work with CI/CD pipelines?
+
+Yes. ShipThis works with CI/CD pipelines, allowing you to run automated builds without an interactive shell.
+
+To get started, create an API key, for your pipeline environment:
+
+```bash
+# API keys can have a maximum lifetime of 1 year
+shipthis apiKey create --durationDays 365 --name ci-key
+```
+
+The secret value will only be displayed once and this can be used as an environment variable called `SHIPTHIS_TOKEN`.
+
+```bash
+export SHIPTHIS_TOKEN=your_token_here
+shipthis game ship --platform android --follow
+shipthis game ship --platform ios --follow
+```
+
+For GitHub users, we provide an official **GitHub Action** for easy integration:  https://github.com/shipth-is/action
+
+See the [API Keys documentation](https://shipth.is/docs/reference/apiKey/?ref=github_readme) for more information.
 
 ## 📖 Command Reference
 
