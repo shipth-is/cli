@@ -107,6 +107,7 @@ export async function getNewUploadTicket(projectId: string): Promise<UploadTicke
 type StartJobsOptions = {
   platform?: Platform
   skipPublish?: boolean
+  verbose?: boolean
 } & UploadDetails
 
 export async function startJobsFromUpload(uploadTicketId: string, startOptions: StartJobsOptions): Promise<Job[]> {

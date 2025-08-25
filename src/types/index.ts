@@ -21,6 +21,7 @@ export type ShipGameFlags = {
   follow?: boolean
   platform?: 'android' | 'ios'
   skipPublish?: boolean
+  verbose?: boolean
 }
 
 export * from './api.js'
