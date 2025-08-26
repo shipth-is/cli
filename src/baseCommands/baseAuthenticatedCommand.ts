@@ -1,8 +1,10 @@
 import {Command} from '@oclif/core'
 
-import {getSelf} from '@cli/api/index.js'
+import {getSelf, getTerms} from '@cli/api/index.js'
 
 import {BaseCommand} from './baseCommand.js'
+import {getRenderedMarkdown} from '@cli/components/index.js'
+import {WEB_URL} from '@cli/constants/config.js'
 
 export abstract class BaseAuthenticatedCommand<T extends typeof Command> extends BaseCommand<T> {
   static override flags = {}
@@ -14,11 +16,30 @@ export abstract class BaseAuthenticatedCommand<T extends typeof Command> extends
     }
 
     const self = await getSelf()
+
+    // hasAcceptedTerms is set on first POST to /me/terms
     const accepted = Boolean(self.details?.hasAcceptedTerms)
     if (!accepted) {
       this.error('You must accept the terms and conditions. Please run `shipthis login --force` to re-authenticate', {
         exit: 1,
       })
+    }
+
+    // Changes in accepted terms need to be displayed - but we are not exiting
+    const terms = await getTerms()
+    if (terms.changes.length > 0) {
+      const warningMD = getRenderedMarkdown({
+        filename: 'agreement-update.md.ejs',
+        templateVars: {
+          changes: terms.changes.map((a) => {
+            return {
+              ...a,
+              url: new URL(a.path, WEB_URL).toString(),
+            }
+          }),
+        },
+      })
+      console.log(warningMD)
     }
   }
 }
