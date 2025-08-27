@@ -20,7 +20,7 @@ export abstract class BaseAuthenticatedCommand<T extends typeof Command> extends
     // hasAcceptedTerms is set on first POST to /me/terms
     const accepted = Boolean(self.details?.hasAcceptedTerms)
     if (!accepted) {
-      this.error('You must accept the terms and conditions. Please run `shipthis login --force` to re-authenticate', {
+      this.error('You must accept the agreements first. Please run `shipthis login --acceptAgreements` to do this.', {
         exit: 1,
       })
     }
