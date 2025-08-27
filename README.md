@@ -294,7 +294,7 @@ shipthis game ship --platform android --follow
 
 You can also review logs at any time in the [dashboard](https://shipth.is/dashboard?ref=github_readme).
 
-See the [Troubleshooting Guide](https://shipthis.cc/docs/troubleshooting?ref=github_readme) for common checks.
+See the [Troubleshooting Guide](https://shipth.is/docs/troubleshooting?ref=github_readme) for common checks.
 
 If the issue persists, we can help you directly in our [Discord](https://discord.gg/gPjn3S99k4).
 
