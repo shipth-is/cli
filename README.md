@@ -1,5 +1,3 @@
-
-
 # ShipThis <a href="https://discord.gg/gPjn3S99k4"><img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7"></a><a href="https://shipth.is/?ref=github_readme"><img src="docs/assets/st.png" align="right" height="80" alt="ShipThis" /></a>
 
 - Build and publish Godot mobile games to the **App Store** and **Google Play**
@@ -125,9 +123,6 @@ Running the wizard command will create a Service Account Key for automatic publi
 You can create a ShipThis account, create the game, create a keystore, and then run the ship command. Later, when you need to set up publishing, you can re-run the wizard command.
 
 ```bash
-# Create or login to your shipthis account (OTP based login)
-shipthis login --email me@email.com
-
 # Create a ShipThis game - run this in a dir with a project.godot file
 shipthis game create --name "My Game" --androidPackageName "com.my.game"
 
@@ -148,6 +143,200 @@ If you provide an **export_presets.cfg** file, the desired preset values will be
 
 Currently free while in open beta. Planned pricing is on the [pricing page](https://shipth.is/pricing?ref=github_readme).
 
+### What does the `shipthis game wizard` do?
+
+The wizard command runs different steps for Android and iOS. Each "step" is another ShipThis command - meaning you can run each step by itself. The wizard can be re-run any number of times.
+
+The Android steps are described in the [Android set-up guide](https://shipth.is/docs/android?ref=github_readme).
+The iOS steps are described in the [iOS setup guide](https://shipth.is/docs/ios).
+
+<details>
+<summary><strong>The commands run for Android</strong></summary>
+
+1. Creating a new ShipThis game
+
+    ```bash
+    shipthis game create --name "Pay2Lose" --androidPackageName "com.pay.two.lose"
+    ```
+
+1. Creating or importing an Android Keystore
+
+    To create a new Keystore:
+
+    ```bash
+    shipthis game android keyStore create
+    ```
+
+    To import an existing Keystore see [the docs for the `shipthis game android keyStore import` command](https://shipth.is/docs/reference/game/android/keyStore?ref=github_readme#game-android-keystore-import)
+
+1. Connecting ShipThis with Google
+
+    Once connected, ShipThis can generate a Service Account API Key for automatic publishing.
+
+    ```bash
+    shipthis game android apiKey connect
+    ```
+
+1. Create a Service Account and API Key
+
+    ```bash
+    shipthis game android apiKey create
+    ```
+
+1. Create and download an initial build (AAB file)
+
+    When you first create your game in the Google Play Console, you will be asked to upload an initial build in AAB format.
+
+    ```bash
+    shipthis game ship --platform android --follow --skipPublish --download game.aab
+    ```
+
+1. Create an app in the Google Play Console
+
+    You will need to manually create the game itself in Google Play. This will involve entering the name, agreeing to Google Play's TOS and uploading an initial build.
+
+1. Invite the Service Account
+
+    Before the Service Account API Key can submit your games automatically, you will need to invite the Service Account to your Google Play account. To do this you will need your Google Play Account ID.
+
+    ```bash
+    shipthis game android apiKey invite XXXXXXXXX
+    ```
+
+</details>
+
+<details>
+<summary><strong>The commands run for iOS</strong></summary>
+
+1. Create a new ShipThis game
+
+    ```bash
+    shipthis game create --name "Tap to Win Nothing" --iosBundleId "com.tap.to.win.nothing"
+    ```
+
+1. Connect ShipThis with Apple
+
+    We recommend enabling 2FA for your account. ShipThis generates a session cookie for communicating with the Apple Developer Portal.
+
+    ```bash
+    shipthis apple login
+    ```
+
+1. Create an App Store Connect API Key
+
+    ShipThis uses this API key to submit new versions of your game.
+
+    ```bash
+    shipthis apple apiKey create
+    ```
+
+1. Create an iOS Distribution Certificate
+
+    This certificate is used to sign your game on the ShipThis build servers.
+
+    ```bash
+    shipthis apple certificate create
+    ```
+
+1. Create an App Store App and BundleId
+
+    ```bash
+    shipthis game ios app create
+    ```
+
+1. Synchronize Permissions (Capabilities)
+
+    ShipThis reads `export_presets.cfg` and enables supported capabilities in the Apple Developer Portal (currently Access WiFi, Push Notifications).
+
+    ```bash
+    shipthis game ios app sync
+    ```
+
+1. Create a Provisioning Profile
+
+    Required to run on devices and for distribution. You can view profiles at Apple’s portal: https://developer.apple.com/account/resources/profiles/list
+
+    ```bash
+    shipthis game ios profile create
+    ```
+
+</details>
+
+<details>
+<summary><strong>Watch: The wizard run for Android</strong></summary>
+
+<p align="center">
+  <picture>
+    <img height="431" width="672" alt="ShipThis Command - Android Wizard - published game" src="docs/assets/wizard-android-existingx0.5.gif">
+  </picture>
+</p>
+
+</details>
+
+<details>
+<summary><strong>Watch: The wizard run for iOS</strong></summary>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=ijTUFVk1duw" target="_blank">
+    <img src="https://img.youtube.com/vi/ijTUFVk1duw/0.jpg" alt="Watch the iOS setup video" width="640" height="480">
+  </a>
+</p>
+
+</details>
+
+### How do I debug a failed build?
+
+If a build fails, rerun it for only the failing platform with the `--follow` flag to view the logs in real time:
+
+```bash
+shipthis game ship --platform android --follow
+```
+
+You can also review logs at any time in the [dashboard](https://shipth.is/dashboard?ref=github_readme).
+
+See the [Troubleshooting Guide](https://shipth.is/docs/troubleshooting?ref=github_readme) for common checks.
+
+If the issue persists, we can help you directly in our [Discord](https://discord.gg/gPjn3S99k4).
+
+### Does ShipThis work with CI/CD pipelines?
+
+Yes. ShipThis works with CI/CD pipelines, allowing you to run automated builds without an interactive shell.
+
+To get started, create an API key, for your pipeline environment:
+
+```bash
+# API keys can have a maximum lifetime of 1 year
+shipthis apiKey create --durationDays 365 --name ci-key
+```
+
+The secret value will only be displayed once and this can be used as an environment variable called `SHIPTHIS_TOKEN`.
+
+```bash
+export SHIPTHIS_TOKEN=your_token_here
+shipthis game ship --platform android --follow
+shipthis game ship --platform ios --follow
+```
+
+For GitHub users, we provide an official **GitHub Action** for easy integration:  https://github.com/shipth-is/action
+
+See the [API Keys documentation](https://shipth.is/docs/reference/apiKey/?ref=github_readme) for more information.
+
+### How are my credentials stored and secured?
+
+ShipThis uses short-lived, signed URLs and ephemeral build environments.
+
+- Credentials are stored in a private DigitalOcean Space.
+- Every access is logged for a full audit trail.
+- When a build starts, credentials are fetched on-demand and loaded as environment variables.
+- Temporary files are created only if needed and cleaned up when the job finishes.
+
+We store:
+
+- Android Keystores
+- Google Play Service Account API keys
+- iOS provisioning profiles
+- App Store Connect API keys
+- iOS distribution certificates
 
 ## 📖 Command Reference
 
