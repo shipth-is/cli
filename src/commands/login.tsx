@@ -18,6 +18,7 @@ export default class Login extends BaseCommand<typeof Login> {
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
     '<%= config.bin %> <%= command.id %> --force --email me@email.nowhere',
+    '<%= config.bin %> <%= command.id %> --acceptAgreements',
   ]
 
   static override flags = {
@@ -26,12 +27,26 @@ export default class Login extends BaseCommand<typeof Login> {
       description: 'Your email address',
     }),
     force: Flags.boolean({char: 'f'}),
+    acceptAgreements: Flags.boolean({
+      description: 'Accept the current version of the agreements (terms & privacy).',
+      default: false,
+    }),
   }
 
   public async run(): Promise<void> {
     const {flags} = this
 
     const authConfig: AuthConfig = await this.getAuthConfig()
+
+    // shipthis login --acceptAgreements
+    // works when logged in too. does not perform any other action
+    if (flags.acceptAgreements) {
+      if (authConfig.shipThisUser) {
+        await acceptTerms()
+        return this.log('You have accepted the latest terms and privacy policy.')
+      }
+    }
+
     if (authConfig.shipThisUser && !flags.force) {
       throw new Error(
         `You are already logged in as ${authConfig.shipThisUser.email} use --force to login as a different user or remove the auth file`,
@@ -63,6 +78,7 @@ export default class Login extends BaseCommand<typeof Login> {
     const {data: shipThisUser} = await axios.post(`${API_URL}/auth/email/verify`, {email, otp, source})
 
     const getAcceptedTermsResponse = async (): Promise<boolean> => {
+      if (flags.acceptAgreements) return true
       console.log(
         `Please review the following documents:\n\n${[
           `- Privacy Policy: ${PRIVACY_URL}`,
