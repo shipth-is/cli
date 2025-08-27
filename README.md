@@ -123,9 +123,6 @@ Running the wizard command will create a Service Account Key for automatic publi
 You can create a ShipThis account, create the game, create a keystore, and then run the ship command. Later, when you need to set up publishing, you can re-run the wizard command.
 
 ```bash
-# Create or login to your shipthis account (OTP based login)
-shipthis login --email me@email.com
-
 # Create a ShipThis game - run this in a dir with a project.godot file
 shipthis game create --name "My Game" --androidPackageName "com.my.game"
 
@@ -301,7 +298,7 @@ See the [Troubleshooting Guide](https://shipthis.cc/docs/troubleshooting?ref=git
 
 If the issue persists, we can help you directly in our [Discord](https://discord.gg/gPjn3S99k4).
 
-## Does ShipThis work with CI/CD pipelines?
+### Does ShipThis work with CI/CD pipelines?
 
 Yes. ShipThis works with CI/CD pipelines, allowing you to run automated builds without an interactive shell.
 
@@ -323,6 +320,23 @@ shipthis game ship --platform ios --follow
 For GitHub users, we provide an official **GitHub Action** for easy integration:  https://github.com/shipth-is/action
 
 See the [API Keys documentation](https://shipth.is/docs/reference/apiKey/?ref=github_readme) for more information.
+
+### How are my credentials stored and secured?
+
+ShipThis uses short-lived, signed URLs and ephemeral build environments.
+
+- Credentials are stored in a private DigitalOcean Space.
+- Every access is logged for a full audit trail.
+- When a build starts, credentials are fetched on-demand and loaded as environment variables.
+- Temporary files are created only if needed and cleaned up when the job finishes.
+
+We store:
+
+- Android Keystores
+- Google Play Service Account API keys
+- iOS provisioning profiles
+- App Store Connect API keys
+- iOS distribution certificates
 
 ## 📖 Command Reference
 
