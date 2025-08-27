@@ -9,6 +9,8 @@ export type ScalarDict = {
 export interface UserDetails {
   hasAcceptedTerms?: boolean
   source?: string
+  termsAgreementVersionId?: AgreementVersion['id'];
+  privacyAgreementVersionId?: AgreementVersion['id'];
 }
 
 export interface Self {
@@ -247,4 +249,20 @@ export interface APIKeyWithSecret extends APIKey {
 export interface APIKeyCreateRequest {
   durationDays: number
   name: string
+}
+
+export interface AgreementVersion {
+  id: string
+  agreementType: string
+  versionName: string
+  description: string
+  isInitial: boolean
+  createdAt: DateTime
+  updatedAt: DateTime
+  path: string
+}
+
+export interface TermsResponse {
+  changes: AgreementVersion[]
+  current: AgreementVersion[]
 }

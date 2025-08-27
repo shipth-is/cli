@@ -18,11 +18,13 @@ you can view details of your games.
 
 ```help
 USAGE
-  $ shipthis login [-f] [-e <value>]
+  $ shipthis login [-e <value>] [-f] [--acceptAgreements]
 
 FLAGS
-  -e, --email=<value>  Your email address
+  -e, --email=<value>     Your email address
   -f, --force
+      --acceptAgreements  Accept the current version of the agreements (terms &
+                          privacy).
 
 DESCRIPTION
   Authenticate - will create a new account if one does not exist.
@@ -31,4 +33,6 @@ EXAMPLES
   $ shipthis login
 
   $ shipthis login --force --email me@email.nowhere
+
+  $ shipthis login --acceptAgreements
 ```

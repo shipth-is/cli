@@ -9,7 +9,7 @@ import {useEffect, useState} from 'react'
 
 interface Props extends TerminalRendererOptions {
   filename: string
-  templateVars?: Record<string, boolean | string>
+  templateVars?: any
 }
 
 const cleanHyperlinks = (input: string): string =>

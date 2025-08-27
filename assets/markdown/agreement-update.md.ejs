@@ -1,0 +1,12 @@
+# Warning - there are changes to our agreements:
+
+<% changes.forEach((agreement) => { %>
+## <%= agreement.agreementType === 'PRIVACY_POLICY' ? 'Privacy Policy' : 'Terms and Conditions' %> Update (<%= agreement.versionName %>)
+**<%= agreement.description %>**
+Read more: <%= agreement.url %>
+
+<% }); %>
+
+Hide this message by running: `shipthis login --acceptAgreements`
+
+---

@@ -6,6 +6,7 @@ import {v4 as uuid} from 'uuid'
 
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
+  AgreementVersion,
   APIKey,
   APIKeyCreateRequest,
   APIKeyWithSecret,
@@ -20,6 +21,7 @@ import {
   ProjectDetails,
   ProjectPlatformProgress,
   Self,
+  TermsResponse,
   UploadDetails,
   UploadTicket,
 } from '@cli/types'
@@ -203,11 +205,24 @@ export async function getSelf(): Promise<Self> {
   return castObjectDates<Self>(data)
 }
 
-// Marks the current user as accepting the T&cs and privacy
+// Tells us the current agreement / terms status for the user
+export async function getTerms(): Promise<TermsResponse> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.get(`${API_URL}/me/terms`, opt)
+  return {
+    // Any agreements which have changed since the user last accepted terms
+    changes: castArrayObjectDates<AgreementVersion>(data.changes),
+    // Current versions of any agreements
+    current: castArrayObjectDates<AgreementVersion>(data.current),
+  } as TermsResponse
+}
+
+// Marks the current user as accepting the current version of terms and privacy
 export async function acceptTerms(): Promise<Self> {
   const headers = getAuthedHeaders()
   const opt = {headers}
-  const {data} = await axios.post(`${API_URL}/me/acceptTerms`, {}, opt)
+  const {data} = await axios.post(`${API_URL}/me/terms`, {}, opt)
   return castObjectDates<Self>(data)
 }
 
