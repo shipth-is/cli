@@ -13,6 +13,7 @@
     "@inkjs/ui": "^2.0.0",
     "@oclif/core": "^4",
     "@oclif/plugin-help": "^6",
+    "@oclif/plugin-warn-if-update-available": "^3.1.46",
     "@tanstack/react-query": "^5.56.2",
     "@types/marked-terminal": "^6.1.1",
     "@types/uuid": "^10.0.0",
@@ -163,7 +164,8 @@
     "commands": "./dist/commands",
     "helpClass": "./dist/utils/help",
     "plugins": [
-      "@oclif/plugin-help"
+      "@oclif/plugin-help",
+      "@oclif/plugin-warn-if-update-available"
     ],
     "topicSeparator": " ",
     "topics": {
@@ -209,6 +211,10 @@
       "game:job": {
         "description": "Commands related to jobs for a specific game"
       }
+    },
+    "warn-if-update-available": {
+      "frequency": 1,
+      "frequencyUnit": "days"
     }
   },
   "repository": "github:shipth-is/cli",
