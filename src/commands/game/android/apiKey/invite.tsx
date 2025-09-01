@@ -21,6 +21,7 @@ export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<type
 
   static override flags = {
     ...BaseGameAndroidCommand.flags,
+    force: Flags.boolean({char: 'f', description: 'Force invite (will re-apply the permissions if they have changed)'}),
     prompt: Flags.boolean({char: 'p', description: 'Prompt for the Google Play Account ID'}),
     waitForAuth: Flags.boolean({char: 'w', description: 'Wait for Google Authentication (10 mins).'}),
     waitForGoogleApp: Flags.boolean({char: 'p', description: 'Waits for the Google Play app to be created (10 mins).'}),
@@ -28,7 +29,7 @@ export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<type
 
   public async run(): Promise<void> {
     const game = await this.getGame()
-    const {prompt, waitForAuth, waitForGoogleApp} = this.flags
+    const {prompt, waitForAuth, waitForGoogleApp, force} = this.flags
 
     this.checkGoogleAuth(waitForAuth)
 
@@ -58,8 +59,8 @@ export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<type
 
     let testResult = await fetchKeyTestResult({projectId: game.id})
 
-    if (testResult.status === KeyTestStatus.SUCCESS) {
-      this.error('The Service Account API Key is working and does not need to be invited.', {
+    if ((testResult.status === KeyTestStatus.SUCCESS) && !force) {
+      this.error('The Service Account API Key is working. Run with the --force flag to re-invite the service account.', {
         exit: 1,
       })
     }
@@ -70,7 +71,7 @@ export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<type
       testResult = await waitForApp()
     }
 
-    if (testResult.error !== KeyTestError.NOT_INVITED) {
+    if ((testResult.error !== KeyTestError.NOT_INVITED) && !force) {
       this.error(`${niceError(testResult.error)}`)
     }
 
