@@ -292,7 +292,13 @@ If a build fails, rerun it for only the failing platform with the `--follow` fla
 shipthis game ship --platform android --follow
 ```
 
-You can also review logs at any time in the [dashboard](https://shipth.is/dashboard?ref=github_readme).
+For additional debugging, you can include the `--verbose` flag - this enables detailed logging locally and on the build server, including running the Godot export with verbose output:
+
+```bash
+shipthis game ship --platform ios --follow --verbose
+```
+
+You can review logs at any time in the [dashboard](https://shipth.is/dashboard?ref=github_readme) under the "Jobs" tab.
 
 See the [Troubleshooting Guide](https://shipth.is/docs/troubleshooting?ref=github_readme) for common checks.
 
