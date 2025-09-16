@@ -32,7 +32,9 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
   const hasConfiguredIos = Boolean(projectConfig.project.details?.iosBundleId)
   const hasConfiguredAndroid = Boolean(projectConfig.project.details?.androidPackageName)
 
-  if (!hasConfiguredAndroid && !hasConfiguredIos) {
+  const flags = shipFlags || (command.getFlags() as ShipGameFlags)
+  // We can ship a go game without any platform config
+  if (flags?.platform !== 'go' && !hasConfiguredAndroid && !hasConfiguredIos) {
     throw new Error(
       'No Android or iOS configuration found. Please run `shipthis game wizard android` or `shipthis game wizard ios` to configure your game.',
     )
@@ -88,13 +90,11 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
 
   verbose && log('Starting jobs from upload...')
 
-  const finalFlags = shipFlags || (command.getFlags() as ShipGameFlags)
-
   const startJobsOptions = {
     ...uploadDetails,
-    platform: finalFlags.platform?.toUpperCase() as Platform,
-    skipPublish: finalFlags.skipPublish,
-    verbose: finalFlags.verbose,
+    platform: flags.platform?.toUpperCase() as Platform,
+    skipPublish: flags.skipPublish,
+    verbose: flags.verbose,
   }
 
   const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
@@ -108,7 +108,7 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     throw new Error('No jobs were created. Please check your game configuration and try again.')
   }
 
-  if (finalFlags?.follow) {
+  if (flags?.follow) {
     log('Waiting for job to start...')
   }
 
