@@ -41,8 +41,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       required: false,
     }),
     platform: Flags.string({
-      description: 'The platform to ship the game to. This can be "android" or "ios"',
-      options: ['android', 'ios'],
+      description: 'The platform to ship the game to. This can be "android", "ios", or "go"',
+      options: ['android', 'ios', 'go'],
       required: false,
     }),
     skipPublish: Flags.boolean({
