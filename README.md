@@ -104,12 +104,12 @@ ShipThis handles iOS builds on managed macOS cloud servers. The CLI connects to 
 
 We support **all stable Godot versions since 3.6**, including:
 
-| 3.6     | 4.0      | 4.1      | 4.2    | 4.3 | 4.4    |
-|---------|----------|----------|--------|-----|--------|
-| 3.6.1   | 4.0.1    | 4.1.1    | 4.2.1  |     | 4.4.1  |
-|         | 4.0.2    | 4.1.2    | 4.2.2  |     |        |
-|         | 4.0.3    | 4.1.3    |        |     |        |
-|         | 4.0.4    | 4.1.4    |        |     |        |
+| 3.6     | 4.0      | 4.1      | 4.2    | 4.3 | 4.4    | 4.5 |
+|---------|----------|----------|--------|-----|--------|-----|
+| 3.6.1   | 4.0.1    | 4.1.1    | 4.2.1  |     | 4.4.1  |     |
+|         | 4.0.2    | 4.1.2    | 4.2.2  |     |        |     |
+|         | 4.0.3    | 4.1.3    |        |     |        |     |
+|         | 4.0.4    | 4.1.4    |        |     |        |     |
 
 You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning?ref=github_readme).
 
