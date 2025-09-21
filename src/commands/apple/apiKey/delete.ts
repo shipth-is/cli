@@ -23,7 +23,7 @@ export default class AppleApiKeyDelete extends BaseAppleCommand<typeof AppleApiK
     }),
     iAmSure: Flags.boolean({
       char: 'y',
-      description: 'I am sure I want to do this - do not prompt me again',
+      description: 'I am sure I want to do this - do not prompt me',
       required: false,
     }),
     revokeInApple: Flags.boolean({
@@ -35,10 +35,11 @@ export default class AppleApiKeyDelete extends BaseAppleCommand<typeof AppleApiK
 
   public async run(): Promise<void> {
     const {flags} = await this.parse(AppleApiKeyDelete)
+    const {immediate, iAmSure, revokeInApple} = flags
 
     const userCredentials = await getUserCredentials()
     const userAppleApiKeyCredentials = userCredentials.filter(
-      (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.KEY,
+      (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.KEY && cred.isActive,
     )
 
     if (userAppleApiKeyCredentials.length === 0) {
@@ -47,20 +48,29 @@ export default class AppleApiKeyDelete extends BaseAppleCommand<typeof AppleApiK
 
     const [key] = userAppleApiKeyCredentials
 
-    // Only fetch Apple auth state if we need to revoke in Apple
-    const authState = flags.revokeInApple ? await this.refreshAppleAuthState() : null
+    let appleKey = null
+
+    if (revokeInApple) {
+      const authState = await this.refreshAppleAuthState()
+      const ctx = authState.context
+      // Check the key exists in Apple if we are going to revoke it
+      appleKey = await ApiKey.infoAsync(ctx, {id: key.serialNumber})
+      if (!appleKey?.id) {
+        this.error('The App Store Connect API Key was not found in Apple, so cannot be revoked there.')
+      }
+    }
 
     const getAreYouSure = async (): Promise<boolean> => {
-      if (flags.iAmSure) return true
+      if (iAmSure) return true
       const confirmString = getShortUUID(key.id)
       const prompt = getRenderedMarkdown({
         filename: 'confirm-delete-credential.md.ejs',
         templateVars: {
+          confirmString,
           credentialType: 'App Store Connect API Key',
-          immediate: flags.immediate,
-          revokeInApple: flags.revokeInApple,
-          confirmString: confirmString,
-          exportCommand: `shipthis apple apiKey export appleApiKey.zip`
+          exportCommand: `shipthis apple apiKey export appleApiKey.zip`,
+          immediate,
+          revokeInApple,
         },
       })
       this.log(prompt)
@@ -76,18 +86,16 @@ export default class AppleApiKeyDelete extends BaseAppleCommand<typeof AppleApiK
 
     await deleteUserCredential({
       credentialId: key.id,
-      isImmediate: flags.immediate,
+      isImmediate: immediate,
     })
 
     this.log('The API Key has been deleted from ShipThis.')
 
-    if (flags.revokeInApple) {
-      const ctx = authState.context
-      const appleKey = await ApiKey.infoAsync(ctx, {id: key.id})
-      if (appleKey) {
-        await appleKey.revokeAsync()
-        this.log('The API Key has been revoked in Apple.')
-      }
+    if (revokeInApple && appleKey?.id) {
+      await appleKey.revokeAsync()
+      this.log('The API Key has been revoked in Apple.')
     }
+
+    await this.config.runCommand(`apple:apiKey:status`, [!revokeInApple ? '--noAppleAuth' : ''].filter(Boolean))
   }
 }
