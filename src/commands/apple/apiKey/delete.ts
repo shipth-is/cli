@@ -60,6 +60,7 @@ export default class AppleApiKeyDelete extends BaseAppleCommand<typeof AppleApiK
           immediate: flags.immediate,
           revokeInApple: flags.revokeInApple,
           confirmString: confirmString,
+          exportCommand: `shipthis apple apiKey export appleApiKey.zip`
         },
       })
       this.log(prompt)
