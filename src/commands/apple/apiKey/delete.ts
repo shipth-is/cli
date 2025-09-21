@@ -38,15 +38,15 @@ export default class AppleApiKeyDelete extends BaseAppleCommand<typeof AppleApiK
     const {immediate, iAmSure, revokeInApple} = flags
 
     const userCredentials = await getUserCredentials()
-    const userAppleApiKeyCredentials = userCredentials.filter(
+    const userKeys = userCredentials.filter(
       (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.KEY && cred.isActive,
     )
 
-    if (userAppleApiKeyCredentials.length === 0) {
+    if (userKeys.length === 0) {
       this.error('No App Store Connect API Key found which can be deleted.')
     }
 
-    const [key] = userAppleApiKeyCredentials
+    const [key] = userKeys
 
     let appleKey = null
 
