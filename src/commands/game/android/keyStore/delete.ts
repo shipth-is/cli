@@ -26,7 +26,7 @@ export default class GameAndroidKeyStoreDelete extends BaseGameAndroidCommand<ty
 
   public async run(): Promise<void> {
     const {flags} = await this.parse(GameAndroidKeyStoreDelete)
-    const {immediate, iAmSure, revokeInApple} = flags
+    const {immediate, iAmSure} = flags
 
     const game = await this.getGame()
 
@@ -51,7 +51,6 @@ export default class GameAndroidKeyStoreDelete extends BaseGameAndroidCommand<ty
           confirmString,
           exportCommand: `shipthis game android keyStore export keyStore.zip`,
           immediate,
-          revokeInApple,
         },
       })
       this.log(prompt)
