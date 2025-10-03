@@ -1,14 +1,14 @@
 import {Flags} from '@oclif/core'
 
+import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {deleteProjectCredential, getProjectCredentials} from '@cli/api/index.js'
-import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getRenderedMarkdown} from '@cli/components/index.js'
 import {getShortUUID, getInput} from '@cli/utils/index.js'
 
-export default class GameAndroidKeyStoreDelete extends BaseGameAndroidCommand<typeof GameAndroidKeyStoreDelete> {
+export default class GameAndroidApiKeyDelete extends BaseGameAndroidCommand<typeof GameAndroidApiKeyDelete> {
   static override args = {}
-  static override description = 'Delete the active Android KeyStore from ShipThis'
+  static override description = 'Delete the active Android API Key from ShipThis'
   static override examples = ['<%= config.bin %> <%= command.id %>']
   static override flags = {
     ...BaseGameAndroidCommand.flags,
@@ -25,33 +25,32 @@ export default class GameAndroidKeyStoreDelete extends BaseGameAndroidCommand<ty
   }
 
   public async run(): Promise<void> {
-    const {flags} = await this.parse(GameAndroidKeyStoreDelete)
-    const {immediate, iAmSure, revokeInApple} = flags
+    const {flags} = await this.parse(GameAndroidApiKeyDelete)
+    const {immediate, iAmSure} = flags
 
     const game = await this.getGame()
 
     const projectCredentials = await getProjectCredentials(game.id)
-    const userAndroidKeystoreCredentials = projectCredentials.filter(
-      (cred) => cred.platform === Platform.ANDROID && cred.type === CredentialsType.CERTIFICATE && cred.isActive,
+    const activeKeys = projectCredentials.filter(
+      (cred) => cred.platform === Platform.ANDROID && cred.type === CredentialsType.KEY && cred.isActive,
     )
 
-    if (userAndroidKeystoreCredentials.length === 0) {
-      this.log('No active Android keystore credentials found.')
+    if (activeKeys.length === 0) {
+      this.log('No active Android API Key found which can be deleted.')
       return
     }
 
-    const [keyStore] = userAndroidKeystoreCredentials
+    const [apiKey] = activeKeys
 
     const getAreYouSure = async (): Promise<boolean> => {
       if (iAmSure) return true
-      const confirmString = getShortUUID(keyStore.id)
+      const confirmString = getShortUUID(apiKey.id)
       const prompt = getRenderedMarkdown({
-        filename: 'confirm-delete-android-keystore.md.ejs',
+        filename: 'confirm-delete-android-serviceaccountkey.md.ejs',
         templateVars: {
           confirmString,
-          exportCommand: `shipthis game android keyStore export keyStore.zip`,
+          exportCommand: `shipthis game android apiKey export apiKey.json`,
           immediate,
-          revokeInApple,
         },
       })
       this.log(prompt)
@@ -61,15 +60,15 @@ export default class GameAndroidKeyStoreDelete extends BaseGameAndroidCommand<ty
 
     const areYouSure = await getAreYouSure()
     if (!areYouSure) {
-      this.log('Aborting - Android KeyStore not deleted')
+      this.log('Aborting - Android API Key not deleted')
       this.exit(0)
     }
 
     await deleteProjectCredential(game.id, {
-      credentialId: keyStore.id,
+      credentialId: apiKey.id,
       isImmediate: immediate,
     })
 
-    this.log('The Android KeyStore has been deleted from ShipThis.')
+    this.log('The Android API Key has been deleted from ShipThis.')
   }
 }
