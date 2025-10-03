@@ -15,6 +15,7 @@ export const UserCredentialsTable = ({credentialTypeName, queryProps, ...boxProp
   const {data, isLoading} = useUserCredentials(queryProps)
 
   const hasActive = data?.data.some((credential) => credential.isActive)
+  const hasInactive = data?.data.some((credential) => !credential.isActive)
 
   return (
     <Box flexDirection="column" marginBottom={1} {...boxProps}>
@@ -28,6 +29,7 @@ export const UserCredentialsTable = ({credentialTypeName, queryProps, ...boxProp
       </Box>
       {isLoading && <Spinner type="dots" />}
       {data && data.data.length > 0 && <Table data={data.data.map(getUserCredentialSummary)} />}
+      {hasInactive && (<Text>Inactive credentials are automatically removed from storage after 24 hours.</Text>)}
     </Box>
   )
 }

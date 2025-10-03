@@ -1,5 +1,6 @@
 import fs from 'node:fs'
 import path from 'node:path'
+import chalk from 'chalk'
 
 import {Command, Flags, Interfaces} from '@oclif/core'
 import {SerializedCookieJar} from 'tough-cookie'
@@ -183,7 +184,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   protected async refreshAppleAuthState(): Promise<any> {
     const cookies = await this.getAppleCookies()
 
-    const rerunMessage = 'Please run shipthis apple login to authenticate with Apple.'
+    const rerunMessage = `Please run ${chalk.bold('shipthis apple login')} to authenticate with Apple.`
 
     if (!cookies) throw new Error(`No Apple cookies found. ${rerunMessage}`)
     const authState = await Auth.loginWithCookiesAsync(
@@ -196,7 +197,8 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return authState
   }
 
-  protected async setAppleCookies(cookies: SerializedCookieJar): Promise<void> {
+  // Pass undefined to logout
+  protected async setAppleCookies(cookies: SerializedCookieJar | undefined): Promise<void> {
     const authConfig = await this.getAuthConfig()
     await this.setAuthConfig({...authConfig, appleCookies: cookies})
   }

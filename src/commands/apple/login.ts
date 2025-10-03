@@ -12,6 +12,7 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
     '<%= config.bin %> <%= command.id %> --force --appleEmail me@email.nowhere',
+    '<%= config.bin %> <%= command.id %> --logout',
   ]
 
   static override flags = {
@@ -21,10 +22,18 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
     }),
     force: Flags.boolean({char: 'f'}),
     quiet: Flags.boolean({char: 'q', description: 'Avoid output except for interactions and errors'}),
+    logout: Flags.boolean({char: 'l', description: 'Forget the saved Apple session (log out)'}),
   }
 
   public async run(): Promise<void> {
     const {flags} = this
+
+    if (flags.logout) {
+      await this.setAppleCookies(undefined)
+      if (!this.flags.quiet) this.log('You have been logged out of Apple.')
+      await this.config.runCommand(`apple:status`)
+      return
+    }
 
     const isLoggedIn = await this.hasValidAppleAuthState()
     if (isLoggedIn && !flags.force) {
@@ -47,12 +56,6 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
 
     const appleEmail = await getAppleEmail()
     const applePassword = await getApplePassword()
-
-    const get2FA = async (): Promise<string> => {
-      const otp = await getInput('Please enter the 2FA code: ')
-      if (!otp) throw new Error('2FA code is required')
-      return otp
-    }
 
     const authState = await getNewAuthState(appleEmail, applePassword)
 
