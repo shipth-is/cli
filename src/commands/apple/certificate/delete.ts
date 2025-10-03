@@ -101,7 +101,7 @@ export default class AppleCertificateDelete extends BaseAppleCommand<typeof Appl
 
     if (revokeInApple && appleCert?.id) {
       Certificate.deleteAsync(ctx, {id: appleCert.id})
-      this.log('The iOS Distribution Certificate has been revoked in Apple.')
+      this.log('The iOS Distribution Certificate has been deleted in Apple.')
     }
 
     await this.config.runCommand(`apple:certificate:status`, [!revokeInApple ? '--noAppleAuth' : ''].filter(Boolean))
