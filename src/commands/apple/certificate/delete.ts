@@ -4,10 +4,9 @@ import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {deleteUserCredential, getUserCredentials} from '@cli/api/index.js'
 import {getRenderedMarkdown} from '@cli/components/common/index.js'
 
-import {Certificate, CertificateType} from '@cli/apple/expo.js'
+import {Certificate} from '@cli/apple/expo.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {getInput, getShortUUID} from '@cli/utils/index.js'
-import { ConnectQueryParams } from 'connect/ConnectAPI'
 
 export default class AppleCertificateDelete extends BaseAppleCommand<typeof AppleCertificateDelete> {
   static override args = {}
@@ -54,16 +53,19 @@ export default class AppleCertificateDelete extends BaseAppleCommand<typeof Appl
       authState = await this.refreshAppleAuthState()
       ctx = authState.context
       // Check the cert exists in Apple if we are going to revoke it
-      const query: Record<string, any> = {
-        certificateType: CertificateType.DISTRIBUTION,
-        serialNumber: cert.serialNumber
-      }
-      // ConnectQueryParams<Partial<{ certificateType: CertificateType | CertificateType[]; displayName: string | string[]; serialNumber: string | string[]; } & { id?: string | undefined; }>>
-      // TODO: this is the wrong way to find the cert
-      appleCert = await Certificate.infoAsync(ctx, { id: '', query })
-      if (!appleCert?.id) {
+      const appleCerts = await Certificate.getAsync(ctx, {
+        query: {
+          filter: {
+            serialNumber: cert.serialNumber,
+          },
+        },
+      })
+
+      if (appleCerts.length !== 1) {
         this.error('The iOS Distribution Certificate was not found in Apple, so cannot be revoked there.')
       }
+
+      appleCert = appleCerts[0]
     }
 
     const getAreYouSure = async (): Promise<boolean> => {
@@ -97,8 +99,8 @@ export default class AppleCertificateDelete extends BaseAppleCommand<typeof Appl
 
     this.log('The iOS Distribution Certificate has been deleted from ShipThis.')
 
-    if (revokeInApple) {
-      Certificate.deleteAsync(ctx, {id: cert.serialNumber})
+    if (revokeInApple && appleCert?.id) {
+      Certificate.deleteAsync(ctx, {id: appleCert.id})
       this.log('The iOS Distribution Certificate has been revoked in Apple.')
     }
 
