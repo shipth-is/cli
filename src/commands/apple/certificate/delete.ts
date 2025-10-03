@@ -70,7 +70,7 @@ export default class AppleCertificateDelete extends BaseAppleCommand<typeof Appl
       if (iAmSure) return true
       const confirmString = getShortUUID(cert.id)
       const prompt = getRenderedMarkdown({
-        filename: 'confirm-delete-credential.md.ejs',
+        filename: 'confirm-delete-apple-credential.md.ejs',
         templateVars: {
           confirmString,
           credentialType: 'iOS Distribution Certificate',

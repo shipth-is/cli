@@ -64,7 +64,7 @@ export default class AppleApiKeyDelete extends BaseAppleCommand<typeof AppleApiK
       if (iAmSure) return true
       const confirmString = getShortUUID(key.id)
       const prompt = getRenderedMarkdown({
-        filename: 'confirm-delete-credential.md.ejs',
+        filename: 'confirm-delete-apple-credential.md.ejs',
         templateVars: {
           confirmString,
           credentialType: 'App Store Connect API Key',
