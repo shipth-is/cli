@@ -197,7 +197,8 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return authState
   }
 
-  protected async setAppleCookies(cookies: SerializedCookieJar): Promise<void> {
+  // Pass undefined to logout
+  protected async setAppleCookies(cookies: SerializedCookieJar | undefined): Promise<void> {
     const authConfig = await this.getAuthConfig()
     await this.setAuthConfig({...authConfig, appleCookies: cookies})
   }
