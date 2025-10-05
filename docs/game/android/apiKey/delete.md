@@ -20,4 +20,6 @@ DESCRIPTION
 
 EXAMPLES
   $ shipthis game android apiKey delete
+
+  $ shipthis game android apiKey delete --immediate --iAmSure
 ```

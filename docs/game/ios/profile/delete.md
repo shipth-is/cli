@@ -21,4 +21,6 @@ DESCRIPTION
 
 EXAMPLES
   $ shipthis game ios profile delete
+
+  $ shipthis game ios profile delete --revokeInApple --immediate --iAmSure
 ```

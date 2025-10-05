@@ -1,4 +1,3 @@
-
 import {Flags} from '@oclif/core'
 
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
@@ -10,7 +9,10 @@ import {getShortUUID, getInput, queryAppleProfiles} from '@cli/utils/index.js'
 export default class GameIosProfileDelete extends BaseGameCommand<typeof GameIosProfileDelete> {
   static override args = {}
   static override description = 'Delete an iOS Mobile Provisioning Profile from ShipThis and optionally from Apple'
-  static override examples = ['<%= config.bin %> <%= command.id %>']
+  static override examples = [
+    '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> --revokeInApple --immediate --iAmSure',
+  ]
   static override flags = {
     ...BaseGameCommand.flags,
     immediate: Flags.boolean({
@@ -53,12 +55,12 @@ export default class GameIosProfileDelete extends BaseGameCommand<typeof GameIos
       const authState = await this.refreshAppleAuthState()
       const ctx = authState.context
 
-      const appleProfiles = await queryAppleProfiles({ ctx });
+      const appleProfiles = await queryAppleProfiles({ctx})
 
       appleProfile = appleProfiles.find((p) => {
         const profileSerialNumber = p.attributes.certificates?.[0]?.attributes.serialNumber
         return profileSerialNumber === profile.serialNumber
-      });
+      })
 
       if (!appleProfile?.id) {
         this.error('The Mobile Provisioning Profile was not found in Apple, so cannot be revoked there.')

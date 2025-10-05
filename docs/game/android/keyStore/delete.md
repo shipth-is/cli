@@ -20,4 +20,6 @@ DESCRIPTION
 
 EXAMPLES
   $ shipthis game android keyStore delete
+
+  $ shipthis game android keyStore delete --immediate --iAmSure
 ```
