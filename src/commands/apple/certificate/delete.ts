@@ -11,7 +11,10 @@ import {getInput, getShortUUID} from '@cli/utils/index.js'
 export default class AppleCertificateDelete extends BaseAppleCommand<typeof AppleCertificateDelete> {
   static override args = {}
   static override description = 'Delete an iOS Distribution Certificate from ShipThis and optionally from Apple'
-  static override examples = ['<%= config.bin %> <%= command.id %>']
+  static override examples = [
+    '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> --immediate --revokeInApple --iAmSure',
+  ]
   static override flags = {
     immediate: Flags.boolean({
       char: 'i',

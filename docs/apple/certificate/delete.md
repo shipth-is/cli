@@ -20,4 +20,6 @@ DESCRIPTION
 
 EXAMPLES
   $ shipthis apple certificate delete
+
+  $ shipthis apple certificate delete --immediate --revokeInApple --iAmSure
 ```

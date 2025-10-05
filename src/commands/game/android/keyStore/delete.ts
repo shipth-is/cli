@@ -9,7 +9,10 @@ import {getShortUUID, getInput} from '@cli/utils/index.js'
 export default class GameAndroidKeyStoreDelete extends BaseGameAndroidCommand<typeof GameAndroidKeyStoreDelete> {
   static override args = {}
   static override description = 'Delete the active Android KeyStore from ShipThis'
-  static override examples = ['<%= config.bin %> <%= command.id %>']
+  static override examples = [
+    '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> --immediate --iAmSure',
+  ]
   static override flags = {
     ...BaseGameAndroidCommand.flags,
     immediate: Flags.boolean({
