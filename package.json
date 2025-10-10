@@ -1,7 +1,7 @@
 {
   "name": "shipthis",
   "description": "ShipThis manages building and uploading your Godot games to the App Store and Google Play.",
-  "version": "0.1.36",
+  "version": "0.1.37",
   "author": "Hello Invent Ltd",
   "bin": {
     "shipthis": "./bin/run.js"
