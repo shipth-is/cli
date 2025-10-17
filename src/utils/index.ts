@@ -146,6 +146,10 @@ export function getPlatformName(platform: Platform): string {
       return 'Android'
     }
 
+    case Platform.GO: {
+      return 'Go'
+    }
+
     default: {
       throw new Error(`Unknown platform: ${platform}`)
     }
