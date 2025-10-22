@@ -29,5 +29,5 @@ export const GoogleAuthQRCode = ({gameId, helpPage}: GoogleAuthQRCodeProps) => {
     handleLoad()
   }, [])
 
-  return <>{url && <QRCodeTerminal url={url} />}</>
+  return <>{url && <QRCodeTerminal data={url} />}</>
 }
