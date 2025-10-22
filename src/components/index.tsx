@@ -5,7 +5,7 @@ export * from './JobLogTail.js'
 export * from './JobStatusTable.js'
 export * from './ProjectCredentialsTable.js'
 
-export * from './Ship.js'
+export * from './Ship/index.js'
 export * from './UserCredentialsTable.js'
 export * from './android/index.js'
 export * from './apple/index.js'
