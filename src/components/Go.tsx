@@ -28,6 +28,7 @@ const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.
   const {jobs: startedJobs} = useStartShipOnMount(command, flags, onError)
 
   const handleJobCompleted = async (job: any) => {
+    if (job.id !== startedJobs?.[0].id) return
     const [goBuild] = await getJobBuildsRetry(job.id, command.getGameId())
     setQRCodeData(getShortUUID(goBuild.id))
     const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -36,6 +37,7 @@ const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.
   }
 
   const handleJobFailed = (job: any) => {
+    if (job.id !== startedJobs?.[0].id) return
     onError(new Error(`Go job failed: ${job.id}`))
   }
 
