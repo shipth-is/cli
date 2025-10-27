@@ -95,6 +95,7 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     platform: finalFlags.platform?.toUpperCase() as Platform,
     skipPublish: finalFlags.skipPublish,
     verbose: finalFlags.verbose,
+    useDemoCredentials: finalFlags.useDemoCredentials,
   }
 
   const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
