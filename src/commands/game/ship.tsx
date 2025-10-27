@@ -54,7 +54,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       required: false,
     }),
     useDemoCredentials: Flags.boolean({
-      description: 'Use demo credentials for this build',
+      description: 'Use demo credentials for this build (implies --skipPublish)',
       required: false,
     }),
   }
