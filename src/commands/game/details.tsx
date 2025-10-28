@@ -83,7 +83,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
             'Game Name': game.name,
             'Semantic Version': game.details?.semanticVersion || '0.0.1',
             'iOS Bundle ID': game.details?.iosBundleId || 'N/A',
-            'Using Demo Credentials': game.details?.useDemoCredentials ? 'Yes' : 'No'
+            'Using Demo Credentials': game.details?.useDemoCredentials ? 'Yes' : 'No',
           }}
           title="Game Details"
         />
