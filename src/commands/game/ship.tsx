@@ -53,6 +53,10 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       description: 'Enable verbose logging',
       required: false,
     }),
+    useDemoCredentials: Flags.boolean({
+      description: 'Use demo credentials for this build (implies --skipPublish)',
+      required: false,
+    }),
   }
 
   public async run(): Promise<void> {

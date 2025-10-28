@@ -110,6 +110,7 @@ type StartJobsOptions = {
   platform?: Platform
   skipPublish?: boolean
   verbose?: boolean
+  useDemoCredentials?: boolean
 } & UploadDetails
 
 export async function startJobsFromUpload(uploadTicketId: string, startOptions: StartJobsOptions): Promise<Job[]> {

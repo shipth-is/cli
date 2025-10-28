@@ -34,10 +34,8 @@ When using ShipThis in a CI environment, it is most useful to use the `--follow`
 ## Help Output
 
 ```help
-Builds the app (for all platforms with valid credentials) and ships it to the stores.
-
 USAGE
-  $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ] [--follow ] [--skipPublish] [--verbose]
+  $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ] [--follow ] [--skipPublish] [--verbose] [--useDemoCredentials]
 
 FLAGS
   -g, --gameId=<value>       The ID of the game
@@ -47,6 +45,7 @@ FLAGS
       --platform=<option>    The platform to ship the game to. This can be "android" or "ios"
                              <options: android|ios>
       --skipPublish          Skip the publish step
+      --useDemoCredentials   Use demo credentials for this build (implies --skipPublish)
       --verbose              Enable verbose logging
 
 DESCRIPTION

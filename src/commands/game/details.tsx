@@ -37,6 +37,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
       iosBundleId,
       name,
       semanticVersion,
+      useDemoCredentials,
     } = valueFlags
 
     if (semanticVersion && !isValidSemVer(semanticVersion))
@@ -60,6 +61,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
         ...(androidPackageName && {androidPackageName}),
         ...(gcpProjectId && {gcpProjectId}),
         ...(gcpServiceAccountId && {gcpServiceAccountId}),
+        ...(useDemoCredentials !== undefined && {useDemoCredentials: useDemoCredentials.toLowerCase() === 'true'}),
       },
       name: name || game.name,
     }
@@ -81,6 +83,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
             'Game Name': game.name,
             'Semantic Version': game.details?.semanticVersion || '0.0.1',
             'iOS Bundle ID': game.details?.iosBundleId || 'N/A',
+            'Using Demo Credentials': game.details?.useDemoCredentials ? 'Yes' : 'No',
           }}
           title="Game Details"
         />

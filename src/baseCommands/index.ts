@@ -16,4 +16,5 @@ export const DetailsFlags = {
   iosBundleId: Flags.string({char: 'i', description: 'Set the iOS bundle ID'}),
   name: Flags.string({char: 'n', description: 'The name of the game'}),
   semanticVersion: Flags.string({char: 's', description: 'Set the semantic version'}),
+  useDemoCredentials: Flags.string({char: 'd', description: 'Use demo credentials for this project'}),
 }
