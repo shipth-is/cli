@@ -43,7 +43,7 @@ export interface ProjectDetails {
   gcpServiceAccountId?: string
   iosBundleId?: string
   semanticVersion?: string
-  useDemoCredentials?: boolean;
+  useDemoCredentials?: boolean
 }
 
 // What the POST/PUT endpoints accept for creating/updating a project
