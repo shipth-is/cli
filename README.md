@@ -22,7 +22,7 @@
 - A Godot 3.6 or 4.x game
 - [Node.js](https://nodejs.org/en/download/) version 18.0 or above
 - **To publish an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup) (not required for building an APK/AAB)
-- **To build an iOS game** - an [Apple Developer account](https://developer.apple.com)
+- **To publish an iOS game** - an [Apple Developer account](https://developer.apple.com) (not required for building an IPA)
 
 ### 1. Install ShipThis
 
@@ -96,7 +96,7 @@ shipthis game ship
 
 ### Do I need a Mac to build for iOS?
 
-No, you do not need a Mac, but you will need an Apple Developer Account.
+No, you do not need a Mac, but if you want to publish to the Apple App Store then you will need an Apple Developer Account.
 
 ShipThis handles iOS builds on managed macOS cloud servers. The CLI connects to the Apple Developer Portal and sets everything up for you.
 
@@ -116,23 +116,26 @@ We support **all stable Godot versions since 3.6**, including:
 
 You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning?ref=github_readme).
 
-### Can I build my game as APK/AAB without a Google Play account?
+### Can I build my game as APK/AAB/IPA without an Apple or Google Play account?
 
 Yes.
 
-Running the wizard command will create a Service Account Key for automatic publishing, but you might not need this when initially building your game.
+The wizard command is designed to generate your own credentials for signing and publishing, but you might not need this when initially building your game - or if you want to side-load.
 
-You can create a ShipThis account, create the game, create a keystore, and then run the ship command. Later, when you need to set up publishing, you can re-run the wizard command.
+You can create a ShipThis account, create the game and then run the ship command. Later, when you need to set up publishing, you can re-run the wizard command.
 
 ```bash
 # Create a ShipThis game - run this in a dir with a project.godot file
-shipthis game create --name "My Game" --androidPackageName "com.my.game"
+shipthis game create --name "My Game"
 
-# Create a keystore for signing the APK
-shipthis game android keyStore create
+# Run the build, use demo credentials, and download as game.apk
+shipthis game ship --follow --platform android --useDemoCredentials --downloadAPK game.apk
 
-# Run the build, skip the publish step, and download as game.apk
-shipthis game ship --follow --platform android --skipPublish --downloadAPK game.apk
+# Run the build, use demo credentials, and download as game.aab
+shipthis game ship --follow --platform android --useDemoCredentials --download game.aab
+
+# Run the build, use demo credentials, and download as game.apk
+shipthis game ship --follow --platform ios --useDemoCredentials --download game.ipa
 ```
 
 ### Do I need to create an export_presets.cfg file?
