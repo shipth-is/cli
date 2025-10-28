@@ -134,7 +134,7 @@ shipthis game ship --follow --platform android --useDemoCredentials --downloadAP
 # Run the build, use demo credentials, and download as game.aab
 shipthis game ship --follow --platform android --useDemoCredentials --download game.aab
 
-# Run the build, use demo credentials, and download as game.apk
+# Run the build, use demo credentials, and download as game.ipa
 shipthis game ship --follow --platform ios --useDemoCredentials --download game.ipa
 ```
 
