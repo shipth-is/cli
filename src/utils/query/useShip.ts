@@ -22,17 +22,22 @@ interface ShipOptions {
 }
 
 export async function ship({command, log = () => {}, shipFlags}: ShipOptions): Promise<Job[]> {
-  const verbose = Boolean(shipFlags?.verbose || command.getFlags().verbose)
+  const commandFlags = command.getFlags() as ShipGameFlags
+  const finalFlags = shipFlags || commandFlags
+  const {verbose, useDemoCredentials} = finalFlags
 
   verbose && log('Fetching game config...')
   const projectConfig: ProjectConfig = await command.getProjectConfig()
 
   if (!projectConfig.project) throw new Error('No project found in project config')
 
+  const projectUsesDemoCredentials = Boolean(projectConfig.project.details?.useDemoCredentials)
+  const isUsingDemoCredentials = useDemoCredentials ?? projectUsesDemoCredentials ?? false
+
   const hasConfiguredIos = Boolean(projectConfig.project.details?.iosBundleId)
   const hasConfiguredAndroid = Boolean(projectConfig.project.details?.androidPackageName)
 
-  if (!hasConfiguredAndroid && !hasConfiguredIos) {
+  if (!isUsingDemoCredentials && !hasConfiguredAndroid && !hasConfiguredIos) {
     throw new Error(
       'No Android or iOS configuration found. Please run `shipthis game wizard android` or `shipthis game wizard ios` to configure your game.',
     )
@@ -88,14 +93,12 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
 
   verbose && log('Starting jobs from upload...')
 
-  const finalFlags = shipFlags || (command.getFlags() as ShipGameFlags)
-
   const startJobsOptions = {
     ...uploadDetails,
     platform: finalFlags.platform?.toUpperCase() as Platform,
     skipPublish: finalFlags.skipPublish,
     verbose: finalFlags.verbose,
-    useDemoCredentials: finalFlags.useDemoCredentials,
+    useDemoCredentials: isUsingDemoCredentials,
   }
 
   const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
