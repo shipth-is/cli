@@ -2,6 +2,10 @@
 
 **Your game has been successfully built<% if (wasPublished) { %> and published<% } %>.**
 
+<% if (usedDemoCredentials) { %>
+> **Note: Demo credentials were used for this build, so the game was not published.**
+<% } %>
+
 ## Next Steps
 
 - See all builds in the **Dashboard** [<%= gameBuildsUrl %>](<%= gameBuildsUrl %>)
