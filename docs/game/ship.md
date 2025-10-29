@@ -35,17 +35,18 @@ When using ShipThis in a CI environment, it is most useful to use the `--follow`
 
 ```help
 USAGE
-  $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ] [--follow ] [--skipPublish] [--verbose] [--useDemoCredentials]
+  $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ] [--follow ]
+    [--skipPublish] [--verbose] [--useDemoCredentials ]
 
 FLAGS
   -g, --gameId=<value>       The ID of the game
       --download=<value>     Download the build artifact to the specified file
       --downloadAPK=<value>  Download the APK artifact (if available) to the specified file
-      --follow               Follow the job logs in real-time. Requires --platform to be specified.
+      --follow               Follow the job logs in real-time (requires --platform)
       --platform=<option>    The platform to ship the game to. This can be "android" or "ios"
                              <options: android|ios>
       --skipPublish          Skip the publish step
-      --useDemoCredentials   Use demo credentials for this build (implies --skipPublish)
+      --useDemoCredentials   Use demo credentials for this build (requires --platform, implies --skipPublish)
       --verbose              Enable verbose logging
 
 DESCRIPTION
@@ -64,4 +65,5 @@ EXAMPLES
 
   $ shipthis game ship --platform ios --follow --verbose
 
+  $ shipthis game ship --platform ios --useDemoCredentials --download game.ipa
 ```
