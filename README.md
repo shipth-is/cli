@@ -1,8 +1,9 @@
 # ShipThis <a href="https://discord.gg/gPjn3S99k4"><img alt="discord" src="https://img.shields.io/discord/1304144717239554069?style=flat-square&label=%F0%9F%92%AC%20discord&color=00ACD7"></a><a href="https://shipth.is/?ref=github_readme"><img src="docs/assets/st.png" align="right" height="80" alt="ShipThis" /></a>
 
-- Build and publish Godot mobile games to the **App Store** and **Google Play**
-- Handles certificates, keystores, API keys, and provisioning profiles
-- Cloud builds are free for most solo-devs
+* Build iOS and Android binaries (APK, AAB, IPA) for your **Godot** game
+* Publish to the **App Store** and **Google Play** when you are ready
+* Automatically manages **certificates**, **keystores**, **API keys**, and **provisioning profiles**
+* **Free cloud builds** for most solo devs
 
 <p align="center">
   <a href="https://shipth.is/docs/reference/game/ship?ref=github_readme">
@@ -20,12 +21,11 @@
 ### Requirements
 
 - A Godot 3.6 or 4.x game
-- [Node.js](https://nodejs.org/en/download/) version 18.0 or above
-- **To publish an Android game** - a [Play Console developer account](https://play.google.com/apps/publish/signup) (not required for building an APK/AAB)
+- [Node.js](https://nodejs.org/en/download/) version 18 or above
+- **To publish an Android game** - a [Play Console Developer account](https://play.google.com/apps/publish/signup) (not required for building an APK/AAB)
 - **To publish an iOS game** - an [Apple Developer account](https://developer.apple.com) (not required for building an IPA)
 
 ### 1. Install ShipThis
-
 
 Install via the [NPM package manager](https://www.npmjs.com/):
 
@@ -37,14 +37,15 @@ npm install -g shipthis
 
 Set up an account with ShipThis by logging in for the first time using the [`shipthis login`](https://shipth.is/docs/reference/login?ref=github_readme) command.
 
-
 ```bash
 shipthis login
 ```
 
 ### 3. Set up your game
 
-Run the [wizard command](https://shipth.is/docs/reference/game/wizard?ref=github_readme) to configure your game on ShipThis. The command takes a platform parameter - this can be either **android** or **ios**. Run this command from within a Godot game directory (with a **project.godot** file):
+Run the [wizard command](https://shipth.is/docs/reference/game/wizard?ref=github_readme) to configure your game on ShipThis; it will set up everything needed to automatically build and publish your Godot game.
+
+ The wizard command takes a platform parameter: either **android** or **ios**. Run the command from within a Godot game directory (with a **project.godot** file):
 
 #### Set up an Android game
 
@@ -91,12 +92,11 @@ shipthis game ship
 - Having issues? Check the [Troubleshooting](https://shipth.is/docs/troubleshooting?ref=github_readme) or [join our Discord](https://discord.gg/gPjn3S99k4)
 - For detailed documentation, visit [shipth.is/docs](https://shipth.is/docs?ref=github_readme)
 
-
 ## FAQ
 
 ### Do I need a Mac to build for iOS?
 
-No, you do not need a Mac, but if you want to publish to the Apple App Store then you will need an Apple Developer Account.
+No, you do not need a Mac, but if you want to publish to TestFlight or the Apple App Store then you will need an Apple Developer account.
 
 ShipThis handles iOS builds on managed macOS cloud servers. The CLI connects to the Apple Developer Portal and sets everything up for you.
 
@@ -104,25 +104,25 @@ ShipThis handles iOS builds on managed macOS cloud servers. The CLI connects to 
 
 We support **all stable Godot versions since 3.6**, including:
 
-| [3.6](https://github.com/godotengine/godot/releases/tag/3.6-stable) | [4.0](https://github.com/godotengine/godot/releases/tag/4.0-stable) | [4.1](https://github.com/godotengine/godot/releases/tag/4.1-stable) | [4.2](https://github.com/godotengine/godot/releases/tag/4.2-stable) | [4.3](https://github.com/godotengine/godot/releases/tag/4.3-stable) | [4.4](https://github.com/godotengine/godot/releases/tag/4.4-stable) | [4.5](https://github.com/godotengine/godot/releases/tag/4.5-stable) |
-|---------------------------------------------------------------------|---------------------------------------------------------------------|---------------------------------------------------------------------|---------------------------------------------------------------------|---------------------------------------------------------------------|---------------------------------------------------------------------|---------------------------------------------------------------------|
-| [3.6.1](https://github.com/godotengine/godot/releases/tag/3.6.1-stable) | [4.0.1](https://github.com/godotengine/godot/releases/tag/4.0.1-stable) | [4.1.1](https://github.com/godotengine/godot/releases/tag/4.1.1-stable) | [4.2.1](https://github.com/godotengine/godot/releases/tag/4.2.1-stable) | [4.3.1 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.3.1) | [4.4.1](https://github.com/godotengine/godot/releases/tag/4.4.1-stable) | [4.5.1](https://github.com/godotengine/godot/releases/tag/4.5.1-stable) |
-| [3.7-dev *](https://github.com/shipth-is/godot-3.x-builds/releases/tag/godot-3.x-8c10cd6) | [4.0.2](https://github.com/godotengine/godot/releases/tag/4.0.2-stable) | [4.1.2](https://github.com/godotengine/godot/releases/tag/4.1.2-stable) | [4.2.2](https://github.com/godotengine/godot/releases/tag/4.2.2-stable) |     | [4.4.2 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.4.2) |     |
-|                                                                     | [4.0.3](https://github.com/godotengine/godot/releases/tag/4.0.3-stable) | [4.1.3](https://github.com/godotengine/godot/releases/tag/4.1.3-stable) | [4.2.3 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.2.3) |     |                                                                     |     |
-|                                                                     | [4.0.4](https://github.com/godotengine/godot/releases/tag/4.0.4-stable) | [4.1.4](https://github.com/godotengine/godot/releases/tag/4.1.4-stable) |                                                                     |     |                                                                     |     |
-|                                                                     | [4.0.5 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.0.5) | [4.1.5 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.1.5) |                                                                     |     |                                                                     |     |
+| [3.6](https://github.com/godotengine/godot/releases/tag/3.6-stable)     | [4.0](https://github.com/godotengine/godot/releases/tag/4.0-stable)                  | [4.1](https://github.com/godotengine/godot/releases/tag/4.1-stable)                  | [4.2](https://github.com/godotengine/godot/releases/tag/4.2-stable)                  | [4.3](https://github.com/godotengine/godot/releases/tag/4.3-stable)                  | [4.4](https://github.com/godotengine/godot/releases/tag/4.4-stable)                  | [4.5](https://github.com/godotengine/godot/releases/tag/4.5-stable)     |
+| ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------- |
+| [3.6.1](https://github.com/godotengine/godot/releases/tag/3.6.1-stable) | [4.0.1](https://github.com/godotengine/godot/releases/tag/4.0.1-stable)              | [4.1.1](https://github.com/godotengine/godot/releases/tag/4.1.1-stable)              | [4.2.1](https://github.com/godotengine/godot/releases/tag/4.2.1-stable)              | [4.3.1 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.3.1) | [4.4.1](https://github.com/godotengine/godot/releases/tag/4.4.1-stable)              | [4.5.1](https://github.com/godotengine/godot/releases/tag/4.5.1-stable) |
+| [3.6.2](https://github.com/godotengine/godot/releases/tag/3.6.2-stable) | [4.0.2](https://github.com/godotengine/godot/releases/tag/4.0.2-stable)              | [4.1.2](https://github.com/godotengine/godot/releases/tag/4.1.2-stable)              | [4.2.2](https://github.com/godotengine/godot/releases/tag/4.2.2-stable)              |                                                                                      | [4.4.2 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.4.2) |                                                                         |
+|                                                                         | [4.0.3](https://github.com/godotengine/godot/releases/tag/4.0.3-stable)              | [4.1.3](https://github.com/godotengine/godot/releases/tag/4.1.3-stable)              | [4.2.3 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.2.3) |                                                                                      |                                                                                      |                                                                         |
+|                                                                         | [4.0.4](https://github.com/godotengine/godot/releases/tag/4.0.4-stable)              | [4.1.4](https://github.com/godotengine/godot/releases/tag/4.1.4-stable)              |                                                                                      |                                                                                      |                                                                                      |                                                                         |
+|                                                                         | [4.0.5 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.0.5) | [4.1.5 *](https://github.com/shipth-is/godot-android-sdk-upgrade/releases/tag/4.1.5) |                                                                                      |                                                                                      |                                                                                      |                                                                         |
 
 **\* Custom builds** - [maintained by us](https://github.com/shipth-is/godot-android-sdk-upgrade/) to support **Android SDK 35**.
 
 You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning?ref=github_readme).
 
-### Can I build my game as APK/AAB/IPA without an Apple or Google Play account?
+### Can I build my game as APK/AAB/IPA without an Apple or Google account?
 
 Yes.
 
-The wizard command is designed to generate your own credentials for signing and publishing, but you might not need this when initially building your game - or if you want to side-load.
+The [wizard command](https://shipth.is/docs/reference/game/wizard?ref=github_readme) is designed to generate your own credentials for signing and publishing, but you might not need this when initially building your game.
 
-You can create a ShipThis account, create the game and then run the ship command. Later, when you need to set up publishing, you can re-run the wizard command.
+You can create a ShipThis account, create the game and then run the [ship command](https://shipth.is/docs/reference/game/ship?ref=github_readme) using demo credentials. Later, when you need to set up publishing, you can re-run the wizard command.
 
 ```bash
 # Create a ShipThis game - run this in a dir with a project.godot file
@@ -150,9 +150,11 @@ Currently free while in open beta. Planned pricing is on the [pricing page](http
 
 ### What does the `shipthis game wizard` do?
 
-The wizard command runs different steps for Android and iOS. Each "step" is another ShipThis command - meaning you can run each step by itself. The wizard can be re-run any number of times.
+The wizard is designed to set up everything you need to automatically build and publish your game to the Apple App Store or Google Play.
 
-The Android steps are described in the [Android set-up guide](https://shipth.is/docs/android?ref=github_readme).
+The [wizard command](https://shipth.is/docs/reference/game/wizard?ref=github_readme) runs different steps for Android and iOS. Each "step" is another ShipThis command - meaning you can run each step by itself. The wizard can be re-run any number of times.
+
+The Android steps are described in the [Android setup guide](https://shipth.is/docs/android?ref=github_readme).
 The iOS steps are described in the [iOS setup guide](https://shipth.is/docs/ios).
 
 <details>
@@ -202,7 +204,7 @@ The iOS steps are described in the [iOS setup guide](https://shipth.is/docs/ios)
 
 1. Invite the Service Account
 
-    Before the Service Account API Key can submit your games automatically, you will need to invite the Service Account to your Google Play account. To do this you will need your Google Play Account ID.
+    Before the Service Account API Key can submit your games automatically, you will need to invite the Service Account to your Google Play account. To do this you will need your Google Play account ID.
 
     ```bash
     shipthis game android apiKey invite XXXXXXXXX
@@ -313,7 +315,7 @@ If the issue persists, we can help you directly in our [Discord](https://discord
 
 Yes. ShipThis works with CI/CD pipelines, allowing you to run automated builds without an interactive shell.
 
-To get started, create an API key, for your pipeline environment:
+To get started, create an API key for your pipeline environment:
 
 ```bash
 # API keys can have a maximum lifetime of 1 year
@@ -344,7 +346,7 @@ ShipThis uses short-lived, signed URLs and ephemeral build environments.
 We store:
 
 - Android Keystores
-- Google Play Service Account API keys
+- Google Play Service account API keys
 - iOS provisioning profiles
 - App Store Connect API keys
 - iOS distribution certificates
@@ -354,7 +356,7 @@ We store:
 ### 🗂 Topics
 
 - [apiKey](https://shipth.is/docs/reference/apiKey?ref=github_readme) - Commands related to ShipThis API Keys
-- [apple](https://shipth.is/docs/reference/apple?ref=github_readme) - Commands that relate to linking your ShipThis account with your Apple Developer Account
+- [apple](https://shipth.is/docs/reference/apple?ref=github_readme) - Commands that relate to linking your ShipThis account with your Apple Developer account
 - [game](https://shipth.is/docs/reference/game?ref=github_readme) - Commands that relate to configuring the specific game in the current working directory.
 
 ### 🔧 Commands
