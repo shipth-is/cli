@@ -134,7 +134,8 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
               filename="ship-success.md.ejs"
               templateVars={{
                 gameBuildsUrl: `${WEB_URL}games/${getShortUUID(gameId)}/builds`,
-                wasPublished: !flags?.skipPublish,
+                wasPublished: !(flags?.skipPublish || flags?.useDemoCredentials),
+                usedDemoCredentials: !!flags?.useDemoCredentials,
               }}
             />
           )}
