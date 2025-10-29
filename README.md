@@ -45,7 +45,7 @@ shipthis login
 
 Run the [wizard command](https://shipth.is/docs/reference/game/wizard?ref=github_readme) to configure your game on ShipThis; it will set up everything needed to automatically build and publish your Godot game.
 
- The wizard command takes a platform parameter: either **android** or **ios**. Run the command from within a Godot game directory (with a **project.godot** file):
+The wizard command takes a platform parameter: either **android** or **ios**. Run the command from within a Godot game directory (with a **project.godot** file):
 
 #### Set up an Android game
 
