@@ -19,6 +19,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     '<%= config.bin %> <%= command.id %> --platform android --download game.aab',
     '<%= config.bin %> <%= command.id %> --platform android --follow --downloadAPK game.apk',
     '<%= config.bin %> <%= command.id %> --platform ios --follow --verbose',
+    '<%= config.bin %> <%= command.id %> --platform ios --useDemoCredentials --download game.ipa'
   ]
 
   static override flags = {
@@ -35,7 +36,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     }),
     follow: Flags.boolean({
       dependsOn: ['platform'],
-      description: 'Follow the job logs in real-time. Requires --platform to be specified.',
+      description: 'Follow the job logs in real-time (requires --platform)',
       required: false,
     }),
     platform: Flags.string({
@@ -54,7 +55,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       required: false,
     }),
     useDemoCredentials: Flags.boolean({
-      description: 'Use demo credentials for this build (implies --skipPublish)',
+      dependsOn: ['platform' ],
+      description: 'Use demo credentials for this build (requires --platform, implies --skipPublish)',
       required: false,
     }),
   }
