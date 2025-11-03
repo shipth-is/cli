@@ -19,6 +19,8 @@ export const DEFAULT_IGNORED_FILES_GLOBS = [
   '.mono/**',
   'data_*/**',
   'mono_crash.*.json',
+  '*.apk',
+  '*.aab',
 ]
 
 const PRIMARY_DOMAIN = 'shipth.is'
