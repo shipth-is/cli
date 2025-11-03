@@ -23,6 +23,7 @@ export type ShipGameFlags = {
   skipPublish?: boolean
   verbose?: boolean
   useDemoCredentials?: boolean
+  gameEngineVersion?: string
 }
 
 export * from './api.js'

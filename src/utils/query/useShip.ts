@@ -99,6 +99,7 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     skipPublish: finalFlags.skipPublish,
     verbose: finalFlags.verbose,
     useDemoCredentials: isUsingDemoCredentials,
+    gameEngineVersion: finalFlags.gameEngineVersion,
   }
 
   const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
