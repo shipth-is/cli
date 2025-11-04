@@ -1,7 +1,7 @@
 import {Flags} from '@oclif/core'
 import chalk from 'chalk'
 
-import {getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
+import {getProject, getProjectCredentials, getUserCredentials} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {getRenderedMarkdown} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
@@ -90,7 +90,8 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
         command: 'game:ios:app:create',
         async shouldRun() {
           if (!game) return true
-          const hasBundleIdSet = Boolean(game.details?.iosBundleId)
+          const project = await getProject(game.id)
+          const hasBundleIdSet = Boolean(project.details?.iosBundleId)
           // Assume that this has run if the bundle id is set in the config
           // The command will check if it exists in Apple before creating it
           return !hasBundleIdSet

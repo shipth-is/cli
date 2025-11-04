@@ -36,7 +36,7 @@ export const GODOT_CAPABILITIES = [
 export function getGodotProjectCapabilities(platform: Platform) {
   const exportPresets = getGodotExportPresets(platform)
 
-  const {options} = exportPresets
+  const options: Record<string, any> = (exportPresets as any).options || {}
 
   const capabilities = []
 

@@ -2,7 +2,7 @@ import {Box} from 'ink'
 import Spinner from 'ink-spinner'
 import {useContext, useEffect, useState} from 'react'
 
-import {createProject, updateProject} from '@cli/api/index.js'
+import {createProject, getProject, updateProject} from '@cli/api/index.js'
 import {CommandContext, GameContext} from '@cli/components/context/index.js'
 import {StepProps} from '@cli/components/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/config.js'
@@ -40,7 +40,8 @@ export const CreateGame = (props: StepProps): JSX.Element => {
     const config = command.getProjectConfigSafe()
     setShowForm(true)
     setIsLoading(false)
-    const info = getGameInfo(flags, config.project)
+    const project = config.project?.id ? await getProject(config.project?.id) : undefined
+    const info = getGameInfo(flags, project)
     setGameInfo(info)
   }
 

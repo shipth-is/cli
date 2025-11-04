@@ -10,7 +10,7 @@ import {getErrorMessage} from '@cli/utils/errors.js'
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
   static override args = {}
 
-  static override description = 'Builds the app (for all platforms with valid credentials) and ships it to the stores.'
+  static override description = 'Builds and publishes your ShipThis game.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
@@ -19,7 +19,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     '<%= config.bin %> <%= command.id %> --platform android --download game.aab',
     '<%= config.bin %> <%= command.id %> --platform android --follow --downloadAPK game.apk',
     '<%= config.bin %> <%= command.id %> --platform ios --follow --verbose',
-    '<%= config.bin %> <%= command.id %> --platform ios --useDemoCredentials --download game.ipa'
+    '<%= config.bin %> <%= command.id %> --platform ios --useDemoCredentials --download game.ipa',
+    '<%= config.bin %> <%= command.id %> --platform android --gameEngineVersion 4.5.1 --skipPublish',
   ]
 
   static override flags = {
@@ -55,8 +56,12 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       required: false,
     }),
     useDemoCredentials: Flags.boolean({
-      dependsOn: ['platform' ],
+      dependsOn: ['platform'],
       description: 'Use demo credentials for this build (requires --platform, implies --skipPublish)',
+      required: false,
+    }),
+    gameEngineVersion: Flags.string({
+      description: 'Override the specified game engine version for this build',
       required: false,
     }),
   }

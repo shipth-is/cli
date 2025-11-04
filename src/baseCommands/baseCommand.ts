@@ -211,7 +211,12 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
 
   public async setProjectConfig(config: ProjectConfig): Promise<void> {
     const configPath = this.getProjectConfigPath()
-    await fs.promises.writeFile(configPath, JSON.stringify(config, null, 2))
+    // We only want to store the project ID in the config file
+    const clean : ProjectConfig = {
+      ...config,
+      project: config.project ? {id: config.project.id} : undefined,
+    }
+    await fs.promises.writeFile(configPath, JSON.stringify(clean, null, 2))
   }
 
   public async updateProjectConfig(update: Partial<ProjectConfig>): Promise<void> {

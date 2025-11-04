@@ -111,6 +111,7 @@ type StartJobsOptions = {
   skipPublish?: boolean
   verbose?: boolean
   useDemoCredentials?: boolean
+  gameEngineVersion?: string
 } & UploadDetails
 
 export async function startJobsFromUpload(uploadTicketId: string, startOptions: StartJobsOptions): Promise<Job[]> {
