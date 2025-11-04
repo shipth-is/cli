@@ -8,10 +8,15 @@ export interface AuthConfig {
   shipThisUser?: SelfWithJWT
 }
 
+// Only saving the ID in the config file
+export interface ProjectJustId {
+  id: string
+}
+
 // Structure of the project (./shipthis.json) file
 export interface ProjectConfig {
   ignoredFilesGlobs?: string[]
-  project?: Project
+  project?: ProjectJustId
   shippedFilesGlobs?: string[]
 }
 

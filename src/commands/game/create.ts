@@ -47,6 +47,7 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
 
     const projectDetails: ProjectDetails = {
       ...details,
+      useDemoCredentials: details.useDemoCredentials === 'true',
       gameEngine,
       gameEngineVersion,
     }

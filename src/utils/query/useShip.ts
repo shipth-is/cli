@@ -7,7 +7,7 @@ import fg from 'fast-glob'
 import {v4 as uuid} from 'uuid'
 import {ZipFile} from 'yazl'
 
-import {getNewUploadTicket, startJobsFromUpload} from '@cli/api/index.js'
+import {getNewUploadTicket, getProject, startJobsFromUpload} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS, cacheKeys} from '@cli/constants/index.js'
 import {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
@@ -28,14 +28,14 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
 
   verbose && log('Fetching game config...')
   const projectConfig: ProjectConfig = await command.getProjectConfig()
-
   if (!projectConfig.project) throw new Error('No project found in project config')
+  const project = await getProject(projectConfig.project.id)
 
-  const projectUsesDemoCredentials = Boolean(projectConfig.project.details?.useDemoCredentials)
+  const projectUsesDemoCredentials = Boolean(project.details?.useDemoCredentials)
   const isUsingDemoCredentials = useDemoCredentials ?? projectUsesDemoCredentials ?? false
 
-  const hasConfiguredIos = Boolean(projectConfig.project.details?.iosBundleId)
-  const hasConfiguredAndroid = Boolean(projectConfig.project.details?.androidPackageName)
+  const hasConfiguredIos = Boolean(project.details?.iosBundleId)
+  const hasConfiguredAndroid = Boolean(project.details?.androidPackageName)
 
   if (!isUsingDemoCredentials && !hasConfiguredAndroid && !hasConfiguredIos) {
     throw new Error(

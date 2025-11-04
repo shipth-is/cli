@@ -73,13 +73,13 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
   const projectConfig = cmd.getProjectConfigSafe()
   const projectId = projectConfig.project?.id
 
-  const project = Boolean(projectId) && (await getProject(projectId))
+  const project = Boolean(projectId) && (await getProject(`${projectId}`))
   const hasShipThisProject = Boolean(project)
 
   const hasGameName = project && Boolean(project?.name)
   const hasAndroidPackageName = project && Boolean(project?.details?.androidPackageName)
 
-  const projectCredentials = hasShipThisProject ? await getProjectCredentials(project.id) : []
+  const projectCredentials = hasShipThisProject ? await getProjectCredentials(`${projectId}`) : []
   const hasAndroidKeystore = projectCredentials.some(
     (cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type === CredentialsType.CERTIFICATE,
   )
@@ -90,8 +90,8 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
     (cred) => cred.isActive && cred.platform === Platform.ANDROID && cred.type === CredentialsType.KEY,
   )
 
-  const buildsResponse = Boolean(projectId) && hasShipThisProject && (await queryBuilds({pageNumber: 0, projectId}))
-  const hasInitialBuild = Boolean(buildsResponse) && buildsResponse.data.some((build) => build.platform === Platform.ANDROID)
+  const buildsResponse = projectId && hasShipThisProject ? await queryBuilds({pageNumber: 0, projectId: `${projectId}`}) : null
+  const hasInitialBuild = Boolean(buildsResponse?.data?.some((build) => build.platform === Platform.ANDROID))
 
   const testResult = projectId ? await fetchKeyTestResult({projectId}) : null
 
