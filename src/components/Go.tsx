@@ -4,6 +4,7 @@ import {getShortUUID, useProjectJobListener, useStartShipOnMount} from '@cli/uti
 import {getJobBuildsRetry} from '@cli/api/index.js'
 
 import {CommandContext, GameContext, JobProgress, QRCodeTerminal} from './index.js'
+import { Job, Platform } from '@cli/types/api.js'
 
 interface Props {
   onComplete: () => void
@@ -27,8 +28,8 @@ const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.
 
   const {jobs: startedJobs} = useStartShipOnMount(command, flags, onError)
 
-  const handleJobCompleted = async (job: any) => {
-    if (job.id !== startedJobs?.[0].id) return
+  const handleJobCompleted = async (job: Job) => {
+    if (job.type != Platform.GO) return
     const [goBuild] = await getJobBuildsRetry(job.id, command.getGameId())
     setQRCodeData(getShortUUID(goBuild.id))
     const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -37,7 +38,7 @@ const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.
   }
 
   const handleJobFailed = (job: any) => {
-    if (job.id !== startedJobs?.[0].id) return
+    if (job.type != Platform.GO) return
     onError(new Error(`Go job failed: ${job.id}`))
   }
 
