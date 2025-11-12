@@ -4,14 +4,15 @@ import {getShortUUID, useProjectJobListener, useStartShipOnMount} from '@cli/uti
 import {getJobBuildsRetry} from '@cli/api/index.js'
 
 import {CommandContext, GameContext, JobProgress, QRCodeTerminal} from './index.js'
-import { Job, Platform } from '@cli/types/api.js'
+import {Job, Platform} from '@cli/types/api.js'
+import {useGoRuntimeLogListener} from '@cli/utils/hooks/useGoRuntimeLogListener.js'
 
 interface Props {
   onComplete: () => void
   onError: (error: any) => void
 }
 
-export const Go = ({onComplete, onError}: Props): JSX.Element| null => {
+export const Go = ({onComplete, onError}: Props): JSX.Element | null => {
   const {command} = useContext(CommandContext)
   const {gameId} = useContext(GameContext)
   if (!command || !gameId) return null
@@ -23,18 +24,27 @@ interface GoCommandProps extends Props {
   gameId: string
 }
 
-const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.Element | null=> {
+const LogListener = ({projectId, buildId}: {projectId: string; buildId: string}) => {
+  useGoRuntimeLogListener({projectId, buildId})
+  return null
+}
+
+const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.Element | null => {
   const flags = {follow: false, platform: 'go'}
+
+  const [buildId, setBuildId] = useState<string | null>(null)
+  const [qrCodeData, setQRCodeData] = useState<string | null>(null)
 
   const {jobs: startedJobs} = useStartShipOnMount(command, flags, onError)
 
   const handleJobCompleted = async (job: Job) => {
     if (job.type != Platform.GO) return
     const [goBuild] = await getJobBuildsRetry(job.id, command.getGameId())
+    setBuildId(goBuild.id)
     setQRCodeData(getShortUUID(goBuild.id))
     const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
     await sleep(500)
-    onComplete()
+    //onComplete()
   }
 
   const handleJobFailed = (job: any) => {
@@ -48,10 +58,13 @@ const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.
     onJobFailed: handleJobFailed,
   })
 
-  const [qrCodeData, setQRCodeData] = useState<string | null>(null)
-
-  if (qrCodeData) {
-    return <QRCodeTerminal data={qrCodeData} />
+  if (qrCodeData && buildId) {
+    return (
+      <>
+        <QRCodeTerminal data={qrCodeData} />
+        <LogListener projectId={gameId} buildId={buildId} />
+      </>
+    )
   }
 
   if (startedJobs && startedJobs?.length > 0) {
