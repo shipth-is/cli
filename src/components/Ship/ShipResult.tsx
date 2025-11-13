@@ -22,6 +22,7 @@ export const ShipResult = ({gameId, failedJobs, gameFlags}: ShipResultProps) => 
             templateVars={{
               gameBuildsUrl: `${WEB_URL}games/${getShortUUID(gameId)}/builds`,
               wasPublished: !gameFlags?.skipPublish,
+              usedDemoCredentials: !!gameFlags?.useDemoCredentials,
             }}
           />
         )}

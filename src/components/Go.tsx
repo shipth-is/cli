@@ -1,11 +1,19 @@
 import {useContext, useState} from 'react'
+import {Box, Text} from 'ink'
 
-import {getShortUUID, useProjectJobListener, useStartShipOnMount} from '@cli/utils/index.js'
+import {TruncatedText} from './common/TruncatedText.js'
+import {
+  getRuntimeLogLevelColor,
+  getShortTime,
+  getShortUUID,
+  useGoRuntimeLogListener,
+  useProjectJobListener,
+  useStartShipOnMount,
+} from '@cli/utils/index.js'
 import {getJobBuildsRetry} from '@cli/api/index.js'
 
-import {CommandContext, GameContext, JobProgress, QRCodeTerminal} from './index.js'
+import {CommandContext, GameContext, JobProgress, QRCodeTerminal, Title} from './index.js'
 import {Job, Platform} from '@cli/types/api.js'
-import {useGoRuntimeLogListener} from '@cli/utils/hooks/useGoRuntimeLogListener.js'
 
 interface Props {
   onComplete: () => void
@@ -25,8 +33,27 @@ interface GoCommandProps extends Props {
 }
 
 const LogListener = ({projectId, buildId}: {projectId: string; buildId: string}) => {
-  useGoRuntimeLogListener({projectId, buildId})
-  return null
+  const {tail, messages} = useGoRuntimeLogListener({projectId, buildId})
+
+  return (
+    <>
+      <Box flexDirection="column">
+        {messages.map((log, i) => {
+          const messageColor = getRuntimeLogLevelColor(log.level)
+          return (
+            <Box flexDirection="row" height={1} key={i} overflow="hidden">
+              <Box>
+                <Text>{getShortTime(log.sentAt)}</Text>
+              </Box>
+              <Box height={1} marginLeft={1} marginRight={2} overflow="hidden">
+                <TruncatedText color={messageColor}>{log.message}</TruncatedText>
+              </Box>
+            </Box>
+          )
+        })}
+      </Box>
+    </>
+  )
 }
 
 const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.Element | null => {
@@ -60,15 +87,22 @@ const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.
 
   if (qrCodeData && buildId) {
     return (
-      <>
+      <Box flexDirection='column'>
+        <Title>Go Build QR Code</Title>
         <QRCodeTerminal data={qrCodeData} />
+        <Text>{`Go build ID: ${getShortUUID(buildId)}`}</Text>
         <LogListener projectId={gameId} buildId={buildId} />
-      </>
+      </Box>
     )
   }
 
   if (startedJobs && startedJobs?.length > 0) {
-    return <JobProgress job={startedJobs[0]} />
+    return (
+      <Box flexDirection='column'>
+        <Text>Generating Go build, please wait...</Text>
+        <JobProgress job={startedJobs[0]} />
+      </Box>
+    )
   }
 
   return null
