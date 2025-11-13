@@ -6,7 +6,7 @@ import {fileURLToPath} from 'node:url'
 
 import readlineSync from 'readline-sync'
 
-import {JobStage, JobStatus, LogLevel, Platform, ScalarDict} from '@cli/types'
+import {JobStage, JobStatus, LogLevel, Platform, RuntimeLogLevel, ScalarDict} from '@cli/types'
 
 export * from './dates.js'
 export * from './dictionary.js'
@@ -84,6 +84,18 @@ export function getJobStatusColor(status: JobStatus) {
     }
   }
 }
+
+// For the "Go" runtime logs
+const RUNTIME_LOG_LEVEL_COLORS: Record<RuntimeLogLevel, string> = {
+  [RuntimeLogLevel.VERBOSE]: '#E8E8FF',
+  [RuntimeLogLevel.DEBUG]:   '#E6F0FF',
+  [RuntimeLogLevel.INFO]:    '#E6FFE6',
+  [RuntimeLogLevel.WARNING]: '#FFF6CC',
+  [RuntimeLogLevel.ERROR]:   '#FFD6D6',
+}
+
+export const getRuntimeLogLevelColor = (level: RuntimeLogLevel) =>
+  RUNTIME_LOG_LEVEL_COLORS[level]
 
 export async function getFileHash(filename: string): Promise<string> {
   return new Promise((resolve, reject) => {

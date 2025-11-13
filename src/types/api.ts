@@ -271,3 +271,19 @@ export interface TermsResponse {
   changes: AgreementVersion[]
   current: AgreementVersion[]
 }
+
+export enum RuntimeLogLevel {
+  VERBOSE = 'VERBOSE',
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
+  WARNING = 'WARNING',
+  ERROR = 'ERROR',
+}
+
+export interface RuntimeLogEntry {
+  buildId: string
+  level: RuntimeLogLevel
+  message: string
+  details?: any
+  sentAt: DateTime
+}
