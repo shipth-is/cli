@@ -21,6 +21,33 @@ export const DEFAULT_IGNORED_FILES_GLOBS = [
   'mono_crash.*.json',
   '*.apk',
   '*.aab',
+  // OS cruft
+  '.DS_Store',
+  'Thumbs.db',
+  // IDE project files
+  '*.iml',
+  '.idea/',
+  '.vscode/',
+  // Gradle + build outputs
+  '.gradle/',
+  '**/build/',
+  // Android local config
+  'local.properties',
+  // Signing (keep secrets out of git)
+  '*.jks',
+  '*.keystore',
+  'keystore.properties',
+  // NDK
+  '.cxx/',
+  '.externalNativeBuild/',
+  // Misc temp
+  '*.log',
+  '*.tmp',
+  '*.temp',
+  '*.swp',
+  '*.swo',
+  '*~',
+  '.env',
 ]
 
 const PRIMARY_DOMAIN = 'shipth.is'
