@@ -35,6 +35,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
       gcpProjectId,
       gcpServiceAccountId,
       iosBundleId,
+      liquidGlassIconPath,
       name,
       semanticVersion,
       useDemoCredentials,
@@ -53,14 +54,15 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
     const update = {
       details: {
         ...game.details,
-        ...(semanticVersion && {semanticVersion}),
+        ...(androidPackageName && {androidPackageName}),
         ...(buildNumber && {buildNumber}),
         ...(gameEngine && {gameEngine: gameEngine as GameEngine}),
         ...(gameEngineVersion && {gameEngineVersion}),
-        ...(iosBundleId && {iosBundleId}),
-        ...(androidPackageName && {androidPackageName}),
         ...(gcpProjectId && {gcpProjectId}),
         ...(gcpServiceAccountId && {gcpServiceAccountId}),
+        ...(iosBundleId && {iosBundleId}),
+        ...(liquidGlassIconPath && {liquidGlassIconPath}),
+        ...(semanticVersion && {semanticVersion}),
         ...(useDemoCredentials !== undefined && {useDemoCredentials: useDemoCredentials.toLowerCase() === 'true'}),
       },
       name: name || game.name,
@@ -84,6 +86,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
             'Semantic Version': game.details?.semanticVersion || '0.0.1',
             'iOS Bundle ID': game.details?.iosBundleId || 'N/A',
             'Using Demo Credentials': game.details?.useDemoCredentials ? 'Yes' : 'No',
+            'Liquid Glass Icon Path': game.details?.liquidGlassIconPath || 'N/A',
           }}
           title="Game Details"
         />

@@ -42,6 +42,7 @@ export interface ProjectDetails {
   gcpProjectId?: string
   gcpServiceAccountId?: string
   iosBundleId?: string
+  liquidGlassIconPath?: string
   semanticVersion?: string
   useDemoCredentials?: boolean
 }
