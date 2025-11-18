@@ -28,6 +28,7 @@ export type SelfWithJWT = {
 export enum Platform {
   ANDROID = 'ANDROID',
   IOS = 'IOS',
+  GO = 'GO',
 }
 
 export enum GameEngine {
@@ -176,6 +177,7 @@ export enum BuildType {
   AAB = 'AAB',
   APK = 'APK',
   IPA = 'IPA',
+  GO = 'GO',
 }
 
 export interface Build {
@@ -266,4 +268,20 @@ export interface AgreementVersion {
 export interface TermsResponse {
   changes: AgreementVersion[]
   current: AgreementVersion[]
+}
+
+export enum RuntimeLogLevel {
+  VERBOSE = 'VERBOSE',
+  DEBUG = 'DEBUG',
+  INFO = 'INFO',
+  WARNING = 'WARNING',
+  ERROR = 'ERROR',
+}
+
+export interface RuntimeLogEntry {
+  buildId: string
+  level: RuntimeLogLevel
+  message: string
+  details?: any
+  sentAt: DateTime
 }
