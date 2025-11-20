@@ -44,6 +44,7 @@
     "tough-cookie": "^5.0.0",
     "tsc-alias": "^1.8.10",
     "uuid": "^10.0.0",
+    "xcode": "^3.0.1",
     "yazl": "^2.5.1"
   },
   "devDependencies": {
