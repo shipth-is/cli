@@ -78,13 +78,22 @@ export async function applyLiquidGlassIcon(opts: ApplyLiquidGlassIconOptions) {
 
   info(`Adding folder reference to Copy Bundle Resources: ${relativeFolderName}`);
 
-  const result = project.addResourceFile(
+  // FIX: use main group instead of "Resources"
+  const firstProject = project.getFirstProject();
+  const mainGroupId = firstProject.firstProject.mainGroup;
+  const mainGroup = project.getPBXGroupByKey(mainGroupId);
+
+  const fileRef = project.addResourceFile(
     relativeFolderName,
     { lastKnownFileType: "folder" },
-    "Resources"
+    mainGroup.name
   );
 
-  if (!result) {
+  if (fileRef) {
+    project.addToPbxResourcesBuildPhase(fileRef);
+  }
+
+  if (!fileRef) {
     warn(`Folder reference may already exist in project: ${relativeFolderName}`);
   }
 
@@ -115,8 +124,6 @@ export async function applyLiquidGlassIcon(opts: ApplyLiquidGlassIconOptions) {
 
   info(`Liquid Glass icon successfully applied.`);
 }
-
-
 
 export default class InternalGlass extends BaseCommand<typeof InternalGlass> {
   static override description = 'Apply a Liquid Glass .icon folder to a local Xcode project'
