@@ -44,6 +44,7 @@
     "tough-cookie": "^5.0.0",
     "tsc-alias": "^1.8.10",
     "uuid": "^10.0.0",
+    "xcode": "^3.0.2-nightly.20251120002524064.sha.c491d3a2",
     "yazl": "^2.5.1"
   },
   "devDependencies": {
@@ -155,6 +156,7 @@
     "./dist/commands/game/wizard.js",
     "./dist/commands/game/export.js",
     "./dist/commands/internal/readme.js",
+    "./dist/commands/internal/glass.js",
     "./dist/commands/internal/fastlane.js",
     "./dist/commands/apiKey/list.js",
     "./dist/commands/apiKey/create.js",
