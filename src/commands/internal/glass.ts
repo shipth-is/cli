@@ -22,70 +22,79 @@ export async function applyLiquidGlassIcon(opts: ApplyLiquidGlassIconOptions) {
   info(`Applying Liquid Glass icon from: ${iconDir}`);
 
   //
-  // 1. Validate project directory
+  // 1. Validate paths
   //
   if (!fs.existsSync(projectDir)) {
-    throw new Error(`Xcode project directory not found: ${projectDir}`);
+    throw new Error(`projectDir not found: ${projectDir}`);
   }
 
-  const pbxprojPath = path.join(
-    projectDir,
-    "project.pbxproj"
-  );
-
+  const pbxprojPath = path.join(projectDir, "project.pbxproj");
   if (!fs.existsSync(pbxprojPath)) {
     throw new Error(`project.pbxproj not found at: ${pbxprojPath}`);
   }
 
-  //
-  // 2. Validate icon directory
-  //
   if (!fs.existsSync(iconDir)) {
     throw new Error(`Icon directory not found: ${iconDir}`);
   }
 
-  const folderName = path.basename(iconDir);           // Example: MyIcon.icon
-  const appIconName = folderName.replace(/\.icon$/i, ""); // Example: MyIcon
+  //
+  // 2. Determine the name — MyIcon.icon -> MyIcon
+  //
+  const iconFolderName = path.basename(iconDir); // ExampleAppIcon.icon
+  const appIconName = iconFolderName.replace(/\.icon$/i, "");
 
-  info(`Detected icon folder name: ${folderName}`);
+  info(`Detected .icon folder: ${iconFolderName}`);
   info(`Derived app icon name: ${appIconName}`);
 
   //
-  // 3. Parse Xcode project
+  // 3. Copy the folder into the Xcode project root
   //
-  info(`Loading Xcode project at: ${pbxprojPath}`);
-  const project = xcode.project(pbxprojPath);
+  const projectRoot = path.dirname(projectDir); // e.g. output/
+  const destIconDir = path.join(projectRoot, iconFolderName);
 
-  try {
-    project.parseSync();
-  } catch (e) {
-    error(`Failed to parse project.pbxproj: ${(e as Error).message}`);
-    throw e;
+  if (!fs.existsSync(destIconDir)) {
+    info(`Copying .icon folder into project root: ${destIconDir}`);
+
+    await fs.promises.cp(iconDir, destIconDir, {
+      recursive: true
+    });
+  } else {
+    info(`Icon folder already exists in project root, skipping copy.`);
   }
 
   //
-  // 4. Add folder reference (blue folder)
+  // 4. Load the Xcode project
   //
-  info(`Adding folder reference to Resources: ${folderName}`);
+  const project = xcode.project(pbxprojPath);
+  project.parseSync();
+
+  //
+  // 5. Add Xcode folder reference (blue folder)
+  //
+  // IMPORTANT:
+  // The resource path must be relative to the project root.
+  //
+  const relativeFolderName = iconFolderName; // correct for folder reference
+
+  info(`Adding folder reference to Copy Bundle Resources: ${relativeFolderName}`);
 
   const result = project.addResourceFile(
-    folderName,
+    relativeFolderName,
     { lastKnownFileType: "folder" },
-    "Resources",
-    iconDir
+    "Resources"
   );
 
   if (!result) {
-    warn(`Folder reference may already exist or could not be added: ${folderName}`);
+    warn(`Folder reference may already exist in project: ${relativeFolderName}`);
   }
 
   //
-  // 5. Update build settings for all configurations
+  // 6. Patch build settings
   //
-  info(`Updating build settings for app icon: ${appIconName}`);
-
   const configs = project.pbxXCBuildConfigurationSection();
-  let configCount = 0;
+  let modified = 0;
+
+  info(`Updating build settings for app icon: ${appIconName}`);
 
   for (const key in configs) {
     const cfg = configs[key];
@@ -93,15 +102,15 @@ export async function applyLiquidGlassIcon(opts: ApplyLiquidGlassIconOptions) {
 
     cfg.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] = appIconName;
     cfg.buildSettings["ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS"] = "YES";
-    configCount++;
+    modified++;
   }
 
-  info(`Updated ${configCount} build configurations`);
+  info(`Modified ${modified} build configurations`);
 
   //
-  // 6. Save project
+  // 7. Save project
   //
-  info("Saving updated project.pbxproj...");
+  info(`Writing updated project to ${pbxprojPath}`);
   fs.writeFileSync(pbxprojPath, project.writeSync());
 
   info(`Liquid Glass icon successfully applied.`);
