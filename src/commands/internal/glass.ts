@@ -85,7 +85,7 @@ export async function applyLiquidGlassIcon(opts: ApplyLiquidGlassIconOptions) {
 
   const fileRef = project.addResourceFile(
     relativeFolderName,
-    { lastKnownFileType: "folder" },
+    { lastKnownFileType: "folder.iconcomposer.icon" },
     mainGroup.name
   );
 
