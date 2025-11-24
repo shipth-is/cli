@@ -107,6 +107,7 @@
   "type": "module",
   "exports": [
     "./dist/utils/help.js",
+    "./dist/commands/util/glass.js",
     "./dist/commands/apple/apiKey/export.js",
     "./dist/commands/apple/apiKey/create.js",
     "./dist/commands/apple/apiKey/status.js",
@@ -156,7 +157,6 @@
     "./dist/commands/game/wizard.js",
     "./dist/commands/game/export.js",
     "./dist/commands/internal/readme.js",
-    "./dist/commands/internal/glass.js",
     "./dist/commands/internal/fastlane.js",
     "./dist/commands/apiKey/list.js",
     "./dist/commands/apiKey/create.js",
