@@ -1,7 +1,7 @@
 # Topic: `util`
 
-Apply a Liquid Glass .icon folder to a local Xcode project
-
+Commands in this topic are invoked as `shipthis util <command>`.
+These utilities do not require authentication.
 
 ## Commands
 
