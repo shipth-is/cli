@@ -70,9 +70,7 @@ export async function applyLiquidGlassIcon(opts: ApplyLiquidGlassIconOptions) {
 
   if (fileRef) {
     project.addToPbxResourcesBuildPhase(fileRef)
-  }
-
-  if (!fileRef) {
+  } else {
     warn(`Folder reference may already exist in project: ${iconFolderName}`)
   }
 
