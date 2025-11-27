@@ -44,6 +44,7 @@
     "tough-cookie": "^5.0.0",
     "tsc-alias": "^1.8.10",
     "uuid": "^10.0.0",
+    "xcode": "^3.0.2-nightly.20251120002524064.sha.c491d3a2",
     "yazl": "^2.5.1"
   },
   "devDependencies": {
@@ -106,6 +107,7 @@
   "type": "module",
   "exports": [
     "./dist/utils/help.js",
+    "./dist/commands/util/glass.js",
     "./dist/commands/apple/apiKey/export.js",
     "./dist/commands/apple/apiKey/create.js",
     "./dist/commands/apple/apiKey/status.js",
