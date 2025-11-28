@@ -11,6 +11,7 @@ Begin with our [Quickstart Guide](https://shipth.is/docs/guides/quick-start).
 - [apiKey](https://shipth.is/docs/reference/apiKey) - Commands that relate to ShipThis API keys
 - [apple](https://shipth.is/docs/reference/apple) - Commands that relate to linking your ShipThis account with your Apple Developer Account
 - [game](https://shipth.is/docs/reference/game) - Commands that relate to configuring the specific game in the current working directory
+- [util](https://shipth.is/docs/reference/util) - Utility commands that do not require login
 
 ## Commands
 
