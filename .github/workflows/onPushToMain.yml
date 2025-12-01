@@ -18,7 +18,24 @@ jobs:
         id: version-check
         run: |
           package_version=$(node -p "require('./package.json').version")
-          exists=$(gh api repos/${{ github.repository }}/releases/tags/v$package_version >/dev/null 2>&1 && echo "true" || echo "")
+          tag="v$package_version"
+
+          echo "Checking for release: $tag"
+
+          exists=""
+          apiOutput=""
+          apiStatus=0
+
+          apiOutput=$(gh api repos/${{ github.repository }}/releases/tags/$tag 2>&1) || apiStatus=$?
+
+          echo "::group::gh api response"
+          echo "$apiOutput"
+          echo "Status: $apiStatus"
+          echo "::endgroup::"
+
+          if [ "$apiStatus" -eq 0 ]; then
+            exists="true"
+          fi
 
           if [ -n "$exists" ];
           then
