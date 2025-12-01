@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-node@v4
       - name: Check if version already exists
         id: version-check
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           package_version=$(node -p "require('./package.json').version")
           tag="v$package_version"
