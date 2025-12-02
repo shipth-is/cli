@@ -389,7 +389,7 @@ This storage is used for:
 
 Build machines do not have general access to storage of game files or credentials.
 
-When a machine is ready to run a job, it asks the backend for work. The job it receives includes a temporary, signed download URL for the zip containing the game files. The machine downloads the zip, extracts it, runs the build, and uploads the results using signed upload URLs provided in the job meta-data.
+When a machine is ready to run a job, it asks the backend for work. The job it receives includes a temporary, signed download URL for the zip containing the game files. The machine downloads the zip, extracts it, runs the build, and uploads the results using signed upload URLs provided in the job metadata.
 
 Build machines cannot browse files or access anything outside the job that they are currently running.
 
