@@ -334,12 +334,14 @@ For GitHub users, we provide an official **GitHub Action** for easy integration:
 
 See the [API Keys documentation](https://shipth.is/docs/reference/apiKey/?ref=github_readme) for more information.
 
-### Can I use a Liquid Glass icons with my game on iOS?
+### Can I use a Liquid Glass icon with my game on iOS?
 
-ShipThis enables the use of Liquid Glass icons with your game. These ca be applied in two ways:
+ShipThis enables the use of Liquid Glass icons with your game. These can be applied in two ways:
 
 - To a local iOS export of a Godot project
+  - using the command `shipthis util glass ios/output.xcodeproj MyIcon.icon`
 - To a game built using the ShipThis build servers
+  - using the command `shipthis game details --liquidGlassIconPath ./Example.icon`
 
 You can read more in our [Liquid Glass icons guide](https://shipth.is/docs/guides/liquid-glass?ref=github_readme).
 
