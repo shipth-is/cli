@@ -59,18 +59,6 @@ jobs:
         run: |
           npm install
           npm run build
-      - name: Generate README
-        if: ${{ steps.version-check.outputs.skipped == 'false' }}
-        id: shipthis-readme
-        run: |
-          npm install
-          npm run readme
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          commit-message: 'chore: update docs'
-          title: 'chore: update docs'
-          body: 'Automatically generated as missing docs in `main` branch'
       - name: Verify build
         if: ${{ steps.version-check.outputs.skipped == 'false' }}
         run: |
