@@ -355,48 +355,46 @@ We store:
 
 #### 1. Uploading your game files
 
-- The CLI tool requests from the backend a **short-lived, signed upload URL**
-- Files are **zipped locally**:
-  - Files matching `shippedFilesGlobs` in `shipthis.json` are included
-  - Files matching `ignoredFilesGlobs` are excluded
-- The zip is uploaded **directly from your machine** to private object storage within DigitalOcean
+When you run the command, the CLI asks the ShipThis backend for a secure (HTTPS) temporary upload URL.
+Your game files are packaged locally on your machine:
 
-#### 2. Private, temporary storage
+- Files matching shippedFilesGlobs in shipthis.json are included
+- Files matching ignoredFilesGlobs are left out
 
-- The uploaded zip lives in a **private DigitalOcean Space**.
-- This storage is not publicly accessible
-- Files can only be accessed via short-lived, signed URLs
+The zip file is then uploaded directly from your computer to a private DigitalOcean Space using the temporary upload URL.
 
-This storage is used to:
+#### 2. Where the files are stored
 
-- Provide the game source code to a build worker
-- Store the resulting build artifacts (IPA/AAB/APK)
+The uploaded zip lives in a private DigitalOcean Space. The space is not public and cannot be browsed.
 
-#### 3. Build machines pull code on demand
+Files in this storage can only be accessed using signed URLs that expire after a short time. Those URLs are generated only when they are needed.
 
-- The build machines which compile the games can only access the files for the job they are currently running
-- When a worker is ready:
-  - It requests a new job from the backend
-  - The job includes a **signed, short-lived download URL** for your source zip
-- The worker downloads the source, performs the build, and uploads outputs using **signed upload URLs**.
+This storage is used for:
 
-> [!IMPORTANT]
->
-> - Workers cannot browse storage
-> - URLs expire automatically
-> - Each job is isolated
+- providing a build machine access to your source code
+- storing the resulting build outputs (APK/AAB/IPA)
 
-#### 4. Cleanup after a job completes
+#### 3. How build machines access your code
 
-After a worker has completed a build a routine is run which deletes:
+Build machines do not have general access to storage of game files or credentials.
 
-- Downloaded and extracted source code
-- Build intermediates
-- Temporary files
+When a machine is ready to run a job, it asks the backend for work. The job it receives includes a temporary, signed download URL for the zip containing the game files. The machine downloads the zip, extracts it, runs the build, and uploads the results using signed upload URLs provided in the job meta-data.
+
+Build machines cannot browse files or access anything outside the job that they are currently running.
+
+#### 4. Cleanup after the build
+
+After a build machine has completed a job, a cleanup routine is run which deletes:
+
+- downloaded and extracted game files
+- build intermediates
+- temporary files
+
+The build machines do no keep user files after a job completes.
 
 #### 5. Retention and deletion
 
-- Source archives and build outputs (IPA / AAB / APK) are retained for **30 days**
+- Uploaded game file zips and build outputs (APK/AAB/IPA) are retained for **30 days**
 - A lifecycle policy set on the storage automatically deletes them after that period
 
 ## 📖 Command Reference
