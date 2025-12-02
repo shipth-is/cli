@@ -1,8 +1,8 @@
 import {Flags} from '@oclif/core'
 
 import {createProject} from '@cli/api/index.js'
-import {BaseAuthenticatedCommand, DetailsFlags} from '@cli/baseCommands/index.js'
-import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/index.js'
+import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS, DetailsFlags} from '@cli/constants/index.js'
 import {GameEngine, ProjectDetails} from '@cli/types'
 import {getGodotProjectName, getGodotVersion, isCWDGodotGame} from '@cli/utils/godot.js'
 import {getInput} from '@cli/utils/index.js'

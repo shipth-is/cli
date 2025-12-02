@@ -1,8 +1,9 @@
 import {Flags} from '@oclif/core'
 import {render} from 'ink'
 
-import {BaseGameCommand, DetailsFlags} from '@cli/baseCommands/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, StatusTable} from '@cli/components/index.js'
+import {DetailsFlags} from '@cli/constants/index.js'
 import {GameEngine} from '@cli/types'
 import {isValidSemVer} from '@cli/utils/index.js'
 
