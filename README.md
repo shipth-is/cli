@@ -334,6 +334,17 @@ For GitHub users, we provide an official **GitHub Action** for easy integration:
 
 See the [API Keys documentation](https://shipth.is/docs/reference/apiKey/?ref=github_readme) for more information.
 
+### Can I use a Liquid Glass icon with my game on iOS?
+
+ShipThis enables the use of Liquid Glass icons with your game. These can be applied in two ways:
+
+- To a local iOS export of a Godot project
+  - using the command `shipthis util glass ios/output.xcodeproj MyIcon.icon`
+- To a game built using the ShipThis build servers
+  - using the command `shipthis game details --liquidGlassIconPath ./Example.icon`
+
+You can read more in our [Liquid Glass icons guide](https://shipth.is/docs/guides/liquid-glass?ref=github_readme).
+
 ### How are my credentials stored and secured?
 
 ShipThis uses short-lived, signed URLs and ephemeral build environments.
@@ -350,6 +361,52 @@ We store:
 - iOS provisioning profiles
 - App Store Connect API keys
 - iOS distribution certificates
+
+### What happens to my files when I run the command `shipthis game ship`?
+
+#### 1. Uploading your game files
+
+When you run the command, the CLI asks the ShipThis backend for a secure (HTTPS) temporary upload URL.
+Your game files are packaged locally on your machine:
+
+- Files matching `shippedFilesGlobs` in `shipthis.json` are included
+- Files matching `ignoredFilesGlobs` are excluded
+
+The zip file is then uploaded directly from your computer to a private DigitalOcean Space using the temporary upload URL.
+
+#### 2. Where the files are stored
+
+The uploaded zip lives in a private DigitalOcean Space. The space is not public and cannot be browsed.
+
+Files in this storage can only be accessed using signed URLs that expire after a short time. Those URLs are generated only when they are needed.
+
+This storage is used for:
+
+- Providing a build machine access to your game files
+- Storing the resulting build outputs (APK/AAB/IPA)
+
+#### 3. How build machines access your code
+
+Build machines do not have general access to storage of game files or credentials.
+
+When a machine is ready to run a job, it asks the backend for work. The job it receives includes a temporary, signed download URL for the zip containing the game files. The machine downloads the zip, extracts it, runs the build, and uploads the results using signed upload URLs provided in the job metadata.
+
+Build machines cannot browse files or access anything outside the job that they are currently running.
+
+#### 4. Cleanup after the build
+
+After a build machine has completed a job, a cleanup routine is run which deletes:
+
+- Downloaded and extracted game files
+- Build intermediates
+- Temporary files
+
+The build machines do not keep user files after a job completes.
+
+#### 5. Retention and deletion
+
+- Uploaded game file zips and build outputs (APK/AAB/IPA) are retained for **30 days**
+- A lifecycle policy set on the storage automatically deletes them after that period
 
 ## 📖 Command Reference
 
