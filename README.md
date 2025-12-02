@@ -358,8 +358,8 @@ We store:
 When you run the command, the CLI asks the ShipThis backend for a secure (HTTPS) temporary upload URL.
 Your game files are packaged locally on your machine:
 
-- Files matching shippedFilesGlobs in shipthis.json are included
-- Files matching ignoredFilesGlobs are left out
+- Files matching `shippedFilesGlobs` in `shipthis.json` are included
+- Files matching `ignoredFilesGlobs` are excluded
 
 The zip file is then uploaded directly from your computer to a private DigitalOcean Space using the temporary upload URL.
 
@@ -371,8 +371,8 @@ Files in this storage can only be accessed using signed URLs that expire after a
 
 This storage is used for:
 
-- providing a build machine access to your source code
-- storing the resulting build outputs (APK/AAB/IPA)
+- Providing a build machine access to your game files
+- Storing the resulting build outputs (APK/AAB/IPA)
 
 #### 3. How build machines access your code
 
@@ -386,11 +386,11 @@ Build machines cannot browse files or access anything outside the job that they 
 
 After a build machine has completed a job, a cleanup routine is run which deletes:
 
-- downloaded and extracted game files
-- build intermediates
-- temporary files
+- Downloaded and extracted game files
+- Build intermediates
+- Temporary files
 
-The build machines do no keep user files after a job completes.
+The build machines do not keep user files after a job completes.
 
 #### 5. Retention and deletion
 
