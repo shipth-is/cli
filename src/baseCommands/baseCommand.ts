@@ -7,11 +7,9 @@ import {SerializedCookieJar} from 'tough-cookie'
 
 import {getSelf, setAuthToken} from '@cli/api/index.js'
 import {Auth} from '@cli/apple/expo.js'
-import {AUTH_ENV_VAR_NAME} from '@cli/constants/config.js'
+import {AUTH_ENV_VAR_NAME, DetailsFlags} from '@cli/constants/index.js'
 import {AuthConfig, ProjectConfig} from '@cli/types'
 import {isCWDGodotGame} from '@cli/utils/index.js'
-
-import {DetailsFlags} from './index.js'
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<(typeof BaseCommand)['baseFlags'] & T['flags']>
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
