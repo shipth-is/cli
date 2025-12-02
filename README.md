@@ -351,6 +351,54 @@ We store:
 - App Store Connect API keys
 - iOS distribution certificates
 
+### What happens to my files when I run the command `shipthis game ship`?
+
+#### 1. Uploading your game files
+
+- The CLI tool requests from the backend a **short-lived, signed upload URL**
+- Files are **zipped locally**:
+  - Files matching `shippedFilesGlobs` in `shipthis.json` are included
+  - Files matching `ignoredFilesGlobs` are excluded
+- The zip is uploaded **directly from your machine** to private object storage within DigitalOcean
+
+#### 2. Private, temporary storage
+
+- The uploaded zip lives in a **private DigitalOcean Space**.
+- This storage is not publicly accessible
+- Files can only be accessed via short-lived, signed URLs
+
+This storage is used to:
+
+- Provide the game source code to a build worker
+- Store the resulting build artifacts (IPA/AAB/APK)
+
+#### 3. Build machines pull code on demand
+
+- The build machines which compile the games can only access the files for the job they are currently running
+- When a worker is ready:
+  - It requests a new job from the backend
+  - The job includes a **signed, short-lived download URL** for your source zip
+- The worker downloads the source, performs the build, and uploads outputs using **signed upload URLs**.
+
+> [!IMPORTANT]
+>
+> - Workers cannot browse storage
+> - URLs expire automatically
+> - Each job is isolated
+
+#### 4. Cleanup after a job completes
+
+After a worker has completed a build a routine is run which deletes:
+
+- Downloaded and extracted source code
+- Build intermediates
+- Temporary files
+
+#### 5. Retention and deletion
+
+- Source archives and build outputs (IPA / AAB / APK) are retained for **30 days**
+- A lifecycle policy set on the storage automatically deletes them after that period
+
 ## 📖 Command Reference
 
 ### 🗂 Topics
