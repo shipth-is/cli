@@ -8,4 +8,4 @@ These commands do not require authentication.
 
 ## Commands
 
-- [util glass](/docs/reference/util/glass.md)
+- [util glass](/docs/reference/util/glass)
