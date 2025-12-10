@@ -33,7 +33,7 @@ interface GoCommandProps extends Props {
 }
 
 const LogListener = ({projectId, buildId}: {projectId: string; buildId: string}) => {
-  const {tail, messages} = useGoRuntimeLogListener({projectId, buildId})
+  const {messages} = useGoRuntimeLogListener({projectId, buildId})
 
   return (
     <>
@@ -87,7 +87,7 @@ const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.
 
   if (qrCodeData && buildId) {
     return (
-      <Box flexDirection='column'>
+      <Box flexDirection="column">
         <Title>Go Build QR Code</Title>
         <QRCodeTerminal data={qrCodeData} />
         <Text>{`Go build ID: ${getShortUUID(buildId)}`}</Text>
@@ -98,7 +98,7 @@ const GoCommand = ({command, gameId, onComplete, onError}: GoCommandProps): JSX.
 
   if (startedJobs && startedJobs?.length > 0) {
     return (
-      <Box flexDirection='column'>
+      <Box flexDirection="column">
         <Text>Generating Go build, please wait...</Text>
         <JobProgress job={startedJobs[0]} />
       </Box>

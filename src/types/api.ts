@@ -286,4 +286,5 @@ export interface RuntimeLogEntry {
   message: string
   details?: any
   sentAt: DateTime
+  sequence: number // will be min of 1
 }
