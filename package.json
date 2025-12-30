@@ -239,6 +239,7 @@
   },
   "types": "dist/index.d.ts",
   "overrides": {
-    "cli-spinners": "2.9.2"
+    "cli-spinners": "2.9.2",
+    "@alcalzone/ansi-tokenize": "^0.2.2"
   }
 }
