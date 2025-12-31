@@ -138,6 +138,7 @@ export interface JobLogEntry {
   progress?: number // When we receive via the WebSocket
   sentAt: DateTime
   stage: JobStage
+  sequence?: number
 }
 
 export interface CursorPaginatedResponse<T> {

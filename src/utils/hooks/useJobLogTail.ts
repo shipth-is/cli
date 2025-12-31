@@ -21,10 +21,15 @@ export interface JobLogTailResult {
 
 // When received from the server the logs are not guaranteed to be in order
 function getSortedJobLogs(logs: JobLogEntry[]) {
-  // TODO: sort by the "sequence" field when it exists
-  return logs.sort((a, b) => a.sentAt.toMillis() - b.sentAt.toMillis())
+  return [...logs].sort((a, b) => {
+    // Prefer producer sequence when available
+    if (a.sequence != null && b.sequence != null) {
+      return a.sequence - b.sequence
+    }
+    // Fallback to time-based ordering
+    return a.sentAt.toMillis() - b.sentAt.toMillis()
+  })
 }
-
 // Merges fetched job logs with those received from the websocket
 export function useJobLogTail({isWatching, jobId, length, projectId}: JobLogTailProps): JobLogTailResult {
   const [websocketLogs, setWebsocketLogs] = useState<JobLogEntry[]>([])
