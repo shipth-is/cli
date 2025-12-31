@@ -21,6 +21,7 @@ export interface JobLogTailResult {
 
 // When received from the server the logs are not guaranteed to be in order
 function getSortedJobLogs(logs: JobLogEntry[]) {
+  // TODO: sort by the "sequence" field when it exists
   return logs.sort((a, b) => a.sentAt.toMillis() - b.sentAt.toMillis())
 }
 
