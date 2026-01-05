@@ -26,6 +26,13 @@ function getSortedJobLogs(logs: JobLogEntry[]) {
     if (a.sequence != null && b.sequence != null) {
       return a.sequence - b.sequence
     }
+    // If only one entry has a sequence, prefer the one with the sequence
+    if (a.sequence != null && b.sequence == null) {
+      return -1
+    }
+    if (a.sequence == null && b.sequence != null) {
+      return 1
+    }
     // Fallback to time-based ordering
     return a.sentAt.toMillis() - b.sentAt.toMillis()
   })
