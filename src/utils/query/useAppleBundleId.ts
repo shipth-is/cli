@@ -58,7 +58,7 @@ export const fetchBundleId = async ({ctx, iosBundleId}: AppleBundleIdQueryProps)
   if (!bundleId) return empty
 
   const bundleIdCapabilities = await getBundleIdCapabilities(bundleId)
-  const projectCapabilities = getGodotProjectCapabilities(Platform.IOS)
+  const projectCapabilities = await getGodotProjectCapabilities(Platform.IOS)
 
   const capabilitiesTable = GODOT_CAPABILITIES.map((gc) => {
     const isEnabledInBundle = bundleIdCapabilities.includes(gc.type)
