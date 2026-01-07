@@ -10,11 +10,12 @@ import {
   mergePresets,
   type Platform as GodotPlatform,
   type GodotMajorVersion,
+  saveExportPresets,
+  ExportPresetsFile,
 } from 'godot-export-presets'
 
 import {CapabilityType} from '@cli/apple/expo.js'
 import {Platform} from '@cli/types'
-
 
 // Check if the current working directory is a Godot game
 // TODO: allow for cwd override
@@ -100,17 +101,20 @@ export async function getGodotAndroidPackageName(): Promise<null | string> {
 // TODO: is there a more reliable way to get the Godot version?
 export function getGodotVersion(): string {
   const projectGodotConfig = getGodotProjectConfig()
-  const features = projectGodotConfig.get_value('application', 'config/features') as string | undefined
-  if (features) {
-    // config/features=PackedStringArray("4.3")
-    // config/features=PackedStringArray("4.2", "GL Compatibility")
-    const match = features.match(/"(\d+\.\d+)"/)
-    if (match) {
-      return match[1]
-    }
+  const features = projectGodotConfig.get_value('application', 'config/features') as string[]
+  if (!features || features.length === 0) {
+    return '3.6'
   }
+  const [version] = features
+  return version as string
+}
 
-  return '3.6'
+export function getExportPresetsPath(): string {
+  // Get the preset options from any export_presets.cfg if found
+  const cwd = process.cwd()
+  const filename = 'export_presets.cfg'
+  const exportPresetsPath = path.join(cwd, filename)
+  return exportPresetsPath
 }
 
 // TODO: any differences in the presets between v 3.X and 4.X?
@@ -128,9 +132,7 @@ export async function getGodotExportPresets(platform: Platform) {
   let presetConfig = getBasePreset(godotPlatform, majorVersion)
 
   // Get the preset options from any export_presets.cfg if found
-  const cwd = process.cwd()
-  const filename = 'export_presets.cfg'
-  const exportPresetsPath = path.join(cwd, filename)
+  const exportPresetsPath = getExportPresetsPath()
 
   const isFound = fs.existsSync(exportPresetsPath)
   if (isFound) {
@@ -143,15 +145,53 @@ export async function getGodotExportPresets(platform: Platform) {
         // Merge the preset with base config
         presetConfig = mergePresets(presetConfig, foundPreset)
       } else {
-        warn(`Preset ${platform} not found in ${filename} - will use defaults`)
+        warn(`Preset ${platform} not found in ${exportPresetsPath} - will use defaults`)
       }
     } catch (error) {
-      warn(`Error loading ${filename}: ${error}`)
+      warn(`Error loading ${exportPresetsPath}: ${error} - will use defaults`)
     }
   } else {
-    warn(`${filename} not found at ${exportPresetsPath}`)
+    warn(`Export presets not found at ${exportPresetsPath} - will use defaults`)
   }
 
   return presetConfig
 }
 
+export function getGradleBuildOptionKey(majorVersion: GodotMajorVersion): string {
+  return majorVersion === 4 ? 'gradle_build/use_gradle_build' : 'custom_build/use_custom_build'
+}
+
+// Tells us if Gradle build is enabled in export_presets.cfg
+// This uses getGodotExportPresets which uses the base preset if no config file
+// The base preset has Gradle enabled by default
+export async function isGradleBuildEnabled(): Promise<boolean> {
+  const godotVersion = getGodotVersion()
+  const majorVersion = getMajorVersion(godotVersion) as GodotMajorVersion
+  const preset = await getGodotExportPresets(Platform.ANDROID)
+  const buildOptionKey = getGradleBuildOptionKey(majorVersion)
+  const isEnabled = preset.options?.[buildOptionKey]
+  return isEnabled === true || isEnabled === 'true'
+}
+
+// Sets the Gradle build option in export_presets.cfg
+// If the file does not exist, it will be created
+export async function setGradleBuildEnabled(value: boolean): Promise<void> {
+  const exportPresetsPath = getExportPresetsPath()
+  let exportPresets: ExportPresetsFile = {presets: []}
+  if (fs.existsSync(exportPresetsPath)) {
+    exportPresets = await loadExportPresets(exportPresetsPath)
+  } else {
+    console.warn(`Export presets not found at ${exportPresetsPath} - creating new file`)
+  }
+  const godotVersion = getGodotVersion()
+  const majorVersion = getMajorVersion(godotVersion) as GodotMajorVersion
+  let androidPreset = findPreset(exportPresets, {platform: 'Android'})
+  if (!androidPreset) {
+    androidPreset = getBasePreset('Android', majorVersion)
+    exportPresets.presets.push(androidPreset)
+  }
+  const buildOptionKey = getGradleBuildOptionKey(majorVersion)
+  androidPreset.options = androidPreset.options || {}
+  androidPreset.options[buildOptionKey] = value
+  await saveExportPresets(exportPresetsPath, exportPresets)
+}
