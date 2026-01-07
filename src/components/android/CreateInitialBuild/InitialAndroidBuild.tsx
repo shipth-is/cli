@@ -4,7 +4,7 @@ import {useContext, useEffect, useRef, useState} from 'react'
 
 import {CommandContext, JobLogTail, JobProgress, Markdown, StepProps} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
-import {Job, JobStatus, Platform} from '@cli/types/api.js'
+import {BuildType, Job, JobStatus, Platform} from '@cli/types/api.js'
 import {getShortUUID, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
 
 export interface InitialAndroidBuildProps extends StepProps {
@@ -30,7 +30,7 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
     if (!jobData) return
     if (!command) return
 
-    const hasAndroidBuild = buildData.data.some((build) => build.platform === Platform.ANDROID)
+    const hasAndroidBuild = buildData.data.some((build) => build.platform === Platform.ANDROID && build.buildType == BuildType.AAB)
     // If we now have a build - trigger the onComplete
     if (!prevHasBuild.current && hasAndroidBuild) return onComplete()
     prevHasBuild.current = hasAndroidBuild
