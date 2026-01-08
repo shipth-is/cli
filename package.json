@@ -106,6 +106,7 @@
   "exports": [
     "./dist/utils/help.js",
     "./dist/commands/util/glass.js",
+    "./dist/commands/util/android-build-method.js",
     "./dist/commands/apple/apiKey/export.js",
     "./dist/commands/apple/apiKey/create.js",
     "./dist/commands/apple/apiKey/status.js",
