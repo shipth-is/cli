@@ -161,6 +161,10 @@ export function getGradleBuildOptionKey(majorVersion: GodotMajorVersion): string
   return majorVersion === 4 ? 'gradle_build/use_gradle_build' : 'custom_build/use_custom_build'
 }
 
+export function getExportFormatOptionKey(majorVersion: GodotMajorVersion): string {
+  return majorVersion === 4 ? 'gradle_build/export_format' : 'custom_build/export_format'
+}
+
 // Tells us if Gradle build is enabled in export_presets.cfg
 // This uses getGodotExportPresets which uses the base preset if no config file
 // The base preset has Gradle enabled by default
@@ -193,5 +197,10 @@ export async function setGradleBuildEnabled(value: boolean): Promise<void> {
   const buildOptionKey = getGradleBuildOptionKey(majorVersion)
   androidPreset.options = androidPreset.options || {}
   androidPreset.options[buildOptionKey] = value
+  // If we are setting to false (legacy build), also change the export format to APK
+  const exportFormatOptionKey = getExportFormatOptionKey(majorVersion)
+  if (value === false) {
+    androidPreset.options[exportFormatOptionKey] = 0; // APK
+  }
   await saveExportPresets(exportPresetsPath, exportPresets)
 }
