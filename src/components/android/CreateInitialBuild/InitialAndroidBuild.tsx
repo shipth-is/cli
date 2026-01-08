@@ -30,7 +30,9 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
     if (!jobData) return
     if (!command) return
 
-    const hasAndroidBuild = buildData.data.some((build) => build.platform === Platform.ANDROID && build.buildType == BuildType.AAB)
+    const hasAndroidBuild = buildData.data.some(
+      (build) => build.platform === Platform.ANDROID && build.buildType == BuildType.AAB,
+    )
     // If we now have a build - trigger the onComplete
     if (!prevHasBuild.current && hasAndroidBuild) return onComplete()
     prevHasBuild.current = hasAndroidBuild
