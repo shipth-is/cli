@@ -223,7 +223,10 @@
       "frequencyUnit": "days"
     }
   },
-  "repository": "github:shipth-is/cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shipth-is/cli.git"
+  },
   "scripts": {
     "build-original": "shx rm -rf dist && tsc -b",
     "build-tsc-alias": "shx rm -rf dist && npx tsc --build && npx tsc-alias -p tsconfig.json",
