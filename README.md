@@ -415,6 +415,7 @@ The build machines do not keep user files after a job completes.
 - [apiKey](https://shipth.is/docs/reference/apiKey?ref=github_readme) - Commands related to ShipThis API Keys
 - [apple](https://shipth.is/docs/reference/apple?ref=github_readme) - Commands that relate to linking your ShipThis account with your Apple Developer account
 - [game](https://shipth.is/docs/reference/game?ref=github_readme) - Commands that relate to configuring the specific game in the current working directory.
+- [util](https://shipth.is/docs/reference/util?ref=github_readme) - Utility commands that do not require authentication
 
 ### 🔧 Commands
 
