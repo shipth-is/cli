@@ -8,4 +8,5 @@ These commands do not require authentication.
 
 ## Commands
 
+- [util android-build-method](/docs/reference/util/android-build-method)
 - [util glass](/docs/reference/util/glass)
