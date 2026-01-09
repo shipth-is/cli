@@ -40,8 +40,9 @@ export default class GameIosAppCreate extends BaseGameCommand<typeof GameIosAppC
     const getBundleIdentifier = async (): Promise<string> => {
       if (bundleId) return bundleId
       const generatedBundleId = generatePackageName(game.name)
+      const godotBundleId = await getGodotAppleBundleIdentifier()
       const suggestedBundleId =
-        game.details?.iosBundleId || getGodotAppleBundleIdentifier() || generatedBundleId || 'com.example.game'
+        game.details?.iosBundleId || godotBundleId || generatedBundleId || 'com.example.game'
       const question = `Please enter the BundleId in the Apple Developer Portal, or press enter to use ${suggestedBundleId}: `
       const enteredBundleId = await getInput(question)
       return enteredBundleId || suggestedBundleId

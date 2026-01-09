@@ -1,6 +1,6 @@
 import {getGoogleStatus, getProject, getProjectCredentials} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/baseCommand.js'
-import {CredentialsType, Platform} from '@cli/types/index.js'
+import {BuildType, CredentialsType, Platform} from '@cli/types/index.js'
 import {KeyTestError, KeyTestStatus, fetchKeyTestResult, queryBuilds} from '@cli/utils/index.js'
 
 export enum StepStatus {
@@ -91,7 +91,9 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
   )
 
   const buildsResponse = projectId && hasShipThisProject ? await queryBuilds({pageNumber: 0, projectId: `${projectId}`}) : null
-  const hasInitialBuild = Boolean(buildsResponse?.data?.some((build) => build.platform === Platform.ANDROID))
+  const hasInitialBuild = Boolean(
+    buildsResponse?.data?.some((build) => build.platform === Platform.ANDROID && build.buildType === BuildType.AAB),
+  )
 
   const testResult = projectId ? await fetchKeyTestResult({projectId}) : null
 

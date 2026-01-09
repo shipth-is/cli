@@ -1,12 +1,21 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import merge from 'deepmerge'
-import {parse} from 'ini'
+import {
+  ConfigFile,
+  findPreset,
+  getBasePreset,
+  getMajorVersion,
+  loadExportPresets,
+  mergePresets,
+  type Platform as GodotPlatform,
+  type GodotMajorVersion,
+  saveExportPresets,
+  ExportPresetsFile,
+} from 'godot-export-presets'
 
 import {CapabilityType} from '@cli/apple/expo.js'
 import {Platform} from '@cli/types'
-
 
 // Check if the current working directory is a Godot game
 // TODO: allow for cwd override
@@ -33,10 +42,10 @@ export const GODOT_CAPABILITIES = [
 ]
 
 // Tells us which capabilities are enabled in the Godot project
-export function getGodotProjectCapabilities(platform: Platform) {
-  const exportPresets = getGodotExportPresets(platform)
+export async function getGodotProjectCapabilities(platform: Platform) {
+  const exportPresets = await getGodotExportPresets(platform)
 
-  const options: Record<string, any> = (exportPresets as any).options || {}
+  const options: Record<string, any> = exportPresets.options || {}
 
   const capabilities = []
 
@@ -48,36 +57,41 @@ export function getGodotProjectCapabilities(platform: Platform) {
   return capabilities
 }
 
-export function getGodotProjectConfig() {
+export function getGodotProjectConfig(): ConfigFile {
   const cwd = process.cwd()
   const projectGodotPath = path.join(cwd, 'project.godot')
   const projectGodotContent = fs.readFileSync(projectGodotPath, 'utf8')
-  return parse(projectGodotContent)
+  const configFile = new ConfigFile()
+  const error = configFile.parse(projectGodotContent)
+  if (error) {
+    throw error
+  }
+  return configFile
 }
 
 export function getGodotProjectName(): null | string {
   try {
     const projectGodotConfig = getGodotProjectConfig()
-    return projectGodotConfig.application['config/name']
+    return (projectGodotConfig.get_value('application', 'config/name') as string) || null
   } catch {
     return null
   }
 }
 
-export function getGodotAppleBundleIdentifier(): null | string {
+export async function getGodotAppleBundleIdentifier(): Promise<null | string> {
   try {
-    const preset = getGodotExportPresets(Platform.IOS)
-    return (preset.options as any)['application/bundle_identifier']
+    const preset = await getGodotExportPresets(Platform.IOS)
+    return (preset.options?.['application/bundle_identifier'] as string) || null
   } catch (error) {
     console.log(error)
     return null
   }
 }
 
-export function getGodotAndroidPackageName(): null | string {
+export async function getGodotAndroidPackageName(): Promise<null | string> {
   try {
-    const preset = getGodotExportPresets(Platform.ANDROID)
-    return (preset.options as any)['package/unique_name']
+    const preset = await getGodotExportPresets(Platform.ANDROID)
+    return (preset.options?.['package/unique_name'] as string) || null
   } catch (error) {
     console.log(error)
     return null
@@ -87,129 +101,106 @@ export function getGodotAndroidPackageName(): null | string {
 // TODO: is there a more reliable way to get the Godot version?
 export function getGodotVersion(): string {
   const projectGodotConfig = getGodotProjectConfig()
-  if ('config/features' in projectGodotConfig.application) {
-    const features = projectGodotConfig.application['config/features']
-    // config/features=PackedStringArray("4.3")
-    // config/features=PackedStringArray("4.2", "GL Compatibility")
-    const match = features.match(/"(\d+\.\d+)"/)
-    if (!match) throw new Error("Couldn't find Godot version in project.godot")
-    return match[1]
+  const features = projectGodotConfig.get_value('application', 'config/features') as string[]
+  if (!features || features.length === 0) {
+    return '3.6'
   }
-
-  return '3.6'
+  const [version] = features
+  return version as string
 }
 
-// TODO: any differences in the presets between v 3.X and 4.X?
-export function getGodotExportPresets(platform: Platform) {
-  const {warn} = console
-
-  // Get the base config for this preset
-  let presetConfig = platform === Platform.IOS ? getBaseExportPresets_iOS() : getBaseExportPresets_Android()
-
+export function getExportPresetsPath(): string {
   // Get the preset options from any export_presets.cfg if found
   const cwd = process.cwd()
   const filename = 'export_presets.cfg'
   const exportPresetsPath = path.join(cwd, filename)
+  return exportPresetsPath
+}
+
+// TODO: any differences in the presets between v 3.X and 4.X?
+export async function getGodotExportPresets(platform: Platform) {
+  const {warn} = console
+
+  // Get Godot version to determine which base preset to use
+  const godotVersion = getGodotVersion()
+  const majorVersion = getMajorVersion(godotVersion) as GodotMajorVersion
+
+  // Convert Platform enum to Godot platform string
+  const godotPlatform: GodotPlatform = platform === Platform.IOS ? 'iOS' : 'Android'
+
+  // Get the base preset for this platform and version
+  let presetConfig = getBasePreset(godotPlatform, majorVersion)
+
+  // Get the preset options from any export_presets.cfg if found
+  const exportPresetsPath = getExportPresetsPath()
 
   const isFound = fs.existsSync(exportPresetsPath)
   if (isFound) {
-    const exportPresetsContent = fs.readFileSync(exportPresetsPath, 'utf8')
-    const exportPresetsIni = parse(exportPresetsContent)
-    // Find the preset with the same name in the existing config
-    const presetIndexes = Object.keys(exportPresetsIni.preset || {})
-    const presetIndex = presetIndexes.find((index) => {
-      const current = exportPresetsIni.preset[index]
-      return `${current.name}`.toUpperCase() === platform
-    })
+    try {
+      const exportPresets = await loadExportPresets(exportPresetsPath)
+      // Find the preset with the same platform
+      const foundPreset = findPreset(exportPresets, {platform: godotPlatform})
 
-    if (presetIndex) {
-      // Merge the preset options base config
-      presetConfig = merge(presetConfig, exportPresetsIni.preset[presetIndex]) as any
-    } else {
-      warn(`Preset ${platform} not found in ${filename} - will use defaults`)
+      if (foundPreset) {
+        // Merge the preset with base config
+        presetConfig = mergePresets(presetConfig, foundPreset)
+      } else {
+        warn(`Preset ${platform} not found in ${exportPresetsPath} - will use defaults`)
+      }
+    } catch (error) {
+      warn(`Error loading ${exportPresetsPath}: ${error} - will use defaults`)
     }
   } else {
-    warn(`${filename} not found at ${exportPresetsPath}`)
+    warn(`Export presets not found at ${exportPresetsPath} - will use defaults`)
   }
 
   return presetConfig
 }
 
-// TODO: type this properly (including missing options)
-function getBaseExportPresets_iOS() {
-  return {
-    custom_features: '',
-    dedicated_server: false,
-    encrypt_directory: false,
-    encrypt_pck: false,
-    encryption_exclude_filters: '',
-    encryption_include_filters: '',
-    exclude_filter: '',
-    export_filter: 'all_resources',
-    export_path: 'output',
-    include_filter: '',
-    name: 'iOS',
-    options: {
-      'application/export_project_only': true,
-      'application/icon_interpolation': '4',
-      'application/launch_screens_interpolation': '4',
-      'application/short_version': '1.0.0', // default version number
-      'application/signature': '',
-      'architectures/arm64': true,
-      'capabilities/access_wifi': false,
-      'capabilities/push_notifications': false,
-      'custom_template/debug': '',
-      'custom_template/release': '',
-      'icons/app_store_1024x1024': '',
-      'icons/ipad_76x76': '',
-      'icons/ipad_152x152': '',
-      'icons/ipad_167x167': '',
-      'icons/iphone_120x120': '',
-      'icons/iphone_180x180': '',
-      'icons/notification_40x40': '',
-      'icons/notification_60x60': '',
-      'icons/settings_58x58': '',
-      'icons/settings_87x87': '',
-      'icons/spotlight_40x40': '',
-      'icons/spotlight_80x80': '',
-      'landscape_launch_screens/ipad_1024x768': '',
-      'landscape_launch_screens/ipad_2048x1536': '',
-      'landscape_launch_screens/iphone_2208x1242': '',
-      'landscape_launch_screens/iphone_2436x1125': '',
-      'portrait_launch_screens/ipad_768x1024': '',
-      'portrait_launch_screens/ipad_1536x2048': '',
-      'portrait_launch_screens/iphone_640x960': '',
-      'portrait_launch_screens/iphone_640x1136': '',
-      'portrait_launch_screens/iphone_750x1334': '',
-      'portrait_launch_screens/iphone_1125x2436': '',
-      'portrait_launch_screens/iphone_1242x2208': '',
-      'privacy/camera_usage_description': '',
-      'privacy/camera_usage_description_localized': '{}',
-      'privacy/microphone_usage_description': '',
-      'privacy/microphone_usage_description_localized': '{}',
-      'privacy/photolibrary_usage_description': '',
-      'privacy/photolibrary_usage_description_localized': '{}',
-      'storyboard/custom_bg_color': 'Color(0, 0, 0, 1)',
-      'storyboard/custom_image@2x': '',
-      'storyboard/custom_image@3x': '',
-      'storyboard/image_scale_mode': '0',
-      'storyboard/use_custom_bg_color': false,
-      'storyboard/use_launch_screen_storyboard': true,
-      'user_data/accessible_from_files_app': false,
-      'user_data/accessible_from_itunes_sharing': false,
-    },
-    platform: 'iOS',
-    runnable: true,
-  }
+export function getGradleBuildOptionKey(majorVersion: GodotMajorVersion): string {
+  return majorVersion === 4 ? 'gradle_build/use_gradle_build' : 'custom_build/use_custom_build'
 }
 
-function getBaseExportPresets_Android() {
-  return {
-    name: 'Android',
-    // TODO
-    options: {
-      // TODO
-    },
-    platform: 'Android',
+export function getExportFormatOptionKey(majorVersion: GodotMajorVersion): string {
+  return majorVersion === 4 ? 'gradle_build/export_format' : 'custom_build/export_format'
+}
+
+// Tells us if Gradle build is enabled in export_presets.cfg
+// This uses getGodotExportPresets which uses the base preset if no config file
+// The base preset has Gradle enabled by default
+export async function isGradleBuildEnabled(): Promise<boolean> {
+  const godotVersion = getGodotVersion()
+  const majorVersion = getMajorVersion(godotVersion) as GodotMajorVersion
+  const preset = await getGodotExportPresets(Platform.ANDROID)
+  const buildOptionKey = getGradleBuildOptionKey(majorVersion)
+  const isEnabled = preset.options?.[buildOptionKey]
+  return isEnabled === true || isEnabled === 'true'
+}
+
+// Sets the Gradle build option in export_presets.cfg
+// If the file does not exist, it will be created
+export async function setGradleBuildEnabled(value: boolean): Promise<void> {
+  const exportPresetsPath = getExportPresetsPath()
+  let exportPresets: ExportPresetsFile = {presets: []}
+  if (fs.existsSync(exportPresetsPath)) {
+    exportPresets = await loadExportPresets(exportPresetsPath)
+  } else {
+    console.warn(`Export presets not found at ${exportPresetsPath} - creating new file`)
   }
+  const godotVersion = getGodotVersion()
+  const majorVersion = getMajorVersion(godotVersion) as GodotMajorVersion
+  let androidPreset = findPreset(exportPresets, {platform: 'Android'})
+  if (!androidPreset) {
+    androidPreset = getBasePreset('Android', majorVersion)
+    exportPresets.presets.push(androidPreset)
+  }
+  const buildOptionKey = getGradleBuildOptionKey(majorVersion)
+  androidPreset.options = androidPreset.options || {}
+  androidPreset.options[buildOptionKey] = value
+  // If we are setting to false (legacy build), also change the export format to APK
+  const exportFormatOptionKey = getExportFormatOptionKey(majorVersion)
+  if (value === false) {
+    androidPreset.options[exportFormatOptionKey] = 0; // APK
+  }
+  await saveExportPresets(exportPresetsPath, exportPresets)
 }

@@ -39,7 +39,8 @@ export abstract class BaseGameAndroidCommand<T extends typeof Command> extends B
   protected async getAndroidPackageName(gameId: string): Promise<string> {
     const game = await this.getGame()
     const generated = generatePackageName(game.name)
-    const suggested = game.details?.iosBundleId || getGodotAndroidPackageName() || generated || 'com.example.game'
+    const godotPackageName = await getGodotAndroidPackageName()
+    const suggested = game.details?.iosBundleId || godotPackageName || generated || 'com.example.game'
     const question = `Please enter the Android Package Name, or press enter to use ${suggested}: `
     const entered = await getInput(question)
     return entered || suggested
