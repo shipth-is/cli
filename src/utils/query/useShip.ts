@@ -2,16 +2,14 @@ import fs from 'node:fs'
 
 import {Command} from '@oclif/core'
 import {useMutation} from '@tanstack/react-query'
-import axios from 'axios'
 import fg from 'fast-glob'
 import {v4 as uuid} from 'uuid'
-import {ZipFile} from 'yazl'
 
 import {getNewUploadTicket, getProject, startJobsFromUpload} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS, cacheKeys} from '@cli/constants/index.js'
 import {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
-import {getCWDGitInfo, getFileHash, queryClient} from '@cli/utils/index.js'
+import {createZip, getCWDGitInfo, getFileHash, queryClient, uploadZip} from '@cli/utils/index.js'
 
 // Takes the current command so we can get the project config
 // This could be made more composable
@@ -19,6 +17,22 @@ interface ShipOptions {
   command: BaseCommand<typeof Command>
   log?: (message: string) => void
   shipFlags?: ShipGameFlags // If provided, will override command flags
+}
+
+function formatProgressLog(
+  label: string,
+  data: {progress: number; elapsedSeconds: number; speedMBps: number; [key: string]: any},
+  bytesKey: 'writtenBytes' | 'loadedBytes',
+  totalKey: 'estimatedTotalBytes' | 'totalBytes',
+  isEstimated = false,
+): string {
+  const elapsed = data.elapsedSeconds.toFixed(1)
+  const transferredMB = (data[bytesKey] / 1024 / 1024).toFixed(2)
+  const totalMB = (data[totalKey] / 1024 / 1024).toFixed(2)
+  const prgs = Math.round(data.progress * 100)
+  const speed = data.speedMBps.toFixed(2)
+  const totalPrefix = isEstimated ? '~' : ''
+  return `${label}: ${prgs}% (${transferredMB}MB / ${totalPrefix}${totalMB}MB) - ${elapsed}s - ${speed}MB/s`
 }
 
 export async function ship({command, log = () => {}, shipFlags}: ShipOptions): Promise<Job[]> {
@@ -51,36 +65,39 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
   const files = await fg(shippedFilesGlobs, {dot: true, ignore: ignoredFilesGlobs})
 
   verbose && log(`Found ${files.length} files, adding to zip...`)
-  const zipFile = new ZipFile()
-  for (const file of files) {
-    zipFile.addFile(file, file)
-  }
-
-  const outputZipToFile = (zip: ZipFile, fileName: string) =>
-    new Promise<void>((resolve) => {
-      const outputStream = fs.createWriteStream(fileName)
-      zip.outputStream.pipe(outputStream).on('close', () => resolve())
-      zip.end()
-    })
 
   const tmpZipFile = `${process.cwd()}/shipthis-${uuid()}.zip`
   log(`Creating zip file: ${tmpZipFile}`)
-  await outputZipToFile(zipFile, tmpZipFile)
+  await createZip({
+    files,
+    outputPath: tmpZipFile,
+    onProgress: (data) => {
+      log(formatProgressLog('Zipping', data, 'writtenBytes', 'estimatedTotalBytes', true))
+    },
+  })
 
-  verbose && log('Reading zip file buffer...')
-  const zipBuffer = fs.readFileSync(tmpZipFile)
   const {size} = fs.statSync(tmpZipFile)
 
   verbose && log('Requesting upload ticket...')
   const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
 
   log('Uploading zip file...')
-  await axios.put(uploadTicket.url, zipBuffer, {
-    headers: {
-      'Content-Type': 'application/zip',
-      'Content-length': size,
+  const zipStream = fs.createReadStream(tmpZipFile)
+
+  const response = await uploadZip({
+    url: uploadTicket.url,
+    zipStream,
+    zipSize: size,
+    onProgress: (data) => {
+      log(formatProgressLog('Uploading', data, 'loadedBytes', 'totalBytes', false))
     },
   })
+
+  if (!response.ok) {
+    throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
+  }
+
+  log(`Upload complete`)
 
   verbose && log('Fetching Git info...')
   const gitInfo = await getCWDGitInfo()
