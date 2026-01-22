@@ -29,10 +29,10 @@ function formatProgressLog(
   const elapsed = data.elapsedSeconds.toFixed(1)
   const transferredMB = (data[bytesKey] / 1024 / 1024).toFixed(2)
   const totalMB = (data[totalKey] / 1024 / 1024).toFixed(2)
-  const prgs = Math.round(data.progress * 100)
+  const progressPercent = Math.round(data.progress * 100)
   const speed = data.speedMBps.toFixed(2)
   const totalPrefix = isEstimated ? '~' : ''
-  return `${label}: ${prgs}% (${transferredMB}MB / ${totalPrefix}${totalMB}MB) - ${elapsed}s - ${speed}MB/s`
+  return `${label}: ${progressPercent}% (${transferredMB}MB / ${totalPrefix}${totalMB}MB) - ${elapsed}s - ${speed}MB/s`
 }
 
 export async function ship({command, log = () => {}, shipFlags}: ShipOptions): Promise<Job[]> {
