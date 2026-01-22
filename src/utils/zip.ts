@@ -25,13 +25,21 @@ interface CreateZipProps {
 export async function createZip({files, outputPath, onProgress}: CreateZipProps): Promise<void> {
   const startTime = Date.now()
 
-  let totalSourceSize = 0
-  for (const file of files) {
+  const statPromises = files.map(async (file) => {
     try {
-      const stats = fs.statSync(file)
-      totalSourceSize += stats.size
+      return await fs.promises.stat(file)
     } catch {
       // Skip inaccessible files
+      return null
+    }
+  })
+
+  const statsResults = await Promise.all(statPromises)
+
+  let totalSourceSize = 0
+  for (const stats of statsResults) {
+    if (stats) {
+      totalSourceSize += stats.size
     }
   }
 
