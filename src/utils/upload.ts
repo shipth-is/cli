@@ -1,6 +1,6 @@
 import {Readable, Transform} from 'stream'
 
-export const ON_PROGRESS_THROTTLE_MS = 1000
+export const ON_PROGRESS_THROTTLE_MS = 2000
 
 export function createProgressStream(
   totalSize: number, 
