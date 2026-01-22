@@ -19,18 +19,23 @@ interface ShipOptions {
   shipFlags?: ShipGameFlags // If provided, will override command flags
 }
 
-function formatProgressLog(
-  label: string,
-  data: {progress: number; elapsedSeconds: number; speedMBps: number; [key: string]: any},
-  bytesKey: 'writtenBytes' | 'loadedBytes',
-  totalKey: 'estimatedTotalBytes' | 'totalBytes',
-  isEstimated = false,
-): string {
-  const elapsed = data.elapsedSeconds.toFixed(1)
-  const transferredMB = (data[bytesKey] / 1024 / 1024).toFixed(2)
-  const totalMB = (data[totalKey] / 1024 / 1024).toFixed(2)
-  const progressPercent = Math.round(data.progress * 100)
-  const speed = data.speedMBps.toFixed(2)
+interface FormatProgressOptions {
+  elapsedSeconds: number
+  isEstimated?: boolean
+  label: string
+  progress: number
+  speedMBps: number
+  totalBytes: number
+  transferredBytes: number
+}
+
+function formatProgressLog(options: FormatProgressOptions): string {
+  const {elapsedSeconds, isEstimated = false, label, progress, speedMBps, totalBytes, transferredBytes} = options
+  const elapsed = elapsedSeconds.toFixed(1)
+  const transferredMB = (transferredBytes / 1024 / 1024).toFixed(2)
+  const totalMB = (totalBytes / 1024 / 1024).toFixed(2)
+  const progressPercent = Math.round(progress * 100)
+  const speed = speedMBps.toFixed(2)
   const totalPrefix = isEstimated ? '~' : ''
   return `${label}: ${progressPercent}% (${transferredMB}MB / ${totalPrefix}${totalMB}MB) - ${elapsed}s - ${speed}MB/s`
 }
@@ -73,7 +78,17 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     files,
     outputPath: tmpZipFile,
     onProgress: (data) => {
-      log(formatProgressLog('Zipping', data, 'writtenBytes', 'estimatedTotalBytes', true))
+      log(
+        formatProgressLog({
+          elapsedSeconds: data.elapsedSeconds,
+          isEstimated: true,
+          label: 'Zipping',
+          progress: data.progress,
+          speedMBps: data.speedMBps,
+          totalBytes: data.estimatedTotalBytes,
+          transferredBytes: data.writtenBytes,
+        }),
+      )
     },
   })
 
@@ -90,7 +105,17 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     zipStream,
     zipSize: size,
     onProgress: (data) => {
-      log(formatProgressLog('Uploading', data, 'loadedBytes', 'totalBytes', false))
+      log(
+        formatProgressLog({
+          elapsedSeconds: data.elapsedSeconds,
+          isEstimated: false,
+          label: 'Uploading',
+          progress: data.progress,
+          speedMBps: data.speedMBps,
+          totalBytes: data.totalBytes,
+          transferredBytes: data.loadedBytes,
+        }),
+      )
     },
   })
 
