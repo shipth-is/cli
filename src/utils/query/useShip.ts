@@ -77,66 +77,70 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     },
   })
 
-  const {size} = fs.statSync(tmpZipFile)
+  try {
+    const {size} = fs.statSync(tmpZipFile)
 
-  verbose && log('Requesting upload ticket...')
-  const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
+    verbose && log('Requesting upload ticket...')
+    const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
 
-  log('Uploading zip file...')
-  const zipStream = fs.createReadStream(tmpZipFile)
+    log('Uploading zip file...')
+    const zipStream = fs.createReadStream(tmpZipFile)
 
-  const response = await uploadZip({
-    url: uploadTicket.url,
-    zipStream,
-    zipSize: size,
-    onProgress: (data) => {
-      log(formatProgressLog('Uploading', data, 'loadedBytes', 'totalBytes', false))
-    },
-  })
+    const response = await uploadZip({
+      url: uploadTicket.url,
+      zipStream,
+      zipSize: size,
+      onProgress: (data) => {
+        log(formatProgressLog('Uploading', data, 'loadedBytes', 'totalBytes', false))
+      },
+    })
 
-  verbose && log('Computing zip file hash...')
-  const zipFileMd5 = await getFileHash(tmpZipFile)
+    verbose && log('Computing zip file hash...')
+    const zipFileMd5 = await getFileHash(tmpZipFile)
 
-  verbose && log('Cleaning up temporary zip file...')
-  fs.unlinkSync(tmpZipFile)
+    if (!response.ok) {
+      throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
+    }
 
-  if (!response.ok) {
-    throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
+    log(`Upload complete`)
+
+    verbose && log('Fetching Git info...')
+    const gitInfo = await getCWDGitInfo()
+    const uploadDetails: UploadDetails = {
+      ...gitInfo,
+      zipFileMd5,
+    }
+
+    verbose && log('Starting jobs from upload...')
+
+    const startJobsOptions = {
+      ...uploadDetails,
+      platform: finalFlags.platform?.toUpperCase() as Platform,
+      skipPublish: finalFlags.skipPublish,
+      verbose: finalFlags.verbose,
+      useDemoCredentials: isUsingDemoCredentials,
+      gameEngineVersion: finalFlags.gameEngineVersion,
+    }
+
+    const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
+
+    verbose && log('Job submission complete.')
+
+    if (jobs.length === 0) {
+      throw new Error('No jobs were created. Please check your game configuration and try again.')
+    }
+
+    if (finalFlags?.follow) {
+      log('Waiting for job to start...')
+    }
+
+    return jobs
+  } finally {
+    verbose && log('Cleaning up temporary zip file...')
+    if (fs.existsSync(tmpZipFile)) {
+      fs.unlinkSync(tmpZipFile)
+    }
   }
-
-  log(`Upload complete`)
-
-  verbose && log('Fetching Git info...')
-  const gitInfo = await getCWDGitInfo()
-  const uploadDetails: UploadDetails = {
-    ...gitInfo,
-    zipFileMd5,
-  }
-
-  verbose && log('Starting jobs from upload...')
-
-  const startJobsOptions = {
-    ...uploadDetails,
-    platform: finalFlags.platform?.toUpperCase() as Platform,
-    skipPublish: finalFlags.skipPublish,
-    verbose: finalFlags.verbose,
-    useDemoCredentials: isUsingDemoCredentials,
-    gameEngineVersion: finalFlags.gameEngineVersion,
-  }
-
-  const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
-
-  verbose && log('Job submission complete.')
-
-  if (jobs.length === 0) {
-    throw new Error('No jobs were created. Please check your game configuration and try again.')
-  }
-
-  if (finalFlags?.follow) {
-    log('Waiting for job to start...')
-  }
-
-  return jobs
 }
 
 export const useShip = () =>
