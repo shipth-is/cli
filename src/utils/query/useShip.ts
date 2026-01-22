@@ -94,6 +94,12 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     },
   })
 
+  verbose && log('Computing zip file hash...')
+  const zipFileMd5 = await getFileHash(tmpZipFile)
+
+  verbose && log('Cleaning up temporary zip file...')
+  fs.unlinkSync(tmpZipFile)
+
   if (!response.ok) {
     throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
   }
@@ -102,8 +108,6 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
 
   verbose && log('Fetching Git info...')
   const gitInfo = await getCWDGitInfo()
-  verbose && log('Computing file hash...')
-  const zipFileMd5 = await getFileHash(tmpZipFile)
   const uploadDetails: UploadDetails = {
     ...gitInfo,
     zipFileMd5,
@@ -121,9 +125,6 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
   }
 
   const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
-
-  verbose && log('Cleaning up temporary zip file...')
-  fs.unlinkSync(tmpZipFile)
 
   verbose && log('Job submission complete.')
 
