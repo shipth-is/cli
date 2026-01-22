@@ -51,6 +51,26 @@ export async function createZip({files, outputPath, onProgress}: CreateZipProps)
   }
 
   return new Promise<void>((resolve, reject) => {
+    let settled = false
+    
+    const handleError = (error: Error) => {
+      if (settled) return
+      settled = true
+      
+      // Clean up streams
+      zipFile.outputStream.destroy()
+      progressStream.destroy()
+      outputStream.destroy()
+      
+      reject(error)
+    }
+    
+    const handleSuccess = () => {
+      if (settled) return
+      settled = true
+      resolve()
+    }
+    
     const outputStream = fs.createWriteStream(outputPath)
 
     const progressStream = createProgressStream(estimatedZipSize, (written, total) => {
@@ -66,11 +86,15 @@ export async function createZip({files, outputPath, onProgress}: CreateZipProps)
       })
     }, ON_PROGRESS_THROTTLE_MS)
 
+    // Add error handlers to all streams in the pipe chain
+    zipFile.outputStream.on('error', handleError)
+    progressStream.on('error', handleError)
+    outputStream.on('error', handleError)
+    outputStream.on('close', handleSuccess)
+
     zipFile.outputStream
       .pipe(progressStream)
       .pipe(outputStream)
-      .on('close', () => resolve())
-      .on('error', reject)
 
     zipFile.end()
   })
