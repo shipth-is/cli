@@ -46,11 +46,12 @@ export function uploadZip({url, zipStream, zipSize, onProgress}: UploadProps): P
 
   const progressStream = createProgressStream(zipSize, (sent, total) => {
     const elapsedSeconds = (Date.now() - startTime) / 1000
+    const speedMBps = elapsedSeconds < 0.001 ? 0 : sent / elapsedSeconds / 1024 / 1024
     onProgress({
       progress: total ? sent / total : 0,
       loadedBytes: sent,
       totalBytes: total,
-      speedMBps: sent / elapsedSeconds / 1024 / 1024,
+      speedMBps,
       elapsedSeconds,
     })
   }, ON_PROGRESS_THROTTLE_MS)

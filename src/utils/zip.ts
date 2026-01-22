@@ -55,13 +55,14 @@ export async function createZip({files, outputPath, onProgress}: CreateZipProps)
 
     const progressStream = createProgressStream(estimatedZipSize, (written, total) => {
       const elapsedSeconds = (Date.now() - startTime) / 1000
+      const speedMBps = elapsedSeconds < 0.001 ? 0 : written / elapsedSeconds / 1024 / 1024
       onProgress({
         progress: total ? Math.min(1, written / total) : 0,
         writtenBytes: written,
         estimatedTotalBytes: total,
         sourceTotalBytes: totalSourceSize,
         elapsedSeconds,
-        speedMBps: written / elapsedSeconds / 1024 / 1024,
+        speedMBps,
       })
     }, ON_PROGRESS_THROTTLE_MS)
 
