@@ -59,6 +59,12 @@ export function uploadZip({url, zipStream, zipSize, onProgress}: UploadProps): P
   const streamWithProgress = zipStream.pipe(progressStream)
   const webStream = Readable.toWeb(streamWithProgress) as ReadableStream<Uint8Array>
 
+  // The 'duplex' property is required when using a ReadableStream as the request body.
+  // 'duplex: half' indicates half-duplex communication (one direction at a time),
+  // which is the mode needed for streaming request bodies with fetch().
+  // Type assertion is necessary because 'duplex' is not yet part of the standard
+  // TypeScript RequestInit type definition, though it's required by the fetch spec
+  // for streaming uploads.
   const response = fetch(url, {
     method: 'PUT',
     headers: {
