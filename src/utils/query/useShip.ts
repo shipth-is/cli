@@ -66,8 +66,9 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
 
   verbose && log(`Found ${files.length} files, adding to zip...`)
 
-  const tmpZipFile = `${process.cwd()}/shipthis-${uuid()}.zip`
-  log(`Creating zip file: ${tmpZipFile}`)
+  const tmpZipFileName = `shipthis-${uuid()}.zip`
+  const tmpZipFile = `${process.cwd()}/${tmpZipFileName}`
+  log(`Creating zip file: ${tmpZipFileName}`)
   await createZip({
     files,
     outputPath: tmpZipFile,
