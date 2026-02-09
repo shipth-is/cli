@@ -1,8 +1,6 @@
 import * as fs from 'node:fs'
 
 import axios from 'axios'
-import CryptoJS from 'crypto-js'
-import {v4 as uuid} from 'uuid'
 
 import {API_URL, WEB_URL} from '@cli/constants/index.js'
 import {
@@ -156,35 +154,15 @@ export async function getSingleUseUrl(destination: string) {
   return url
 }
 
-// Builds a URL that emails the user the login-OTP when visited and shows the form.
-// Auth is checked and they are redirected.
-// TODO: this logic and the salt should be moved to the backend
+// Generates a shortened auth-required URL that emails the user the login-OTP
+// when visited and shows the login form. After login, redirects to destination.
 export async function getShortAuthRequiredUrl(destination: string) {
-  // We encrypt their email address in the URL to obfuscate it
-  // The frontend will decrypt the email and use it to send the OTP
-  const {email} = await getSelf()
-  // We include a random key
-  const key = uuid()
-  // With a little salt
-  const salt = 'Na (s) + 1/2 Cl₂ (g) → NaCl (s)'
-  const fullKey = `${key}${salt}`
-  const token = CryptoJS.AES.encrypt(email, fullKey).toString()
-  const params = {
-    destination,
-    key,
-    token,
-  }
-  const queryString = Object.entries(params)
-    .map(([key, value]) => `${key}=${encodeURIComponent(`${value}`)}`)
-    .join('&')
-  const url = `${WEB_URL}login/?${queryString}`
   const headers = await getAuthedHeaders()
-  // Shorten the url so that the QR code is smaller.
-  // Also the final link will expire in 24 hours
   const {data} = await axios.post(
-    `${API_URL}/me/shorten`,
+    `${API_URL}/me/login-link`,
     {
-      url,
+      destination,
+      webUrl: WEB_URL,
     },
     {headers},
   )
