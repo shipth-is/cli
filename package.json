@@ -1,6 +1,6 @@
 {
   "name": "shipthis",
-  "description": "ShipThis manages building and uploading your Godot games to the App Store and Google Play.",
+  "description": "Build and publish Godot games to the App Store and Google Play. Cloud builds for APK, AAB, and IPA - no Mac or Android Studio required.",
   "version": "0.1.43",
   "author": "Hello Invent Ltd",
   "bin": {
@@ -91,12 +91,23 @@
   ],
   "homepage": "https://shipth.is/",
   "keywords": [
-    "cli",
     "godot",
-    "apple",
+    "godot-engine",
+    "android",
     "ios",
     "mobile",
-    "game"
+    "game",
+    "apk",
+    "aab",
+    "ipa",
+    "google-play",
+    "app-store",
+    "testflight",
+    "ci-cd",
+    "build",
+    "deploy",
+    "publish",
+    "cli"
   ],
   "license": "MIT",
   "main": "dist/index.js",
