@@ -140,6 +140,25 @@ export async function getJob(jobId: string, projectId: string): Promise<Job> {
   return castJobDates(data)
 }
 
+const MAX_RETRIES = 3
+const RETRY_DELAY_MS = 5000
+
+// Returns the builds for a job, retrying if none are found
+// The retry is because of possible race condition when a job completes
+export async function getJobBuildsRetry(jobId: string, projectId: string, retries = MAX_RETRIES): Promise<Build[]> {
+  let job: Job | null = null
+
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    job = await getJob(jobId, projectId)
+    if (job.builds && job.builds.length > 0) break
+    if (attempt < MAX_RETRIES) await new Promise((res) => setTimeout(res, RETRY_DELAY_MS))
+  }
+
+  if (!job?.builds || job.builds.length === 0) throw new Error('No builds found for this job after multiple attempts')
+
+  return job.builds
+}
+
 // Returns a url with an OTP - when visited it authenticates the user
 export async function getSingleUseUrl(destination: string) {
   // Call the API to generate an OTP
