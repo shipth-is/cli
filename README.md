@@ -49,6 +49,8 @@ The wizard command takes a platform parameter: either **android** or **ios**. Ru
 
 #### Set up an Android game
 
+Read more about [how ShipThis handles Godot Android builds](https://shipth.is/docs/guides/android-build-methods?ref=github_readme) (Gradle vs legacy, APK/AAB output).
+
 ```bash
 shipthis game wizard android
 ```
@@ -89,6 +91,7 @@ Now you can publish new versions of your game to TestFlight or Google Play with 
 shipthis game ship
 ```
 
+- New to ShipThis? See the full [Quick start guide](https://shipth.is/docs/guides/quick-start?ref=github_readme)
 - Having issues? Check the [Troubleshooting](https://shipth.is/docs/troubleshooting?ref=github_readme) or [join our Discord](https://discord.gg/gPjn3S99k4)
 - For detailed documentation, visit [shipth.is/docs](https://shipth.is/docs?ref=github_readme)
 
@@ -424,6 +427,14 @@ The build machines do not keep user files after a job completes.
 - [login](https://shipth.is/docs/reference/login?ref=github_readme) - Sign in or create a new account
 - [status](https://shipth.is/docs/reference/status?ref=github_readme) - Display your overall ShipThis account status
 - [help](https://shipth.is/docs/reference/help?ref=github_readme) - Display help for a specific topic or command
+
+### 📚 Guides
+
+- [Quick start](https://shipth.is/docs/guides/quick-start?ref=github_readme) - Get your first build running in minutes
+- [Android build methods](https://shipth.is/docs/guides/android-build-methods?ref=github_readme) - Gradle vs legacy builds, APK & AAB output
+- [Godot versioning](https://shipth.is/docs/guides/godot-versioning?ref=github_readme) - Supported Godot versions and custom builds
+- [Liquid Glass icons](https://shipth.is/docs/guides/liquid-glass?ref=github_readme) - Use Liquid Glass icons with your iOS game
+- [Troubleshooting](https://shipth.is/docs/troubleshooting?ref=github_readme) - Common issues and how to fix them
 
 ## 🌍 Community
 
