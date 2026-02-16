@@ -14,6 +14,7 @@
     "@oclif/core": "^4",
     "@oclif/plugin-autocomplete": "^3.2.40",
     "@oclif/plugin-help": "^6",
+    "@oclif/plugin-not-found": "^3.2.74",
     "@oclif/plugin-warn-if-update-available": "^3.1.46",
     "@tanstack/react-query": "^5.56.2",
     "@types/marked-terminal": "^6.1.1",
@@ -182,7 +183,8 @@
     "plugins": [
       "@oclif/plugin-help",
       "@oclif/plugin-warn-if-update-available",
-      "@oclif/plugin-autocomplete"
+      "@oclif/plugin-autocomplete",
+      "@oclif/plugin-not-found"
     ],
     "topicSeparator": " ",
     "topics": {
