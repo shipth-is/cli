@@ -12,6 +12,7 @@
     "@expo/json-file": "^8.3.3",
     "@inkjs/ui": "^2.0.0",
     "@oclif/core": "^4",
+    "@oclif/plugin-autocomplete": "^3.2.40",
     "@oclif/plugin-help": "^6",
     "@oclif/plugin-warn-if-update-available": "^3.1.46",
     "@tanstack/react-query": "^5.56.2",
@@ -180,7 +181,8 @@
     "helpClass": "./dist/utils/help",
     "plugins": [
       "@oclif/plugin-help",
-      "@oclif/plugin-warn-if-update-available"
+      "@oclif/plugin-warn-if-update-available",
+      "@oclif/plugin-autocomplete"
     ],
     "topicSeparator": " ",
     "topics": {
