@@ -15,6 +15,7 @@ Begin with our [Quickstart Guide](https://shipth.is/docs/guides/quick-start).
 
 ## Commands
 
+- [autocomplete](https://shipth.is/docs/reference/autocomplete) - Set up shell tab-completion for commands, topics, and flags
 - [dashboard](https://shipth.is/docs/reference/dashboard) - Opens the web browser to your shipth.is dashboard
 - [login](https://shipth.is/docs/reference/login) - Signin or create a new account
 - [status](https://shipth.is/docs/reference/status) - Display your overall ShipThis account status

@@ -154,6 +154,8 @@ function getTopicTree(topics: Topic[], commands: Command.Loadable[], separateFil
   for (const command of commands) {
     const commandPath = command.id.split(':')
     if (commandPath[0] === 'internal') continue
+    // Skip nested sub-commands from external plugins (e.g. autocomplete:create, autocomplete:script)
+    if (commandPath.length > 1 && command.pluginName !== 'shipthis') continue
     let currentParent = topicTree[ROOT_TOPIC_NAME]
     // the last item in the path is the command itself
     for (let i = 0; i < commandPath.length - 1; i++) {
