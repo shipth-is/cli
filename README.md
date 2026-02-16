@@ -423,6 +423,7 @@ The build machines do not keep user files after a job completes.
 
 ### 🔧 Commands
 
+- [autocomplete](https://shipth.is/docs/reference/autocomplete?ref=github_readme) - Set up shell tab-completion for commands, topics, and flags
 - [dashboard](https://shipth.is/docs/reference/dashboard?ref=github_readme) - Opens the web browser to your shipth.is dashboard
 - [login](https://shipth.is/docs/reference/login?ref=github_readme) - Sign in or create a new account
 - [status](https://shipth.is/docs/reference/status?ref=github_readme) - Display your overall ShipThis account status
