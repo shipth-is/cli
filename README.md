@@ -368,49 +368,9 @@ We store:
 
 ### What happens to my files when I run the command `shipthis game ship`?
 
-#### 1. Uploading your game files
+Your game files are packaged, uploaded to private storage via a temporary signed URL, and made available to an ephemeral build machine. After the build completes, all files are cleaned up on the machine. Uploaded files and build outputs are retained for **30 days** before automatic deletion.
 
-When you run the command, the CLI asks the ShipThis backend for a secure (HTTPS) temporary upload URL.
-Your game files are packaged locally on your machine:
-
-- Files matching `shippedFilesGlobs` in `shipthis.json` are included
-- Files matching `ignoredFilesGlobs` are excluded
-
-The zip file is then uploaded directly from your computer to a private DigitalOcean Space using the temporary upload URL.
-
-#### 2. Where the files are stored
-
-The uploaded zip lives in a private DigitalOcean Space. The space is not public and cannot be browsed.
-
-Files in this storage can only be accessed using signed URLs that expire after a short time. Those URLs are generated only when they are needed.
-
-This storage is used for:
-
-- Providing a build machine access to your game files
-- Storing the resulting build outputs (APK/AAB/IPA)
-
-#### 3. How build machines access your code
-
-Build machines do not have general access to storage of game files or credentials.
-
-When a machine is ready to run a job, it asks the backend for work. The job it receives includes a temporary, signed download URL for the zip containing the game files. The machine downloads the zip, extracts it, runs the build, and uploads the results using signed upload URLs provided in the job metadata.
-
-Build machines cannot browse files or access anything outside the job that they are currently running.
-
-#### 4. Cleanup after the build
-
-After a build machine has completed a job, a cleanup routine is run which deletes:
-
-- Downloaded and extracted game files
-- Build intermediates
-- Temporary files
-
-The build machines do not keep user files after a job completes.
-
-#### 5. Retention and deletion
-
-- Uploaded game file zips and build outputs (APK/AAB/IPA) are retained for **30 days**
-- A lifecycle policy set on the storage automatically deletes them after that period
+Read the full [How your code is handled](https://shipth.is/docs/guides/code-handling?ref=github_readme) guide for details.
 
 ## 📖 Command Reference
 
@@ -434,6 +394,7 @@ The build machines do not keep user files after a job completes.
 - [Quick start](https://shipth.is/docs/guides/quick-start?ref=github_readme) - Get your first build running in minutes
 - [Android export methods](https://shipth.is/docs/guides/android-export-methods?ref=github_readme) - Gradle vs legacy builds, APK & AAB output
 - [Godot versioning](https://shipth.is/docs/guides/godot-versioning?ref=github_readme) - Supported Godot versions and custom builds
+- [How your code is handled](https://shipth.is/docs/guides/code-handling?ref=github_readme) - Upload, storage, and 30-day retention policy
 - [Liquid Glass icons](https://shipth.is/docs/guides/liquid-glass?ref=github_readme) - Use Liquid Glass icons with your iOS game
 - [Troubleshooting](https://shipth.is/docs/troubleshooting?ref=github_readme) - Common issues and how to fix them
 
