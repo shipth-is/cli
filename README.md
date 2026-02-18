@@ -49,7 +49,7 @@ The wizard command takes a platform parameter: either **android** or **ios**. Ru
 
 #### Set up an Android game
 
-Read more about [how ShipThis handles Godot Android builds](https://shipth.is/docs/guides/android-build-methods?ref=github_readme) (Gradle vs legacy, APK/AAB output).
+Read more about [how ShipThis exports Godot Android games](https://shipth.is/docs/guides/android-export-methods?ref=github_readme) (Gradle vs legacy, APK/AAB output).
 
 ```bash
 shipthis game wizard android
@@ -432,7 +432,7 @@ The build machines do not keep user files after a job completes.
 ### 📚 Guides
 
 - [Quick start](https://shipth.is/docs/guides/quick-start?ref=github_readme) - Get your first build running in minutes
-- [Android build methods](https://shipth.is/docs/guides/android-build-methods?ref=github_readme) - Gradle vs legacy builds, APK & AAB output
+- [Android export methods](https://shipth.is/docs/guides/android-export-methods?ref=github_readme) - Gradle vs legacy builds, APK & AAB output
 - [Godot versioning](https://shipth.is/docs/guides/godot-versioning?ref=github_readme) - Supported Godot versions and custom builds
 - [Liquid Glass icons](https://shipth.is/docs/guides/liquid-glass?ref=github_readme) - Use Liquid Glass icons with your iOS game
 - [Troubleshooting](https://shipth.is/docs/troubleshooting?ref=github_readme) - Common issues and how to fix them

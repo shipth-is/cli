@@ -27,7 +27,7 @@ export const EnableGradle = ({onConfirm, onCancel, ...boxProps}: Props) => {
         <Markdown
           filename="confirm-change-android-build-method.md.ejs"
           templateVars={{
-            docsURL: `${WEB_URL}docs/guides/android-build-methods`,
+            docsURL: `${WEB_URL}docs/guides/android-export-methods`,
             godotVersion,
             optionKey: getGradleBuildOptionKey(majorVersion),
           }}
