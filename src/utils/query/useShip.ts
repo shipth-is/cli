@@ -50,8 +50,10 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
 
   const hasConfiguredIos = Boolean(project.details?.iosBundleId)
   const hasConfiguredAndroid = Boolean(project.details?.androidPackageName)
+  const hasOnePlatformConfigured = hasConfiguredAndroid || hasConfiguredIos
+  const isGo = finalFlags?.platform === 'go'
 
-  if (!isUsingDemoCredentials && !hasConfiguredAndroid && !hasConfiguredIos) {
+  if (!isGo && !isUsingDemoCredentials && !hasOnePlatformConfigured) {
     throw new Error(
       'No Android or iOS configuration found. Please run `shipthis game wizard android` or `shipthis game wizard ios` to configure your game.',
     )
