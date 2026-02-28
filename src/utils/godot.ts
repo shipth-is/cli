@@ -48,14 +48,18 @@ export const GODOT_SYNCABLE_CAPABILITIES: GodotSyncableCapability[] = [
   {key: 'entitlements/push_notifications', name: 'Push Notifications', type: CapabilityType.PUSH_NOTIFICATIONS, pushKey: true},
 ]
 
-/** All syncable capability entries for the Bundle ID table (fixed + from entitlements/additional). */
+const syncableTypes = new Set(GODOT_SYNCABLE_CAPABILITIES.map((c) => c.type))
+
+/** All syncable capability entries for the Bundle ID table (fixed + from entitlements/additional, one row per type). */
 export const GODOT_CAPABILITIES: GodotSyncableCapability[] = [
   ...GODOT_SYNCABLE_CAPABILITIES,
-  ...Object.entries(ENTITLEMENT_KEY_TO_CAPABILITY).map(([key, {name, type}]) => ({
-    key: `entitlements/additional (${key})`,
-    name,
-    type,
-  })),
+  ...Object.entries(ENTITLEMENT_KEY_TO_CAPABILITY)
+    .filter(([, {type}]) => !syncableTypes.has(type))
+    .map(([key, {name, type}]) => ({
+      key: `entitlements/additional (${key})`,
+      name,
+      type,
+    })),
 ]
 
 function isPushEnabled(options: Record<string, unknown>): boolean {
