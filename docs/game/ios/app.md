@@ -94,24 +94,21 @@ EXAMPLES
 
 #### Description
 
-Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project.
+Synchronizes the Apple App **Bundle ID** with the capabilities defined in your Godot iOS export preset.
 
-This command will read your **export_presets.cfg** file and determine which capabilities
-to enable in the Apple Developer Portal.
+This command reads your **export_presets.cfg** (iOS preset) and enables or disables the corresponding capabilities on the Bundle ID in the Apple Developer Portal.
 
-Currently, only the following permissions are supported:
+**Godot options that are synced**
 
-- **Access WiFi**
-- **Push Notifications**
+| Godot option | Synced as | Notes |
+| --- | --- | --- |
+| capabilities/access_wifi | [Access WiFi](https://developer.apple.com/documentation/bundleresources/entitlements) | |
+| entitlements/increased_memory_limit | [Increased Memory Limit](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.kernel.increased-memory-limit) | |
+| entitlements/game_center | [Game Center](https://developer.apple.com/documentation/bundleresources/entitlements/com.apple.developer.game-center) | |
+| entitlements/push_notifications | [Push Notifications](https://developer.apple.com/documentation/bundleresources/entitlements/aps-environment) | Production or Development; or legacy **capabilities/push_notifications** (true). Sets aps-environment / APNS. |
+| entitlements/additional | [Entitlements](https://developer.apple.com/documentation/bundleresources/entitlements) (parsed) | Known entitlement keys (e.g. `com.apple.developer.applesignin` for Sign in with Apple) are synced. Unknown keys remain in your app’s entitlements only. |
 
-:::warning
-
-If your game uses other capabilities or if you are using plugins to enable certain
-features such as **GPS** or **file access**, please get in touch so that we can work with you.
-
-**ShipThis is still in beta and we need your help to improve it.**
-
-:::
+**Not synced:** Other export options (e.g. `capabilities/additional`, `capabilities/performance_gaming_tier`) only affect the exported app; they are not synced to the Bundle ID.
 
 :::tip
 You do not need to have an **export_presets.cfg** file in your game directory.
