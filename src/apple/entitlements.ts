@@ -72,17 +72,20 @@ export const ENTITLEMENT_KEY_TO_CAPABILITY: EntitlementKeyToCapability = {
   'com.apple.security.application-groups': {name: 'App Groups', type: CapabilityType.APP_GROUP},
 }
 
-/** Parse raw entitlements XML string for known keys; return their CapabilityTypes (no duplicates). */
+const KEY_ELEMENT_REGEX = /<key>\s*([^<]+?)\s*<\/key>/g
+
+/** Parse raw entitlements XML string for known keys; return their CapabilityTypes (no duplicates). Matches exact <key>…</key> elements to avoid substring false positives (e.g. healthkit vs healthkit.recalibrate-estimates). */
 export function parseEntitlementsAdditional(
   raw: string,
 ): (typeof CapabilityType)[keyof typeof CapabilityType][] {
   const types: (typeof CapabilityType)[keyof typeof CapabilityType][] = []
   if (!raw || typeof raw !== 'string') return types
-  for (const entitlementKey of Object.keys(ENTITLEMENT_KEY_TO_CAPABILITY)) {
-    if (raw.includes(entitlementKey)) {
-      const type = ENTITLEMENT_KEY_TO_CAPABILITY[entitlementKey].type
-      if (!types.includes(type)) types.push(type)
-    }
+  let match: RegExpExecArray | null
+  KEY_ELEMENT_REGEX.lastIndex = 0
+  while ((match = KEY_ELEMENT_REGEX.exec(raw)) !== null) {
+    const key = match[1].trim()
+    const entry = ENTITLEMENT_KEY_TO_CAPABILITY[key]
+    if (entry && !types.includes(entry.type)) types.push(entry.type)
   }
   return types
 }
