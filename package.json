@@ -50,7 +50,7 @@
   "devDependencies": {
     "@oclif/prettier-config": "^0.2.1",
     "@oclif/test": "^4",
-    "@types/chai": "^4",
+    "@types/chai": "^5",
     "@types/ejs": "^3.1.5",
     "@types/fs-extra": "^11.0.4",
     "@types/jsonwebtoken": "^9.0.6",
@@ -64,14 +64,14 @@
     "@types/readline-sync": "^1.4.8",
     "@types/tough-cookie": "^4.0.5",
     "@types/yazl": "^2.4.5",
-    "chai": "^4",
+    "chai": "^5",
     "ejs": "^3.1.10",
     "eslint": "^8",
     "eslint-config-oclif": "^6",
     "eslint-config-oclif-typescript": "^3",
     "eslint-config-prettier": "^9",
     "eslint-plugin-import": "^2.32.0",
-    "mocha": "^10",
+    "mocha": "^11",
     "oclif": "^4.22.81",
     "pkgroll": "^2.4.2",
     "shx": "^0.3.3",
@@ -250,10 +250,13 @@
     "prepack": "cp package-lock.json package-lock.dev.json || true && npm run readme && oclif manifest && npm shrinkwrap",
     "postpack": "mv package-lock.dev.json package-lock.json || true && shx rm -f oclif.manifest.json && shx rm -f npm-shrinkwrap.json",
     "test": "mocha --forbid-only \"test/**/*.test.ts\"",
+    "test:apple-utils": "mocha --forbid-only \"test/apple/**/*.test.ts\" \"test/utils/**/*.test.ts\"",
     "readme": "bin/dev.js internal readme docs/ -d 2 --notDryRun # does not overwrite existing files"
   },
   "types": "dist/index.d.ts",
   "overrides": {
+    "serialize-javascript": "^7.0.3",
+    "fast-xml-parser": "^5.3.8",
     "cli-spinners": "2.9.2",
     "@alcalzone/ansi-tokenize": "^0.2.2"
   }
