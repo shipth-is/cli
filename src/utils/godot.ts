@@ -14,8 +14,9 @@ import {
   ExportPresetsFile,
 } from 'godot-export-presets'
 
-import {CapabilityType} from '@cli/apple/expo.js'
-import {Platform} from '@cli/types'
+import {ENTITLEMENT_KEY_TO_CAPABILITY, parseEntitlementsAdditional} from '../apple/entitlements.js'
+import {CapabilityType} from '../apple/expo.js'
+import {Platform} from '../types/index.js'
 
 // Check if the current working directory is a Godot game
 // TODO: allow for cwd override
@@ -25,36 +26,100 @@ export function isCWDGodotGame(): boolean {
   return fs.existsSync(godotProject)
 }
 
-// From the docs:
-// capabilities/access_wifi=true
-// capabilities/push_notifications=false
-// From the source code:
-// https://github.com/godotengine/godot/blob/b435551682f93cf49f606d260b28e13ff5526beb/platform/ios/export/export_plugin.cpp#L321
-// r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "capabilities/access_wifi"), false));
-// r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "capabilities/push_notifications"), false));
-// r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "capabilities/performance_gaming_tier"), false));
-// r_options->push_back(ExportOption(PropertyInfo(Variant::BOOL, "capabilities/performance_a12"), false));
+// Godot iOS export options (entitlements & capabilities):
+// See EditorExportPlatformAppleEmbedded::get_export_options and
+// $entitlements_full / $required_device_capabilities in:
+// https://github.com/godotengine/godot/blob/master/editor/export/editor_export_platform_apple_embedded.cpp
+// We support both entitlements/push_notifications (enum, Godot 4.6+) and legacy capabilities/push_notifications (bool).
 
-export const GODOT_CAPABILITIES = [
-  // TODO: how about capabilities from godot extensions
+export interface GodotSyncableCapability {
+  key: string
+  name: string
+  type: (typeof CapabilityType)[keyof typeof CapabilityType]
+  /** If true, enabled by entitlements/push_notifications or legacy capabilities/push_notifications */
+  pushKey?: boolean
+}
+
+/** Syncable capabilities with a fixed preset key (bool or enum). Push is handled specially. */
+export const GODOT_SYNCABLE_CAPABILITIES: GodotSyncableCapability[] = [
   {key: 'capabilities/access_wifi', name: 'Access WiFi', type: CapabilityType.ACCESS_WIFI},
-  {key: 'capabilities/push_notifications', name: 'Push Notifications', type: CapabilityType.PUSH_NOTIFICATIONS},
+  {key: 'entitlements/increased_memory_limit', name: 'Increased Memory Limit', type: CapabilityType.INCREASED_MEMORY_LIMIT},
+  {key: 'entitlements/game_center', name: 'Game Center', type: CapabilityType.GAME_CENTER},
+  {key: 'entitlements/push_notifications', name: 'Push Notifications', type: CapabilityType.PUSH_NOTIFICATIONS, pushKey: true},
 ]
 
-// Tells us which capabilities are enabled in the Godot project
-export async function getGodotProjectCapabilities(platform: Platform) {
-  const exportPresets = await getGodotExportPresets(platform)
+/** All syncable capability entries for the Bundle ID table (fixed + from entitlements/additional). */
+export const GODOT_CAPABILITIES: GodotSyncableCapability[] = [
+  ...GODOT_SYNCABLE_CAPABILITIES,
+  ...Object.entries(ENTITLEMENT_KEY_TO_CAPABILITY).map(([key, {name, type}]) => ({
+    key: `entitlements/additional (${key})`,
+    name,
+    type,
+  })),
+]
 
-  const options: Record<string, any> = exportPresets.options || {}
+function isPushEnabled(options: Record<string, unknown>): boolean {
+  const entitlementsPush = options['entitlements/push_notifications']
+  if (entitlementsPush != null) {
+    const s = `${entitlementsPush}`.trim().toLowerCase()
+    if (s === 'production' || s === 'development') return true
+    if (s === 'disabled') return false
+  }
+  const legacyPush = options['capabilities/push_notifications']
+  if (legacyPush != null) {
+    return `${legacyPush}`.toLowerCase() === 'true'
+  }
+  return false
+}
 
-  const capabilities = []
+/** Optional override for testing; when set, skip getGodotExportPresets and use these options. */
+export interface GetGodotProjectCapabilitiesOverrides {
+  options?: Record<string, unknown>
+}
 
-  for (const capability of GODOT_CAPABILITIES) {
+// Tells us which capabilities are enabled in the Godot project (for syncing to Apple Bundle ID).
+export async function getGodotProjectCapabilities(
+  platform: Platform,
+  overrides?: GetGodotProjectCapabilitiesOverrides,
+) {
+  const options: Record<string, unknown> =
+    overrides?.options ?? (await getGodotExportPresets(platform)).options ?? {}
+  const capabilities: (typeof CapabilityType)[keyof typeof CapabilityType][] = []
+
+  for (const capability of GODOT_SYNCABLE_CAPABILITIES) {
+    if (capability.pushKey) {
+      if (isPushEnabled(options)) capabilities.push(capability.type)
+      continue
+    }
     if (!(capability.key in options)) continue
-    if (`${options[capability.key]}`.toLocaleLowerCase() === 'true') capabilities.push(capability.type)
+    if (`${options[capability.key]}`.toLowerCase() === 'true') capabilities.push(capability.type)
+  }
+
+  const additionalRaw = options['entitlements/additional']
+  const fromAdditional = parseEntitlementsAdditional(
+    typeof additionalRaw === 'string' ? additionalRaw : '',
+  )
+  for (const type of fromAdditional) {
+    if (!capabilities.includes(type)) capabilities.push(type)
   }
 
   return capabilities
+}
+
+/** Display-only: options that go to plist/device capabilities; we do not sync these. */
+export async function getGodotProjectDisplayOnlyCapabilities(platform: Platform): Promise<{
+  performanceGamingTier: boolean
+  performanceA12: boolean
+  capabilitiesAdditional: string[]
+}> {
+  const exportPresets = await getGodotExportPresets(platform)
+  const options: Record<string, unknown> = exportPresets.options ?? {}
+  const arr = options['capabilities/additional']
+  return {
+    performanceGamingTier: `${options['capabilities/performance_gaming_tier']}`.toLowerCase() === 'true',
+    performanceA12: `${options['capabilities/performance_a12']}`.toLowerCase() === 'true',
+    capabilitiesAdditional: Array.isArray(arr) ? arr.map((x) => `${x}`) : [],
+  }
 }
 
 export function getGodotProjectConfig(): ConfigFile {
