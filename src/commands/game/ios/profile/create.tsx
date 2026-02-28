@@ -83,12 +83,14 @@ export default class GameIosProfileCreate extends BaseGameCommand<typeof GameIos
         )
 
       // Create the profile
-      // TODO: only one of these can exist per bundleId - if forcing, should/can we disable existing ones?
+      // We use the current YYYY-MM-DD HH:mm:ss as a unique identifier
+      const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+      const name = `ShipThis Profile for ${iosBundleId} at ${timestamp}`
       const profile = await AppleProfile.createAsync(ctx, {
         bundleId: bundleId.id,
         certificates: [validAppleCert.id],
         devices: [],
-        name: `ShipThis Profile for ${iosBundleId}`,
+        name: name,
         profileType: AppleProfileType.IOS_APP_STORE,
       })
 
