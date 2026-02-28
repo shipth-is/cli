@@ -68,4 +68,11 @@ describe('parseEntitlementsAdditional', () => {
   it('ignores unknown keys', () => {
     expect(parseEntitlementsAdditional('<key>com.example.unknown</key><true/>')).to.deep.equal([])
   })
+
+  it('matches exact key elements only (no substring: healthkit.recalibrate-estimates does not match healthkit)', () => {
+    const raw = '<key>com.apple.developer.healthkit.recalibrate-estimates</key><true/>'
+    const result = parseEntitlementsAdditional(raw)
+    expect(result).to.deep.equal([CapabilityType.HEALTH_KIT_RECALIBRATE_ESTIMATES])
+    expect(result).not.to.include(CapabilityType.HEALTH_KIT)
+  })
 })
