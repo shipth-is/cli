@@ -24,7 +24,7 @@
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
     "fullscreen-ink": "^0.1.0",
-    "godot-export-presets": "^0.1.6",
+    "godot-export-presets": "^0.1.9",
     "ink": "^5.0.1",
     "ink-spinner": "^5.0.0",
     "isomorphic-git": "^1.27.1",
