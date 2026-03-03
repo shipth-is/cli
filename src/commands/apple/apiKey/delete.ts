@@ -1,10 +1,9 @@
 import {Flags} from '@oclif/core'
 
-import {BaseAppleCommand} from '@cli/baseCommands/index.js'
 import {deleteUserCredential, getUserCredentials} from '@cli/api/index.js'
-import {getRenderedMarkdown} from '@cli/components/common/index.js'
-
 import {ApiKey} from '@cli/apple/expo.js'
+import {BaseAppleCommand} from '@cli/baseCommands/index.js'
+import {getRenderedMarkdown} from '@cli/components/common/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {getInput, getShortUUID} from '@cli/utils/index.js'
 

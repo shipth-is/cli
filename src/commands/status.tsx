@@ -1,10 +1,10 @@
+import chalk from 'chalk'
 import {render} from 'ink'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {Command, NextSteps, StatusTable} from '@cli/components/index.js'
 import {AuthConfig} from '@cli/types'
 import {isCWDGitRepo, isCWDGodotGame} from '@cli/utils/index.js'
-import chalk from 'chalk'
 
 export default class Status extends BaseCommand<typeof Status> {
   static override args = {}

@@ -189,7 +189,7 @@ export async function getInput(message: string): Promise<string> {
  */
 export function generatePackageName(gameName: string): null | string {
   let normalizedGameName = gameName.trim().toLowerCase()
-  normalizedGameName = normalizedGameName.replaceAll(/[\s_\-]+/g, '.')
+  normalizedGameName = normalizedGameName.replaceAll(/[\s_-]+/g, '.')
   normalizedGameName = normalizedGameName.replaceAll(/[^\d.a-z]/g, '')
   normalizedGameName = normalizedGameName.replaceAll(/\.+/g, '.')
   normalizedGameName = normalizedGameName.replace(/^\./, '').replace(/\.$/, '')

@@ -1,6 +1,7 @@
+import { useStderr, useStdout } from 'ink'
+
 import {Job, JobLogEntry, LogLevel} from '@cli/types/api.js'
 import {useJobWatching} from '@cli/utils/index.js'
-import { useStderr, useStdout } from 'ink'
 
 interface JobFollowProps {
   jobId: string

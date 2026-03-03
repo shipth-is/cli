@@ -1,9 +1,9 @@
 import {Flags} from '@oclif/core'
 
-import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
-import {CredentialsType, Platform} from '@cli/types'
 import {deleteProjectCredential, getProjectCredentials} from '@cli/api/index.js'
+import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {getRenderedMarkdown} from '@cli/components/index.js'
+import {CredentialsType, Platform} from '@cli/types'
 import {getShortUUID, getInput, queryAppleProfiles} from '@cli/utils/index.js'
 
 export default class GameIosProfileDelete extends BaseGameCommand<typeof GameIosProfileDelete> {

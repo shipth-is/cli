@@ -1,9 +1,9 @@
 import {Flags} from '@oclif/core'
 
-import {CredentialsType, Platform} from '@cli/types'
 import {deleteProjectCredential, getProjectCredentials} from '@cli/api/index.js'
 import {BaseGameAndroidCommand} from '@cli/baseCommands/index.js'
 import {getRenderedMarkdown} from '@cli/components/index.js'
+import {CredentialsType, Platform} from '@cli/types'
 import {getShortUUID, getInput} from '@cli/utils/index.js'
 
 export default class GameAndroidKeyStoreDelete extends BaseGameAndroidCommand<typeof GameAndroidKeyStoreDelete> {
