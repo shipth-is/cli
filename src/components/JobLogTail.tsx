@@ -4,9 +4,9 @@ import Spinner from 'ink-spinner'
 import {JobLogEntry} from '@cli/types'
 import {JobLogTailProps, useJobLogTail} from '@cli/utils/hooks/index.js'
 
+import {JobLogLine} from './common/JobLogLine.js'
 import {Title} from './common/Title.js'
 
-import {JobLogLine} from './common/JobLogLine.js'
 
 export const JobLogTail = (props: JobLogTailProps) => {
   const {data, isLoading} = useJobLogTail(props)

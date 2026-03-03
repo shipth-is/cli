@@ -12,6 +12,7 @@ export interface WebSocketListener {
 }
 
 export function useWebSocket(listeners: WebSocketListener[] = []) {
+  // eslint-disable-next-line no-constant-condition -- intentional: toggle for debugging
   const log = false ? console.debug : () => {}
 
   useEffect(() => {

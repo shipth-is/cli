@@ -1,8 +1,8 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import chalk from 'chalk'
 
 import {Command, Flags, Interfaces} from '@oclif/core'
+import chalk from 'chalk'
 import {SerializedCookieJar} from 'tough-cookie'
 
 import {getSelf, setAuthToken} from '@cli/api/index.js'

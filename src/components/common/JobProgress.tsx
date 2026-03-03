@@ -1,9 +1,9 @@
 import {Box, Text} from 'ink'
+import {useState} from 'react'
 
 import {JobLogLine, ProgressSpinner} from '@cli/components/index.js'
 import {Job, JobLogEntry, LogLevel} from '@cli/types/api.js'
 import {getMessageColor, getPlatformName, useJobWatching} from '@cli/utils/index.js'
-import {useState} from 'react'
 
 interface Props {
   job: Job

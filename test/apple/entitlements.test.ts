@@ -1,10 +1,10 @@
 import {expect} from 'chai'
 
-import {CapabilityType} from '../../src/apple/expo.js'
 import {
   ENTITLEMENT_KEY_TO_CAPABILITY,
   parseEntitlementsAdditional,
 } from '../../src/apple/entitlements.js'
+import {CapabilityType} from '../../src/apple/expo.js'
 
 describe('ENTITLEMENT_KEY_TO_CAPABILITY', () => {
   it('includes expected entitlement keys with correct CapabilityType', () => {

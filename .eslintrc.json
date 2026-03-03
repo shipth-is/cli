@@ -1,10 +1,28 @@
 {
-  "extends": ["oclif", "oclif-typescript", "prettier"],
-  "plugins": [
-    "import"
+  "root": true,
+  "ignorePatterns": ["dist/", "node_modules/", "*.config.js", "*.config.ts"],
+  "env": {
+    "node": true,
+    "es2022": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "import", "unicorn"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
+  },
   "rules": {
-    "perfectionist/sort-imports": "off",
     "import/order": [
       "error",
       {
@@ -33,8 +51,32 @@
     "unicorn/filename-case": [
       "error",
       {
-        "case": "camelCase"
+        "case": "camelCase",
+        "ignore": ["^.*\\.tsx$"]
       }
-    ]
-  }
+    ],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unused-expressions": ["error", { "allowShortCircuit": true, "allowTernary": true }]
+  },
+  "overrides": [
+    {
+      "files": ["test/**/*.ts", "test/**/*.tsx"],
+      "rules": {
+        "@typescript-eslint/no-unused-expressions": "off"
+      }
+    },
+    {
+      "files": ["src/components/common/Markdown.tsx"],
+      "rules": {
+        "no-control-regex": "off"
+      }
+    },
+    {
+      "files": ["**/android-build-method.ts"],
+      "rules": {
+        "unicorn/filename-case": "off"
+      }
+    }
+  ]
 }

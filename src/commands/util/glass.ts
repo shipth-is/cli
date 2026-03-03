@@ -1,8 +1,10 @@
-import {BaseCommand} from '@cli/baseCommands/baseCommand.js'
-import {Args, Flags} from '@oclif/core'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
+
+import {Args, Flags} from '@oclif/core'
 import xcode from 'xcode'
+
+import {BaseCommand} from '@cli/baseCommands/baseCommand.js'
 
 export interface ApplyLiquidGlassIconOptions {
   projectDir: string

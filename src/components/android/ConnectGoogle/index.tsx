@@ -59,9 +59,11 @@ const ConnectForGame = ({gameId, helpPage, onComplete, onError, ...boxProps}: Co
         if (!gameId) return
         if (!connectUrl) return
         await open(connectUrl)
+        break
       }
 
       default:
+        break
     }
   })
 

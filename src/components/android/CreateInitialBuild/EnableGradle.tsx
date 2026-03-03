@@ -1,10 +1,9 @@
-import {Box} from 'ink'
 import {getMajorVersion} from 'godot-export-presets'
+import {Box} from 'ink'
 
 import {Markdown} from '@cli/components/index.js'
-import {getGodotVersion, getGradleBuildOptionKey} from '@cli/utils/godot.js'
-
 import {WEB_URL} from '@cli/constants/index.js'
+import {getGodotVersion, getGradleBuildOptionKey} from '@cli/utils/godot.js'
 import {useSafeInput} from '@cli/utils/index.js'
 
 interface Props extends React.ComponentPropsWithoutRef<typeof Box> {

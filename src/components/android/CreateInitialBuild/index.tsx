@@ -1,11 +1,11 @@
-import {useContext, useEffect, useState} from 'react'
 import {Text} from 'ink'
+import {useContext, useEffect, useState} from 'react'
 
 import {GameContext, StepProps} from '@cli/components/index.js'
 import {isGradleBuildEnabled, setGradleBuildEnabled} from '@cli/utils/godot.js'
 
-import {InitialAndroidBuild} from './InitialAndroidBuild.js'
 import {EnableGradle} from './EnableGradle.js'
+import {InitialAndroidBuild} from './InitialAndroidBuild.js'
 
 export const CreateInitialBuild = ({onComplete, onError, ...boxProps}: StepProps): JSX.Element => {
   const {gameId} = useContext(GameContext)

@@ -16,5 +16,5 @@
       "@cli/types": ["./src/types/index.ts"]
     }
   },
-  "include": ["./src/**/*", "./tsconfig.json"]
+  "include": ["./src/**/*", "./test/**/*", "./tsconfig.json"]
 }

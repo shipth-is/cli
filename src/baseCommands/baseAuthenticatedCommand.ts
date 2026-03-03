@@ -1,10 +1,10 @@
 import {Command} from '@oclif/core'
 
 import {getSelf, getTerms} from '@cli/api/index.js'
-
-import {BaseCommand} from './baseCommand.js'
 import {getRenderedMarkdown} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
+
+import {BaseCommand} from './baseCommand.js'
 
 export abstract class BaseAuthenticatedCommand<T extends typeof Command> extends BaseCommand<T> {
   static override flags = {}
