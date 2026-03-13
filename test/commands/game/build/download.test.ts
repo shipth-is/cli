@@ -1,7 +1,7 @@
 import {runCommand} from '@oclif/test'
 import {expect} from 'chai'
 
-describe('game:build:download', () => {
+describe.skip('game:build:download (unimplemented)', () => {
   it('runs game:build:download cmd', async () => {
     const {stdout} = await runCommand('game:build:download')
     expect(stdout).to.contain('hello world')

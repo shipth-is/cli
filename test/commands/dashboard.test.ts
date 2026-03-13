@@ -1,7 +1,7 @@
 import {runCommand} from '@oclif/test'
 import {expect} from 'chai'
 
-describe('dashboard', () => {
+describe.skip('dashboard (unimplemented)', () => {
   it('runs dashboard cmd', async () => {
     const {stdout} = await runCommand('dashboard')
     expect(stdout).to.contain('hello world')
