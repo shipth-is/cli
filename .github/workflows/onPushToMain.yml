@@ -18,6 +18,10 @@ jobs:
         with:
           node-version: '24.x'
           registry-url: 'https://registry.npmjs.org/'
+      - name: Install dependencies
+        run: npm install
+      - name: Run tests
+        run: npm test
       - name: Check if version already exists
         id: version-check
         env:
