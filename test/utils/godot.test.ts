@@ -1,9 +1,14 @@
+import path from 'node:path'
+import {fileURLToPath} from 'node:url'
+
 import {expect} from 'chai'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 import {parseEntitlementsAdditional} from '../../src/apple/entitlements.js'
 import {CapabilityType} from '../../src/apple/expo.js'
 import {Platform} from '../../src/types/index.js'
-import {getGodotProjectCapabilities} from '../../src/utils/godot.js'
+import {getGodotProjectCapabilities, getGodotVersion} from '../../src/utils/godot.js'
 
 describe('getGodotProjectCapabilities', () => {
   it('returns PUSH_NOTIFICATIONS when entitlements/push_notifications is Production', async () => {
@@ -111,6 +116,28 @@ describe('getGodotProjectCapabilities', () => {
       },
     })
     expect(caps).to.include(CapabilityType.ASSOCIATED_DOMAINS)
+  })
+})
+
+describe('getGodotVersion', () => {
+  const originalCwd = process.cwd()
+
+  afterEach(() => {
+    process.chdir(originalCwd)
+  })
+
+  it('returns 3.6 for a Godot 3.x project without config/features', () => {
+    const projectDir = path.resolve(__dirname, '../fixtures/godot/v3_5')
+    process.chdir(projectDir)
+    const version = getGodotVersion()
+    expect(version).to.equal('3.6')
+  })
+
+  it('returns 4.2 for a Godot 4.2 project with config/features', () => {
+    const projectDir = path.resolve(__dirname, '../fixtures/godot/v4_2')
+    process.chdir(projectDir)
+    const version = getGodotVersion()
+    expect(version).to.equal('4.2')
   })
 })
 
