@@ -170,7 +170,7 @@ export async function getGodotAndroidPackageName(): Promise<null | string> {
 // TODO: is there a more reliable way to get the Godot version?
 export function getGodotVersion(): string {
   const projectGodotConfig = getGodotProjectConfig()
-  const features = projectGodotConfig.get_value('application', 'config/features') as string[]
+  const features = projectGodotConfig.get_value('application', 'config/features', []) as string[]
   if (!features || features.length === 0) {
     return '3.6'
   }
