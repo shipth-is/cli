@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import {useEffect, useRef} from 'react'
 import {io} from 'socket.io-client'
 
 import {getAuthToken} from '@cli/api/index.js'
@@ -14,6 +14,7 @@ export interface WebSocketListener {
 export function useWebSocket(listeners: WebSocketListener[] = []) {
   // eslint-disable-next-line no-constant-condition -- intentional: toggle for debugging
   const log = false ? console.debug : () => {}
+  const socketRef = useRef<ReturnType<typeof io> | null>(null)
 
   useEffect(() => {
     if (listeners.length === 0) {
@@ -21,11 +22,13 @@ export function useWebSocket(listeners: WebSocketListener[] = []) {
       return
     }
 
-    const token = getAuthToken()
-    const socket = io(WS_URL, {
-      auth: {token},
-      forceNew: true,
-    })
+    if (!socketRef.current) {
+      const token = getAuthToken()
+      socketRef.current = io(WS_URL, {
+        auth: {token},
+      })
+    }
+    const socket = socketRef.current
 
     socket.on('connect', () => log('Connected to WebSocket'))
 
@@ -44,10 +47,12 @@ export function useWebSocket(listeners: WebSocketListener[] = []) {
 
       bindSocket(pattern)
     }
+  }, [])
 
+  useEffect(() => {
     return () => {
-      log('Disconnecting from WebSocket')
-      socket.disconnect()
+      socketRef.current?.disconnect()
+      socketRef.current = null
     }
   }, [])
 }
