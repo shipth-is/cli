@@ -29,6 +29,7 @@ export type ShipGameFlags = {
   verbose?: boolean
   useDemoCredentials?: boolean
   gameEngineVersion?: string
+  dryRun?: boolean
 }
 
 export * from './api.js'

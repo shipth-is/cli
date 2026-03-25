@@ -8,14 +8,23 @@ import {v4 as uuid} from 'uuid'
 import {getNewUploadTicket, getProject, startJobsFromUpload} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS, cacheKeys} from '@cli/constants/index.js'
-import {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
-import {createZip, getCWDGitInfo, getFileHash, queryClient, uploadZip} from '@cli/utils/index.js'
+import {Job, Platform, Project, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
+import {
+  createZip,
+  getCWDGitInfo,
+  getFileHash,
+  queryClient,
+  queryProjectCredentials,
+  uploadZip,
+} from '@cli/utils/index.js'
+
+type LogFunction = (message: string) => void
 
 // Takes the current command so we can get the project config
 // This could be made more composable
 interface ShipOptions {
   command: BaseCommand<typeof Command>
-  log?: (message: string) => void
+  log?: LogFunction
   shipFlags?: ShipGameFlags // If provided, will override command flags
 }
 
@@ -35,12 +44,65 @@ function formatProgressLog(
   return `${label}: ${progressPercent}% (${transferredMB}MB / ${totalPrefix}${totalMB}MB) - ${elapsed}s - ${speed}MB/s`
 }
 
-export async function ship({command, log = () => {}, shipFlags}: ShipOptions): Promise<Job[]> {
+// Tells us which platforms are being shipped (used to select the files)
+async function getPlatforms(project: Project, flags: ShipGameFlags, log: LogFunction): Promise<Platform[]> {
+  log('Determining platforms to ship...')
+  const specifiedPlatform = flags.platform ? (flags.platform.toUpperCase() as Platform) : null
+  if (specifiedPlatform) {
+    log(`Platform specified: ${specifiedPlatform}`)
+    return [specifiedPlatform]
+  }
+  // If the flag was used (--useDemoCredentials) then a platform was specified - so we only look on project
+  log('No platform specified, fetching project credentials...')
+  const useDemoCredentials = Boolean(project.details?.useDemoCredentials)
+  if (useDemoCredentials) return [Platform.ANDROID, Platform.IOS]
+  // Otherwise see what is configured
+  log('Fetching project credentials...')
+  const response = await queryProjectCredentials({
+    projectId: project.id,
+    pageNumber: 0,
+    pageSize: 100,
+  })
+  log(`Found ${response.data.length} project credentials, filtering to active ones...`)
+  const credentialPlatforms = [...new Set(response.data.filter((cred) => cred.isActive).map((cred) => cred.platform))]
+  log(`Active platforms: ${credentialPlatforms.join(', ')}`)
+  return credentialPlatforms
+}
+
+// Gets the list of files to be zipped and uploaded
+export async function getFilesToShip(
+  projectConfig: ProjectConfig,
+  platforms: Platform[], // TODO: use this
+  log: LogFunction,
+): Promise<string[]> {
+  //
+  log('Retrieving file globs...')
+  const shippedFilesGlobs = projectConfig.shippedFilesGlobs || DEFAULT_SHIPPED_FILES_GLOBS
+  const ignoredFilesGlobs = projectConfig.ignoredFilesGlobs || DEFAULT_IGNORED_FILES_GLOBS
+
+  log('Finding files to include in zip...')
+  const files = await fg(shippedFilesGlobs, {dot: true, ignore: ignoredFilesGlobs})
+
+  log(`Found ${files.length} files, adding to zip...`)
+  return files
+}
+
+// Main function to ship the game
+export async function ship({command, log, shipFlags}: ShipOptions): Promise<Job[]> {
   const commandFlags = command.getFlags() as ShipGameFlags
   const finalFlags = shipFlags || commandFlags
-  const {verbose, useDemoCredentials} = finalFlags
+  const {useDemoCredentials} = finalFlags
 
-  verbose && log('Fetching game config...')
+  const verbose = !!finalFlags.verbose || finalFlags.dryRun
+
+  const logFn = log ? log : () => {}
+  const vlogFn = verbose ? logFn : () => {}
+
+  if (finalFlags.dryRun) {
+    logFn('Dry run - listing files that would be shipped and applying verbose logging...')
+  }
+
+  vlogFn('Fetching game config...')
   const projectConfig: ProjectConfig = await command.getProjectConfig()
   if (!projectConfig.project) throw new Error('No project found in project config')
   const project = await getProject(projectConfig.project.id)
@@ -57,32 +119,35 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     )
   }
 
-  verbose && log('Retrieving file globs...')
-  const shippedFilesGlobs = projectConfig.shippedFilesGlobs || DEFAULT_SHIPPED_FILES_GLOBS
-  const ignoredFilesGlobs = projectConfig.ignoredFilesGlobs || DEFAULT_IGNORED_FILES_GLOBS
+  const platforms = await getPlatforms(project, finalFlags, vlogFn)
+  const files = await getFilesToShip(projectConfig, platforms, vlogFn)
 
-  verbose && log('Finding files to include in zip...')
-  const files = await fg(shippedFilesGlobs, {dot: true, ignore: ignoredFilesGlobs})
-
-  verbose && log(`Found ${files.length} files, adding to zip...`)
+  if (finalFlags.dryRun) {
+    logFn(`Dry run - would ship ${files.length} files:`)
+    for (const file of files) {
+      logFn(`  ${file}`)
+    }
+    process.exit(0)
+    return []
+  }
 
   const tmpZipFileName = `shipthis-${uuid()}.zip`
   const tmpZipFile = `${process.cwd()}/${tmpZipFileName}`
-  log(`Creating zip file: ${tmpZipFileName}`)
+  logFn(`Creating zip file: ${tmpZipFileName}`)
   await createZip({
     files,
     outputPath: tmpZipFile,
     onProgress: (data) => {
-      log(formatProgressLog('Zipping', data, 'writtenBytes', 'estimatedTotalBytes', true))
+      logFn(formatProgressLog('Zipping', data, 'writtenBytes', 'estimatedTotalBytes', true))
     },
   })
 
   const {size} = fs.statSync(tmpZipFile)
 
-  verbose && log('Requesting upload ticket...')
+  vlogFn('Requesting upload ticket...')
   const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
 
-  log('Uploading zip file...')
+  logFn('Uploading zip file...')
   const zipStream = fs.createReadStream(tmpZipFile)
 
   const response = await uploadZip({
@@ -90,30 +155,30 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
     zipStream,
     zipSize: size,
     onProgress: (data) => {
-      log(formatProgressLog('Uploading', data, 'loadedBytes', 'totalBytes', false))
+      logFn(formatProgressLog('Uploading', data, 'loadedBytes', 'totalBytes', false))
     },
   })
 
-  verbose && log('Computing zip file hash...')
+  vlogFn('Computing zip file hash...')
   const zipFileMd5 = await getFileHash(tmpZipFile)
 
-  verbose && log('Cleaning up temporary zip file...')
+  vlogFn('Cleaning up temporary zip file...')
   fs.unlinkSync(tmpZipFile)
 
   if (!response.ok) {
     throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
   }
 
-  log(`Upload complete`)
+  logFn(`Upload complete`)
 
-  verbose && log('Fetching Git info...')
+  vlogFn('Fetching Git info...')
   const gitInfo = await getCWDGitInfo()
   const uploadDetails: UploadDetails = {
     ...gitInfo,
     zipFileMd5,
   }
 
-  verbose && log('Starting jobs from upload...')
+  vlogFn('Starting jobs from upload...')
 
   const startJobsOptions = {
     ...uploadDetails,
@@ -126,14 +191,14 @@ export async function ship({command, log = () => {}, shipFlags}: ShipOptions): P
 
   const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
 
-  verbose && log('Job submission complete.')
+  vlogFn('Job submission complete.')
 
   if (jobs.length === 0) {
     throw new Error('No jobs were created. Please check your game configuration and try again.')
   }
 
   if (finalFlags?.follow) {
-    log('Waiting for job to start...')
+    logFn('Waiting for job to start...')
   }
 
   return jobs
