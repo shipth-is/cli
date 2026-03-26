@@ -46,6 +46,7 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
         .mutateAsync({
           command,
           log: setShipLog,
+          warnLog: setShipLog, // TODO orange color
           shipFlags: {
             platform: 'android',
             skipPublish: true,
