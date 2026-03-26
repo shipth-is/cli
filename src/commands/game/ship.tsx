@@ -67,7 +67,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     }),
     dryRun: Flags.boolean({
       default: false,
-      description: 'Dry run - lists the files that would be shipped. Implies --verbose and --follow',
+      description: 'Dry run - lists the files that would be shipped without executing the build or publish steps',
       required: false,
     }),
   }
