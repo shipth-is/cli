@@ -9,7 +9,8 @@ export type LogFunction = (message: string) => void
 // This could be made more composable
 export interface ShipOptions {
   command: BaseCommand<typeof Command>
-  log?: LogFunction
+  log: LogFunction
+  warnLog: LogFunction
   shipFlags?: ShipGameFlags // If provided, will override command flags
 }
 
