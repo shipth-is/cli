@@ -67,28 +67,41 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
     },
   })
 
-  const {size} = fs.statSync(tmpZipFile)
+  let response: any
+  let zipFileMd5 = ''
 
-  vlog('Requesting upload ticket...')
-  const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
+  try {
+    const {size} = fs.statSync(tmpZipFile)
 
-  log('Uploading zip file...')
-  const zipStream = fs.createReadStream(tmpZipFile)
+    vlog('Requesting upload ticket...')
+    const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
 
-  const response = await uploadZip({
-    url: uploadTicket.url,
-    zipStream,
-    zipSize: size,
-    onProgress: (data) => {
-      log(formatProgressLog('Uploading', data, 'loadedBytes', 'totalBytes', false))
-    },
-  })
+    log('Uploading zip file...')
+    const zipStream = fs.createReadStream(tmpZipFile)
 
-  vlog('Computing zip file hash...')
-  const zipFileMd5 = await getFileHash(tmpZipFile)
+    response = await uploadZip({
+      url: uploadTicket.url,
+      zipStream,
+      zipSize: size,
+      onProgress: (data) => {
+        log(formatProgressLog('Uploading', data, 'loadedBytes', 'totalBytes', false))
+      },
+    })
 
-  vlog('Cleaning up temporary zip file...')
-  fs.unlinkSync(tmpZipFile)
+    vlog('Computing zip file hash...')
+    zipFileMd5 = await getFileHash(tmpZipFile)
+  } finally {
+    if (fs.existsSync(tmpZipFile)) {
+      try {
+        vlog('Cleaning up temporary zip file...')
+        fs.unlinkSync(tmpZipFile)
+      } catch (err) {
+        if (warnLog) {
+          warnLog(`Failed to remove temporary zip file: ${String(err)}`)
+        }
+      }
+    }
+  }
 
   if (!response.ok) {
     throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
