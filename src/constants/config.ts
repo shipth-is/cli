@@ -65,10 +65,6 @@ export const DEFAULT_PLATFORM_GLOBS = {
   },
 }
 
-// Backward-compatible aliases (to be removed in a later cleanup)
-export const DEFAULT_SHIPPED_FILES_GLOBS = LEGACY_DEFAULT_SHIPPED_FILES_GLOBS
-export const DEFAULT_IGNORED_FILES_GLOBS = LEGACY_DEFAULT_IGNORED_FILES_GLOBS
-
 const PRIMARY_DOMAIN = 'shipth.is'
 interface BackendUrls {
   api: string

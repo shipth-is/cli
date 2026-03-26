@@ -17,6 +17,8 @@ export type ShipGlobResolution = {
 }
 const LEGACY_DEFAULTS_WARNING_MESSAGE =
   'Using legacy default globs with new platform-aware file selection. Learn more: https://shipth.is/docs/guides/controlling-uploaded-files'
+const MISSING_GLOBS_WARNING_MESSAGE =
+  'No file globs configured in shipthis.json; using defaults. Learn more: https://shipth.is/docs/guides/controlling-uploaded-files'
 
 // Trim and drop empties.
 function normalize(value: string[] | undefined): string[] | undefined {
@@ -96,11 +98,13 @@ export function resolveShipGlobConfig(projectConfig: ProjectConfig, platforms: P
 
   // no explicit legacy and no explicit new globs => keep previous legacy defaults behavior
   if (!hasLegacy && !hasGlobs) {
+    const {baseInclude, baseExclude, androidExclude, iosExclude} = resolvePlatformGlobs(projectConfig)
+    const platformSpecificIgnore = getPlatformSpecificIgnore(platforms, iosExclude, androidExclude)
     return {
-      mode: 'legacy',
-      warningMessage: undefined,
-      patterns: LEGACY_DEFAULT_SHIPPED_FILES_GLOBS,
-      ignore: LEGACY_DEFAULT_IGNORED_FILES_GLOBS,
+      mode: 'new',
+      warningMessage: MISSING_GLOBS_WARNING_MESSAGE,
+      patterns: baseInclude,
+      ignore: [...baseExclude, ...platformSpecificIgnore],
     }
   }
 

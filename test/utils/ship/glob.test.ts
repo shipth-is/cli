@@ -10,6 +10,8 @@ import {resolveShipGlobConfig} from '../../../src/utils/ship/glob.js'
 
 const LEGACY_DEFAULTS_WARNING_MESSAGE =
   'Using legacy default globs with new platform-aware file selection. Learn more: https://shipth.is/docs/guides/controlling-uploaded-files'
+const MISSING_GLOBS_WARNING_MESSAGE =
+  'No file globs configured in shipthis.json; using defaults. Learn more: https://shipth.is/docs/guides/controlling-uploaded-files'
 
 describe('resolveShipGlobConfig (ship/glob)', () => {
   it('switches to new mode + warns when legacy globs match historical defaults', () => {
@@ -75,5 +77,17 @@ describe('resolveShipGlobConfig (ship/glob)', () => {
     expect(resolved.mode).to.equal('new')
     expect(resolved.ignore).to.deep.equal(DEFAULT_PLATFORM_GLOBS.base.exclude)
   });  
+
+  it('warns when no globs or legacy fields are provided', () => {
+    const projectConfig = {}
+
+    const resolved = resolveShipGlobConfig(projectConfig, [Platform.IOS])
+
+    expect(resolved.mode).to.equal('new')
+    expect(resolved.warningMessage).to.equal(MISSING_GLOBS_WARNING_MESSAGE)
+    expect(resolved.patterns).to.deep.equal(DEFAULT_PLATFORM_GLOBS.base.include)
+    expect(resolved.ignore).to.include.members(DEFAULT_PLATFORM_GLOBS.base.exclude)
+    expect(resolved.ignore).to.include('android/**')
+  })
 
 })
