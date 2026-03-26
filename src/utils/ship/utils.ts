@@ -1,7 +1,7 @@
 import {Platform, Project, ShipGameFlags} from '@cli/types'
 import {queryProjectCredentials} from '@cli/utils/index.js'
 
-import {LogFunction} from './types.d.js'
+import type {LogFunction} from './types.d.js'
 
 export function formatProgressLog(
   label: string,
