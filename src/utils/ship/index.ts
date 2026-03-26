@@ -7,7 +7,7 @@ import {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/t
 import {getCWDGitInfo, getFileHash} from '@cli/utils/index.js'
 
 import {getFilesToShip} from './glob.js'
-import {ShipOptions} from './types.js'
+import type {ShipOptions} from './types.js'
 import {uploadZip} from './upload.js'
 import {formatProgressLog, getPlatforms} from './utils.js'
 import {createZip} from './zip.js'
