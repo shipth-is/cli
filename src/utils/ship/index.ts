@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import {v4 as uuid} from 'uuid'
 
 import {getNewUploadTicket, getProject, startJobsFromUpload} from '@cli/api/index.js'
-import {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
+import type {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails, UploadTicket} from '@cli/types'
 import {getCWDGitInfo, getFileHash} from '@cli/utils/index.js'
 
 import {getFilesToShip} from './glob.js'
@@ -11,6 +11,8 @@ import type {ShipOptions} from './types.js'
 import {uploadZip} from './upload.js'
 import {formatProgressLog, getPlatforms} from './utils.js'
 import {createZip} from './zip.js'
+
+const ERR_NOT_CONFIGURED = 'No Android or iOS configuration found. Please run `shipthis game wizard android` or `shipthis game wizard ios` to configure your game.'
 
 // Main function to ship the game
 export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Promise<Job[]> {
@@ -39,9 +41,7 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
   const hasConfiguredAndroid = Boolean(project.details?.androidPackageName)
 
   if (!isUsingDemoCredentials && !hasConfiguredAndroid && !hasConfiguredIos) {
-    throw new Error(
-      'No Android or iOS configuration found. Please run `shipthis game wizard android` or `shipthis game wizard ios` to configure your game.',
-    )
+    throw new Error(ERR_NOT_CONFIGURED)
   }
 
   const platforms = await getPlatforms(project, finalFlags, vlog)
@@ -52,6 +52,7 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
     for (const file of files) {
       log(`  ${file}`)
     }
+    // Simply returning here does not work.
     process.exit(0)
     return []
   }
@@ -69,12 +70,13 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
 
   let response: any
   let zipFileMd5 = ''
+  let uploadTicket: UploadTicket | null = null
 
   try {
     const {size} = fs.statSync(tmpZipFile)
 
     vlog('Requesting upload ticket...')
-    const uploadTicket = await getNewUploadTicket(projectConfig.project.id)
+    uploadTicket = await getNewUploadTicket(projectConfig.project.id)
 
     log('Uploading zip file...')
     const zipStream = fs.createReadStream(tmpZipFile)
