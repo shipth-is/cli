@@ -39,9 +39,8 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   // Start the command on mount
   const handleStartOnMount = async () => {
     if (!command) throw new Error('No command in context')
-    const logFn = (flags?.follow || flags?.dryRun) ? console.log : setShipLog
-    const warnLogFn = (flags?.follow || flags?.dryRun) ? console.warn : setShipLog // TODO: add orange color
-    const startedJobs = await shipMutation.mutateAsync({command, log: logFn, warnLog: warnLogFn})
+    const logFn = flags?.follow || flags?.dryRun ? console.log : setShipLog
+    const startedJobs = await shipMutation.mutateAsync({command, log: logFn, warnLog: console.warn})
     setJobs(startedJobs)
   }
 
