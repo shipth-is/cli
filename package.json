@@ -257,8 +257,7 @@
   },
   "types": "dist/index.d.ts",
   "overrides": {
-    "serialize-javascript": "^7.0.3",
-    "fast-xml-parser": "^5.3.8",
+    "serialize-javascript": "^7.0.5",
     "cli-spinners": "2.9.2",
     "@alcalzone/ansi-tokenize": "^0.2.2"
   }
