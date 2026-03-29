@@ -39,8 +39,8 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   // Start the command on mount
   const handleStartOnMount = async () => {
     if (!command) throw new Error('No command in context')
-    const logFn = flags?.follow ? console.log : setShipLog
-    const startedJobs = await shipMutation.mutateAsync({command, log: logFn})
+    const logFn = flags?.follow || flags?.dryRun ? console.log : setShipLog
+    const startedJobs = await shipMutation.mutateAsync({command, log: logFn, warnLog: console.warn})
     setJobs(startedJobs)
   }
 
@@ -93,7 +93,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
 
   if (!gameId) return <></>
 
-  if (flags?.follow) {
+  if (flags?.follow || flags?.dryRun) {
     if (jobs && jobs.length > 0) {
       return (
         <JobFollow jobId={jobs[0].id} onComplete={handleJobComplete} onFailure={handleJobFailure} projectId={gameId} />

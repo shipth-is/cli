@@ -2,7 +2,7 @@ import {Flags} from '@oclif/core'
 
 import {createProject} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS, DetailsFlags} from '@cli/constants/index.js'
+import {DEFAULT_PLATFORM_GLOBS, DetailsFlags} from '@cli/constants/index.js'
 import {GameEngine, ProjectDetails} from '@cli/types'
 import {getGodotProjectName, getGodotVersion, isCWDGodotGame} from '@cli/utils/godot.js'
 import {getInput} from '@cli/utils/index.js'
@@ -55,9 +55,8 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
     const project = await createProject({details: projectDetails, name})
 
     await this.setProjectConfig({
-      ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
+      globs: DEFAULT_PLATFORM_GLOBS,
       project,
-      shippedFilesGlobs: DEFAULT_SHIPPED_FILES_GLOBS,
     })
 
     if (!flags.quiet) await this.config.runCommand('game:status')

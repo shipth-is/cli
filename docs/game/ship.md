@@ -8,7 +8,7 @@ The `shipthis game ship` command starts the process of building and publishing y
 This command creates one or more "jobs". A **job** is a set of work done to create a new build of your game on one platform.
 
 When this command is run, ShipThis uploads the code in the current directory to the ShipThis backend.
-To control which files are uploaded, in the **shipthis.json** file there are two [glob](https://en.wikipedia.org/wiki/Glob_(programming)) arrays **shippedFilesGlobs** and **ignoredFilesGlobs**.
+To control which files are uploaded, use `globs` in **shipthis.json**. Legacy keys `shippedFilesGlobs` and `ignoredFilesGlobs` are still supported for older projects. See `https://shipth.is/docs/guides/controlling-uploaded-files`.
 :::
 
 ## Examples

@@ -59,7 +59,7 @@ export async function createZip({files, outputPath, onProgress}: CreateZipProps)
       settled = true
       
       // Clean up streams
-      zipFile.outputStream.destroy()
+      // TODO: check this - zipFile.outputStream.destroy()
       progressStream.destroy()
       outputStream.destroy()
       

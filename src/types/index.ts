@@ -13,8 +13,19 @@ export interface ProjectJustId {
   id: string
 }
 
+export interface GlobRuleSet {
+  include: string[]
+  exclude: string[]
+}
+export interface GlobsConfig {
+  base: GlobRuleSet
+  android: GlobRuleSet
+  ios: GlobRuleSet
+}
+
 // Structure of the project (./shipthis.json) file
 export interface ProjectConfig {
+  globs?: GlobsConfig
   ignoredFilesGlobs?: string[]
   project?: ProjectJustId
   shippedFilesGlobs?: string[]
@@ -29,6 +40,7 @@ export type ShipGameFlags = {
   verbose?: boolean
   useDemoCredentials?: boolean
   gameEngineVersion?: string
+  dryRun?: boolean
 }
 
 export * from './api.js'

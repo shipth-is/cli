@@ -5,7 +5,7 @@ import {useContext, useEffect, useState} from 'react'
 import {createProject, getProject, updateProject} from '@cli/api/index.js'
 import {CommandContext, GameContext} from '@cli/components/context/index.js'
 import {StepProps} from '@cli/components/index.js'
-import {DEFAULT_IGNORED_FILES_GLOBS, DEFAULT_SHIPPED_FILES_GLOBS} from '@cli/constants/config.js'
+import {DEFAULT_PLATFORM_GLOBS} from '@cli/constants/config.js'
 import {EditableProject, GameEngine, Project} from '@cli/types/api.js'
 import {getGodotVersion} from '@cli/utils/godot.js'
 
@@ -78,9 +78,8 @@ export const CreateGame = (props: StepProps): JSX.Element => {
       }
       const project = await createProject({details: projectDetails, name})
       await command.setProjectConfig({
-        ignoredFilesGlobs: DEFAULT_IGNORED_FILES_GLOBS,
+        globs: DEFAULT_PLATFORM_GLOBS,
         project,
-        shippedFilesGlobs: DEFAULT_SHIPPED_FILES_GLOBS,
       })
 
       // Update the context value for the other components in the wizard

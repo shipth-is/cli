@@ -1,11 +1,14 @@
+import type { GlobsConfig } from '@cli/types'
+
 export const AUTH_ENV_VAR_NAME = 'SHIPTHIS_TOKEN'
 export const DOMAIN_ENV_VAR_NAME = 'SHIPTHIS_DOMAIN'
 
-export const DEFAULT_SHIPPED_FILES_GLOBS = ['**/*']
+// Legacy defaults used by shippedFilesGlobs/ignoredFilesGlobs
+export const LEGACY_DEFAULT_SHIPPED_FILES_GLOBS = ['**/*']
 
 // Generated from the Godot gitignore https://github.com/github/gitignore/blob/main/Godot.gitignore
 // And included the shipthis.json and shipthis-*.zip
-export const DEFAULT_IGNORED_FILES_GLOBS = [
+export const LEGACY_DEFAULT_IGNORED_FILES_GLOBS = [
   '.git',
   '.gitignore',
   'shipthis.json',
@@ -49,6 +52,22 @@ export const DEFAULT_IGNORED_FILES_GLOBS = [
   '*~',
   '.env',
 ]
+
+// Canonical platform-aware defaults for `projectConfig.globs`
+export const DEFAULT_PLATFORM_GLOBS: GlobsConfig = {
+  android: {
+    exclude: ['ios/**', '*.ipa', '*.xcarchive'],
+    include: [],
+  },
+  base: {
+    exclude: LEGACY_DEFAULT_IGNORED_FILES_GLOBS,
+    include: LEGACY_DEFAULT_SHIPPED_FILES_GLOBS,
+  },
+  ios: {
+    exclude: ['android/**', '*.apk', '*.aab', '.gradle/**'],
+    include: [],
+  },
+}
 
 const PRIMARY_DOMAIN = 'shipth.is'
 interface BackendUrls {

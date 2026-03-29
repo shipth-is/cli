@@ -21,6 +21,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     '<%= config.bin %> <%= command.id %> --platform ios --follow --verbose',
     '<%= config.bin %> <%= command.id %> --platform ios --useDemoCredentials --download game.ipa',
     '<%= config.bin %> <%= command.id %> --platform android --gameEngineVersion 4.5.1 --skipPublish',
+    '<%= config.bin %> <%= command.id %> --platform android --dryRun',
   ]
 
   static override flags = {
@@ -62,6 +63,11 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     }),
     gameEngineVersion: Flags.string({
       description: 'Override the specified game engine version for this build',
+      required: false,
+    }),
+    dryRun: Flags.boolean({
+      default: false,
+      description: 'Dry run - lists the files that would be shipped without executing the build or publish steps',
       required: false,
     }),
   }

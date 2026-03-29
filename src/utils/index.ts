@@ -16,8 +16,7 @@ export * from './godot.js'
 export * from './help.js'
 export * from './hooks/index.js'
 export * from './query/index.js'
-export * from './upload.js'
-export * from './zip.js'
+export * from './ship/index.js'
 
 /**
  * Works the same way that git short commits are generated.
