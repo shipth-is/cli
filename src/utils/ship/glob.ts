@@ -77,11 +77,13 @@ function getRulesetForPlatform(safe: GlobsConfig, platforms: Platform[]): GlobRu
 
 // Determines the final include/exclude rules for the given project config and platforms.
 export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platform[]): GlobRuleSet & {warning?: string} {
-  const legacyShippedProvided = Array.isArray(projectConfig.shippedFilesGlobs)
-  const legacyIgnoredProvided = Array.isArray(projectConfig.ignoredFilesGlobs)
+  const {shippedFilesGlobs, ignoredFilesGlobs, globs} = projectConfig
+
+  const legacyShippedProvided = Array.isArray(shippedFilesGlobs)
+  const legacyIgnoredProvided = Array.isArray(ignoredFilesGlobs)
   const hasLegacy = legacyShippedProvided || legacyIgnoredProvided
   const hasCompleteLegacy = legacyShippedProvided && legacyIgnoredProvided
-  const hasGlobs = Boolean(projectConfig.globs)
+  const hasGlobs = Boolean(globs)
 
   // Merge `globs` defaults + optional platform slice into final include/exclude.
   const returnNewOrDefaults = (platforms: Platform[], warning: string | undefined) => {
@@ -102,17 +104,17 @@ export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platfor
 
   const legacyIsAllDefaults =
     hasCompleteLegacy &&
-    Boolean(projectConfig.shippedFilesGlobs) &&
-    Boolean(projectConfig.ignoredFilesGlobs) &&
-    isLegacyShippedDefault(projectConfig.shippedFilesGlobs!) &&
-    isLegacyIgnoredDefault(projectConfig.ignoredFilesGlobs!)
+    Boolean(shippedFilesGlobs) &&
+    Boolean(ignoredFilesGlobs) &&
+    isLegacyShippedDefault(shippedFilesGlobs) &&
+    isLegacyIgnoredDefault(ignoredFilesGlobs)
 
   // Legacy fields present and customized: must honor them; user should migrate to `globs`.
   if (!legacyIsAllDefaults) {
     return {
       warning: WARN_UPGRADE_GLOBS,
-      include: projectConfig.shippedFilesGlobs ?? LEGACY_DEFAULT_SHIPPED_FILES_GLOBS,
-      exclude: projectConfig.ignoredFilesGlobs ?? LEGACY_DEFAULT_IGNORED_FILES_GLOBS,
+      include: shippedFilesGlobs ?? LEGACY_DEFAULT_SHIPPED_FILES_GLOBS,
+      exclude: ignoredFilesGlobs ?? LEGACY_DEFAULT_IGNORED_FILES_GLOBS,
     }
   }
 
