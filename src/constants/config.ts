@@ -1,4 +1,4 @@
-import type { GlobsConfig } from "@cli/types"
+import type { GlobsConfig } from '@cli/types'
 
 export const AUTH_ENV_VAR_NAME = 'SHIPTHIS_TOKEN'
 export const DOMAIN_ENV_VAR_NAME = 'SHIPTHIS_DOMAIN'
