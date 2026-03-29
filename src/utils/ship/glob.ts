@@ -54,7 +54,7 @@ function getSafeGlobsConfig(pc: ProjectConfig): GlobsConfig {
   return {
     android: {
       exclude: pc.globs?.android?.exclude ?? DEFAULT_PLATFORM_GLOBS.android.exclude,
-      include: pc.globs?.android?.include ?? [],
+      include: pc.globs?.android?.include ?? DEFAULT_PLATFORM_GLOBS.android.include,
     },
     base: {
       exclude: pc.globs?.base?.exclude ?? DEFAULT_PLATFORM_GLOBS.base.exclude,
@@ -62,7 +62,7 @@ function getSafeGlobsConfig(pc: ProjectConfig): GlobsConfig {
     },
     ios: {
       exclude: pc.globs?.ios?.exclude ?? DEFAULT_PLATFORM_GLOBS.ios.exclude,
-      include: pc.globs?.ios?.include ?? [],
+      include: pc.globs?.ios?.include ?? DEFAULT_PLATFORM_GLOBS.ios.include,
     },
   }
 }
@@ -86,7 +86,7 @@ export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platfor
   const hasGlobs = Boolean(globs)
 
   // Merge `globs` defaults + optional platform slice into final include/exclude.
-  const returnNewOrDefaults = (platforms: Platform[], warning: string | undefined) => {
+  const returnNewOrDefaults = (warning: string | undefined) => {
     const safe = getSafeGlobsConfig(projectConfig)
     const platformRuleset = getRulesetForPlatform(safe, platforms)
     return {
@@ -99,15 +99,15 @@ export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platfor
   // No `shippedFilesGlobs` / `ignoredFilesGlobs`: always use new-format `globs` (defaults if absent).
   // Warn when `globs` is missing from shipthis.json; no warning when `globs` is explicitly set.
   if (!hasLegacy) {
-    return returnNewOrDefaults(platforms, hasGlobs ? undefined : WARN_MISSING_GLOBS)
+    return returnNewOrDefaults(hasGlobs ? undefined : WARN_MISSING_GLOBS)
   }
 
   const legacyIsAllDefaults =
     hasCompleteLegacy &&
     Boolean(shippedFilesGlobs) &&
     Boolean(ignoredFilesGlobs) &&
-    isLegacyShippedDefault(shippedFilesGlobs) &&
-    isLegacyIgnoredDefault(ignoredFilesGlobs)
+    isLegacyShippedDefault(shippedFilesGlobs!) &&
+    isLegacyIgnoredDefault(ignoredFilesGlobs!)
 
   // Legacy fields present and customized: must honor them; user should migrate to `globs`.
   if (!legacyIsAllDefaults) {
@@ -119,7 +119,7 @@ export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platfor
   }
 
   // Legacy fields match historical defaults: treat as new-format globs but still warn to migrate.
-  return returnNewOrDefaults(platforms, WARN_LEGACY_DEFAULT)
+  return returnNewOrDefaults(WARN_LEGACY_DEFAULT)
 }
 
 // Gets the list of files to be zipped and uploaded
