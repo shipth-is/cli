@@ -1,3 +1,5 @@
+import type { GlobsConfig } from "@cli/types"
+
 export const AUTH_ENV_VAR_NAME = 'SHIPTHIS_TOKEN'
 export const DOMAIN_ENV_VAR_NAME = 'SHIPTHIS_DOMAIN'
 
@@ -52,9 +54,10 @@ export const LEGACY_DEFAULT_IGNORED_FILES_GLOBS = [
 ]
 
 // Canonical platform-aware defaults for `projectConfig.globs`
-export const DEFAULT_PLATFORM_GLOBS = {
+export const DEFAULT_PLATFORM_GLOBS: GlobsConfig = {
   android: {
     exclude: ['ios/**', '*.ipa', '*.xcarchive'],
+    include: [],
   },
   base: {
     exclude: LEGACY_DEFAULT_IGNORED_FILES_GLOBS,
@@ -62,6 +65,7 @@ export const DEFAULT_PLATFORM_GLOBS = {
   },
   ios: {
     exclude: ['android/**', '*.apk', '*.aab', '.gradle/**'],
+    include: [],
   },
 }
 

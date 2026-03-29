@@ -5,21 +5,15 @@ import {
   LEGACY_DEFAULT_IGNORED_FILES_GLOBS,
   LEGACY_DEFAULT_SHIPPED_FILES_GLOBS,
 } from '../../constants/index.js'
-import {Platform, type ProjectConfig} from '../../types/index.js'
+import {type GlobRuleSet, type GlobsConfig, Platform, type ProjectConfig} from '../../types/index.js'
 
 import type {LogFunction} from './types.js'
-
-export type ShipGlobResolution = {
-  mode: 'legacy' | 'new'
-  patterns: string[]
-  ignore: string[]
-  warningMessage?: string
-}
 
 const WARN_LEARN_MORE = 'Learn more: https://shipth.is/docs/guides/controlling-uploaded-files'
 const WARN_LEGACY_DEFAULT = 'Using legacy default globs - you should upgrade to the new globs. ' + WARN_LEARN_MORE
 const WARN_MISSING_GLOBS = 'No file globs configured in shipthis.json; using defaults. ' + WARN_LEARN_MORE
-const WARN_UPGRADE_GLOBS = 'Using legacy file selection globs - you should upgrade to the new globs. ' + WARN_LEARN_MORE
+const WARN_UPGRADE_GLOBS =
+  'Using legacy custom file selection globs - you should upgrade to the new globs. ' + WARN_LEARN_MORE
 
 // Trim and drop empties.
 function normalize(value: string[] | undefined): string[] | undefined {
@@ -55,60 +49,55 @@ function isLegacyShippedDefault(shippedFilesGlobs: string[]): boolean {
   return arraysEqual(LEGACY_DEFAULT_SHIPPED_FILES_GLOBS, normalized)
 }
 
-// Platform-specific excludes (single-platform only).
-function getPlatformSpecificIgnore(platforms: Platform[], iosExclude: string[], androidExclude: string[]): string[] {
-  if (platforms.length !== 1) return []
-  if (platforms[0] === Platform.IOS) return iosExclude
-  if (platforms[0] === Platform.ANDROID) return androidExclude
-  return []
-}
-
-// Resolve effective `globs` (config overrides defaults).
-function resolvePlatformGlobs(projectConfig: ProjectConfig): {
-  baseInclude: string[]
-  baseExclude: string[]
-  androidExclude: string[]
-  iosExclude: string[]
-} {
+// Merge `shipthis.json` globs with defaults so every tier has concrete include/exclude arrays.
+function getSafeGlobsConfig(pc: ProjectConfig): GlobsConfig {
   return {
-    baseInclude: projectConfig.globs?.base?.include ?? DEFAULT_PLATFORM_GLOBS.base.include,
-    baseExclude: projectConfig.globs?.base?.exclude ?? DEFAULT_PLATFORM_GLOBS.base.exclude,
-    androidExclude: projectConfig.globs?.android?.exclude ?? DEFAULT_PLATFORM_GLOBS.android.exclude,
-    iosExclude: projectConfig.globs?.ios?.exclude ?? DEFAULT_PLATFORM_GLOBS.ios.exclude,
+    android: {
+      exclude: pc.globs?.android?.exclude ?? DEFAULT_PLATFORM_GLOBS.android.exclude,
+      include: pc.globs?.android?.include ?? [],
+    },
+    base: {
+      exclude: pc.globs?.base?.exclude ?? DEFAULT_PLATFORM_GLOBS.base.exclude,
+      include: pc.globs?.base?.include ?? DEFAULT_PLATFORM_GLOBS.base.include,
+    },
+    ios: {
+      exclude: pc.globs?.ios?.exclude ?? DEFAULT_PLATFORM_GLOBS.ios.exclude,
+      include: pc.globs?.ios?.include ?? [],
+    },
   }
 }
 
-// Resolve ship patterns + ignore + warning message.
-export function resolveShipGlobConfig(projectConfig: ProjectConfig, platforms: Platform[]): ShipGlobResolution {
+// Platform-specific rules applied only when shipping exactly one platform.
+function getRulesetForPlatform(safe: GlobsConfig, platforms: Platform[]): GlobRuleSet {
+  if (platforms.length !== 1) return {exclude: [], include: []}
+  if (platforms[0] === Platform.IOS) return safe.ios
+  if (platforms[0] === Platform.ANDROID) return safe.android
+  return {exclude: [], include: []}
+}
+
+// Determines the final include/exclude rules for the given project config and platforms.
+export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platform[]): GlobRuleSet & {warning?: string} {
   const legacyShippedProvided = Array.isArray(projectConfig.shippedFilesGlobs)
   const legacyIgnoredProvided = Array.isArray(projectConfig.ignoredFilesGlobs)
   const hasLegacy = legacyShippedProvided || legacyIgnoredProvided
   const hasCompleteLegacy = legacyShippedProvided && legacyIgnoredProvided
   const hasGlobs = Boolean(projectConfig.globs)
 
-  // no explicit legacy and no explicit new globs => use new mode with defaults but show warning
-  if (!hasLegacy && !hasGlobs) {
-    const {baseInclude, baseExclude, androidExclude, iosExclude} = resolvePlatformGlobs(projectConfig)
-    const platformSpecificIgnore = getPlatformSpecificIgnore(platforms, iosExclude, androidExclude)
+  // Merge `globs` defaults + optional platform slice into final include/exclude.
+  const returnNewOrDefaults = (platforms: Platform[], warning: string | undefined) => {
+    const safe = getSafeGlobsConfig(projectConfig)
+    const platformRuleset = getRulesetForPlatform(safe, platforms)
     return {
-      mode: 'new',
-      warningMessage: WARN_MISSING_GLOBS,
-      patterns: baseInclude,
-      ignore: [...baseExclude, ...platformSpecificIgnore],
+      warning,
+      include: [...safe.base.include, ...platformRuleset.include],
+      exclude: [...safe.base.exclude, ...platformRuleset.exclude],
     }
   }
 
-  // no legacy values provided, but explicit new globs are set - use new mode without warning
-  if (!hasLegacy && hasGlobs) {
-    const {baseInclude, baseExclude, androidExclude, iosExclude} = resolvePlatformGlobs(projectConfig)
-    const platformSpecificIgnore = getPlatformSpecificIgnore(platforms, iosExclude, androidExclude)
-    // happy path
-    return {
-      mode: 'new',
-      warningMessage: undefined,
-      patterns: baseInclude,
-      ignore: [...baseExclude, ...platformSpecificIgnore],
-    }
+  // No `shippedFilesGlobs` / `ignoredFilesGlobs`: always use new-format `globs` (defaults if absent).
+  // Warn when `globs` is missing from shipthis.json; no warning when `globs` is explicitly set.
+  if (!hasLegacy) {
+    return returnNewOrDefaults(platforms, hasGlobs ? undefined : WARN_MISSING_GLOBS)
   }
 
   const legacyIsAllDefaults =
@@ -118,26 +107,17 @@ export function resolveShipGlobConfig(projectConfig: ProjectConfig, platforms: P
     isLegacyShippedDefault(projectConfig.shippedFilesGlobs!) &&
     isLegacyIgnoredDefault(projectConfig.ignoredFilesGlobs!)
 
-  // legacy values provided which are NOT defaults - so we must use them - but user should upgrade
-  if (hasLegacy && !legacyIsAllDefaults) {
+  // Legacy fields present and customized: must honor them; user should migrate to `globs`.
+  if (!legacyIsAllDefaults) {
     return {
-      mode: 'legacy',
-      warningMessage: WARN_UPGRADE_GLOBS,
-      patterns: projectConfig.shippedFilesGlobs ?? LEGACY_DEFAULT_SHIPPED_FILES_GLOBS,
-      ignore: projectConfig.ignoredFilesGlobs ?? LEGACY_DEFAULT_IGNORED_FILES_GLOBS,
+      warning: WARN_UPGRADE_GLOBS,
+      include: projectConfig.shippedFilesGlobs ?? LEGACY_DEFAULT_SHIPPED_FILES_GLOBS,
+      exclude: projectConfig.ignoredFilesGlobs ?? LEGACY_DEFAULT_IGNORED_FILES_GLOBS,
     }
   }
 
-  // legacy values provided which are defaults - user did not modify - use the new globs but show warning
-  const {baseInclude, baseExclude, androidExclude, iosExclude} = resolvePlatformGlobs(projectConfig)
-  const platformSpecificIgnore = getPlatformSpecificIgnore(platforms, iosExclude, androidExclude)
-
-  return {
-    mode: 'new',
-    warningMessage: WARN_LEGACY_DEFAULT,
-    patterns: baseInclude,
-    ignore: [...baseExclude, ...platformSpecificIgnore],
-  }
+  // Legacy fields match historical defaults: treat as new-format globs but still warn to migrate.
+  return returnNewOrDefaults(platforms, WARN_LEGACY_DEFAULT)
 }
 
 // Gets the list of files to be zipped and uploaded
@@ -147,13 +127,13 @@ export async function getFilesToShip(
   log: LogFunction,
   warnLog: LogFunction,
 ): Promise<string[]> {
-  const {patterns, ignore, warningMessage} = resolveShipGlobConfig(projectConfig, platforms)
+  const {include, exclude, warning} = getFinalRuleset(projectConfig, platforms)
 
-  if (warningMessage) warnLog(warningMessage)
+  if (warning) warnLog(warning)
 
   log('Retrieving file globs...')
   log('Finding files to include in zip...')
-  const files = await fg(patterns, {dot: true, ignore})
+  const files = await fg(include, {dot: true, ignore: exclude})
   log(`Found ${files.length} files, adding to zip...`)
   return files
 }

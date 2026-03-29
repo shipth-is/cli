@@ -14,13 +14,13 @@ export interface ProjectJustId {
 }
 
 export interface GlobRuleSet {
-  include?: string[]
-  exclude?: string[]
+  include: string[]
+  exclude: string[]
 }
 export interface GlobsConfig {
-  base?: GlobRuleSet
-  android?: GlobRuleSet
-  ios?: GlobRuleSet
+  base: GlobRuleSet
+  android: GlobRuleSet
+  ios: GlobRuleSet
 }
 
 // Structure of the project (./shipthis.json) file
