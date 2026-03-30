@@ -4,10 +4,9 @@ import {
   DEFAULT_PLATFORM_GLOBS,
   LEGACY_DEFAULT_IGNORED_FILES_GLOBS,
   LEGACY_DEFAULT_SHIPPED_FILES_GLOBS,
-} from '../../constants/index.js'
-import {type GlobRuleSet, type GlobsConfig, Platform, type ProjectConfig} from '../../types/index.js'
-
-import type {LogFunction} from './types.js'
+} from '@cli/constants/config.js'
+import {type GlobRuleSet, type GlobsConfig, Platform, type ProjectConfig} from '@cli/types'
+import type {LogFunction} from '@cli/utils/ship/types.js'
 
 const WARN_LEARN_MORE = 'Learn more: https://shipth.is/docs/guides/controlling-uploaded-files'
 const WARN_LEGACY_DEFAULT = 'Using legacy default globs - you should upgrade to the new globs. ' + WARN_LEARN_MORE

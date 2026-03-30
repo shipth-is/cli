@@ -3,10 +3,8 @@
 import {useEffect, useState} from 'react'
 
 import {GoogleStatusResponse} from '@cli/types/api.js'
-
-import {useGoogleStatus} from '../query/useGoogleStatus.js'
-
-import {WebSocketListener, useWebSocket} from './useWebSocket.js'
+import {WebSocketListener, useWebSocket} from '@cli/utils/hooks/useWebSocket.js'
+import {useGoogleStatus} from '@cli/utils/query/useGoogleStatus.js'
 
 // TODO: there is potentially an issue if users are setting up multiple projects at once
 export interface GoogleStatusWatchingProps {

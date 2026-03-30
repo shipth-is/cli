@@ -5,6 +5,7 @@ import {useContext, useEffect, useRef} from 'react'
 
 import {getShortAuthRequiredUrl} from '@cli/api/index.js'
 import {GameContext, Markdown} from '@cli/components/index.js'
+import {StepProps} from '@cli/components/index.js'
 import {WEB_URL, cacheKeys} from '@cli/constants/index.js'
 import {BuildType, Platform} from '@cli/types/api.js'
 import {
@@ -20,7 +21,6 @@ import {
   useSafeInput,
 } from '@cli/utils/index.js'
 
-import {StepProps} from '../../index.js'
 
 const __dirname = scriptDir(import.meta)
 

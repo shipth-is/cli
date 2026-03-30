@@ -3,8 +3,7 @@ import {UseQueryResult, useQuery} from '@tanstack/react-query'
 
 import {BundleId as AppleBundleId, CapabilityType} from '@cli/apple/expo.js'
 import {Platform, ScalarDict} from '@cli/types'
-
-import {GODOT_CAPABILITIES, getGodotProjectCapabilities} from '../godot.js'
+import {GODOT_CAPABILITIES, getGodotProjectCapabilities} from '@cli/utils/godot.js'
 
 export interface AppleBundleIdQueryProps {
   ctx: any

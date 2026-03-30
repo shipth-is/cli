@@ -251,8 +251,7 @@
     "posttest": "npm run lint",
     "prepack": "cp package-lock.json package-lock.dev.json || true && npm run readme && oclif manifest && npm shrinkwrap",
     "postpack": "mv package-lock.dev.json package-lock.json || true && shx rm -f oclif.manifest.json && shx rm -f npm-shrinkwrap.json",
-    "test": "mocha --forbid-only \"test/**/*.test.ts\"",
-    "test:apple-utils": "mocha --forbid-only \"test/apple/**/*.test.ts\" \"test/utils/**/*.test.ts\"",
+    "test": "tsx --tsconfig ./tsconfig.json ./node_modules/mocha/bin/mocha.js --forbid-only \"test/**/*.test.ts\"",
     "readme": "bin/dev.js internal readme docs/ -d 2 --notDryRun # does not overwrite existing files"
   },
   "types": "dist/index.d.ts",
