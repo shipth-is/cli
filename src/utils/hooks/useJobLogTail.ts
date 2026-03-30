@@ -1,11 +1,9 @@
 import {useEffect, useState} from 'react'
 
 import {JobLogEntry} from '@cli/types'
+import {arrayToDictionary, dictionaryToArray} from '@cli/utils/dictionary.js'
+import {useJobWatching} from '@cli/utils/hooks/useJobWatching.js'
 import {useJobLogs} from '@cli/utils/query/useJobLogs.js'
-
-import {arrayToDictionary, dictionaryToArray} from '../dictionary.js'
-
-import {useJobWatching} from './useJobWatching.js'
 
 export interface JobLogTailProps {
   isWatching: boolean

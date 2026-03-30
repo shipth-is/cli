@@ -14,9 +14,9 @@ import {
   ExportPresetsFile,
 } from 'godot-export-presets'
 
-import {ENTITLEMENT_KEY_TO_CAPABILITY, parseEntitlementsAdditional} from '../apple/entitlements.js'
-import {CapabilityType} from '../apple/expo.js'
-import {Platform} from '../types/index.js'
+import {ENTITLEMENT_KEY_TO_CAPABILITY, parseEntitlementsAdditional} from '@cli/apple/entitlements.js'
+import {CapabilityType} from '@cli/apple/expo.js'
+import {Platform} from '@cli/types'
 
 // Check if the current working directory is a Godot game
 // TODO: allow for cwd override
