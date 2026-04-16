@@ -66,7 +66,7 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
           // TODO: this doesn't tell us if the key is valid or usable (since we don't query Apple for that here)
           const userCredentials = await getUserCredentials()
           const userAppleApiKeyCredentials = userCredentials.filter(
-            (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.KEY,
+            (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.KEY && cred.isActive,
           )
           const hasKey = userAppleApiKeyCredentials.length > 0
           return !hasKey
@@ -79,7 +79,7 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
           // TODO: this doesn't tell us if the certificate is valid or usable (since we don't query Apple for that here)
           const userCredentials = await getUserCredentials()
           const userAppleDistCredentials = userCredentials.filter(
-            (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.CERTIFICATE,
+            (cred) => cred.platform === Platform.IOS && cred.type === CredentialsType.CERTIFICATE && cred.isActive,
           )
           const hasDistCert = userAppleDistCredentials.length > 0
           return !hasDistCert
