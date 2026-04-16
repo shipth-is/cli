@@ -31,7 +31,8 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     }),
     testGroupName: Flags.string({
       char: 't',
-      description: 'The name of the test group to add the tester to (defaults to "ShipThis Test Group (Internal)")',
+      default: TEST_GROUP_NAME,
+      description: 'The name of the internal test group to add the tester to',
     }),
   }
 
@@ -79,7 +80,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
 
       const groups = await BetaGroup.getAsync(ctx, {})
 
-      const testGroupName = flags.testGroupName || TEST_GROUP_NAME
+      const testGroupName = flags.testGroupName
 
       let shipThisGroup = groups.find(
         (group) => group.attributes.name === testGroupName && group.attributes.isInternalGroup,
@@ -93,7 +94,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
           name: testGroupName,
         })
 
-        console.log(`Created test group ${testGroupName}`)
+        if (!flags.quiet) this.log(`Created test group ${testGroupName}`)
       }
 
       await shipThisGroup.createBulkBetaTesterAssignmentsAsync([
@@ -104,7 +105,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
         },
       ])
 
-      console.log(`Added test user ${email} to group ${testGroupName}`)
+      if (!flags.quiet) this.log(`Added test user ${email} to group ${testGroupName}`)
     }
 
     const handleComplete = async () => {}
