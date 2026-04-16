@@ -6,14 +6,17 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, RunWithSpinner} from '@cli/components/index.js'
 import {getInput, queryAppleApp} from '@cli/utils/index.js'
 
-const TEST_GROUP_NAME = 'ShipThis Test Group'
+const TEST_GROUP_NAME = 'ShipThis Test Group (Internal)'
 
 export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosAppAddTester> {
   static override args = {}
 
   static override description = 'Adds a test user to the game in App Store Connect.'
 
-  static override examples = ['<%= config.bin %> <%= command.id %>']
+  static override examples = [
+    '<%= config.bin %> <%= command.id %>',
+    '<%= config.bin %> <%= command.id %> --testGroupName "Testers"',
+  ]
 
   static override flags = {
     email: Flags.string({char: 'e', description: 'The email address of the tester'}),
@@ -25,6 +28,10 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
       char: 's',
       default: false,
       description: 'Add yourself as a tester (uses your Apple ID email and name)',
+    }),
+    testGroupName: Flags.string({
+      char: 't',
+      description: 'The name of the test group to add the tester to (defaults to "ShipThis Test Group (Internal)")',
     }),
   }
 
@@ -72,16 +79,21 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
 
       const groups = await BetaGroup.getAsync(ctx, {})
 
+      const testGroupName = flags.testGroupName || TEST_GROUP_NAME
+
       let shipThisGroup = groups.find(
-        (group) => group.attributes.name === TEST_GROUP_NAME && group.attributes.isInternalGroup,
+        (group) => group.attributes.name === testGroupName && group.attributes.isInternalGroup,
       )
+
       if (!shipThisGroup) {
         shipThisGroup = await BetaGroup.createAsync(ctx, {
           hasAccessToAllBuilds: true,
           id: app.id,
           isInternalGroup: true,
-          name: TEST_GROUP_NAME,
+          name: testGroupName,
         })
+
+        console.log(`Created test group ${testGroupName}`)
       }
 
       await shipThisGroup.createBulkBetaTesterAssignmentsAsync([
@@ -91,6 +103,8 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
           lastName,
         },
       ])
+
+      console.log(`Added test user ${email} to group ${testGroupName}`)
     }
 
     const handleComplete = async () => {}
