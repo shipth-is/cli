@@ -32,7 +32,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
     testGroupName: Flags.string({
       char: 't',
       default: TEST_GROUP_NAME,
-      description: `The name of the internal test group to add the tester to (default: ${TEST_GROUP_NAME})`,
+      description: `The name of the internal test group`,
     }),
   }
 
