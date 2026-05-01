@@ -258,6 +258,7 @@
   "overrides": {
     "serialize-javascript": "^7.0.5",
     "cli-spinners": "2.9.2",
-    "@alcalzone/ansi-tokenize": "^0.2.2"
+    "@alcalzone/ansi-tokenize": "^0.2.2",
+    "uuid": "^14.0.0"
   }
 }
