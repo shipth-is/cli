@@ -42,6 +42,12 @@ export type ShipGameFlags = {
   gameEngineVersion?: string
   dryRun?: boolean
 }
+export class HandledError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'HandledError'
+  }
+}
 
 export * from './api.js'
 export * from './request.js'

@@ -1,5 +1,9 @@
 import Axios from 'axios'
 
+import {HandledError} from '@cli/types/index.js'
+
+import {getShortUUID} from './index.js'
+
 export function isNetworkError(exception: any) {
   if (!Axios.isAxiosError(exception)) return false
   return ['ECONNABORTED', 'ERR_NETWORK'].includes(`${exception.code}`)
@@ -27,5 +31,30 @@ export function getErrorMessage(error: any) {
     return apiMsg
   } catch {
     return error ? error.toString() : 'Error'
+  }
+}
+
+// Converts any error into a HandledError with a user-friendly message, if possible
+export function toHandledError(error: any, context: {projectId?: string} = {}) {
+  if (isNetworkError(error)) {
+    return new HandledError('Please check your internet connection.')
+  }
+
+  const {projectId} = context || {}
+  const statusCode = error?.response?.status || error.status
+
+  switch (statusCode) {
+    case 404: {
+      const msg = projectId
+        ? `Game "${getShortUUID(projectId)}" not found. You may not have access to this game.\nRun \`shipthis game list\` to see your games.`
+        : 'Requested resource not found.'
+      return new HandledError(msg)
+    }
+    case 401:
+      return new HandledError(`Unauthorized. Please run \`shipthis login\` to log in.`)
+    case 500:
+      return new HandledError(`Server error. Please try again later.`)
+    default:
+      return error
   }
 }

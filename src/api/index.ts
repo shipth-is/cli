@@ -24,6 +24,7 @@ import {
   UploadTicket,
 } from '@cli/types'
 import {castArrayObjectDates, castJobDates, castObjectDates} from '@cli/utils/dates.js'
+import {toHandledError} from '@cli/utils/index.js'
 
 export * from './credentials/index.js'
 
@@ -58,8 +59,13 @@ export async function createProject(props: CreateProjectProps): Promise<Project>
 export async function getProject(projectId: string): Promise<Project> {
   const headers = getAuthedHeaders()
   const opt = {headers}
-  const {data} = await axios.get(`${API_URL}/projects/${projectId}`, opt)
-  return castObjectDates<Project>(data)
+
+  try {
+    const {data} = await axios.get(`${API_URL}/projects/${projectId}`, opt)
+    return castObjectDates<Project>(data)
+  } catch (error: any) {
+    throw toHandledError(error, {projectId})
+  }
 }
 
 export interface ListResponse<T> {
@@ -181,8 +187,12 @@ export async function getBuild(projectId: string, buildId: string): Promise<Buil
 export async function getSelf(): Promise<Self> {
   const headers = getAuthedHeaders()
   const opt = {headers}
-  const {data} = await axios.get(`${API_URL}/me`, opt)
-  return castObjectDates<Self>(data)
+  try {
+    const {data} = await axios.get(`${API_URL}/me`, opt)
+    return castObjectDates<Self>(data)
+  } catch (error: any) {
+    throw toHandledError(error)
+  }
 }
 
 // Tells us the current agreement / terms status for the user
