@@ -2,7 +2,7 @@ import Axios from 'axios'
 
 import {HandledError} from '@cli/types/index.js'
 
-import {getShortUUID} from './index.js'
+import {getShortUUID} from './uuid.js'
 
 export function isNetworkError(exception: any) {
   if (!Axios.isAxiosError(exception)) return false
