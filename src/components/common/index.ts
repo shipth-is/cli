@@ -1,3 +1,4 @@
+export * from './ErrorBox.js'
 export * from './FormTextInput.js'
 export * from './JobLogLine.js'
 export * from './JobProgress.js'

@@ -33,7 +33,7 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
 
     withFullScreen(
       <Command command={this}>
-        <AndroidWizard onComplete={() => process.exit(0)} onError={(e) => this.error(e)} />
+        <AndroidWizard onComplete={() => process.exit(0)} onError={(e) => this.error(e.message, {exit: 1})} />
       </Command>,
     ).start()
   }

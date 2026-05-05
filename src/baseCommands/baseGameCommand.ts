@@ -1,7 +1,7 @@
 import {Command, Flags} from '@oclif/core'
 
 import {getProject, updateProject} from '@cli/api/index.js'
-import {EditableProject, Project} from '@cli/types'
+import {EditableProject, HandledError, Project} from '@cli/types'
 
 import {BaseAuthenticatedCommand} from './baseAuthenticatedCommand.js'
 
@@ -17,9 +17,11 @@ export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuth
       if (!gameId) this.error('No game ID found.')
       return await getProject(gameId)
     } catch (error: any) {
-      if (error?.response?.status === 404) {
-        this.error('Game not found - please check you have access')
-      } else throw error
+      if (error instanceof HandledError) {
+        return this.error(error.message, {exit: 1})
+      } else {
+        throw error
+      }
     }
   }
 

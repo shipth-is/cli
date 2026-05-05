@@ -17,14 +17,7 @@ export * from './help.js'
 export * from './hooks/index.js'
 export * from './query/index.js'
 export * from './ship/index.js'
-
-/**
- * Works the same way that git short commits are generated.
- * Used for most uuids on the backend where the short value should be unique within one users account.
- */
-export function getShortUUID(originalUuid: string): string {
-  return originalUuid.slice(0, 8)
-}
+export * from './uuid.js'
 
 export function getStageColor(stage: JobStage) {
   switch (stage) {
