@@ -1,9 +1,8 @@
-import {Box, Text} from 'ink'
 import React from 'react'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/baseAuthenticatedCommand.js'
+import {ErrorBox} from '@cli/components/common/ErrorBox.js'
 import {GameContext, GameProvider} from '@cli/components/context/GameProvider.js'
-import {HandledError} from '@cli/types/index.js'
 
 import {Command, CommandProps} from './Command.js'
 
@@ -13,37 +12,10 @@ interface Props extends CommandProps {
 
 const CommandGameErrorBoundary = ({children}: {children: React.ReactNode}) => {
   const {error} = React.useContext(GameContext)
-
-  // No error
+  // No error - show children
   if (!error) return <>{children}</>
-
-  // A preformatted error - don't show the stack
-  if (error instanceof HandledError) {
-    return (
-      <Box flexDirection="row" marginTop={0}>
-        <Text color="red">{' ›   '}</Text>
-        <Text>Error: {error.message}</Text>
-      </Box>
-    )
-  }
-
-  // Show full error and stack if there is one
-  const stack = error.stack?.trim()
-  const fullLog =
-    stack && stack.includes(error.message)
-      ? stack
-      : [error.message, stack].filter((part): part is string => Boolean(part)).join('\n')
-  const logLines = fullLog ? fullLog.split('\n') : [error.message]
-
-  return (
-    <Box flexDirection="column" marginTop={0}>
-      {logLines.map((line, i) => (
-        <Text key={i} color="red">
-          {line}
-        </Text>
-      ))}
-    </Box>
-  )
+  // Show error box if there is an error
+  return <ErrorBox error={error} />
 }
 
 export const CommandGame = ({children, command}: Props) => (

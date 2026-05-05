@@ -9,10 +9,9 @@ import {CreateInitialBuild} from '@cli/components/android/CreateInitialBuild/ind
 import {CreateServiceAccountKey} from '@cli/components/android/CreateServiceAccountKey/index.js'
 import {InviteServiceAccount} from '@cli/components/android/InviteServiceAccount/index.js'
 import {CreateOrImport} from '@cli/components/android/Keystore/CreateOrImport.js'
-import {CommandContext, GameProvider} from '@cli/components/context/index.js'
-import {Markdown, StepProps} from '@cli/components/index.js'
+import {CommandContext, GameProvider, ErrorBox, Markdown, StepProps} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
-import { useResponsive } from '@cli/utils/index.js'
+import {useResponsive} from '@cli/utils/index.js'
 
 import {Step, StepStatus, Steps, getStatusFlags, getStepInitialStatus} from './utils.js'
 import {WizardHeader} from './WizardHeader.js'
@@ -32,13 +31,14 @@ const ON_COMPLETE_DELAY_MS = 500
 export const AndroidWizard = (props: StepProps) => {
   const {command} = React.useContext(CommandContext)
 
-  const { isTall, isWide } = useResponsive()
+  const {isTall, isWide} = useResponsive()
 
   const [currentStep, setCurrentStep] = useState<Step | null>(null)
   const [currentStepIndex, setCurrentStepIndex] = useState<null | number>(null)
   const [stepStatuses, setStepStatuses] = useState<StepStatus[] | null>(null)
 
   const [showSuccess, setShowSuccess] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
 
   // Returns true if all steps are complete
   const determineStep = async () => {
@@ -62,10 +62,15 @@ export const AndroidWizard = (props: StepProps) => {
   }
 
   useEffect(() => {
-    determineStep().catch(props.onError)
+    determineStep().catch(handleError)
   }, [command])
 
-  const handleStepComplete = () => determineStep().catch(props.onError)
+  const handleStepComplete = () => determineStep().catch(handleError)
+
+  const handleError = (e: Error) => {
+    setError(e)
+    setTimeout(() => process.exit(1), ON_COMPLETE_DELAY_MS)
+  }
 
   const StepInterface = currentStep ? stepComponentMap[currentStep] : null
 
@@ -73,6 +78,8 @@ export const AndroidWizard = (props: StepProps) => {
     docsURL: new URL('/docs', WEB_URL).toString(),
     iosSetupURL: new URL('/docs/ios', WEB_URL).toString(),
   }
+
+  if (error) return <ErrorBox error={error} />
 
   return (
     <GameProvider>
@@ -82,7 +89,7 @@ export const AndroidWizard = (props: StepProps) => {
           borderStyle={isTall && isWide ? 'single' : undefined}
           margin={isTall && isWide ? 1 : 0}
           onComplete={handleStepComplete}
-          onError={props.onError}
+          onError={handleError}
           padding={isTall && isWide ? 1 : 0}
         />
       )}
