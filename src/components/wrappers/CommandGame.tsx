@@ -17,7 +17,7 @@ const CommandGameErrorBoundary = ({children}: {children: React.ReactNode}) => {
   // No error
   if (!error) return <>{children}</>
 
-  // An preformatted error - don't show the stack
+  // A preformatted error - don't show the stack
   if (error instanceof HandledError) {
     return (
       <Box flexDirection="row" marginTop={0}>
