@@ -28,10 +28,16 @@ const CommandGameErrorBoundary = ({children}: {children: React.ReactNode}) => {
   }
 
   // Show full error and stack if there is one
-  const fullLog = error.stack?.includes(error.message) ? error.stack : `${error.message}\n${error.stack}`
+  const stack = error.stack?.trim()
+  const fullLog =
+    stack && stack.includes(error.message)
+      ? stack
+      : [error.message, stack].filter((part): part is string => Boolean(part)).join('\n')
+  const logLines = fullLog ? fullLog.split('\n') : [error.message]
+
   return (
     <Box flexDirection="column" marginTop={0}>
-      {fullLog.split('\n').map((line, i) => (
+      {logLines.map((line, i) => (
         <Text key={i} color="red">
           {line}
         </Text>
