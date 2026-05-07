@@ -15,7 +15,7 @@ export default class AppleCertificateShow extends BaseAuthenticatedCommand<typeo
   }
 
   static override description =
-    'Shows expanded details (expiry, entitlements) for an iOS Distribution Certificate in your ShipThis account.'
+    'Shows expanded details (expiry) for an iOS Distribution Certificate in your ShipThis account.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
