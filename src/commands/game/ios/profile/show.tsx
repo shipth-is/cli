@@ -39,7 +39,11 @@ export default class GameIosProfileShow extends BaseGameCommand<typeof GameIosPr
       : profiles.find((c) => c.isActive)
 
     if (!match) {
-      this.error('No active credential')
+      this.error(
+        args.id
+          ? `No credential found matching ID/prefix "${args.id}"`
+          : 'No active credential',
+      )
     }
 
     render(
