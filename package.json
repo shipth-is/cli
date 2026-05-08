@@ -19,7 +19,7 @@
     "@tanstack/react-query": "^5.56.2",
     "@types/marked-terminal": "^6.1.1",
     "@types/uuid": "^10.0.0",
-    "axios": "^1.7.7",
+    "axios": "^1.16.0",
     "chalk": "^5.4.1",
     "fast-glob": "^3.3.2",
     "fs-extra": "^11.2.0",
