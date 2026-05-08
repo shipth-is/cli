@@ -19,7 +19,18 @@ const ENTITLEMENT_LABELS: Record<string, string> = {
   'keychain-access-groups': 'Keychain Groups',
 }
 
-type ExpiryStatus = 'expired' | 'expiring-soon' | null
+type ExpiryStatus = 'expired' | 'expiring-soon' | null | undefined
+
+const getStatusColor = (status: ExpiryStatus): string => {
+  switch (status) {
+    case 'expired':
+      return 'red'
+    case 'expiring-soon':
+      return 'yellow'
+    default:
+      return 'white'
+  }
+}
 
 const getExpiryStatus = (iso: string): ExpiryStatus => {
   const dt = DateTime.fromISO(iso)
@@ -29,10 +40,11 @@ const getExpiryStatus = (iso: string): ExpiryStatus => {
   return null
 }
 
-const ExpiryIcon = ({status}: {status: ExpiryStatus}) => {
+const ExpiryNote = ({status}: {status: ExpiryStatus}) => {
   if (!status) return null
-  const color = status === 'expired' ? 'red' : 'yellow'
-  return <Text color={color}>{' ⚠'}</Text>
+  const color = getStatusColor(status)
+  const message = status === 'expired' ? 'Expired' : 'Expiring soon'
+  return <Text color={color}>{message}</Text>
 }
 
 interface DetailRowProps {
@@ -45,13 +57,11 @@ interface DetailRowProps {
 const DetailRow = ({expiryStatus, label, labelWidth, value}: DetailRowProps) => (
   <Box flexDirection="row">
     <Box flexShrink={0} marginRight={2} width={labelWidth}>
-      <Text>
-        {label}
-        {expiryStatus && <ExpiryIcon status={expiryStatus} />}
-      </Text>
+      <Text>{label}</Text>
     </Box>
-    <Box flexGrow={1} flexShrink={1}>
-      <TruncatedText bold>{value}</TruncatedText>
+    <Box flexDirection="row" gap={1}>
+      <TruncatedText bold color={getStatusColor(expiryStatus)}>{value}</TruncatedText>
+      <ExpiryNote status={expiryStatus} />
     </Box>
   </Box>
 )
@@ -59,13 +69,19 @@ const DetailRow = ({expiryStatus, label, labelWidth, value}: DetailRowProps) => 
 const formatEntitlementValue = (value: unknown): string => {
   if (Array.isArray(value)) return value.map((v) => String(v)).join(', ')
   if (value === null || value === undefined) return ''
+  if (typeof value === 'object') return JSON.stringify(value)
   return String(value)
 }
 
-const collectRows = (cred: UserCredential | ProjectCredential): {expiryStatus?: ExpiryStatus; label: string; value: string}[] => {
-  const rows: {expiryStatus?: ExpiryStatus; label: string; value: string}[] = []
+interface RowDetails {
+  expiryStatus?: ExpiryStatus
+  label: string
+  value: string
+}
+
+const getRows = (cred: UserCredential | ProjectCredential): RowDetails[] => {
+  const rows: RowDetails[] = []
   const {details, type} = cred
-  if (!details) return rows
 
   if (type === CredentialsType.CERTIFICATE) {
     const d = details as CertificateCredentialDetails
@@ -111,7 +127,7 @@ interface Props {
 }
 
 export const CredentialDetailsView = ({credential, title}: Props) => {
-  const rows = collectRows(credential)
+  const rows = getRows(credential)
 
   if (rows.length === 0) {
     return (
