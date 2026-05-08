@@ -1,4 +1,5 @@
 export * from './BuildsTable.js'
+export * from './CredentialDetailsView.js'
 export * from './GameStatus.js'
 export * from './JobFollow.js'
 export * from './JobLogTail.js'

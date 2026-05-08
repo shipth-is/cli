@@ -155,9 +155,24 @@ export enum CredentialsType {
   CERTIFICATE = 'CERTIFICATE',
   KEY = 'KEY',
 }
+
+export interface CertificateCredentialDetails {
+  certExpiresAt?: string
+  lastRefreshedAt?: string
+  profileEntitlements?: Record<string, unknown>
+  profileExpiresAt?: string
+}
+
+export interface KeyCredentialDetails {
+  serviceAccountEmail?: string
+}
+
+export type CredentialDetails = CertificateCredentialDetails | KeyCredentialDetails
+
 export interface UserCredential {
   bucketName: string
   createdAt: DateTime
+  details: CredentialDetails
   id: string
   isActive: boolean
   key: string
