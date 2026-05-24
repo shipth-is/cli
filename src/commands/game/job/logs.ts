@@ -40,17 +40,23 @@ export default class GameJobLogs extends BaseGameCommand<typeof GameJobLogs> {
     const job = await this.getJob()
 
     // Exit cleanly if stdout closes mid-stream (e.g. piped to `head`).
-    process.stdout.on('error', (err: NodeJS.ErrnoException) => {
+    const handleStdoutError = (err: NodeJS.ErrnoException) => {
       if (err.code === 'EPIPE') process.exit(0)
-    })
+    }
 
-    const stream = await getJobLogsDownloadStream(job.id, job.project.id)
+    process.stdout.on('error', handleStdoutError)
 
-    for await (const chunk of stream as AsyncIterable<Buffer>) {
-      // write() returns false when stdout's buffer is full; wait for 'drain' before resuming.
-      if (!process.stdout.write(chunk)) {
-        await new Promise<void>((resolve) => process.stdout.once('drain', resolve))
+    try {
+      const stream = await getJobLogsDownloadStream(job.id, job.project.id)
+
+      for await (const chunk of stream as AsyncIterable<Buffer>) {
+        // write() returns false when stdout's buffer is full; wait for 'drain' before resuming.
+        if (!process.stdout.write(chunk)) {
+          await new Promise<void>((resolve) => process.stdout.once('drain', resolve))
+        }
       }
+    } finally {
+      process.stdout.removeListener('error', handleStdoutError)
     }
   }
 }
