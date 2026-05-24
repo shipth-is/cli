@@ -146,6 +146,18 @@ export async function getJob(jobId: string, projectId: string): Promise<Job> {
   return castJobDates(data)
 }
 
+// Streams the full plain-text log file for a job from /logs/download
+export async function getJobLogsDownloadStream(jobId: string, projectId: string): Promise<NodeJS.ReadableStream> {
+  const headers = getAuthedHeaders()
+  const response = await axios({
+    headers,
+    method: 'GET',
+    responseType: 'stream',
+    url: `${API_URL}/projects/${projectId}/jobs/${jobId}/logs/download`,
+  })
+  return response.data
+}
+
 // Returns a url with an OTP - when visited it authenticates the user
 export async function getSingleUseUrl(destination: string) {
   // Call the API to generate an OTP

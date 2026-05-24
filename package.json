@@ -149,6 +149,7 @@
     "./dist/commands/game/ios/profile/show.js",
     "./dist/commands/game/create.js",
     "./dist/commands/game/job/list.js",
+    "./dist/commands/game/job/logs.js",
     "./dist/commands/game/job/status.js",
     "./dist/commands/game/status.js",
     "./dist/commands/game/details.js",
