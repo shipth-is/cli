@@ -66,7 +66,7 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
           <Text>Create an initial build...</Text>
           {(isLoadingBuilds || isLoadingJobs || shipMutation.isPending) && <Spinner type="dots" />}
         </Box>
-        {androidJob === null && <Text>{shipLog}</Text>}
+        {androidJob == null && shipLog && <Text>{shipLog}</Text>}
         {androidJob && (
           <>
             <JobProgress
