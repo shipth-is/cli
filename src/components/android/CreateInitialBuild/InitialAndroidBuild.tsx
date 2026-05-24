@@ -68,17 +68,20 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
         </Box>
         {androidJob === null && <Text>{shipLog}</Text>}
         {androidJob && (
-          <JobProgress
-            job={androidJob}
-            onComplete={onComplete}
-            onFailure={(j: Job) => {
-              setFailedJob(j)
-              // Wait before triggering the error to allow the job log to be displayed
-              setTimeout(() => {
-                onError(new Error(`Job ${j.id} failed`))
-              }, 1000)
-            }}
-          />
+          <>
+            <JobProgress
+              job={androidJob}
+              onComplete={onComplete}
+              onFailure={(j: Job) => {
+                setFailedJob(j)
+                // Wait before triggering the error to allow the job log to be displayed
+                setTimeout(() => {
+                  onError(new Error(`Job ${j.id} failed`))
+                }, 1000)
+              }}
+            />
+            <JobLogTail isWatching={true} jobId={androidJob.id} length={10} projectId={gameId} />
+          </>
         )}
 
         {failedJob && (
