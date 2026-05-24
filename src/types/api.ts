@@ -9,8 +9,8 @@ export type ScalarDict = {
 export interface UserDetails {
   hasAcceptedTerms?: boolean
   source?: string
-  termsAgreementVersionId?: AgreementVersion['id'];
-  privacyAgreementVersionId?: AgreementVersion['id'];
+  termsAgreementVersionId?: AgreementVersion['id']
+  privacyAgreementVersionId?: AgreementVersion['id']
 }
 
 export interface Self {
@@ -283,4 +283,22 @@ export interface AgreementVersion {
 export interface TermsResponse {
   changes: AgreementVersion[]
   current: AgreementVersion[]
+}
+
+export enum SimulatorStatus {
+  BOOTING = 'BOOTING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING',
+  RUNNING = 'RUNNING',
+}
+
+export interface SimulatorSession {
+  id: string
+  userId: string
+  projectId: string
+  platform: Platform
+  status: SimulatorStatus
+  createdAt: DateTime
+  updatedAt: DateTime
 }

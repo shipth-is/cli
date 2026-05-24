@@ -152,6 +152,7 @@
     "./dist/commands/game/job/logs.js",
     "./dist/commands/game/job/status.js",
     "./dist/commands/game/status.js",
+    "./dist/commands/game/simulator.js",
     "./dist/commands/game/details.js",
     "./dist/commands/game/build/list.js",
     "./dist/commands/game/build/download.js",
