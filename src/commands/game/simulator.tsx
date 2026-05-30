@@ -1,15 +1,17 @@
 import {Args} from '@oclif/core'
-import {render} from 'ink'
-import {Text} from 'ink'
+import {render, Box, Text} from 'ink'
 import axios from 'axios'
+import {useContext, useEffect, useState} from 'react'
 
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {CommandGame} from '@cli/components/index.js'
-import {SimulatorSession} from '@cli/types/api.js'
+import {CommandContext, CommandGame, JobProgress} from '@cli/components/index.js'
+import {Job, ShipGameFlags, SimulatorSession} from '@cli/types/index.js'
 
 import {castObjectDates} from '@cli/utils/dates.js'
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/constants/config.js'
+import {getErrorMessage} from '@cli/utils/errors.js'
+import {useSafeInput, useShip} from '@cli/utils/index.js'
 
 async function startSimulator(projectId: string, platform: string): Promise<SimulatorSession> {
   const headers = getAuthedHeaders()
@@ -22,11 +24,51 @@ async function startSimulator(projectId: string, platform: string): Promise<Simu
       opt,
     )
     return castObjectDates<SimulatorSession>(data)
-  } catch (error) {
+  } catch (error: any) {
     console.log(JSON.stringify(error.response?.data, null, 2))
     //console.error('Error starting simulator:', error)
     throw error
   }
+}
+
+interface SimulatorBuilderProps {
+  platform: 'android' | 'ios'
+  onError: (error: any) => void
+}
+
+const SimulatorBuilder = ({platform, onError}: SimulatorBuilderProps): JSX.Element => {
+  const {command} = useContext(CommandContext)
+  const shipMutation = useShip()
+  const [jobs, setJobs] = useState<Job[] | null>(null)
+
+  const startBuild = async () => {
+    if (!command) throw new Error('No command in context')
+    setJobs(null)
+    const shipFlags: Partial<ShipGameFlags> = {platform, simulator: true}
+    const startedJobs = await shipMutation.mutateAsync({
+      command,
+      log: () => {},
+      warnLog: () => {},
+      shipFlags: {...(command.getFlags() as ShipGameFlags), ...shipFlags},
+    })
+    setJobs(startedJobs)
+  }
+
+  useEffect(() => {
+    startBuild().catch(onError)
+  }, [])
+
+  useSafeInput((input) => {
+    if (input.toLowerCase() === 'r') startBuild().catch(onError)
+  })
+
+  return (
+    <Box flexDirection="column">
+      {jobs === null && <Text>Preparing build...</Text>}
+      {jobs && jobs.map((job) => <JobProgress job={job} key={job.id} />)}
+      <Text>Press R to rebuild now.</Text>
+    </Box>
+  )
 }
 
 export default class GameSimulator extends BaseGameCommand<typeof GameSimulator> {
@@ -60,11 +102,15 @@ export default class GameSimulator extends BaseGameCommand<typeof GameSimulator>
 
     const session = await startSimulator(gameId, platform)
 
+    const handleError = (e: Error) => this.error(getErrorMessage(e))
+
     render(
       <CommandGame command={this}>
-        <Text>Simulator skeleton for platform: {platform}</Text>
-        <Text>Session ID: {session.id}</Text>
-        <Text>`{JSON.stringify(session, null, 2)}`</Text>
+        <Box flexDirection="column">
+          <Text>Simulator session started for platform: {platform}</Text>
+          <Text>Session ID: {session.id}</Text>
+          <SimulatorBuilder platform={platform as 'android' | 'ios'} onError={handleError} />
+        </Box>
       </CommandGame>,
     )
   }
