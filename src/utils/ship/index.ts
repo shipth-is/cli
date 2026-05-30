@@ -197,6 +197,7 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
     verbose: finalFlags.verbose,
     useDemoCredentials: isUsingDemoCredentials,
     gameEngineVersion: finalFlags.gameEngineVersion,
+    simulator: finalFlags.simulator,
   }
 
   const jobs = await startJobsFromUpload(uploadTicketId, startJobsOptions)
