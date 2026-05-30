@@ -43,6 +43,7 @@ export type ShipGameFlags = {
   useEncryption?: boolean
   gameEngineVersion?: string
   dryRun?: boolean
+  simulator?: boolean
 }
 export class HandledError extends Error {
   constructor(message: string) {

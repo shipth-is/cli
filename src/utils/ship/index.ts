@@ -199,6 +199,7 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
     // Undefined without the flag, so it is not sent and the backend uses the game's setting
     useEncryption: finalFlags.useEncryption,
     gameEngineVersion: finalFlags.gameEngineVersion,
+    simulator: finalFlags.simulator,
   }
 
   const jobs = await startJobsFromUpload(uploadTicketId, startJobsOptions)
