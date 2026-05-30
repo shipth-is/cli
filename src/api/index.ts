@@ -116,6 +116,7 @@ type StartJobsOptions = {
   verbose?: boolean
   useDemoCredentials?: boolean
   gameEngineVersion?: string
+  simulator?: boolean
 } & UploadDetails
 
 export async function startJobsFromUpload(uploadTicketId: string, startOptions: StartJobsOptions): Promise<Job[]> {

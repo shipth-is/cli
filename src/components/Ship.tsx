@@ -19,11 +19,13 @@ import {getShortUUID, useSafeInput, useShip} from '@cli/utils/index.js'
 interface Props {
   onComplete: (completedJobs: Job[]) => void
   onError: (error: any) => void
+  shipFlags?: Partial<ShipGameFlags>
 }
 
-export const Ship = ({onComplete, onError}: Props): JSX.Element => {
+export const Ship = ({onComplete, onError, shipFlags}: Props): JSX.Element => {
   const {command} = useContext(CommandContext)
-  const flags = command && (command.getFlags() as ShipGameFlags)
+  const commandFlags = command && (command.getFlags() as ShipGameFlags)
+  const flags = commandFlags && {...commandFlags, ...shipFlags}
   const {gameId} = useContext(GameContext)
   const shipMutation = useShip()
 
@@ -40,7 +42,7 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   const handleStartOnMount = async () => {
     if (!command) throw new Error('No command in context')
     const logFn = flags?.follow || flags?.dryRun ? console.log : setShipLog
-    const startedJobs = await shipMutation.mutateAsync({command, log: logFn, warnLog: console.warn})
+    const startedJobs = await shipMutation.mutateAsync({command, log: logFn, warnLog: console.warn, shipFlags: flags})
     setJobs(startedJobs)
   }
 
