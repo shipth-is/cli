@@ -43,6 +43,7 @@ const SimulatorBuilder = ({platform, onError}: SimulatorBuilderProps): JSX.Eleme
 
   const startBuild = async () => {
     if (!command) throw new Error('No command in context')
+    if (shipMutation.isPending) return
     setJobs(null)
     const shipFlags: Partial<ShipGameFlags> = {platform, simulator: true}
     const startedJobs = await shipMutation.mutateAsync({
@@ -59,14 +60,14 @@ const SimulatorBuilder = ({platform, onError}: SimulatorBuilderProps): JSX.Eleme
   }, [])
 
   useSafeInput((input) => {
-    if (input.toLowerCase() === 'r') startBuild().catch(onError)
+    if (input.toLowerCase() === 'r' && !shipMutation.isPending) startBuild().catch(onError)
   })
 
   return (
     <Box flexDirection="column">
-      {jobs === null && <Text>Preparing build...</Text>}
-      {jobs && jobs.map((job) => <JobProgress job={job} key={job.id} />)}
-      <Text>Press R to rebuild now.</Text>
+      {shipMutation.isPending && <Text>Building... (this can take a while)</Text>}
+      {!shipMutation.isPending && jobs && jobs.map((job) => <JobProgress job={job} key={job.id} />)}
+      <Text>{shipMutation.isPending ? 'Build in progress...' : 'Press R to rebuild now.'}</Text>
     </Box>
   )
 }
