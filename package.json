@@ -79,7 +79,7 @@
     "shx": "^0.3.3",
     "ts-node": "^10",
     "tsconfig-paths": "^4.2.0",
-    "tsx": "^4.19.0",
+    "tsx": "^4.22.4",
     "typescript": "^5"
   },
   "engines": {
@@ -260,6 +260,7 @@
   },
   "types": "dist/index.d.ts",
   "overrides": {
+    "esbuild": "0.28.1",
     "serialize-javascript": "^7.0.5",
     "cli-spinners": "2.9.2",
     "@alcalzone/ansi-tokenize": "^0.2.2",
