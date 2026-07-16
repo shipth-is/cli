@@ -16,7 +16,7 @@ Connects ShipThis with Google for managing Service Account API Keys for an Andro
 
 ```help
 USAGE
-  $ shipthis game android apiKey connect [-g <value>] [-f] [-d]
+  $ shipthis game android apiKey connect [-g <value>] [-d] [-f]
 
 FLAGS
   -d, --disconnect
@@ -44,7 +44,7 @@ Creates a new Android Service Account API Key for a game
 
 ```help
 USAGE
-  $ shipthis game android apiKey create [-g <value>] [-w] [-f]
+  $ shipthis game android apiKey create [-g <value>] [-f] [-w]
 
 FLAGS
   -f, --force
@@ -96,7 +96,7 @@ Saves the current Android Service Account API Key to a ZIP file
 
 ```help
 USAGE
-  $ shipthis game android apiKey export FILE [-g <value>] [-f]
+  $ shipthis game android apiKey export FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
@@ -122,7 +122,7 @@ Imports an Android Service Account API Key to your ShipThis account for the spec
 
 ```help
 USAGE
-  $ shipthis game android apiKey import FILE [-g <value>] [-f]
+  $ shipthis game android apiKey import FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
@@ -148,15 +148,15 @@ Invites the Service Account to your Google Play Account.
 
 ```help
 USAGE
-  $ shipthis game android apiKey invite [ACCOUNTID] [-g <value>] [-p] [-p] [-w]
+  $ shipthis game android apiKey invite [ACCOUNTID] [-g <value>] [-p] [-w] [-a]
 
 ARGUMENTS
-  ACCOUNTID  The Google Play Account ID
+  [ACCOUNTID]  The Google Play Account ID
 
 FLAGS
+  -a, --waitForGoogleApp  Waits for the Google Play app to be created.
   -g, --gameId=<value>    The ID of the game
   -p, --prompt            Prompt for the Google Play Account ID
-  -p, --waitForGoogleApp  Waits for the Google Play app to be created (10 mins).
   -w, --waitForAuth       Wait for Google Authentication (10 mins).
 
 DESCRIPTION
@@ -164,6 +164,35 @@ DESCRIPTION
 
 EXAMPLES
   $ shipthis game android apiKey invite
+```
+
+### `game android apiKey policy`
+
+#### Description
+
+Gets and sets the iam.disableServiceAccountKeyCreation policy for your Google Organization
+
+#### Help Output
+
+```help
+USAGE
+  $ shipthis game android apiKey policy [-g <value>] [-e | -r] [-w]
+
+FLAGS
+  -e, --enforce         Enforces the policy
+  -g, --gameId=<value>  The ID of the game
+  -r, --revoke          Revokes the policy
+  -w, --waitForAuth     Wait for Google Authentication (10 mins).
+
+DESCRIPTION
+  Gets and sets the iam.disableServiceAccountKeyCreation policy for your Google Organization
+
+EXAMPLES
+  $ shipthis game android apiKey policy
+
+  $ shipthis game android apiKey policy --enforce
+
+  $ shipthis game android apiKey policy --revoke
 ```
 
 ### `game android apiKey show`

@@ -8,15 +8,15 @@ Invites the Service Account to your Google Play Account.
 
 ```help
 USAGE
-  $ shipthis game android apiKey invite [ACCOUNTID] [-g <value>] [-p] [-p] [-w]
+  $ shipthis game android apiKey invite [ACCOUNTID] [-g <value>] [-p] [-w] [-a]
 
 ARGUMENTS
-  ACCOUNTID  The Google Play Account ID
+  [ACCOUNTID]  The Google Play Account ID
 
 FLAGS
+  -a, --waitForGoogleApp  Waits for the Google Play app to be created.
   -g, --gameId=<value>    The ID of the game
   -p, --prompt            Prompt for the Google Play Account ID
-  -p, --waitForGoogleApp  Waits for the Google Play app to be created (10 mins).
   -w, --waitForAuth       Wait for Google Authentication (10 mins).
 
 DESCRIPTION
