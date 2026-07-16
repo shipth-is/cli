@@ -55,13 +55,15 @@ shipthis game ship --platform android --follow --gameEngineVersion 4.5.1 --downl
 
 ```help
 USAGE
-  $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ] [--follow ] [--skipPublish] [--verbose] [--useDemoCredentials ]
-    [--gameEngineVersion <value>]
+  $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ]
+    [--follow ] [--skipPublish] [--verbose] [--useDemoCredentials ] [--gameEngineVersion <value>] [--dryRun]
 
 FLAGS
   -g, --gameId=<value>             The ID of the game
       --download=<value>           Download the build artifact to the specified file
       --downloadAPK=<value>        Download the APK artifact (if available) to the specified file
+      --dryRun                     Dry run - lists the files that would be shipped without executing the build or
+                                   publish steps
       --follow                     Follow the job logs in real-time (requires --platform)
       --gameEngineVersion=<value>  Override the specified game engine version for this build
       --platform=<option>          The platform to ship the game to. This can be "android" or "ios"
@@ -89,4 +91,6 @@ EXAMPLES
   $ shipthis game ship --platform ios --useDemoCredentials --download game.ipa
 
   $ shipthis game ship --platform android --gameEngineVersion 4.5.1 --skipPublish
+
+  $ shipthis game ship --platform android --dryRun
 ```

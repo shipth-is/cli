@@ -23,13 +23,10 @@ To do that please run the following command first:
 
 ```help
 USAGE
-  $ shipthis game wizard PLATFORM [-f <value>]
+  $ shipthis game wizard PLATFORM
 
 ARGUMENTS
-  PLATFORM  The platform to run the wizard for
-
-FLAGS
-  -f, --forceStep=<value>  Force a specific step to run.
+  PLATFORM  (android|ios) The platform to run the wizard for. This can be "android" or "ios"
 
 DESCRIPTION
   Runs all the steps for the specific platform
