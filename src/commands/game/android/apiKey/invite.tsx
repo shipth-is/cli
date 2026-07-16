@@ -23,7 +23,7 @@ export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<type
     ...BaseGameAndroidCommand.flags,
     prompt: Flags.boolean({char: 'p', description: 'Prompt for the Google Play Account ID'}),
     waitForAuth: Flags.boolean({char: 'w', description: 'Wait for Google Authentication (10 mins).'}),
-    waitForGoogleApp: Flags.boolean({char: 'p', description: 'Waits for the Google Play app to be created (10 mins).'}),
+    waitForGoogleApp: Flags.boolean({char: 'a', description: 'Waits for the Google Play app to be created.'}),
   }
 
   public async run(): Promise<void> {
