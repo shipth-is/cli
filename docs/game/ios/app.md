@@ -22,6 +22,36 @@ these commands. To do that please run the following commands first:
 
 ## Commands
 
+### `game ios app addTester`
+
+#### Description
+
+Adds a test user to the game in App Store Connect.
+
+#### Help Output
+
+```help
+USAGE
+  $ shipthis game ios app addTester [-e <value>] [-f <value>] [-g <value>] [-l <value>] [-q] [-s] [-t <value>]
+
+FLAGS
+  -e, --email=<value>          The email address of the tester
+  -f, --firstName=<value>      The first name of the tester
+  -g, --gameId=<value>         The ID of the game
+  -l, --lastName=<value>       The last name of the tester
+  -q, --quiet                  Avoid output except for interactions and errors
+  -s, --self                   Add yourself as a tester (uses your Apple ID email and name)
+  -t, --testGroupName=<value>  [default: ShipThis Test Group (Internal)] The name of the internal test group
+
+DESCRIPTION
+  Adds a test user to the game in App Store Connect.
+
+EXAMPLES
+  $ shipthis game ios app addTester
+
+  $ shipthis game ios app addTester --testGroupName "Testers"
+```
+
 ### `game ios app create`
 
 #### Description
@@ -42,7 +72,7 @@ to be unique within the Apple ecosystem. ShipThis will suggest values for these.
 
 ```help
 USAGE
-  $ shipthis game ios app create [-q] [-g <value>] [-n <value>] [-b <value>] [-f]
+  $ shipthis game ios app create [-n <value>] [-b <value>] [-f] [-g <value>] [-q]
 
 FLAGS
   -b, --bundleId=<value>  The BundleId in the Apple Developer Portal
@@ -120,7 +150,7 @@ ShipThis will use default values for this file if it does not exist.
 
 ```help
 USAGE
-  $ shipthis game ios app sync [-q] [-g <value>] [-f]
+  $ shipthis game ios app sync [-f] [-g <value>] [-q]
 
 FLAGS
   -f, --force

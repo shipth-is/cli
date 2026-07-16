@@ -24,18 +24,24 @@ your behalf. To do this, ShipThis generates temporary session cookies which it r
 
 ```help
 USAGE
-  $ shipthis apple login [-q] [-f] [-e <value>]
+  $ shipthis apple login [-e <value>] [-f] [-q] [-l]
 
 FLAGS
   -e, --appleEmail=<value>  Your Apple Developer email address
   -f, --force
+  -l, --logout              Forget the saved Apple session (log out)
   -q, --quiet               Avoid output except for interactions and errors
 
 DESCRIPTION
-  Authenticate with Apple - saves the session to the auth file
+  Authenticate with Apple - saves the session to the auth file.
+
+  Your Apple password is sent only to Apple, never to ShipThis. Only the resulting session cookies are saved locally.
+  Read the source: https://github.com/shipth-is/cli/blob/main/src/commands/apple/login.ts
 
 EXAMPLES
   $ shipthis apple login
 
   $ shipthis apple login --force --appleEmail me@email.nowhere
+
+  $ shipthis apple login --logout
 ```

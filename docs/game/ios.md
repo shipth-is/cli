@@ -21,4 +21,5 @@ these commands. To do that please run the following commands first:
 ## Commands
 
 - [game ios status](/docs/reference/game/ios/status)
+- [game ios wizard](/docs/reference/game/ios/wizard)
 

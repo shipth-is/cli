@@ -64,7 +64,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
         ...(iosBundleId && {iosBundleId}),
         ...(liquidGlassIconPath !== undefined && {liquidGlassIconPath}),
         ...(semanticVersion && {semanticVersion}),
-        ...(useDemoCredentials !== undefined && {useDemoCredentials: useDemoCredentials.toLowerCase() === 'true'}),
+        ...(useDemoCredentials !== undefined && {useDemoCredentials: useDemoCredentials === 'true'}),
       },
       name: name || game.name,
     }
