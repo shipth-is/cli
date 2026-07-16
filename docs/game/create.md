@@ -28,8 +28,8 @@ command.
 
 ```help
 USAGE
-  $ shipthis game create [-f] [-q] [-a <value>] [-b <value>] [-e <value>] [-v <value>] [-g <value>] [-c <value>]
-    [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d true|false]
+  $ shipthis game create [-f] [-q] [-a <value>] [-b <value>] [-e <value>] [-v <value>] [--gcpProjectId <value>]
+    [-c <value>] [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d true|false]
 
 FLAGS
   -a, --androidPackageName=<value>   Set the Android package name
@@ -39,13 +39,13 @@ FLAGS
                                      <options: true|false>
   -e, --gameEngine=<value>           Set the game engine
   -f, --force
-  -g, --gcpProjectId=<value>         Set the GCP project ID
   -i, --iosBundleId=<value>          Set the iOS bundle ID
   -l, --liquidGlassIconPath=<value>  Set the Liquid Glass icon path
   -n, --name=<value>                 The name of the game
   -q, --quiet                        Avoid output except for interactions and errors
   -s, --semanticVersion=<value>      Set the semantic version
   -v, --gameEngineVersion=<value>    Set the game engine version
+      --gcpProjectId=<value>         Set the GCP project ID
 
 DESCRIPTION
   Create a new game in ShipThis.
