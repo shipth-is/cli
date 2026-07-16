@@ -4,6 +4,7 @@ import {v4 as uuid} from 'uuid'
 
 import {getNewUploadTicket, getProject, startJobsFromUpload} from '@cli/api/index.js'
 import type {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails, UploadTicket} from '@cli/types'
+import {detectGodotVersion, getGodotVersionDrift} from '@cli/utils/godot.js'
 import {getCWDGitInfo, getFileHash} from '@cli/utils/index.js'
 
 import {getFilesToShip} from './glob.js'
@@ -13,6 +14,26 @@ import {formatProgressLog, getPlatforms} from './utils.js'
 import {createZip} from './zip.js'
 
 const ERR_NOT_CONFIGURED = 'No Android or iOS configuration found. Please run `shipthis game wizard android` or `shipthis game wizard ios` to configure your game.'
+
+const getVersionMismatch = (detected: string, configured: string) =>
+  `Your project.godot targets Godot ${detected}, but this game builds with Godot ${configured}.`
+
+// The commands go on their own lines so they stand out - this.error() and console.warn
+// both preserve newlines.
+const getVersionFixHint = (detected: string) =>
+  `To build with Godot ${detected}, update the game:\n\n` +
+  `  shipthis game details --gameEngineVersion ${detected} --force\n\n` +
+  `Or ship once without changing the game:\n\n` +
+  `  shipthis game ship --gameEngineVersion ${detected}`
+
+const getMajorDriftError = (detected: string, configured: string) =>
+  `${getVersionMismatch(detected, configured)}\n` +
+  `Building a Godot ${detected} project with Godot ${configured} does not produce a working game, ` +
+  `so this ship has been stopped before building.\n\n` +
+  getVersionFixHint(detected)
+
+const getMinorDriftWarning = (detected: string, configured: string) =>
+  `${getVersionMismatch(detected, configured)}\n\n` + getVersionFixHint(detected)
 
 // Main function to ship the game
 export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Promise<Job[]> {
@@ -33,6 +54,16 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
   const projectConfig: ProjectConfig = await command.getProjectConfig()
   if (!projectConfig.project) throw new Error('No project found in project config')
   const project = await getProject(projectConfig.project.id)
+
+  // gameEngineVersion is detected once at create time and drifts when the project is
+  // upgraded. A major drift does not build correctly, so stop before we publish one.
+  if (!finalFlags.gameEngineVersion) {
+    const detected = detectGodotVersion()
+    const configured = project.details?.gameEngineVersion
+    const drift = detected && configured ? getGodotVersionDrift(detected, configured) : null
+    if (drift === 'major') throw new Error(getMajorDriftError(detected!, configured!))
+    if (drift === 'minor') warnLog(getMinorDriftWarning(detected!, configured!))
+  }
 
   const projectUsesDemoCredentials = Boolean(project.details?.useDemoCredentials)
   const isUsingDemoCredentials = useDemoCredentials ?? projectUsesDemoCredentials ?? false

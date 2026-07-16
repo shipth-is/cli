@@ -178,6 +178,33 @@ export function getGodotVersion(): string {
   return version as string
 }
 
+/** Detects the Godot version from project.godot. Returns null when we can't tell. */
+export function detectGodotVersion(): null | string {
+  try {
+    return getGodotVersion()
+  } catch {
+    return null
+  }
+}
+
+export type GodotVersionDrift = 'major' | 'minor'
+
+function parseMajorMinor(version: string): null | {major: number; minor: number} {
+  const match = version.trim().match(/^(\d+)\.(\d+)/)
+  if (!match) return null
+  return {major: Number(match[1]), minor: Number(match[2])}
+}
+
+/** Compares on major.minor, ignoring the patch. Null when equal or either is unparseable. */
+export function getGodotVersionDrift(detected: string, configured: string): GodotVersionDrift | null {
+  const a = parseMajorMinor(detected)
+  const b = parseMajorMinor(configured)
+  if (!a || !b) return null
+  if (a.major !== b.major) return 'major'
+  if (a.minor !== b.minor) return 'minor'
+  return null
+}
+
 export function getExportPresetsPath(): string {
   // Get the preset options from any export_presets.cfg if found
   const cwd = process.cwd()
