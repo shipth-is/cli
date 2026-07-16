@@ -16,7 +16,7 @@ export abstract class BaseGameAndroidCommand<T extends typeof Command> extends B
     this.log('Waiting for Google authentication...')
     const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-    for (let i = 0; i < 600; i++) {
+    for (let i = 0; i < 60; i++) {
       process.stdout.write('.')
       await sleep(1000 * 10)
       status = await getGoogleStatus()
