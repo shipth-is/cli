@@ -8,7 +8,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 import {parseEntitlementsAdditional} from '../../src/apple/entitlements.js'
 import {CapabilityType} from '../../src/apple/expo.js'
 import {Platform} from '../../src/types/index.js'
-import {getGodotProjectCapabilities, getGodotVersion} from '../../src/utils/godot.js'
+import {
+  detectGodotVersion,
+  getGodotProjectCapabilities,
+  getGodotVersion,
+  getGodotVersionDrift,
+} from '../../src/utils/godot.js'
 
 describe('getGodotProjectCapabilities', () => {
   it('returns PUSH_NOTIFICATIONS when entitlements/push_notifications is Production', async () => {
@@ -138,6 +143,58 @@ describe('getGodotVersion', () => {
     process.chdir(projectDir)
     const version = getGodotVersion()
     expect(version).to.equal('4.2')
+  })
+})
+
+describe('detectGodotVersion', () => {
+  const originalCwd = process.cwd()
+
+  afterEach(() => {
+    process.chdir(originalCwd)
+  })
+
+  it('returns 3.6 for a Godot 3.x project without config/features', () => {
+    process.chdir(path.resolve(__dirname, '../fixtures/godot/v3_5'))
+    expect(detectGodotVersion()).to.equal('3.6')
+  })
+
+  it('returns 4.2 for a Godot 4.2 project with config/features', () => {
+    process.chdir(path.resolve(__dirname, '../fixtures/godot/v4_2'))
+    expect(detectGodotVersion()).to.equal('4.2')
+  })
+
+  it('returns null when there is no project.godot', () => {
+    process.chdir(path.resolve(__dirname, '../fixtures'))
+    expect(detectGodotVersion()).to.equal(null)
+  })
+})
+
+describe('getGodotVersionDrift', () => {
+  it('returns major when the majors differ', () => {
+    expect(getGodotVersionDrift('4.2', '3.6')).to.equal('major')
+  })
+
+  it('returns major for a downgrade, which is equally broken', () => {
+    expect(getGodotVersionDrift('3.6', '4.2')).to.equal('major')
+  })
+
+  it('returns minor when only the minors differ', () => {
+    expect(getGodotVersionDrift('4.7', '4.6')).to.equal('minor')
+  })
+
+  it('returns null when only the patch differs', () => {
+    expect(getGodotVersionDrift('4.5', '4.5.1')).to.equal(null)
+  })
+
+  it('returns null when a version has no minor', () => {
+    expect(getGodotVersionDrift('4', '4.7')).to.equal(null)
+  })
+
+  it('returns null for empty or garbage input', () => {
+    expect(getGodotVersionDrift('', '4.7')).to.equal(null)
+    expect(getGodotVersionDrift('4.7', '')).to.equal(null)
+    expect(getGodotVersionDrift('not-a-version', '4.7')).to.equal(null)
+    expect(getGodotVersionDrift('4.7', 'latest')).to.equal(null)
   })
 })
 
