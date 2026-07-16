@@ -30,13 +30,14 @@ After changing these values, you will need to trigger a new build of your game w
 ```help
 USAGE
   $ shipthis game details [-g <value>] [-f] [-a <value>] [-b <value>] [-e <value>] [-v <value>] [-g <value>] [-c
-    <value>] [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d <value>]
+    <value>] [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d true|false]
 
 FLAGS
   -a, --androidPackageName=<value>   Set the Android package name
   -b, --buildNumber=<value>          Set the build number
   -c, --gcpServiceAccountId=<value>  Set the GCP service account ID
-  -d, --useDemoCredentials=<value>   Use demo credentials for this project
+  -d, --useDemoCredentials=<option>  Use demo credentials for this project
+                                     <options: true|false>
   -e, --gameEngine=<value>           Set the game engine
   -f, --force                        Force the command to run
   -g, --gameId=<value>               The ID of the game

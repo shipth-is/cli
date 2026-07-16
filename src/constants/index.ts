@@ -14,5 +14,9 @@ export const DetailsFlags = {
   liquidGlassIconPath: Flags.string({char: 'l', description: 'Set the Liquid Glass icon path'}),
   name: Flags.string({char: 'n', description: 'The name of the game'}),
   semanticVersion: Flags.string({char: 's', description: 'Set the semantic version'}),
-  useDemoCredentials: Flags.string({char: 'd', description: 'Use demo credentials for this project'}),
+  useDemoCredentials: Flags.string({
+    char: 'd',
+    description: 'Use demo credentials for this project',
+    options: ['true', 'false'],
+  }),
 }

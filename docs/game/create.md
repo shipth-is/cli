@@ -29,13 +29,14 @@ command.
 ```help
 USAGE
   $ shipthis game create [-f] [-q] [-a <value>] [-b <value>] [-e <value>] [-v <value>] [-g <value>] [-c <value>]
-    [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d <value>]
+    [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d true|false]
 
 FLAGS
   -a, --androidPackageName=<value>   Set the Android package name
   -b, --buildNumber=<value>          Set the build number
   -c, --gcpServiceAccountId=<value>  Set the GCP service account ID
-  -d, --useDemoCredentials=<value>   Use demo credentials for this project
+  -d, --useDemoCredentials=<option>  Use demo credentials for this project
+                                     <options: true|false>
   -e, --gameEngine=<value>           Set the game engine
   -f, --force
   -g, --gcpProjectId=<value>         Set the GCP project ID
