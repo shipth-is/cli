@@ -17,7 +17,7 @@ your behalf. To do this, ShipThis generates temporary session cookies which it r
 
 ## Example
 
-[![asciicast](https://asciinema.org/a/h2wLhEFVy8mLA5dE6hb1gHDyD.svg)](https://asciinema.org/a/h2wLhEFVy8mLA5dE6hb1gHDyD)
+[![asciicast](https://asciinema.org/a/QK9GzErrfrY2FUkg.svg)](https://asciinema.org/a/QK9GzErrfrY2FUkg)
 
 
 ## Help Output
