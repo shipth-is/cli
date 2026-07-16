@@ -1,13 +1,23 @@
+import appleUtils from '@expo/apple-utils'
 import {Flags} from '@oclif/core'
 
-import {getNewAuthState} from '@cli/apple/auth.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
+import {getRenderedMarkdown} from '@cli/components/index.js'
 import {getInput, getMaskedInput} from '@cli/utils/index.js'
+
+// @expo/apple-utils is CommonJS, so it has to be imported as a default and destructured -
+// see src/apple/expo.ts. We import Auth directly here rather than via that shim, so that
+// everything which touches your Apple password is readable in this one file.
+const {Auth} = appleUtils
+
+const SOURCE_URL = 'https://github.com/shipth-is/cli/blob/main/src/commands/apple/login.ts'
 
 export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLogin> {
   static override args = {}
 
-  static override description = 'Authenticate with Apple - saves the session to the auth file'
+  static override description = `Authenticate with Apple - saves the session to the auth file.
+
+Your Apple password is sent only to Apple, never to ShipThis. Only the resulting session cookies are saved locally. Read the source: ${SOURCE_URL}`
 
   static override examples = [
     '<%= config.bin %> <%= command.id %>',
@@ -40,6 +50,16 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
       throw new Error('You are already logged in to Apple. Use --force to re-authenticate.')
     }
 
+    // Shown even when --quiet - the iOS wizard runs this with --quiet
+    this.log(
+      getRenderedMarkdown({
+        filename: 'apple-login-notice.md.ejs',
+        templateVars: {
+          sourceURL: `https://github.com/shipth-is/cli/blob/v${this.config.version}/src/commands/apple/login.ts`,
+        },
+      }),
+    )
+
     const getAppleEmail = async (): Promise<string> => {
       if (flags.appleEmail) return flags.appleEmail
       const appleEmail = await getInput('Please enter your Apple Developer account email address: ')
@@ -57,12 +77,17 @@ export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLog
     const appleEmail = await getAppleEmail()
     const applePassword = await getApplePassword()
 
-    const authState = await getNewAuthState(appleEmail, applePassword)
+    // The password goes to Apple here and is not used anywhere else
+    const authState = await Auth.loginAsync({
+      password: applePassword,
+      username: appleEmail,
+    })
 
     if (!authState) {
       throw new Error('Failed to authenticate with Apple')
     }
 
+    // Session cookies are saved to the local auth file
     await this.setAppleCookies(authState.cookies)
 
     if (!this.flags.quiet) await this.config.runCommand(`apple:status`)

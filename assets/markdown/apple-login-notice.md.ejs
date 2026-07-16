@@ -1,0 +1,9 @@
+# Signing in to Apple
+
+ShipThis sends your Apple ID and password **directly to Apple's authentication service**, using the open-source `@expo/apple-utils` library.
+
+- Your password is **never stored** and is **never sent to ShipThis servers**.
+- Only the resulting Apple **session cookies** are saved, locally, to your auth file.
+- Your password is used once, for this sign-in, and then discarded.
+
+**Read the exact code that handles your password: [<%= sourceURL %>](<%= sourceURL %>)**
