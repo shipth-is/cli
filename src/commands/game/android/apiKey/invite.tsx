@@ -30,7 +30,7 @@ export default class GameAndroidApiKeyInvite extends BaseGameAndroidCommand<type
     const game = await this.getGame()
     const {prompt, waitForAuth, waitForGoogleApp} = this.flags
 
-    this.checkGoogleAuth(waitForAuth)
+    await this.checkGoogleAuth(waitForAuth)
 
     const getAccountId = async () => {
       if (!prompt) return this.args.accountId

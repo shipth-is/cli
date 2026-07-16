@@ -26,7 +26,7 @@ export default class GameAndroidApiKeyCreate extends BaseGameAndroidCommand<type
 
     const {force, waitForAuth} = this.flags
 
-    this.checkGoogleAuth(waitForAuth)
+    await this.checkGoogleAuth(waitForAuth)
 
     const projectCredentials = await getProjectCredentials(game.id)
     const hasApiKey = projectCredentials.some(
