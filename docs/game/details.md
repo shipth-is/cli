@@ -13,7 +13,7 @@ value, it will output all the values again.
 The following fields can only be changed if you have the `--force` flag set:
 
 - **gameEngine** - Change the Game Engine (currently only "godot" is supported)
-- **gameEngineVersion** - Change the version of the Game Engine (currently only 3.6 and 4.3 are supported)
+- **gameEngineVersion** - Change the version of the Game Engine (all stable Godot versions since 3.6 are supported, up to 4.7)
 - **iosBundleId** - iOS Bundle ID
 - **androidPackageName** Android Package Name (not currently used)
 

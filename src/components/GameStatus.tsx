@@ -128,7 +128,7 @@ export const GameStatusDetails = ({children, gameId, onComplete, onError, platfo
   gameDetails.Version = game.details?.semanticVersion || '0.0.1'
   gameDetails['Build Number'] = `${game.details?.buildNumber || 1}`
   gameDetails['Created At'] = getShortDate(game.createdAt)
-  gameDetails['Game Engine'] = `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.3'}`
+  gameDetails['Game Engine'] = `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.7'}`
 
   return (
     <Box flexDirection="column">
