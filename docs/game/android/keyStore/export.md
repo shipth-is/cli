@@ -8,7 +8,7 @@ Saves the current Android Keystore to a ZIP file
 
 ```help
 USAGE
-  $ shipthis game android keyStore export FILE [-g <value>] [-f]
+  $ shipthis game android keyStore export FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create

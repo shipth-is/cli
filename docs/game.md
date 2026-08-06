@@ -13,6 +13,7 @@ You will need to be authenticated against ShipThis before you can use these comm
 
 ## Topics
 
+- [game android](/docs/reference/game/android)
 - [game build](/docs/reference/game/build)
 - [game ios](/docs/reference/game/ios)
 - [game job](/docs/reference/game/job)

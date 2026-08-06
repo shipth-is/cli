@@ -17,7 +17,8 @@ export default class GameAndroidKeyStoreImport extends BaseGameCommand<typeof Ga
     }),
   }
 
-  static override description = 'Imports an Android Keystore to your ShipThis account for the specified game.'
+  static override description =
+    'Imports an Android Keystore to your ShipThis account for the specified game. You can import as JKS and password parameters or as a ZIP file.'
 
   static override examples = [
     '<%= config.bin %> <%= command.id %> path/to/import.zip -g abfd5b00',

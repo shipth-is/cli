@@ -1,6 +1,6 @@
 # Topic: `game ios profile`
 
-Commands in the `game ios profile` topic are prefixed `shipthis game ios profile`. They relate to the App Store Mobile Provisioning Profiles for a specific game (generally in the currently directory).
+Commands in the `game ios profile` topic are prefixed `shipthis game ios profile`. They relate to the App Store Mobile Provisioning Profiles for a specific game (generally in the current directory).
 
 :::info
 A **Provisioning Profile** authorizes your app to run on devices and access Apple services. It is a digitally signed XML file issued by Apple that combines your App ID, developer certificate, entitlements, and device identifiers. It’s essential for development and distribution.
@@ -42,7 +42,7 @@ Provisioning profile. To do that please run:
 
 ```help
 USAGE
-  $ shipthis game ios profile create [-q] [-g <value>] [-f]
+  $ shipthis game ios profile create [-f] [-g <value>] [-q]
 
 FLAGS
   -f, --force
@@ -93,7 +93,7 @@ Saves the current Mobile Provisioning Profile to a ZIP file
 
 ```help
 USAGE
-  $ shipthis game ios profile export FILE [-g <value>] [-f]
+  $ shipthis game ios profile export FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
@@ -113,13 +113,13 @@ EXAMPLES
 
 #### Description
 
-Imports an Mobile Provisioning Profile to your ShipThis account
+Imports a Mobile Provisioning Profile to your ShipThis account
 
 #### Help Output
 
 ```help
 USAGE
-  $ shipthis game ios profile import FILE [-g <value>] [-f]
+  $ shipthis game ios profile import FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
@@ -129,7 +129,7 @@ FLAGS
   -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  Imports an Mobile Provisioning Profile to your ShipThis account
+  Imports a Mobile Provisioning Profile to your ShipThis account
 
 EXAMPLES
   $ shipthis game ios profile import profile.zip

@@ -8,7 +8,7 @@ Create a new API key for your ShipThis account.
 
 ```help
 USAGE
-  $ shipthis apiKey create [-n <value>] [-d <value>] [-q]
+  $ shipthis apiKey create [-d <value>] [-n <value>] [-q]
 
 FLAGS
   -d, --durationDays=<value>  [default: 365] duration of the API key in days

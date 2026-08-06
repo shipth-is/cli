@@ -1,4 +1,4 @@
-# apple certificate status
+# Command: `apple certificate status`
 
 ## Description
 

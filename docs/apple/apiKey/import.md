@@ -1,4 +1,4 @@
-# apple apiKey import
+# Command: `apple apiKey import`
 
 ## Description
 

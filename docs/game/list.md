@@ -12,7 +12,7 @@ Shows a list of all your games.
 
 ```help
 USAGE
-  $ shipthis game list [-p <value>] [-s <value>] [-o createdAt|updatedAt|name] [-r asc|desc]
+  $ shipthis game list [-r asc|desc] [-o createdAt|updatedAt|name] [-p <value>] [-s <value>]
 
 FLAGS
   -o, --orderBy=<option>    [default: createdAt] The field to order by

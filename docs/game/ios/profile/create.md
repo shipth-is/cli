@@ -1,4 +1,4 @@
-# game ios profile create
+# Command: `game ios profile create`
 
 ## Description
 
@@ -8,7 +8,7 @@ Creates a Mobile Provisioning Profile in the Apple Developer Portal.
 
 ```help
 USAGE
-  $ shipthis game ios profile create [-q] [-g <value>] [-f]
+  $ shipthis game ios profile create [-f] [-g <value>] [-q]
 
 FLAGS
   -f, --force

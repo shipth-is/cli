@@ -1,4 +1,4 @@
-# apple certificate import
+# Command: `apple certificate import`
 
 ## Description
 

@@ -1,4 +1,4 @@
-# game job list
+# Command: `game job list`
 
 ## Description
 
@@ -8,7 +8,7 @@ Lists the jobs for a game.
 
 ```help
 USAGE
-  $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
+  $ shipthis game job list [-g <value>] [-r asc|desc] [-o createdAt|updatedAt] [-p <value>] [-s <value>]
 
 FLAGS
   -g, --gameId=<value>      The ID of the game

@@ -1,6 +1,6 @@
 # Topic: `game ios app`
 
-Commands in the `game ios app` topic are prefixed `shipthis game ios app`. They relate to the App Store App and BundleId for a specific game (generally in the currently directory).
+Commands in the `game ios app` topic are prefixed `shipthis game ios app`. They relate to the App Store App and BundleId for a specific game (generally in the current directory).
 
 :::info
 An **App Store App** is the public-facing application available in the App Store. It includes metadata like descriptions, screenshots, and submission details, representing the final product users download.
@@ -158,7 +158,7 @@ FLAGS
   -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
-  Synchronies the Apple App "BundleId" with the capabilities from the local project.
+  Synchronizes the Apple App "BundleId" with the capabilities from the local project.
 
 EXAMPLES
   $ shipthis game ios app sync

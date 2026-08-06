@@ -1,6 +1,6 @@
 # Topic: `game job`
 
-Commands in the `game job` topic are prefixed `shipthis game job`. They relate to jobs for a specific game (generally in the currently directory).
+Commands in the `game job` topic are prefixed `shipthis game job`. They relate to jobs for a specific game (generally in the current directory).
 
 :::info
 A **job** is a set of work done to create a new build of your game. You can create a new job by running the command:
@@ -28,7 +28,7 @@ Lists the jobs for a game.
 
 ```help
 USAGE
-  $ shipthis game job list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
+  $ shipthis game job list [-g <value>] [-r asc|desc] [-o createdAt|updatedAt] [-p <value>] [-s <value>]
 
 FLAGS
   -g, --gameId=<value>      The ID of the game
@@ -89,7 +89,7 @@ Shows the real-time status of a job.
 
 ```help
 USAGE
-  $ shipthis game job status JOB_ID [-g <value>] [-n <value>] [-f]
+  $ shipthis game job status JOB_ID [-g <value>] [-f] [-n <value>]
 
 ARGUMENTS
   JOB_ID  The id of the job to get the status of

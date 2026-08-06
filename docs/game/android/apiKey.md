@@ -109,7 +109,7 @@ DESCRIPTION
   Saves the current Android Service Account API Key to a ZIP file
 
 EXAMPLES
-  $ shipthis game android apiKey export keyStore.zip
+  $ shipthis game android apiKey export apiKey.zip
 ```
 
 ### `game android apiKey import`
@@ -135,7 +135,7 @@ DESCRIPTION
   Imports an Android Service Account API Key to your ShipThis account for the specified game.
 
 EXAMPLES
-  $ shipthis game android apiKey import
+  $ shipthis game android apiKey import apiKey.zip
 ```
 
 ### `game android apiKey invite`
