@@ -216,7 +216,7 @@
         "description": "Commands related to the Android platform for a specific game"
       },
       "game:android:apiKey": {
-        "description": "Commands related to they Android Service Account API Key for a specific game"
+        "description": "Commands related to the Android Service Account API Key for a specific game"
       },
       "game:android:keyStore": {
         "description": "Commands related to the Android KeyStore for a specific game"

@@ -1,4 +1,4 @@
-# game build download
+# Command: `game build download`
 
 ## Description
 

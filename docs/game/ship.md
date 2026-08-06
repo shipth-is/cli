@@ -33,7 +33,9 @@ When using ShipThis in a CI environment, it is most useful to use the `--follow`
 
 ### Building with demo credentials
 
-Adding the `--useDemoCredentials` flag executes the build for the specified platform but applies ShipThis certificates, keystores or provisioning profiles. This can be useful to generate an asset which can be side-loaded onto your own device.
+Adding the `--useDemoCredentials` flag builds the specified platform with ShipThis demo certificates, keystores and provisioning profiles instead of your own. This is useful to generate an asset which can be side-loaded onto your own device.
+
+The flag implies `--skipPublish`. A build signed with demo credentials is never published to TestFlight or Google Play.
 
 ```bash
 # To build for iOS with demo credentials

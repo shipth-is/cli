@@ -16,7 +16,7 @@ export default class GameAndroidApiKeyExport extends BaseGameAndroidCommand<type
 
   static override description = 'Saves the current Android Service Account API Key to a ZIP file'
 
-  static override examples = ['<%= config.bin %> <%= command.id %> keyStore.zip']
+  static override examples = ['<%= config.bin %> <%= command.id %> apiKey.zip']
 
   static override flags = {
     force: Flags.boolean({char: 'f', description: 'Overwrite the file if it already exists'}),

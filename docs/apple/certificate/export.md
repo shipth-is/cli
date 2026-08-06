@@ -1,4 +1,4 @@
-# apple certificate export
+# Command: `apple certificate export`
 
 ## Description
 

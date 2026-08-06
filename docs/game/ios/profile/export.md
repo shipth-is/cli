@@ -1,4 +1,4 @@
-# game ios profile export
+# Command: `game ios profile export`
 
 ## Description
 
@@ -8,7 +8,7 @@ Saves the current Mobile Provisioning Profile to a ZIP file
 
 ```help
 USAGE
-  $ shipthis game ios profile export FILE [-g <value>] [-f]
+  $ shipthis game ios profile export FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create

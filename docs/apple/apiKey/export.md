@@ -1,4 +1,4 @@
-# apple apiKey export
+# Command: `apple apiKey export`
 
 ## Description
 

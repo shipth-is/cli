@@ -2,7 +2,7 @@
 
 ## Description
 
-Shows and sets the details of the current game. These details are used by when your game is built on our cloud servers.
+Shows and sets the details of the current game. These details are used when your game is built on our cloud servers.
 
 If you run the command without any flags it will show the details of the current
 game.
@@ -15,7 +15,7 @@ The following fields can only be changed if you have the `--force` flag set:
 - **gameEngine** - Change the Game Engine (currently only "godot" is supported)
 - **gameEngineVersion** - Change the version of the Game Engine (all stable Godot versions since 3.6 are supported, up to 4.7)
 - **iosBundleId** - iOS Bundle ID
-- **androidPackageName** Android Package Name (not currently used)
+- **androidPackageName** - Android Package Name (used to sign and publish your Android builds)
 
 :::tip
 After changing these values, you will need to trigger a new build of your game with [`shipthis game ship`](/docs/reference/game/ship)

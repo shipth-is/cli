@@ -8,7 +8,7 @@ Connects ShipThis with Google for managing Service Account API Keys for an Andro
 
 ```help
 USAGE
-  $ shipthis game android apiKey connect [-g <value>] [-f] [-d]
+  $ shipthis game android apiKey connect [-g <value>] [-d] [-f]
 
 FLAGS
   -d, --disconnect

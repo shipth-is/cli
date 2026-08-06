@@ -23,16 +23,17 @@ Your Apple credentials never leave your computer. ShipThis saves the cookies to 
 
 ## API Keys
 
-Manage App Store Connect API Keys in your Apple Developer account and their corresponding the private keys in your ShipThis account
+Manage App Store Connect API Keys in your Apple Developer account and their corresponding private keys in your ShipThis account
 
 :::tip Info
 App Store Connect API Keys are used to upload your game to the App Store. The same API key can be used to upload multiple games.
 :::
 
-- [`shipthis apple apiKey create`](/docs/reference/apple/apiKey#shipthis-apple-apikey-create)
-- [`shipthis apple apiKey export FILE`](/docs/reference/apple/apiKey#shipthis-apple-apikey-export-file)
-- [`shipthis apple apiKey import FILE`](/docs/reference/apple/apiKey#shipthis-apple-apikey-import-file)
-- [`shipthis apple apiKey status`](/docs/reference/apple/apiKey#shipthis-apple-apikey-status)
+- [`shipthis apple apiKey create`](/docs/reference/apple/apiKey#apple-apikey-create)
+- [`shipthis apple apiKey delete`](/docs/reference/apple/apiKey#apple-apikey-delete)
+- [`shipthis apple apiKey export FILE`](/docs/reference/apple/apiKey#apple-apikey-export)
+- [`shipthis apple apiKey import FILE`](/docs/reference/apple/apiKey#apple-apikey-import)
+- [`shipthis apple apiKey status`](/docs/reference/apple/apiKey#apple-apikey-status)
 
 ## Certificates
 
@@ -42,7 +43,9 @@ Manage iOS Distribution Certificates in your Apple Developer account and their c
 Your iOS Distribution Certificate is used to sign all of your games before upload to the App Store. The same certificate can be used to sign multiple games.
 :::
 
-- [`shipthis apple certificate create`](/docs/reference/apple/certificate#shipthis-apple-certificate-create)
-- [`shipthis apple certificate export FILE`](/docs/reference/apple/certificate#shipthis-apple-certificate-export-file)
-- [`shipthis apple certificate import FILE`](/docs/reference/apple/certificate#shipthis-apple-certificate-import-file)
-- [`shipthis apple certificate status`](/docs/reference/apple/certificate#shipthis-apple-certificate-status)
+- [`shipthis apple certificate create`](/docs/reference/apple/certificate#apple-certificate-create)
+- [`shipthis apple certificate delete`](/docs/reference/apple/certificate#apple-certificate-delete)
+- [`shipthis apple certificate export FILE`](/docs/reference/apple/certificate#apple-certificate-export)
+- [`shipthis apple certificate import FILE`](/docs/reference/apple/certificate#apple-certificate-import)
+- [`shipthis apple certificate show`](/docs/reference/apple/certificate#apple-certificate-show)
+- [`shipthis apple certificate status`](/docs/reference/apple/certificate#apple-certificate-status)

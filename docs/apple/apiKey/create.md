@@ -1,4 +1,4 @@
-# apple apiKey create
+# Command: `apple apiKey create`
 
 ## Description
 

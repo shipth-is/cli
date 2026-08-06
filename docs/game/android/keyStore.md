@@ -77,7 +77,7 @@ Saves the current Android Keystore to a ZIP file
 
 ```help
 USAGE
-  $ shipthis game android keyStore export FILE [-g <value>] [-f]
+  $ shipthis game android keyStore export FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
@@ -103,11 +103,11 @@ Imports an Android Keystore to your ShipThis account for the specified game. You
 
 ```help
 USAGE
-  $ shipthis game android keyStore import [FILE] [-g <value>] [-f] [--jksFile <value>] [--keyPassword <value>] [--keystorePassword <value>]
-
+  $ shipthis game android keyStore import [FILE] [-g <value>] [-f] [--jksFile <value>] [--keyPassword <value>] [--keystorePassword
+    <value>]
 
 ARGUMENTS
-  FILE  Path to the ZIP file to import (must be in the same format as the export)
+  [FILE]  Path to the ZIP file to import (must be in the same format as the export)
 
 FLAGS
   -f, --force                     Overwrite any existing keystore without confirmation
@@ -117,7 +117,8 @@ FLAGS
       --keystorePassword=<value>  Keystore password (required when using --jksFile)
 
 DESCRIPTION
-  Imports an Android Keystore to your ShipThis account for the specified game.
+  Imports an Android Keystore to your ShipThis account for the specified game. You can import as JKS and password
+  parameters or as a ZIP file.
 
 EXAMPLES
   $ shipthis game android keyStore import path/to/import.zip -g abfd5b00

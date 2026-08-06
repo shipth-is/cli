@@ -1,4 +1,4 @@
-# game job status
+# Command: `game job status`
 
 ## Description
 
@@ -8,7 +8,7 @@ Shows the real-time status of a job.
 
 ```help
 USAGE
-  $ shipthis game job status JOB_ID [-g <value>] [-n <value>] [-f]
+  $ shipthis game job status JOB_ID [-g <value>] [-f] [-n <value>]
 
 ARGUMENTS
   JOB_ID  The id of the job to get the status of

@@ -1,4 +1,4 @@
-# apple certificate create
+# Command: `apple certificate create`
 
 ## Description
 

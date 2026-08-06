@@ -6,7 +6,7 @@ Commands in the apple certificate topic are prefixed `shipthis apple certificate
 These commands relate to iOS Distribution Certificates within your Apple Developer account.
 
 - You can view the Distribution Certificates in the [Apple Developer Portal](https://developer.apple.com/account/resources/certificates/list).
-- You can more about Certificates in the [Apple Documentation](https://developer.apple.com/help/account/create-certificates/certificates-overview/).
+- You can read more about Certificates in the [Apple Documentation](https://developer.apple.com/help/account/create-certificates/certificates-overview/).
 - You can view the Certificates which ShipThis uses in the [ShipThis Dashboard](https://shipth.is/credentials).
 
 :::info

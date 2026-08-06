@@ -1,4 +1,4 @@
-# game ios profile status
+# Command: `game ios profile status`
 
 ## Description
 

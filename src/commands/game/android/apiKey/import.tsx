@@ -20,7 +20,7 @@ export default class GameAndroidApiKeyImport extends BaseGameAndroidCommand<type
   static override description =
     'Imports an Android Service Account API Key to your ShipThis account for the specified game.'
 
-  static override examples = ['<%= config.bin %> <%= command.id %>']
+  static override examples = ['<%= config.bin %> <%= command.id %> apiKey.zip']
 
   static override flags = {
     force: Flags.boolean({char: 'f'}),
