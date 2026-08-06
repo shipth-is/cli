@@ -1,14 +1,14 @@
-# game ios app sync
+# Command: `game ios app sync`
 
 ## Description
 
-Synchronies the Apple App &#34;BundleId&#34; with the capabilities from the local project.
+Synchronizes the Apple App "BundleId" with the capabilities from the local project.
 
 ## Help Output
 
 ```help
 USAGE
-  $ shipthis game ios app sync [-q] [-g <value>] [-f]
+  $ shipthis game ios app sync [-f] [-g <value>] [-q]
 
 FLAGS
   -f, --force
@@ -16,7 +16,7 @@ FLAGS
   -q, --quiet           Avoid output except for interactions and errors
 
 DESCRIPTION
-  Synchronies the Apple App "BundleId" with the capabilities from the local project.
+  Synchronizes the Apple App "BundleId" with the capabilities from the local project.
 
 EXAMPLES
   $ shipthis game ios app sync

@@ -17,7 +17,7 @@ export default class GameIosProfileImport extends BaseGameCommand<typeof GameIos
     }),
   }
 
-  static override description = 'Imports an Mobile Provisioning Profile to your ShipThis account'
+  static override description = 'Imports a Mobile Provisioning Profile to your ShipThis account'
 
   static override examples = ['<%= config.bin %> <%= command.id %> profile.zip']
 

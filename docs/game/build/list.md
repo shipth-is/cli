@@ -1,4 +1,4 @@
-# game build list
+# Command: `game build list`
 
 ## Description
 
@@ -8,7 +8,7 @@ Lists the builds for successful jobs of a game.
 
 ```help
 USAGE
-  $ shipthis game build list [-g <value>] [-p <value>] [-s <value>] [-o createdAt|updatedAt] [-r asc|desc]
+  $ shipthis game build list [-g <value>] [-r asc|desc] [-o createdAt|updatedAt] [-p <value>] [-s <value>]
 
 FLAGS
   -g, --gameId=<value>      The ID of the game

@@ -1,14 +1,14 @@
-# game ios profile import
+# Command: `game ios profile import`
 
 ## Description
 
-Imports an Mobile Provisioning Profile to your ShipThis account
+Imports a Mobile Provisioning Profile to your ShipThis account
 
 ## Help Output
 
 ```help
 USAGE
-  $ shipthis game ios profile import FILE [-g <value>] [-f]
+  $ shipthis game ios profile import FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
@@ -18,7 +18,7 @@ FLAGS
   -g, --gameId=<value>  The ID of the game
 
 DESCRIPTION
-  Imports an Mobile Provisioning Profile to your ShipThis account
+  Imports a Mobile Provisioning Profile to your ShipThis account
 
 EXAMPLES
   $ shipthis game ios profile import profile.zip

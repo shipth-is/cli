@@ -8,7 +8,7 @@ Creates a new Android Service Account API Key for a game
 
 ```help
 USAGE
-  $ shipthis game android apiKey create [-g <value>] [-w] [-f]
+  $ shipthis game android apiKey create [-g <value>] [-f] [-w]
 
 FLAGS
   -f, --force

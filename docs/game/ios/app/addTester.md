@@ -1,4 +1,4 @@
-# game ios app addTester
+# Command: `game ios app addTester`
 
 ## Description
 

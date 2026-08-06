@@ -8,7 +8,7 @@ Saves the current Android Service Account API Key to a ZIP file
 
 ```help
 USAGE
-  $ shipthis game android apiKey export FILE [-g <value>] [-f]
+  $ shipthis game android apiKey export FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to create
@@ -21,5 +21,5 @@ DESCRIPTION
   Saves the current Android Service Account API Key to a ZIP file
 
 EXAMPLES
-  $ shipthis game android apiKey export keyStore.zip
+  $ shipthis game android apiKey export apiKey.zip
 ```

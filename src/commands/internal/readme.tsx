@@ -64,7 +64,7 @@ const COMMAND_TEMPLATE = `
 
 ## Description
 
-<%= command.description || "" %>
+<%- command.description || "" %>
 
 ## Help Output
 
@@ -79,7 +79,7 @@ const COMMAND_TEMPLATE_INCLUDE = `
 
 #### Description
 
-<%= command.description || "" %>
+<%- command.description || "" %>
 
 #### Help Output
 

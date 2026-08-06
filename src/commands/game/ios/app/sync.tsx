@@ -9,7 +9,7 @@ import {fetchBundleId} from '@cli/utils/index.js'
 export default class GameIosAppSync extends BaseGameCommand<typeof GameIosAppSync> {
   static override args = {}
 
-  static override description = 'Synchronies the Apple App "BundleId" with the capabilities from the local project.'
+  static override description = 'Synchronizes the Apple App "BundleId" with the capabilities from the local project.'
 
   static override examples = ['<%= config.bin %> <%= command.id %>']
 

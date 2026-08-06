@@ -256,10 +256,18 @@ The iOS steps are described in the [iOS setup guide](https://shipth.is/docs/ios)
 
 1. Synchronize Permissions (Capabilities)
 
-    ShipThis reads `export_presets.cfg` and enables supported capabilities in the Apple Developer Portal (currently Access WiFi, Push Notifications).
+    ShipThis reads `export_presets.cfg` and enables supported capabilities in the Apple Developer Portal (Access WiFi, Increased Memory Limit, Game Center, Push Notifications, plus known keys from `entitlements/additional`). See the [`game ios app sync` reference](https://shipth.is/docs/reference/game/ios/app?ref=github_readme#game-ios-app-sync) for the full table.
 
     ```bash
     shipthis game ios app sync
+    ```
+
+1. Add yourself as a TestFlight tester
+
+    ShipThis adds your Apple ID to the internal test group, so that you receive the builds you publish.
+
+    ```bash
+    shipthis game ios app addTester --self
     ```
 
 1. Create a Provisioning Profile

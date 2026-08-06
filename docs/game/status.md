@@ -2,7 +2,7 @@
 
 ## Description
 
-Shows the status of a specific game (generally in the currently directory).
+Shows the status of a specific game (generally in the current directory).
 
 ## Example
 

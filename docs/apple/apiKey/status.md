@@ -1,4 +1,4 @@
-# apple apiKey status
+# Command: `apple apiKey status`
 
 ## Description
 

@@ -8,7 +8,7 @@ Imports an Android Service Account API Key to your ShipThis account for the spec
 
 ```help
 USAGE
-  $ shipthis game android apiKey import FILE [-g <value>] [-f]
+  $ shipthis game android apiKey import FILE [-f] [-g <value>]
 
 ARGUMENTS
   FILE  Name of the ZIP file to import (must be in the same format as the export)
@@ -21,5 +21,5 @@ DESCRIPTION
   Imports an Android Service Account API Key to your ShipThis account for the specified game.
 
 EXAMPLES
-  $ shipthis game android apiKey import
+  $ shipthis game android apiKey import apiKey.zip
 ```

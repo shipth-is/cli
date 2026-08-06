@@ -1,4 +1,4 @@
-# game ios app create
+# Command: `game ios app create`
 
 ## Description
 
@@ -8,7 +8,7 @@ Creates an App and BundleId in the Apple Developer Portal.
 
 ```help
 USAGE
-  $ shipthis game ios app create [-q] [-g <value>] [-n <value>] [-b <value>] [-f]
+  $ shipthis game ios app create [-n <value>] [-b <value>] [-f] [-g <value>] [-q]
 
 FLAGS
   -b, --bundleId=<value>  The BundleId in the Apple Developer Portal

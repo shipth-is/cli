@@ -23,8 +23,7 @@ USAGE
 FLAGS
   -e, --email=<value>     Your email address
   -f, --force
-      --acceptAgreements  Accept the current version of the agreements (terms &
-                          privacy).
+      --acceptAgreements  Accept the current version of the agreements (terms & privacy).
 
 DESCRIPTION
   Authenticate - will create a new account if one does not exist.
