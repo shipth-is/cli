@@ -19,6 +19,7 @@ import {
   ProjectDetails,
   ProjectPlatformProgress,
   Self,
+  SimulatorSession,
   TermsResponse,
   UploadDetails,
   UploadTicket,
@@ -304,6 +305,42 @@ export async function downloadBuildById(projectId: string, buildId: string, file
     writer.on('finish', resolve)
     writer.on('error', reject)
   })
+}
+
+const SIMULATOR_DATE_FIELDS = ['createdAt', 'updatedAt', 'startedAt', 'endedAt']
+
+// Starts a simulator session for a game. This endpoint is idempotent: if the
+// user already has an active session the backend returns that one untouched -
+// including its existing maxDurationSeconds, which is why callers should read
+// the limit back off the returned session rather than assume they got what they
+// asked for. Omitting maxDurationSeconds lets the backend apply its default.
+export async function startSimulator(
+  projectId: string,
+  platform: Platform,
+  maxDurationSeconds?: number,
+): Promise<SimulatorSession> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const body = {
+    platform,
+    projectId,
+    ...(maxDurationSeconds ? {maxDurationSeconds} : {}),
+  }
+  const {data} = await axios.post(`${API_URL}/simulator/start`, body, opt)
+  return castObjectDates<SimulatorSession>(data, SIMULATOR_DATE_FIELDS)
+}
+
+// The user's active simulator session, or null when they have none (the API 404s).
+export async function getActiveSimulatorSession(): Promise<null | SimulatorSession> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  try {
+    const {data} = await axios.get(`${API_URL}/simulator`, opt)
+    return castObjectDates<SimulatorSession>(data, SIMULATOR_DATE_FIELDS)
+  } catch (error: any) {
+    if (error?.response?.status === 404) return null
+    throw error
+  }
 }
 
 const APIKEYS_DATE_FIELDS = ['createdAt', 'updatedAt', 'expiresAt', 'lastUsedAt', 'revokedAt']

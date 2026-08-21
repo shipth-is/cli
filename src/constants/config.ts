@@ -69,6 +69,12 @@ export const DEFAULT_PLATFORM_GLOBS: GlobsConfig = {
   },
 }
 
+// Simulator session length bounds, in seconds. These mirror the backend
+// (POST /simulator/start): omitting maxDurationSeconds gets the default, and
+// anything above the hard cap is rejected with a 400.
+export const SIMULATOR_DEFAULT_DURATION_SECONDS = 10 * 60 // 10 minutes
+export const SIMULATOR_MAX_DURATION_SECONDS = 60 * 60 // 1 hour
+
 const PRIMARY_DOMAIN = 'shipth.is'
 interface BackendUrls {
   api: string
