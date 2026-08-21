@@ -1,35 +1,15 @@
-import {Args} from '@oclif/core'
+import {Args, Flags} from '@oclif/core'
 import {render, Box, Text} from 'ink'
-import axios from 'axios'
 import {useContext, useEffect, useState} from 'react'
 
+import {startSimulator} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
-import {CommandContext, CommandGame, JobProgress} from '@cli/components/index.js'
-import {Job, ShipGameFlags, SimulatorSession} from '@cli/types/index.js'
-
-import {castObjectDates} from '@cli/utils/dates.js'
-import {getAuthedHeaders} from '@cli/api/index.js'
-import {API_URL} from '@cli/constants/config.js'
+import {CommandContext, CommandGame, JobProgress, SimulatorSessionStatus} from '@cli/components/index.js'
+import {SIMULATOR_DEFAULT_DURATION_SECONDS, SIMULATOR_MAX_DURATION_SECONDS} from '@cli/constants/index.js'
+import {Job, Platform, ShipGameFlags, SimulatorSession} from '@cli/types/index.js'
+import {formatDuration} from '@cli/utils/dates.js'
 import {getErrorMessage} from '@cli/utils/errors.js'
 import {useSafeInput, useShip} from '@cli/utils/index.js'
-
-async function startSimulator(projectId: string, platform: string): Promise<SimulatorSession> {
-  const headers = getAuthedHeaders()
-  const opt = {headers}
-
-  try {
-    const {data} = await axios.post(
-      `${API_URL}/simulator/start`,
-      {platform: `${platform}`.toUpperCase(), projectId},
-      opt,
-    )
-    return castObjectDates<SimulatorSession>(data)
-  } catch (error: any) {
-    console.log(JSON.stringify(error.response?.data, null, 2))
-    //console.error('Error starting simulator:', error)
-    throw error
-  }
-}
 
 interface SimulatorBuilderProps {
   platform: 'android' | 'ios'
@@ -45,7 +25,7 @@ const SimulatorBuilder = ({platform, onError}: SimulatorBuilderProps): JSX.Eleme
     if (!command) throw new Error('No command in context')
     if (shipMutation.isPending) return
     setJobs(null)
-    const shipFlags: Partial<ShipGameFlags> = {platform, simulator: true}
+    const shipFlags: Partial<ShipGameFlags> = {platform, simulator: true, useDemoCredentials: true}
     const startedJobs = await shipMutation.mutateAsync({
       command,
       log: () => {},
@@ -83,6 +63,13 @@ export default class GameSimulator extends BaseGameCommand<typeof GameSimulator>
 
   static override flags = {
     ...BaseGameCommand.flags,
+    // No short char: -d is used for --useDemoCredentials elsewhere in the CLI.
+    maxDuration: Flags.integer({
+      description: `How long the simulator session may run, in seconds (default ${SIMULATOR_DEFAULT_DURATION_SECONDS}, max ${SIMULATOR_MAX_DURATION_SECONDS})`,
+      max: SIMULATOR_MAX_DURATION_SECONDS,
+      min: 1,
+      required: false,
+    }),
   }
 
   static override description = 'Runs the game in a simulator for the specified platform.'
@@ -91,6 +78,7 @@ export default class GameSimulator extends BaseGameCommand<typeof GameSimulator>
     '<%= config.bin %> <%= command.id %> ios',
     '<%= config.bin %> <%= command.id %> android',
     '<%= config.bin %> <%= command.id %> android --gameId 0c179fc4',
+    '<%= config.bin %> <%= command.id %> ios --maxDuration 1800',
   ]
 
   public async run(): Promise<void> {
@@ -100,19 +88,54 @@ export default class GameSimulator extends BaseGameCommand<typeof GameSimulator>
     }
 
     const {platform} = this.args
+    const {maxDuration} = this.flags
 
-    const session = await startSimulator(gameId, platform)
+    const session = await startSimulator(gameId, `${platform}`.toUpperCase() as Platform, maxDuration).catch((e) =>
+      this.error(getErrorMessage(e)),
+    )
 
     const handleError = (e: Error) => this.error(getErrorMessage(e))
 
-    render(
+    // Shared between this method and the ink tree: the end callback fires from
+    // inside the render, so it needs the unmount handle, and what it records
+    // has to outlive the tree. An object rather than plain locals because
+    // TypeScript narrows away values assigned inside a closure.
+    const ended: {didEnd: boolean; session: null | SimulatorSession; unmount?: () => void} = {
+      didEnd: false,
+      session: null,
+    }
+
+    // We print the closing line after ink has torn down: its final frame is not
+    // a reliable place for it.
+    const handleSessionEnded = (endedSession: null | SimulatorSession) => {
+      ended.didEnd = true
+      ended.session = endedSession
+      if (ended.unmount) ended.unmount()
+    }
+
+    const instance = render(
       <CommandGame command={this}>
         <Box flexDirection="column">
-          <Text>Simulator session started for platform: {platform}</Text>
-          <Text>Session ID: {session.id}</Text>
+          <SimulatorSessionStatus
+            initialSession={session}
+            onSessionEnded={handleSessionEnded}
+            requestedMaxDuration={maxDuration}
+          />
           <SimulatorBuilder platform={platform as 'android' | 'ios'} onError={handleError} />
         </Box>
       </CommandGame>,
     )
+
+    ended.unmount = instance.unmount
+    // The session can already be over by the time render() returns.
+    if (ended.didEnd) instance.unmount()
+
+    await instance.waitUntilExit()
+
+    if (ended.didEnd) {
+      const limit = ended.session?.maxDurationSeconds ?? session.maxDurationSeconds
+      const limitText = limit ? ` (${formatDuration(limit)} limit)` : ''
+      this.log(`Simulator session ended${limitText}.`)
+    }
   }
 }

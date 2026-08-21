@@ -78,6 +78,22 @@ export function getShortDateTime(inputDate: DateTime, extraFormatOpts: DateTimeF
 }
 
 /**
+ * Formats a number of seconds as a short human-readable duration, e.g. "45s",
+ * "9m 30s", "1h 0m". Negative values are clamped to zero.
+ * Kept in step with the web frontend's formatDuration so both surfaces read the same.
+ */
+export function formatDuration(totalSeconds: number): string {
+  const secs = Math.max(0, Math.round(totalSeconds))
+  const hours = Math.floor(secs / 3600)
+  const minutes = Math.floor((secs % 3600) / 60)
+  const seconds = secs % 60
+
+  if (hours > 0) return `${hours}h ${minutes}m`
+  if (minutes > 0) return `${minutes}m ${seconds}s`
+  return `${seconds}s`
+}
+
+/**
  * Formats a DateTime object into a short time string, based on the current locale.
  * Extra formatting options can be provided to customize the output, including fractional seconds.
  */
