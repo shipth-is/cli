@@ -16,5 +16,6 @@ export const cacheKeys = {
   jobLogs: (props: JobLogsQueryProps) => ['jobLogs', ...Object.values(props)],
   jobs: (props: JobsQueryProps) => ['jobs', ...Object.values(props)],
   projectCredentials: (props: FetchProps) => ['projectCredentials', ...Object.values(props)],
+  simulatorSession: () => ['simulatorSession'],
   userCredentials: (props: PageAndSortParams) => ['userCredentials', ...Object.values(props)],
 }
