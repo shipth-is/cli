@@ -13,6 +13,8 @@ import {
   GoogleAuthResponse,
   GoogleStatusResponse,
   Job,
+  MultipartPartUrl,
+  MultipartUploadTicket,
   PageAndSortParams,
   Platform,
   Project,
@@ -21,6 +23,7 @@ import {
   Self,
   TermsResponse,
   UploadDetails,
+  UploadedPart,
   UploadTicket,
 } from '@cli/types'
 import {castArrayObjectDates, castJobDates, castObjectDates} from '@cli/utils/dates.js'
@@ -107,6 +110,40 @@ export async function getNewUploadTicket(projectId: string): Promise<UploadTicke
   const opt = {headers}
   const {data} = await axios.post(`${API_URL}/upload/${projectId}/url`, {}, opt)
   return data as UploadTicket
+}
+
+// Starts a multipart upload. The size decides the part size the backend returns.
+export async function getNewMultipartUpload(projectId: string, size: number): Promise<MultipartUploadTicket> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.post(`${API_URL}/upload/${projectId}/multipart`, {size}, opt)
+  return data as MultipartUploadTicket
+}
+
+// Returns a signed URL for each part number. A signed URL lasts one hour, so a
+// slow upload asks for a new URL rather than starting again.
+export async function getMultipartPartUrls(
+  uploadTicketId: string,
+  partNumbers: number[],
+): Promise<MultipartPartUrl[]> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const {data} = await axios.post(`${API_URL}/upload/multipart/${uploadTicketId}/parts`, {partNumbers}, opt)
+  return (data as {parts: MultipartPartUrl[]}).parts
+}
+
+// Joins the uploaded parts into the final object
+export async function completeMultipartUpload(uploadTicketId: string, parts: UploadedPart[]): Promise<void> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  await axios.post(`${API_URL}/upload/multipart/${uploadTicketId}/complete`, {parts}, opt)
+}
+
+// Cancels a multipart upload. This deletes the parts already uploaded.
+export async function abortMultipartUpload(uploadTicketId: string): Promise<void> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  await axios.post(`${API_URL}/upload/multipart/${uploadTicketId}/abort`, {}, opt)
 }
 
 // Tells the backend to start running the jobs for an upload-ticket

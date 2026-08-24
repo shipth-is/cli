@@ -36,6 +36,7 @@ export type ShipGameFlags = {
   downloadAPK?: string
   follow?: boolean
   platform?: 'android' | 'ios'
+  skipMultipart?: boolean
   skipPublish?: boolean
   verbose?: boolean
   useDemoCredentials?: boolean
