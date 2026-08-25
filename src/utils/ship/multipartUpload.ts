@@ -9,7 +9,7 @@ import {
   getNewMultipartUpload,
 } from '@cli/api/index.js'
 import type {MultipartPartUrl, MultipartUploadTicket, UploadedPart} from '@cli/types'
-import {getResponseError, isRetryable} from '@cli/utils/errors.js'
+import {getS3Error, isRetryable} from '@cli/utils/errors.js'
 
 import type {LogFunction} from './types.d.js'
 import type {ProgressData} from './upload.js'
@@ -160,7 +160,7 @@ async function uploadPart(
           throw new Error(`Part ${part.partNumber} failed: the signed URL expired`)
         }
 
-        throw getResponseError(response, `Part ${part.partNumber}`)
+        throw await getS3Error(response, `Part ${part.partNumber}`)
       }
 
       const etag = response.headers.get('etag')
