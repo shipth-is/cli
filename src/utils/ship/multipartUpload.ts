@@ -46,7 +46,6 @@ type OnRetry = (error: unknown, attempt: number, delayMs: number) => void
 
 // Calls run until it returns, or until the attempts run out.
 // Each attempt waits after the one before it, so these awaits belong in a loop.
-/* eslint-disable no-await-in-loop */
 export async function withRetry<T>(run: () => Promise<T>, onRetry: OnRetry): Promise<T> {
   let lastError: unknown = new Error('The operation did not run')
 
@@ -68,7 +67,6 @@ export async function withRetry<T>(run: () => Promise<T>, onRetry: OnRetry): Pro
 
   throw lastError
 }
-/* eslint-enable no-await-in-loop */
 
 // Logs a failed attempt, so a slow upload shows why it is slow
 const logRetry = (vlog: LogFunction, what: string): OnRetry => (error, attempt, delayMs) => {
@@ -95,7 +93,6 @@ export function calculateParts(zipSize: number, partSize: number): Part[] {
 // part uploads, so a retry does not read the file again.
 // Each read starts where the one before it stopped, so these awaits belong in
 // the loop.
-/* eslint-disable no-await-in-loop */
 export async function readPart(filePath: string, part: Part): Promise<PartBody> {
   const handle = await fs.promises.open(filePath, 'r')
   try {
@@ -121,7 +118,6 @@ export async function readPart(filePath: string, part: Part): Promise<PartBody> 
     await handle.close()
   }
 }
-/* eslint-enable no-await-in-loop */
 
 // Signs every part number. The backend limits how many it signs in one request,
 // so the part numbers go up in batches.
