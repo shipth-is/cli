@@ -45,6 +45,25 @@ shipthis game ship --platform ios --follow --useDemoCredentials --download game.
 shipthis game ship --platform android --follow --useDemoCredentials --downloadAPK game.apk
 ```
 
+### Uploading a large game
+
+ShipThis makes a zip of your game. For a zip of 16MB or more, ShipThis sends the zip in
+several parts at the same time. This is faster than one request.
+
+Each part is separate. If the network fails, ShipThis sends that part again. The parts that
+arrived stay on the server.
+
+ShipThis sends a zip smaller than 16MB in one request. Parts do not make a small zip faster.
+
+To send the zip in one request, use `--skipMultipart`. This method is slower, and the zip
+must be smaller than 5GB. Use this flag only if the upload in parts fails.
+
+```bash
+shipthis game ship --platform android --skipMultipart
+```
+
+To see each part, and to see ShipThis send a part again, add `--verbose`.
+
 ### Overriding the Godot version
 
 You can specify a different Godot version to use only for the current job. This can be helpful if you are upgrading your game to use a newer version of Godot.
@@ -58,7 +77,8 @@ shipthis game ship --platform android --follow --gameEngineVersion 4.5.1 --downl
 ```help
 USAGE
   $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ]
-    [--follow ] [--skipPublish] [--verbose] [--useDemoCredentials ] [--gameEngineVersion <value>] [--dryRun]
+    [--follow ] [--skipMultipart] [--skipPublish] [--verbose] [--useDemoCredentials ]
+    [--gameEngineVersion <value>] [--dryRun]
 
 FLAGS
   -g, --gameId=<value>             The ID of the game
@@ -70,6 +90,8 @@ FLAGS
       --gameEngineVersion=<value>  Override the specified game engine version for this build
       --platform=<option>          The platform to ship the game to. This can be "android" or "ios"
                                    <options: android|ios>
+      --skipMultipart              Upload the zip in one request instead of several parts in parallel (slower, and
+                                   limited to 5GB)
       --skipPublish                Skip the publish step
       --useDemoCredentials         Use demo credentials for this build (requires --platform, implies --skipPublish)
       --verbose                    Enable verbose logging
