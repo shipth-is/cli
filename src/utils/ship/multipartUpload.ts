@@ -9,6 +9,7 @@ import {
   getNewMultipartUpload,
 } from '@cli/api/index.js'
 import type {MultipartPartUrl, MultipartUploadTicket, UploadedPart} from '@cli/types'
+import {getResponseError, isRetryable} from '@cli/utils/errors.js'
 
 import type {LogFunction} from './types.d.js'
 import type {ProgressData} from './upload.js'
@@ -20,8 +21,11 @@ export const MULTIPART_MIN_SIZE = 16 * 1024 * 1024
 // One part at a time is slower than a single PUT, so keep this above 1.
 export const DEFAULT_CONCURRENCY = 8
 
-export const MAX_PART_ATTEMPTS = 4
-export const RETRY_BASE_DELAY_MS = 500
+// Eight attempts wait at most 61.5 seconds in total. That covers a router
+// restart, or a handover between two wifi points.
+export const MAX_ATTEMPTS = 8
+const BASE_DELAY_MS = 500
+const MAX_DELAY_MS = 30_000
 
 // The backend signs at most this many parts in one request
 const SIGN_BATCH_SIZE = 1000
@@ -37,6 +41,40 @@ interface Part {
 type PartBody = Uint8Array<ArrayBuffer>
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+type OnRetry = (error: unknown, attempt: number, delayMs: number) => void
+
+// Calls run until it returns, or until the attempts run out.
+// Each attempt waits after the one before it, so these awaits belong in a loop.
+/* eslint-disable no-await-in-loop */
+export async function withRetry<T>(run: () => Promise<T>, onRetry: OnRetry): Promise<T> {
+  let lastError: unknown = new Error('The operation did not run')
+
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt += 1) {
+    try {
+      return await run()
+    } catch (error) {
+      lastError = error
+      if (attempt === MAX_ATTEMPTS || !isRetryable(error)) break
+
+      // Wait longer after each failure, up to the cap. Half of the wait is
+      // random, so that parts which failed together do not retry together.
+      const backoff = Math.min(MAX_DELAY_MS, BASE_DELAY_MS * 2 ** (attempt - 1))
+      const waitMs = backoff / 2 + Math.random() * (backoff / 2)
+      onRetry(error, attempt, waitMs)
+      await delay(waitMs)
+    }
+  }
+
+  throw lastError
+}
+/* eslint-enable no-await-in-loop */
+
+// Logs a failed attempt, so a slow upload shows why it is slow
+const logRetry = (vlog: LogFunction, what: string): OnRetry => (error, attempt, delayMs) => {
+  const message = error instanceof Error ? error.message : String(error)
+  vlog(`${what} attempt ${attempt} failed (${message}). Retrying in ${(delayMs / 1000).toFixed(1)}s...`)
+}
 
 // Splits the file into the parts to upload. Every part is partSize bytes,
 // except the last one.
@@ -85,56 +123,49 @@ async function getPartUrls(uploadTicketId: string, partNumbers: number[]): Promi
   return signedBatches.flat()
 }
 
-// A retry runs after the attempt before it, so these awaits belong in the loop.
-/* eslint-disable no-await-in-loop */
-// Uploads one part and returns its ETag. Retries with an increasing delay.
+// Uploads one part and returns its ETag
 async function uploadPart(
   uploadTicketId: string,
   part: Part,
   signedUrl: string,
   body: PartBody,
+  vlog: LogFunction,
 ): Promise<string> {
   let url = signedUrl
-  let lastError: Error = new Error(`Part ${part.partNumber} did not upload`)
 
-  for (let attempt = 1; attempt <= MAX_PART_ATTEMPTS; attempt += 1) {
-    if (attempt > 1) {
-      await delay(RETRY_BASE_DELAY_MS * 2 ** (attempt - 2))
-    }
-
-    try {
+  return withRetry(
+    async () => {
       const response = await fetch(url, {
         body,
         headers: {'Content-Length': String(body.length)},
         method: 'PUT',
       })
 
-      if (response.ok) {
-        const etag = response.headers.get('etag')
-        if (etag) return etag
-        lastError = new Error(`Part ${part.partNumber} uploaded but returned no ETag`)
-      } else {
-        lastError = new Error(`Part ${part.partNumber} failed: ${response.status} ${response.statusText}`)
+      if (!response.ok) {
         // A signed URL lasts one hour. A slow upload can outlive it.
         if (response.status === 403) {
           const [fresh] = await getMultipartPartUrls(uploadTicketId, [part.partNumber])
           url = fresh.url
         }
-      }
-    } catch (error) {
-      lastError = error as Error
-    }
-  }
 
-  throw lastError
+        throw getResponseError(response, `Part ${part.partNumber}`)
+      }
+
+      const etag = response.headers.get('etag')
+      if (!etag) throw new Error(`Part ${part.partNumber} uploaded but returned no ETag`)
+
+      return etag
+    },
+    logRetry(vlog, `Part ${part.partNumber}`),
+  )
 }
-/* eslint-enable no-await-in-loop */
 
 interface UploadPartsProps {
   concurrency?: number
   filePath: string
   onProgress: (data: ProgressData) => void
   ticket: MultipartUploadTicket
+  vlog: LogFunction
   zipSize: number
 }
 
@@ -145,6 +176,7 @@ export async function uploadParts({
   filePath,
   onProgress,
   ticket,
+  vlog,
   zipSize,
 }: UploadPartsProps): Promise<void> {
   const parts = calculateParts(zipSize, ticket.partSize)
@@ -171,7 +203,7 @@ export async function uploadParts({
           if (!signedUrl) throw new Error(`The server did not sign part ${part.partNumber}`)
 
           const body = await readPart(filePath, part)
-          const etag = await uploadPart(ticket.id, part, signedUrl, body)
+          const etag = await uploadPart(ticket.id, part, signedUrl, body, vlog)
 
           uploadedBytes += part.size
           const elapsedSeconds = (Date.now() - startTime) / 1000
@@ -188,7 +220,9 @@ export async function uploadParts({
       ),
     )
 
-    await completeMultipartUpload(ticket.id, uploaded)
+    // Every byte is uploaded by now. Losing this call to one bad moment would
+    // throw all of it away, so it gets the same retry as a part.
+    await withRetry(() => completeMultipartUpload(ticket.id, uploaded), logRetry(vlog, 'Completing the upload'))
   } catch (error) {
     // The parts already uploaded cost storage until something removes them
     await abortMultipartUpload(ticket.id).catch(() => {})
@@ -218,7 +252,7 @@ export async function multipartUpload({
   const ticket = await getNewMultipartUpload(projectId, zipSize)
 
   vlog(`Uploading in parts of ${Math.round(ticket.partSize / 1024 / 1024)}MB...`)
-  await uploadParts({concurrency, filePath, onProgress, ticket, zipSize})
+  await uploadParts({concurrency, filePath, onProgress, ticket, vlog, zipSize})
 
   return ticket.id
 }

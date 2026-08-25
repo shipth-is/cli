@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 
-import {calculateParts} from '@cli/utils/ship/multipartUpload.js'
+import {calculateParts, withRetry} from '@cli/utils/ship/multipartUpload.js'
 
 const MIB = 1024 * 1024
 
@@ -38,5 +38,56 @@ describe('calculateParts (ship/multipartUpload)', () => {
 
   it('returns no parts for an empty file', () => {
     expect(calculateParts(0, 8 * MIB)).to.deep.equal([])
+  })
+})
+
+describe('withRetry (ship/multipartUpload)', () => {
+  const noop = () => {}
+
+  it('returns the value without retrying when the first attempt works', async () => {
+    let calls = 0
+    const result = await withRetry(async () => {
+      calls += 1
+      return 'ok'
+    }, noop)
+
+    expect(result).to.equal('ok')
+    expect(calls).to.equal(1)
+  })
+
+  it('stops at once when the error is not worth retrying', async () => {
+    let calls = 0
+
+    try {
+      await withRetry(async () => {
+        calls += 1
+        throw Object.assign(new Error('not found'), {status: 404})
+      }, noop)
+      expect.fail('withRetry should have thrown')
+    } catch (error) {
+      expect((error as Error).message).to.equal('not found')
+    }
+
+    expect(calls).to.equal(1)
+  })
+
+  it('retries a retryable error, and tells onRetry which attempt failed', async () => {
+    const seen: number[] = []
+    let calls = 0
+
+    const result = await withRetry(
+      async () => {
+        calls += 1
+        if (calls === 1) throw Object.assign(new Error('expired'), {status: 403})
+        return 'ok'
+      },
+      (_error, attempt) => {
+        seen.push(attempt)
+      },
+    )
+
+    expect(result).to.equal('ok')
+    expect(calls).to.equal(2)
+    expect(seen).to.deep.equal([1])
   })
 })

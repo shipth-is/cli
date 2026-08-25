@@ -9,6 +9,31 @@ export function isNetworkError(exception: any) {
   return ['ECONNABORTED', 'ERR_NETWORK'].includes(`${exception.code}`)
 }
 
+// A 4xx means the request itself was wrong, so sending it again gives the same
+// answer. These three are the exceptions. A 403 means a signed URL expired.
+// A 408 and a 429 both ask the client to come back later.
+const RETRYABLE_CLIENT_STATUSES = new Set([403, 408, 429])
+
+// fetch answers a failed request with a Response instead of throwing, so the
+// response needs converting before it can travel like any other error.
+// axios sets `status` on the errors it throws, so this sets the same field.
+export function getResponseError(response: Response, what: string) {
+  return Object.assign(new Error(`${what} failed: ${response.status} ${response.statusText}`), {
+    status: response.status,
+  })
+}
+
+// Decides whether another attempt at a failed request is worth making
+export function isRetryable(error: unknown) {
+  const {status} = error as {status?: number}
+
+  // No status means the request never got an answer. A dropped connection and a
+  // timeout both land here, and both deserve another attempt.
+  if (status === undefined) return true
+
+  return status >= 500 || RETRYABLE_CLIENT_STATUSES.has(status)
+}
+
 // Util to extract API error messages if present
 export function getErrorMessage(error: any) {
   try {
