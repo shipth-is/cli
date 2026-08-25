@@ -2,6 +2,7 @@ import fs from 'node:fs'
 import {Readable, Transform} from 'stream'
 
 import {getNewUploadTicket} from '@cli/api/index.js'
+import {getResponseError} from '@cli/utils/errors.js'
 
 import type {LogFunction} from './types.d.js'
 
@@ -113,9 +114,7 @@ export async function singleUpload({
     zipStream: fs.createReadStream(filePath),
   })
 
-  if (!response.ok) {
-    throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
-  }
+  if (!response.ok) throw getResponseError(response, 'Upload')
 
   return uploadTicket.id
 }
