@@ -1,6 +1,10 @@
+import fs from 'node:fs'
+import os from 'node:os'
+import path from 'node:path'
+
 import {expect} from 'chai'
 
-import {calculateParts, withRetry} from '@cli/utils/ship/multipartUpload.js'
+import {calculateParts, readPart, withRetry} from '@cli/utils/ship/multipartUpload.js'
 
 const MIB = 1024 * 1024
 
@@ -89,5 +93,55 @@ describe('withRetry (ship/multipartUpload)', () => {
     expect(result).to.equal('ok')
     expect(calls).to.equal(2)
     expect(seen).to.deep.equal([1])
+  })
+})
+
+describe('readPart (ship/multipartUpload)', () => {
+  const filePath = path.join(os.tmpdir(), 'shipthis-readPart-test.bin')
+
+  // Byte i of the file is i % 251, so a wrong offset is easy to spot
+  const contents = Uint8Array.from({length: 4096}, (_, i) => i % 251)
+
+  beforeEach(() => fs.writeFileSync(filePath, contents))
+  afterEach(() => fs.rmSync(filePath, {force: true}))
+
+  it('reads the bytes at the start of the part, not the start of the file', async () => {
+    const body = await readPart(filePath, {partNumber: 2, size: 100, start: 1000})
+
+    expect(body).to.have.length(100)
+    expect([...body]).to.deep.equal([...contents.subarray(1000, 1100)])
+  })
+
+  it('keeps reading when the filesystem gives back less than it was asked for', async () => {
+    // A network mount can answer with part of the request. Make every read
+    // return at most 30 bytes, so filling a 100 byte part needs several.
+    const handle = await fs.promises.open(filePath, 'r')
+    const fileHandle = Object.getPrototypeOf(handle)
+    const realRead = fileHandle.read
+    await handle.close()
+
+    let reads = 0
+    fileHandle.read = function (buffer: Uint8Array, offset: number, length: number, position: number) {
+      reads += 1
+      return realRead.call(this, buffer, offset, Math.min(length, 30), position)
+    }
+
+    try {
+      const body = await readPart(filePath, {partNumber: 1, size: 100, start: 0})
+
+      expect(reads).to.be.greaterThan(1)
+      expect([...body]).to.deep.equal([...contents.subarray(0, 100)])
+    } finally {
+      fileHandle.read = realRead
+    }
+  })
+
+  it('fails when the file ends before the part is full', async () => {
+    try {
+      await readPart(filePath, {partNumber: 9, size: 500, start: 4000})
+      expect.fail('readPart should have thrown')
+    } catch (error) {
+      expect((error as Error).message).to.equal('Part 9 read 96 bytes, expected 500')
+    }
   })
 })

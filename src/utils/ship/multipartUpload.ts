@@ -93,15 +93,27 @@ export function calculateParts(zipSize: number, partSize: number): Part[] {
 
 // Reads one part of the file into memory. The bytes stay in memory until the
 // part uploads, so a retry does not read the file again.
-async function readPart(filePath: string, part: Part): Promise<PartBody> {
+// Each read starts where the one before it stopped, so these awaits belong in
+// the loop.
+/* eslint-disable no-await-in-loop */
+export async function readPart(filePath: string, part: Part): Promise<PartBody> {
   const handle = await fs.promises.open(filePath, 'r')
   try {
     const body = new Uint8Array(part.size)
-    const {bytesRead} = await handle.read(body, 0, part.size, part.start)
-    // A network mount can return less than it was asked for. Uploading the
-    // short buffer would pad the part with zeros and corrupt the zip.
-    if (bytesRead !== part.size) {
-      throw new Error(`Part ${part.partNumber} read ${bytesRead} bytes, expected ${part.size}`)
+    let filled = 0
+
+    // A network mount can return less than it was asked for. That is not the
+    // end of the file, so ask again for the rest. Only a read of no bytes means
+    // there is nothing left to read.
+    while (filled < part.size) {
+      const {bytesRead} = await handle.read(body, filled, part.size - filled, part.start + filled)
+      if (bytesRead === 0) break
+      filled += bytesRead
+    }
+
+    // Uploading a short part would pad it with zeros and corrupt the zip
+    if (filled !== part.size) {
+      throw new Error(`Part ${part.partNumber} read ${filled} bytes, expected ${part.size}`)
     }
 
     return body
@@ -109,6 +121,7 @@ async function readPart(filePath: string, part: Part): Promise<PartBody> {
     await handle.close()
   }
 }
+/* eslint-enable no-await-in-loop */
 
 // Signs every part number. The backend limits how many it signs in one request,
 // so the part numbers go up in batches.
