@@ -78,7 +78,7 @@ describe('withRetry (ship/multipartUpload)', () => {
     const result = await withRetry(
       async () => {
         calls += 1
-        if (calls === 1) throw Object.assign(new Error('expired'), {status: 403})
+        if (calls === 1) throw Object.assign(new Error('busy'), {status: 429})
         return 'ok'
       },
       (_error, attempt) => {

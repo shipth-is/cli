@@ -142,10 +142,13 @@ async function uploadPart(
       })
 
       if (!response.ok) {
-        // A signed URL lasts one hour. A slow upload can outlive it.
+        // A signed URL lasts one hour, and a slow upload can outlive it. This is
+        // the one 403 worth another attempt, so it throws an error with no
+        // status rather than one isRetryable would refuse.
         if (response.status === 403) {
           const [fresh] = await getMultipartPartUrls(uploadTicketId, [part.partNumber])
           url = fresh.url
+          throw new Error(`Part ${part.partNumber} failed: the signed URL expired`)
         }
 
         throw getResponseError(response, `Part ${part.partNumber}`)
@@ -224,8 +227,10 @@ export async function uploadParts({
     // throw all of it away, so it gets the same retry as a part.
     await withRetry(() => completeMultipartUpload(ticket.id, uploaded), logRetry(vlog, 'Completing the upload'))
   } catch (error) {
-    // The parts already uploaded cost storage until something removes them
-    await abortMultipartUpload(ticket.id).catch(() => {})
+    // Promise.all rejects on the first failed part, but p-limit keeps starting
+    // the parts behind it. Without this the rest of the file uploads to an
+    // upload that is already being cancelled.
+    limit.clearQueue()
     throw error
   }
 }
@@ -251,8 +256,15 @@ export async function multipartUpload({
   vlog('Requesting multipart upload ticket...')
   const ticket = await getNewMultipartUpload(projectId, zipSize)
 
-  vlog(`Uploading in parts of ${Math.round(ticket.partSize / 1024 / 1024)}MB...`)
-  await uploadParts({concurrency, filePath, onProgress, ticket, vlog, zipSize})
+  try {
+    vlog(`Uploading in parts of ${Math.round(ticket.partSize / 1024 / 1024)}MB...`)
+    await uploadParts({concurrency, filePath, onProgress, ticket, vlog, zipSize})
+  } catch (error) {
+    // The parts already uploaded cost storage until something removes them. The
+    // bucket also clears an upload that was never completed after 7 days.
+    await abortMultipartUpload(ticket.id).catch(() => {})
+    throw error
+  }
 
   return ticket.id
 }

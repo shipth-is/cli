@@ -10,9 +10,10 @@ export function isNetworkError(exception: any) {
 }
 
 // A 4xx means the request itself was wrong, so sending it again gives the same
-// answer. These three are the exceptions. A 403 means a signed URL expired.
-// A 408 and a 429 both ask the client to come back later.
-const RETRYABLE_CLIENT_STATUSES = new Set([403, 408, 429])
+// answer. These two are the exceptions. Both ask the client to come back later.
+// A 403 is not here. On an authenticated call it never recovers, and a caller
+// that can recover from one, such as a stale signed URL, handles it itself.
+const RETRYABLE_CLIENT_STATUSES = new Set([408, 429])
 
 // fetch answers a failed request with a Response instead of throwing, so the
 // response needs converting before it can travel like any other error.

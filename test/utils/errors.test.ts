@@ -17,9 +17,8 @@ describe('isRetryable (utils/errors)', () => {
     expect(isRetryable(new Error('fetch failed'))).to.equal(true)
   })
 
-  it('retries a server error and the three wait-and-see client errors', () => {
+  it('retries a server error and the two wait-and-see client errors', () => {
     expect(isRetryable({status: 503})).to.equal(true)
-    expect(isRetryable({status: 403})).to.equal(true)
     expect(isRetryable({status: 408})).to.equal(true)
     expect(isRetryable({status: 429})).to.equal(true)
   })
@@ -28,6 +27,12 @@ describe('isRetryable (utils/errors)', () => {
     expect(isRetryable({status: 400})).to.equal(false)
     expect(isRetryable({status: 401})).to.equal(false)
     expect(isRetryable({status: 404})).to.equal(false)
+  })
+
+  // An authenticated call cannot recover from a 403. A caller that can, such as
+  // uploadPart with a stale signed URL, handles its own 403.
+  it('does not retry a 403', () => {
+    expect(isRetryable({status: 403})).to.equal(false)
   })
 
   it('reads the status axios sets on the errors it throws', () => {
