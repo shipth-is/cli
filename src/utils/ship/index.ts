@@ -2,14 +2,15 @@ import fs from 'node:fs'
 
 import {v4 as uuid} from 'uuid'
 
-import {getNewUploadTicket, getProject, startJobsFromUpload} from '@cli/api/index.js'
-import type {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails, UploadTicket} from '@cli/types'
+import {getProject, startJobsFromUpload} from '@cli/api/index.js'
+import type {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
 import {detectGodotVersion, getGodotVersionDrift} from '@cli/utils/godot.js'
 import {getCWDGitInfo, getFileHash} from '@cli/utils/index.js'
 
 import {getFilesToShip} from './glob.js'
+import {MULTIPART_MIN_SIZE, multipartUpload} from './multipartUpload.js'
 import type {ShipOptions} from './types.js'
-import {uploadZip} from './upload.js'
+import {MAX_SINGLE_UPLOAD_SIZE, type ProgressData, singleUpload} from './upload.js'
 import {formatProgressLog, getPlatforms} from './utils.js'
 import {createZip} from './zip.js'
 
@@ -34,6 +35,11 @@ const getMajorDriftError = (detected: string, configured: string) =>
 
 const getMinorDriftWarning = (detected: string, configured: string) =>
   `${getVersionMismatch(detected, configured)}\n\n` + getVersionFixHint(detected)
+
+const getTooLargeForSingleUploadError = (size: number) =>
+  `This zip is ${(size / 1000 / 1000 / 1000).toFixed(1)}GB. ` +
+  `One request can send at most ${MAX_SINGLE_UPLOAD_SIZE / 1000 / 1000 / 1000}GB.\n\n` +
+  `Remove --skipMultipart to upload it in parts.`
 
 // Main function to ship the game
 export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Promise<Job[]> {
@@ -99,27 +105,31 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
     },
   })
 
-  let response: any
   let zipFileMd5 = ''
-  let uploadTicket: UploadTicket | null = null
+  let uploadTicketId = ''
 
   try {
     const {size} = fs.statSync(tmpZipFile)
 
-    vlog('Requesting upload ticket...')
-    uploadTicket = await getNewUploadTicket(projectConfig.project.id)
-
     log('Uploading zip file...')
-    const zipStream = fs.createReadStream(tmpZipFile)
-
-    response = await uploadZip({
-      url: uploadTicket.url,
-      zipStream,
+    const uploadProps = {
+      filePath: tmpZipFile,
+      projectId: projectConfig.project.id,
+      vlog,
       zipSize: size,
-      onProgress: (data) => {
+      onProgress: (data: ProgressData) => {
         log(formatProgressLog('Uploading', data, 'loadedBytes', 'totalBytes', false))
       },
-    })
+    }
+
+    // A small zip goes up in one request. Splitting it buys nothing.
+    const useMultipart = size >= MULTIPART_MIN_SIZE && !finalFlags.skipMultipart
+
+    if (!useMultipart && size > MAX_SINGLE_UPLOAD_SIZE) {
+      throw new Error(getTooLargeForSingleUploadError(size))
+    }
+
+    uploadTicketId = useMultipart ? await multipartUpload(uploadProps) : await singleUpload(uploadProps)
 
     vlog('Computing zip file hash...')
     zipFileMd5 = await getFileHash(tmpZipFile)
@@ -134,10 +144,6 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
         }
       }
     }
-  }
-
-  if (!response.ok) {
-    throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
   }
 
   log(`Upload complete`)
@@ -160,7 +166,7 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
     gameEngineVersion: finalFlags.gameEngineVersion,
   }
 
-  const jobs = await startJobsFromUpload(uploadTicket.id, startJobsOptions)
+  const jobs = await startJobsFromUpload(uploadTicketId, startJobsOptions)
 
   vlog('Job submission complete.')
 

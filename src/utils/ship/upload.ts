@@ -1,6 +1,16 @@
+import fs from 'node:fs'
 import {Readable, Transform} from 'stream'
 
+import {getNewUploadTicket} from '@cli/api/index.js'
+import {getS3Error} from '@cli/utils/errors.js'
+
+import type {LogFunction} from './types.d.js'
+
 export const ON_PROGRESS_THROTTLE_MS = 2000
+
+// Digital Ocean Spaces rejects a PUT above this size. Only multipart can send
+// a larger file.
+export const MAX_SINGLE_UPLOAD_SIZE = 5 * 1000 * 1000 * 1000
 
 export function createProgressStream(
   totalSize: number, 
@@ -25,7 +35,7 @@ export function createProgressStream(
   })
 }
 
-interface ProgressData {
+export interface ProgressData {
   progress: number
   loadedBytes: number
   totalBytes: number
@@ -76,4 +86,35 @@ export function uploadZip({url, zipStream, zipSize, onProgress}: UploadProps): P
   } as RequestInit & {duplex: 'half'})
 
   return response
+}
+
+interface SingleUploadProps {
+  filePath: string
+  onProgress: (data: ProgressData) => void
+  projectId: string
+  vlog: LogFunction
+  zipSize: number
+}
+
+// Uploads the zip in one request and returns the ID of the upload ticket
+export async function singleUpload({
+  filePath,
+  onProgress,
+  projectId,
+  vlog,
+  zipSize,
+}: SingleUploadProps): Promise<string> {
+  vlog('Requesting upload ticket...')
+  const uploadTicket = await getNewUploadTicket(projectId)
+
+  const response = await uploadZip({
+    onProgress,
+    url: uploadTicket.url,
+    zipSize,
+    zipStream: fs.createReadStream(filePath),
+  })
+
+  if (!response.ok) throw await getS3Error(response, 'Upload')
+
+  return uploadTicket.id
 }

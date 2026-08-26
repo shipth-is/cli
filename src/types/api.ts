@@ -73,6 +73,24 @@ export interface UploadTicket {
   url: string
 }
 
+// A MultipartUploadTicket is a request to upload a file in parts. The parts go
+// to the signed URLs returned by getMultipartPartUrls.
+export interface MultipartUploadTicket {
+  id: string
+  maxParts: number
+  partSize: number
+}
+
+export interface MultipartPartUrl {
+  partNumber: number
+  url: string
+}
+
+export interface UploadedPart {
+  etag: string
+  partNumber: number
+}
+
 export interface Upload {
   bucketName: string
   createdAt: DateTime

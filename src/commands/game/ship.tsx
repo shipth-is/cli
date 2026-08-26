@@ -46,6 +46,11 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       options: ['android', 'ios'],
       required: false,
     }),
+    skipMultipart: Flags.boolean({
+      default: false,
+      description: 'Upload the zip in one request instead of several parts in parallel (slower, and limited to 5GB)',
+      required: false,
+    }),
     skipPublish: Flags.boolean({
       default: false,
       description: 'Skip the publish step',
