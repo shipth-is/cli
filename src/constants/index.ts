@@ -6,9 +6,9 @@ export * from './godot.js'
 
 export const DetailsFlags = {
   androidPackageName: Flags.string({char: 'a', description: 'Set the Android package name'}),
-  // The range matches MIN_BUILD_NUMBER and MAX_BUILD_NUMBER in utils/validation.ts. The
-  // parser message carries no docs link, so the validator repeats the check.
-  buildNumber: Flags.integer({char: 'b', description: 'Set the build number', max: 2_100_000_000, min: 1}),
+  // No min or max here. The parser runs before run(), so a bound set here would answer first
+  // with a message that carries no docs link. validateBuildNumber holds the range instead.
+  buildNumber: Flags.integer({char: 'b', description: 'Set the build number'}),
   // The value is not imported from the GameEngine enum - importing types here has caused a
   // circular import before (see the DetailsFlags fix in 4a7357f).
   gameEngine: Flags.string({char: 'e', description: 'Set the game engine', options: ['godot']}),
