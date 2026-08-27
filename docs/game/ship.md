@@ -72,6 +72,9 @@ You can specify a different Godot version to use only for the current job. This 
 shipthis game ship --platform android --follow --gameEngineVersion 4.5.1 --download game-4.5.1.aab
 ```
 
+The CLI checks this version before it builds the zip, so a typo stops the command in a second.
+See [Godot versioning](/docs/guides/godot-versioning) for the versions ShipThis supports.
+
 ## Help Output
 
 ```help

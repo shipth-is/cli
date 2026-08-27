@@ -1,11 +1,12 @@
 import {Flags} from '@oclif/core'
 import {render} from 'ink'
 
+import {getSupportedGodotVersions} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, StatusTable} from '@cli/components/index.js'
-import {DetailsFlags} from '@cli/constants/index.js'
+import {DetailsFlags, SUPPORTED_GODOT_VERSIONS} from '@cli/constants/index.js'
 import {GameEngine} from '@cli/types'
-import {isValidSemVer} from '@cli/utils/index.js'
+import {validateDetailsValues} from '@cli/utils/index.js'
 
 export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   static override args = {}
@@ -42,13 +43,22 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
       useDemoCredentials,
     } = valueFlags
 
-    if (semanticVersion && !isValidSemVer(semanticVersion))
-      throw new Error(`Invalid semantic version: ${semanticVersion}`)
+    // Only ask the server which versions it builds when there is a version to check.
+    const godotVersions = gameEngineVersion ? await getSupportedGodotVersions() : SUPPORTED_GODOT_VERSIONS
+
+    // Values come before the --force gate, so a wrong value is named without --force.
+    // this.error() exits, so only this fault prints.
+    const validationError = validateDetailsValues(valueFlags, godotVersions)
+    if (validationError) {
+      this.error(validationError.message, {
+        exit: 1,
+        ref: validationError.ref,
+        suggestions: validationError.suggestions,
+      })
+    }
 
     if ((gameEngine || gameEngineVersion || iosBundleId || androidPackageName) && !force)
       throw new Error('Use --force to set the restricted fields')
-
-    if (gameEngine && gameEngine !== GameEngine.GODOT) throw new Error(`Game engine ${gameEngine} not supported`)
 
     let game = await this.getGame()
 
@@ -56,7 +66,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
       details: {
         ...game.details,
         ...(androidPackageName && {androidPackageName}),
-        ...(buildNumber && {buildNumber}),
+        ...(buildNumber !== undefined && {buildNumber}),
         ...(gameEngine && {gameEngine: gameEngine as GameEngine}),
         ...(gameEngineVersion && {gameEngineVersion}),
         ...(gcpProjectId !== undefined && {gcpProjectId}),

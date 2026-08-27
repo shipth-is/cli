@@ -17,8 +17,11 @@ directory then you will need to use the `--force` flag to create a new game and
 overwrite this file with the config for the new game.
 
 ShipThis will detect the version of Godot you are using from your **project.godot**
-file. This can be changed with the [`shipthis game details`](/docs/reference/game/details)
-command.
+file. To set a different version, pass the `--gameEngineVersion` flag, or change it later
+with the [`shipthis game details`](/docs/reference/game/details) command.
+
+The CLI checks the values you pass. The rules are the same as the ones the
+[`shipthis game details`](/docs/reference/game/details) command applies.
 
 ## Example
 
@@ -28,8 +31,8 @@ command.
 
 ```help
 USAGE
-  $ shipthis game create [-f] [-q] [-a <value>] [-b <value>] [-e <value>] [-v <value>] [--gcpProjectId <value>]
-    [-c <value>] [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d true|false]
+  $ shipthis game create [-f] [-q] [-a <value>] [-b <value>] [-e godot] [-v <value>] [--gcpProjectId <value>] [-c
+    <value>] [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d true|false]
 
 FLAGS
   -a, --androidPackageName=<value>   Set the Android package name
@@ -37,7 +40,8 @@ FLAGS
   -c, --gcpServiceAccountId=<value>  Set the GCP service account ID
   -d, --useDemoCredentials=<option>  Use demo credentials for this project
                                      <options: true|false>
-  -e, --gameEngine=<value>           Set the game engine
+  -e, --gameEngine=<option>          Set the game engine
+                                     <options: godot>
   -f, --force
   -i, --iosBundleId=<value>          Set the iOS bundle ID
   -l, --liquidGlassIconPath=<value>  Set the Liquid Glass icon path
