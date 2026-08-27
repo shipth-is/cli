@@ -1,11 +1,20 @@
 # There was an error shipping your game
 
-**One or more of the jobs to build your game failed.**
+<% if (failures.length === 1) { -%>
+**The <%= failures[0].platform %> build failed (job <%= failures[0].jobId %>).**
+<% } else { -%>
+**<%= failures.length %> of the builds for your game failed.**
+<% } -%>
 
 ## What now?
 
-- **The last 10 lines of the failed jobs are shown below**
-- Check out the full output in the **ShipThis Dashboard** [<%= jobDashboardUrl %>](<%= jobDashboardUrl %>)
+<% if (showLogTail) { -%>
+- **The last <%= tailLength %> lines of each failed job are shown below**
+<% } -%>
+<% failures.forEach(function (failure) { -%>
+- Read the full <%= failure.platform %> log: `<%= failure.logsCommand %>`
+- See the <%= failure.platform %> job in the **ShipThis Dashboard** [<%= failure.dashboardUrl %>](<%= failure.dashboardUrl %>)
+<% }); -%>
 
 ### Need help?
 

@@ -1,5 +1,6 @@
 import {Flags} from '@oclif/core'
-import {render} from 'ink'
+import chalk from 'chalk'
+import {Instance, render} from 'ink'
 
 import {downloadBuildById, getJob, getSupportedGodotVersions} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
@@ -129,13 +130,27 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       process.exit(0)
     }
 
-    const handleError = (e: Error) => {
-      this.error(getErrorMessage(e))
+    // These two run after run() has resolved, so oclif no longer watches for a throw.
+    // this.error() here reaches node as an uncaught exception, and node prints a stack
+    // trace over the message the user needs. Both handlers therefore print the message
+    // themselves and set the exit code.
+    // The instance lives in an object so handleError can reach what render() returns below.
+    const ui: {instance?: Instance} = {}
+
+    // The Ship component has already shown the summary and the job logs
+    const handleJobsFailed = () => {
+      process.exit(1)
     }
 
-    render(
+    const handleError = (e: unknown) => {
+      ui.instance?.unmount()
+      process.stderr.write(`\n${chalk.red('Error:')} ${getErrorMessage(e)}\n`)
+      process.exit(1)
+    }
+
+    ui.instance = render(
       <CommandGame command={this}>
-        <Ship onComplete={handleComplete} onError={handleError} />
+        <Ship onComplete={handleComplete} onError={handleError} onFailure={handleJobsFailed} />
       </CommandGame>,
     )
   }
