@@ -33,7 +33,7 @@ use is reported here, in a second, rather than in a failed build minutes later.
 | **gameEngineVersion** | A supported Godot version, such as `4.2`. You can pin a patch, such as `4.2.1`. See [Godot versioning](/docs/guides/godot-versioning). |
 | **semanticVersion** | Three numbers, such as `1.2.3`. The App Store rejects a suffix such as `-beta`. See [versioning](/docs/guides/versioning). |
 | **buildNumber** | A whole number from 1 to 2100000000. The top value is the largest Google Play accepts as a versionCode. |
-| **androidPackageName** | Two or more segments, such as `com.mystudio.mygame`. Each segment starts with a letter and holds letters, numbers, and underscores only. See the [Android application ID rules](https://developer.android.com/build/configure-app-module#set-application-id). |
+| **androidPackageName** | Two or more segments, such as `com.mystudio.mygame`. Each segment starts with a letter and holds letters, numbers, and underscores only. See the [Android application ID rules](https://developer.android.com/build/configure-app-module#set-application-id). Use a domain you own. Google Play rejects a name that starts with `com.example.` at upload. |
 | **iosBundleId** | The usual reverse-DNS form, such as `com.mystudio.mygame`. Letters, numbers, and hyphens only. See [CFBundleIdentifier](https://developer.apple.com/documentation/bundleresources/information-property-list/cfbundleidentifier). |
 | **liquidGlassIconPath** | A `.icon` folder that exists on your machine. See the [Liquid Glass guide](/docs/guides/liquid-glass). |
 

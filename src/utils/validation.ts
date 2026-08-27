@@ -247,17 +247,3 @@ export function validateDetailsValues(
   return errors.find((error) => error !== null) ?? null
 }
 
-/** Returns the warnings for values that pass validation but are likely wrong. */
-export function getDetailsWarnings(values: DetailsValues): string[] {
-  const warnings: string[] = []
-
-  const {androidPackageName} = values
-  if (androidPackageName && /^com\.example\./i.test(androidPackageName.trim())) {
-    warnings.push(
-      `Google Play rejects a package name that starts with "com.example.".\n` +
-        `Use a domain you own, such as com.mystudio.mygame.`,
-    )
-  }
-
-  return warnings
-}

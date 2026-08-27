@@ -5,13 +5,7 @@ import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {DEFAULT_PLATFORM_GLOBS, DetailsFlags} from '@cli/constants/index.js'
 import {GameEngine, ProjectDetails} from '@cli/types'
 import {getGodotProjectName, getGodotVersion, isCWDGodotGame} from '@cli/utils/godot.js'
-import {
-  DetailsValues,
-  getDetailsWarnings,
-  getInput,
-  isSupportedGodotVersion,
-  validateDetailsValues,
-} from '@cli/utils/index.js'
+import {DetailsValues, getInput, isSupportedGodotVersion, validateDetailsValues} from '@cli/utils/index.js'
 
 export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCreate> {
   static override args = {}
@@ -36,8 +30,6 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
     const godotVersions = await getSupportedGodotVersions()
 
     this.validateOrError(details, godotVersions)
-
-    for (const warning of getDetailsWarnings(details)) this.warn(warning)
 
     if (this.hasProjectConfig() && !force) {
       throw new Error('This directory already has a ShipThis project. Use --force to overwrite.')
@@ -65,9 +57,10 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
     const detectedVersion = getGodotVersion()
     const gameEngineVersion = details.gameEngineVersion || detectedVersion
 
-    if (!details.gameEngineVersion && !isSupportedGodotVersion(detectedVersion, godotVersions)) {
+    // --quiet promises no output except interactions and errors, and this is neither.
+    if (!quiet && !details.gameEngineVersion && !isSupportedGodotVersion(detectedVersion, godotVersions)) {
       this.warn(
-        `Your project.godot targets Godot ${detectedVersion}, which this version of ShipThis does not know about.\n` +
+        `Your project.godot targets Godot ${detectedVersion}, which is not in the list of versions ShipThis builds.\n` +
           `If the build fails, pin a supported version:\n\n` +
           `  shipthis game details --gameEngineVersion ${godotVersions.at(-1)} --force\n\n` +
           `See https://shipth.is/docs/guides/godot-versioning`,

@@ -6,7 +6,7 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, StatusTable} from '@cli/components/index.js'
 import {DetailsFlags, SUPPORTED_GODOT_VERSIONS} from '@cli/constants/index.js'
 import {GameEngine} from '@cli/types'
-import {getDetailsWarnings, validateDetailsValues} from '@cli/utils/index.js'
+import {validateDetailsValues} from '@cli/utils/index.js'
 
 export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   static override args = {}
@@ -56,8 +56,6 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
         suggestions: validationError.suggestions,
       })
     }
-
-    for (const warning of getDetailsWarnings(valueFlags)) this.warn(warning)
 
     if ((gameEngine || gameEngineVersion || iosBundleId || androidPackageName) && !force)
       throw new Error('Use --force to set the restricted fields')

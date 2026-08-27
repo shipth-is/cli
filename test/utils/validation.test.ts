@@ -8,7 +8,6 @@ import {expect} from 'chai'
 import {SUPPORTED_GODOT_VERSIONS} from '../../src/constants/godot.js'
 import {detectGodotVersion} from '../../src/utils/godot.js'
 import {
-  getDetailsWarnings,
   isSupportedGodotVersion,
   isVersionList,
   isValidAndroidPackageName,
@@ -307,13 +306,3 @@ describe('validateDetailsValues (liquidGlassIconPath)', () => {
   })
 })
 
-describe('getDetailsWarnings', () => {
-  it('warns about a com.example package name', () => {
-    const [warning] = getDetailsWarnings({androidPackageName: 'com.example.game'})
-    expect(warning).to.contain('com.example.')
-  })
-
-  it('says nothing about a package name a user owns', () => {
-    expect(getDetailsWarnings({androidPackageName: 'com.mystudio.mygame'})).to.deep.equal([])
-  })
-})
