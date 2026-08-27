@@ -1,9 +1,10 @@
 import {Flags} from '@oclif/core'
 import {render} from 'ink'
 
-import {downloadBuildById, getJob} from '@cli/api/index.js'
+import {downloadBuildById, getJob, getSupportedGodotVersions} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {CommandGame, Ship} from '@cli/components/index.js'
+import {SUPPORTED_GODOT_VERSIONS} from '@cli/constants/index.js'
 import {Job} from '@cli/types/api.js'
 import {getErrorMessage} from '@cli/utils/errors.js'
 import {validateDetailsValues} from '@cli/utils/validation.js'
@@ -79,8 +80,11 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
   }
 
   public async run(): Promise<void> {
-    // Checked before the zip and the upload, so a typo costs no wait.
-    const validationError = validateDetailsValues({gameEngineVersion: this.flags.gameEngineVersion})
+    // Checked before the zip and the upload, so a typo costs no wait. Without the flag there
+    // is nothing to check, and the command asks the server nothing.
+    const {gameEngineVersion} = this.flags
+    const godotVersions = gameEngineVersion ? await getSupportedGodotVersions() : SUPPORTED_GODOT_VERSIONS
+    const validationError = validateDetailsValues({gameEngineVersion}, godotVersions)
     if (validationError) {
       this.error(validationError.message, {
         exit: 1,

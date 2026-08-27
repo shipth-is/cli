@@ -1,8 +1,8 @@
 import {Flags} from '@oclif/core'
 
-import {createProject} from '@cli/api/index.js'
+import {createProject, getSupportedGodotVersions} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {DEFAULT_PLATFORM_GLOBS, DetailsFlags, SUPPORTED_GODOT_VERSIONS} from '@cli/constants/index.js'
+import {DEFAULT_PLATFORM_GLOBS, DetailsFlags} from '@cli/constants/index.js'
 import {GameEngine, ProjectDetails} from '@cli/types'
 import {getGodotProjectName, getGodotVersion, isCWDGodotGame} from '@cli/utils/godot.js'
 import {
@@ -31,7 +31,11 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
 
     const {force, name: flagName, quiet, ...details} = flags
 
-    this.validateOrError(details)
+    // create always needs the list: it checks the flag, and it warns about the version it
+    // reads from project.godot. One call answers both.
+    const godotVersions = await getSupportedGodotVersions()
+
+    this.validateOrError(details, godotVersions)
 
     for (const warning of getDetailsWarnings(details)) this.warn(warning)
 
@@ -51,7 +55,7 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
     }
 
     const name = await getName()
-    this.validateOrError({name})
+    this.validateOrError({name}, godotVersions)
 
     const gameEngine = GameEngine.GODOT
 
@@ -61,11 +65,11 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
     const detectedVersion = getGodotVersion()
     const gameEngineVersion = details.gameEngineVersion || detectedVersion
 
-    if (!details.gameEngineVersion && !isSupportedGodotVersion(detectedVersion)) {
+    if (!details.gameEngineVersion && !isSupportedGodotVersion(detectedVersion, godotVersions)) {
       this.warn(
         `Your project.godot targets Godot ${detectedVersion}, which this version of ShipThis does not know about.\n` +
           `If the build fails, pin a supported version:\n\n` +
-          `  shipthis game details --gameEngineVersion ${SUPPORTED_GODOT_VERSIONS.at(-1)} --force\n\n` +
+          `  shipthis game details --gameEngineVersion ${godotVersions.at(-1)} --force\n\n` +
           `See https://shipth.is/docs/guides/godot-versioning`,
       )
     }
@@ -88,8 +92,8 @@ export default class GameCreate extends BaseAuthenticatedCommand<typeof GameCrea
   }
 
   // Stops the command on the first bad value, with the docs link for that field.
-  private validateOrError(values: DetailsValues): void {
-    const error = validateDetailsValues(values)
+  private validateOrError(values: DetailsValues, godotVersions: string[]): void {
+    const error = validateDetailsValues(values, godotVersions)
     if (!error) return
     this.error(error.message, {exit: 1, ref: error.ref, suggestions: error.suggestions})
   }

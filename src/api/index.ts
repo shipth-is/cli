@@ -2,7 +2,7 @@ import * as fs from 'node:fs'
 
 import axios from 'axios'
 
-import {API_URL, WEB_URL} from '@cli/constants/index.js'
+import {API_URL, SUPPORTED_GODOT_VERSIONS, WEB_URL} from '@cli/constants/index.js'
 import {
   AgreementVersion,
   APIKey,
@@ -28,6 +28,7 @@ import {
 } from '@cli/types'
 import {castArrayObjectDates, castJobDates, castObjectDates} from '@cli/utils/dates.js'
 import {toHandledError} from '@cli/utils/index.js'
+import {isVersionList} from '@cli/utils/validation.js'
 
 export * from './credentials/index.js'
 
@@ -44,6 +45,23 @@ export function getAuthToken() {
 export function getAuthedHeaders() {
   return {
     Authorization: `Bearer ${currentAuthToken}`,
+  }
+}
+
+// How long to wait for the Godot version list before using the built-in one.
+const GODOT_VERSIONS_TIMEOUT_MS = 3000
+
+/**
+ * The Godot versions the build server has templates for. The route is public, so this needs
+ * no token. Any failure - no network, a timeout, a body of another shape - answers with the
+ * built-in list, because a version check must never be the reason a command cannot run.
+ */
+export async function getSupportedGodotVersions(): Promise<string[]> {
+  try {
+    const {data} = await axios.get(`${API_URL}/godot/versions`, {timeout: GODOT_VERSIONS_TIMEOUT_MS})
+    return isVersionList(data) ? data : SUPPORTED_GODOT_VERSIONS
+  } catch {
+    return SUPPORTED_GODOT_VERSIONS
   }
 }
 

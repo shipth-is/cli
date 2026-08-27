@@ -1,9 +1,10 @@
 import {Flags} from '@oclif/core'
 import {render} from 'ink'
 
+import {getSupportedGodotVersions} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, StatusTable} from '@cli/components/index.js'
-import {DetailsFlags} from '@cli/constants/index.js'
+import {DetailsFlags, SUPPORTED_GODOT_VERSIONS} from '@cli/constants/index.js'
 import {GameEngine} from '@cli/types'
 import {getDetailsWarnings, validateDetailsValues} from '@cli/utils/index.js'
 
@@ -42,9 +43,12 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
       useDemoCredentials,
     } = valueFlags
 
+    // Only ask the server which versions it builds when there is a version to check.
+    const godotVersions = gameEngineVersion ? await getSupportedGodotVersions() : SUPPORTED_GODOT_VERSIONS
+
     // The values are checked before the --force gate, so a user who typed a wrong value and
     // left out --force sees both faults in one go.
-    const validationError = validateDetailsValues(valueFlags)
+    const validationError = validateDetailsValues(valueFlags, godotVersions)
     if (validationError) {
       this.error(validationError.message, {
         exit: 1,

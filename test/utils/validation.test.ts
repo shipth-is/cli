@@ -10,6 +10,7 @@ import {detectGodotVersion} from '../../src/utils/godot.js'
 import {
   getDetailsWarnings,
   isSupportedGodotVersion,
+  isVersionList,
   isValidAndroidPackageName,
   isValidIosBundleId,
   isValidStoreVersion,
@@ -59,6 +60,43 @@ describe('isSupportedGodotVersion (against the fixtures)', () => {
       expect(isSupportedGodotVersion(detected as string), `${detected}`).to.equal(true)
     })
   }
+})
+
+describe('isVersionList', () => {
+  it('accepts a bare array of major.minor strings', () => {
+    expect(isVersionList(['3.6', '4.7'])).to.equal(true)
+  })
+
+  const rejected: [string, unknown][] = [
+    ['an empty array', []],
+    ['a version with no minor', ['4']],
+    ['numbers', [1, 2]],
+    ['the object form', {versions: ['4.7']}],
+    ['an HTML error page', '<!doctype html><html>4.2</html>'],
+    ['null', null],
+    ['undefined', undefined],
+  ]
+
+  for (const [what, data] of rejected) {
+    it(`rejects ${what}`, () => {
+      expect(isVersionList(data)).to.equal(false)
+    })
+  }
+})
+
+describe('isSupportedGodotVersion (with a list from the server)', () => {
+  it('accepts a version the server lists but the built-in list does not hold', () => {
+    expect(isSupportedGodotVersion('4.8')).to.equal(false)
+    expect(isSupportedGodotVersion('4.8', ['4.7', '4.8'])).to.equal(true)
+  })
+
+  it('rejects a version the server dropped', () => {
+    expect(isSupportedGodotVersion('3.6', ['4.7', '4.8'])).to.equal(false)
+  })
+
+  it('still checks the shape against a server list', () => {
+    expect(isSupportedGodotVersion('4.8-stable', ['4.8'])).to.equal(false)
+  })
 })
 
 describe('isValidStoreVersion', () => {
@@ -152,6 +190,21 @@ describe('validateDetailsValues', () => {
     const error = validateDetailsValues({semanticVersion: '1.2.3-beta'})
     expect(error?.message).to.contain('App Store')
     expect(error?.suggestions).to.deep.equal(['--semanticVersion 1.2.3'])
+  })
+
+  it('accepts a version from the list it is given', () => {
+    expect(validateDetailsValues({gameEngineVersion: '4.8'}, ['4.7', '4.8'])).to.equal(null)
+  })
+
+  it('names the versions it was given, and suggests from them', () => {
+    const error = validateDetailsValues({gameEngineVersion: 'v4.8'}, ['4.7', '4.8'])
+    expect(error?.message).to.contain('4.7, 4.8')
+    expect(error?.suggestions).to.deep.equal(['--gameEngineVersion 4.8'])
+  })
+
+  it('falls back to the built-in list when it is given none', () => {
+    const error = validateDetailsValues({gameEngineVersion: '4.8'})
+    expect(error?.message).to.contain(SUPPORTED_GODOT_VERSIONS.join(', '))
   })
 
   it('links the engine version error to the Godot versioning guide', () => {

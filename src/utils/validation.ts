@@ -46,22 +46,31 @@ const STORE_VERSION_SHAPE = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/
 const ANDROID_SEGMENT_SHAPE = /^[A-Za-z][\dA-Za-z_]*$/
 const IOS_SEGMENT_SHAPE = /^[\dA-Za-z-]+$/
 
+/**
+ * True when the body of GET /godot/versions is a bare array of major.minor strings.
+ * The answer decides which versions the CLI accepts, so a body of another shape - an HTML
+ * error page from a proxy, an empty array - has to fall back rather than reject everything.
+ */
+export function isVersionList(data: unknown): data is string[] {
+  return Array.isArray(data) && data.length > 0 && data.every((item) => typeof item === 'string' && /^\d+\.\d+$/.test(item))
+}
+
 /** True when ShipThis has export templates for this Godot version. */
-export function isSupportedGodotVersion(version: string): boolean {
+export function isSupportedGodotVersion(version: string, versions: string[] = SUPPORTED_GODOT_VERSIONS): boolean {
   if (!GODOT_VERSION_SHAPE.test(version.trim())) return false
   const [major, minor] = version.trim().split('.')
-  return SUPPORTED_GODOT_VERSIONS.includes(`${major}.${minor}`)
+  return versions.includes(`${major}.${minor}`)
 }
 
 /**
  * Reduces a near miss to a supported version, so the error can suggest it.
  * "v4.2" and "4.2-stable" both reduce to "4.2". Returns null when nothing sensible comes out.
  */
-function getSuggestedGodotVersion(value: string): null | string {
+function getSuggestedGodotVersion(value: string, versions: string[]): null | string {
   const match = value.trim().replace(/^v/i, '').match(/^(\d+)\.(\d+)/)
   if (!match) return null
   const majorMinor = `${Number(match[1])}.${Number(match[2])}`
-  return SUPPORTED_GODOT_VERSIONS.includes(majorMinor) ? majorMinor : null
+  return versions.includes(majorMinor) ? majorMinor : null
 }
 
 /** True when the version is three numbers, which is what the App Store accepts. */
@@ -117,14 +126,14 @@ function validateGameEngine(gameEngine: string): DetailsValidationError | null {
   }
 }
 
-function validateGameEngineVersion(version: string): DetailsValidationError | null {
-  if (isSupportedGodotVersion(version)) return null
+function validateGameEngineVersion(version: string, versions: string[]): DetailsValidationError | null {
+  if (isSupportedGodotVersion(version, versions)) return null
 
-  const suggested = getSuggestedGodotVersion(version)
+  const suggested = getSuggestedGodotVersion(version, versions)
   return {
     message:
       `"${version}" is not a Godot version that ShipThis builds.\n` +
-      `Supported versions: ${SUPPORTED_GODOT_VERSIONS.join(', ')}. ` +
+      `Supported versions: ${versions.join(', ')}. ` +
       `You can also pin a patch, such as 4.2.1.`,
     ref: GODOT_VERSIONING_DOCS,
     ...(suggested && {suggestions: [`--gameEngineVersion ${suggested}`]}),
@@ -161,8 +170,7 @@ function validateAndroidPackageName(packageName: string): DetailsValidationError
 
   return {
     message:
-      `"${packageName}" is not a valid Android package name.
-` +
+      `"${packageName}" is not a valid Android package name.\n` +
       'Use two or more segments, such as com.mystudio.mygame. Each segment starts with a letter and holds letters, numbers, and underscores only.',
     ref: ANDROID_APPLICATION_ID_DOCS,
   }
@@ -206,8 +214,14 @@ function validateLiquidGlassIconPath(iconPath: string): DetailsValidationError |
  * Checks the details values a user gave. Returns the first problem, or null when they all
  * pass. A field that is undefined is skipped, so a caller passes its whole flags object.
  * The order below fixes which field reports first when a command sets several at once.
+ *
+ * `versions` holds the Godot versions the build server has templates for. A caller that has
+ * asked the server passes its answer. The built-in list is the fallback.
  */
-export function validateDetailsValues(values: DetailsValues): DetailsValidationError | null {
+export function validateDetailsValues(
+  values: DetailsValues,
+  versions: string[] = SUPPORTED_GODOT_VERSIONS,
+): DetailsValidationError | null {
   const {
     androidPackageName,
     buildNumber,
@@ -222,7 +236,7 @@ export function validateDetailsValues(values: DetailsValues): DetailsValidationE
   const errors = [
     name === undefined ? null : validateName(name),
     gameEngine === undefined ? null : validateGameEngine(gameEngine),
-    gameEngineVersion === undefined ? null : validateGameEngineVersion(gameEngineVersion),
+    gameEngineVersion === undefined ? null : validateGameEngineVersion(gameEngineVersion, versions),
     semanticVersion === undefined ? null : validateSemanticVersion(semanticVersion),
     buildNumber === undefined ? null : validateBuildNumber(buildNumber),
     androidPackageName === undefined ? null : validateAndroidPackageName(androidPackageName),
