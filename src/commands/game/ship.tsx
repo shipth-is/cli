@@ -70,6 +70,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     }),
     gameEngineVersion: Flags.string({
       description: 'Override the specified game engine version for this build',
+      // Trim, as DetailsFlags does - what run() checks is what the job reads.
+      parse: async (input: string) => input.trim(),
       required: false,
     }),
     dryRun: Flags.boolean({

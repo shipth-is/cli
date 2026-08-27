@@ -46,8 +46,8 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
     // Only ask the server which versions it builds when there is a version to check.
     const godotVersions = gameEngineVersion ? await getSupportedGodotVersions() : SUPPORTED_GODOT_VERSIONS
 
-    // The values are checked before the --force gate, so a user who typed a wrong value and
-    // left out --force sees both faults in one go.
+    // Values come before the --force gate, so a wrong value is named without --force.
+    // this.error() exits, so only this fault prints.
     const validationError = validateDetailsValues(valueFlags, godotVersions)
     if (validationError) {
       this.error(validationError.message, {
