@@ -5,7 +5,7 @@ import {BaseGameCommand} from '@cli/baseCommands/index.js'
 import {Command, StatusTable} from '@cli/components/index.js'
 import {DetailsFlags} from '@cli/constants/index.js'
 import {GameEngine} from '@cli/types'
-import {isValidSemVer} from '@cli/utils/index.js'
+import {getDetailsWarnings, validateDetailsValues} from '@cli/utils/index.js'
 
 export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
   static override args = {}
@@ -42,13 +42,21 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
       useDemoCredentials,
     } = valueFlags
 
-    if (semanticVersion && !isValidSemVer(semanticVersion))
-      throw new Error(`Invalid semantic version: ${semanticVersion}`)
+    // The values are checked before the --force gate, so a user who typed a wrong value and
+    // left out --force sees both faults in one go.
+    const validationError = validateDetailsValues(valueFlags)
+    if (validationError) {
+      this.error(validationError.message, {
+        exit: 1,
+        ref: validationError.ref,
+        suggestions: validationError.suggestions,
+      })
+    }
+
+    for (const warning of getDetailsWarnings(valueFlags)) this.warn(warning)
 
     if ((gameEngine || gameEngineVersion || iosBundleId || androidPackageName) && !force)
       throw new Error('Use --force to set the restricted fields')
-
-    if (gameEngine && gameEngine !== GameEngine.GODOT) throw new Error(`Game engine ${gameEngine} not supported`)
 
     let game = await this.getGame()
 
@@ -56,7 +64,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
       details: {
         ...game.details,
         ...(androidPackageName && {androidPackageName}),
-        ...(buildNumber && {buildNumber}),
+        ...(buildNumber !== undefined && {buildNumber}),
         ...(gameEngine && {gameEngine: gameEngine as GameEngine}),
         ...(gameEngineVersion && {gameEngineVersion}),
         ...(gcpProjectId !== undefined && {gcpProjectId}),

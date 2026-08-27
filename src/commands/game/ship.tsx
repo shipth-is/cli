@@ -6,6 +6,7 @@ import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {CommandGame, Ship} from '@cli/components/index.js'
 import {Job} from '@cli/types/api.js'
 import {getErrorMessage} from '@cli/utils/errors.js'
+import {validateDetailsValues} from '@cli/utils/validation.js'
 
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
   static override args = {}
@@ -78,6 +79,16 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
   }
 
   public async run(): Promise<void> {
+    // Checked before the zip and the upload, so a typo costs no wait.
+    const validationError = validateDetailsValues({gameEngineVersion: this.flags.gameEngineVersion})
+    if (validationError) {
+      this.error(validationError.message, {
+        exit: 1,
+        ref: validationError.ref,
+        suggestions: validationError.suggestions,
+      })
+    }
+
     await this.ensureWeAreInAProjectDir()
     const gameId = this.getGameId()
     if (!gameId) {
