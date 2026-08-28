@@ -69,7 +69,7 @@ export const AndroidWizard = (props: StepProps) => {
 
   const handleError = (e: Error) => {
     setError(e)
-    setTimeout(() => process.exit(1), ON_COMPLETE_DELAY_MS)
+    setTimeout(() => props.onError(e), ON_COMPLETE_DELAY_MS)
   }
 
   const StepInterface = currentStep ? stepComponentMap[currentStep] : null

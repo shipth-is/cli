@@ -2,10 +2,9 @@ import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 import {useContext, useEffect, useRef, useState} from 'react'
 
-import {CommandContext, JobLogTail, JobProgress, Markdown, StepProps} from '@cli/components/index.js'
-import {WEB_URL} from '@cli/constants/config.js'
+import {CommandContext, JobLogTail, JobProgress, StepProps} from '@cli/components/index.js'
 import {BuildType, Job, JobStatus, Platform} from '@cli/types/api.js'
-import {getShortUUID, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
+import {JobFailedError, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
 
 export interface InitialAndroidBuildProps extends StepProps {
   gameId: string
@@ -21,7 +20,6 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
   const prevHasBuild = useRef<boolean>(false)
   const shipMutation = useShip()
   const [shipLog, setShipLog] = useState<string>('')
-  const [failedJob, setFailedJob] = useState<Job | null>(null)
 
   // Trigger a build if we don't have one
   useEffect(() => {
@@ -72,29 +70,9 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
             <JobProgress
               job={androidJob}
               onComplete={onComplete}
-              onFailure={(j: Job) => {
-                setFailedJob(j)
-                // Wait before triggering the error to allow the job log to be displayed
-                setTimeout(() => {
-                  onError(new Error(`Job ${j.id} failed`))
-                }, 1000)
-              }}
+              onFailure={(j: Job) => onError(new JobFailedError(j))}
             />
             <JobLogTail isWatching={true} jobId={androidJob.id} length={10} projectId={gameId} />
-          </>
-        )}
-
-        {failedJob && (
-          <>
-            <Markdown
-              filename="ship-failure.md.ejs"
-              templateVars={{
-                jobDashboardUrl: `${WEB_URL}games/${getShortUUID(gameId)}/job/${getShortUUID(failedJob.id)}`,
-              }}
-            />
-            <Box marginTop={1}>
-              <JobLogTail isWatching={false} jobId={failedJob.id} length={10} projectId={gameId} />
-            </Box>
           </>
         )}
       </Box>

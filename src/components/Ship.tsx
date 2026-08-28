@@ -11,17 +11,22 @@ import {
   JobProgress,
   JobStatusTable,
   Markdown,
+  ShipFailure,
 } from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 import {Job, ShipGameFlags} from '@cli/types/index.js'
 import {getShortUUID, useSafeInput, useShip} from '@cli/utils/index.js'
 
+// Time for ink to paint the last frame before the command exits
+const EXIT_FLUSH_MS = 500
+
 interface Props {
   onComplete: (completedJobs: Job[]) => void
   onError: (error: any) => void
+  onFailure: (failedJobs: Job[]) => void
 }
 
-export const Ship = ({onComplete, onError}: Props): JSX.Element => {
+export const Ship = ({onComplete, onError, onFailure}: Props): JSX.Element => {
   const {command} = useContext(CommandContext)
   const flags = command && (command.getFlags() as ShipGameFlags)
   const {gameId} = useContext(GameContext)
@@ -35,6 +40,8 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
   const [showLog, setShowLog] = useState<boolean>(false)
 
   const [isComplete, setIsComplete] = useState<boolean>(false)
+
+  const [areFailureLogsLoaded, setAreFailureLogsLoaded] = useState<boolean>(false) // the failure summary is filled in
 
   // Start the command on mount
   const handleStartOnMount = async () => {
@@ -66,34 +73,55 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
     }
   })
 
+  // Two platforms that fail together arrive as two websocket messages, and React
+  // batches them. Reading the arrays from the render closure lost one of the two
+  // removals, so the run waited forever for a job that had already finished.
+  const removeJob = (job: Job) => setJobs((prev) => (prev || []).filter((prevJob) => prevJob.id !== job.id))
+
   const handleJobComplete = (job: Job) => {
-    // Add the job to the list of completed jobs
-    setSuccessJobs([...successJobs, job])
-    // Remove the job from the list
-    const newJobs = (jobs || []).filter((prevJob) => prevJob.id !== job.id)
-    setJobs(newJobs)
-    // If there are no jobs left  - we are done
-    if (newJobs.length === 0) {
-      setIsComplete(true)
-    }
+    setSuccessJobs((prev) => [...prev, job])
+    removeJob(job)
   }
 
   const handleJobFailure = (job: Job) => {
-    // Add the job to the list of failed jobs
-    setFailedJobs([...failedJobs, job])
-    handleJobComplete(job)
+    setFailedJobs((prev) => [...prev, job])
+    removeJob(job)
   }
 
+  // Derived, because a removal can no longer see the array it produced. `jobs` is
+  // null until the jobs start, and a dry run exits before it is set.
   useEffect(() => {
-    if (!isComplete) return
-    setTimeout(() => {
-      failedJobs.length === 0 ? onComplete(successJobs) : onError('One or more jobs failed')
-    }, 500)
+    if (jobs !== null && jobs.length === 0) setIsComplete(true)
+  }, [jobs])
+
+  useEffect(() => {
+    if (!isComplete || failedJobs.length > 0) return
+    const timer = setTimeout(() => onComplete(successJobs), EXIT_FLUSH_MS)
+    return () => clearTimeout(timer)
   }, [isComplete])
+
+  // Exiting on a fixed timer cut the log tails off mid-fetch and left a spinner
+  // on screen, so the failure exit waits for the summary to fill in.
+  useEffect(() => {
+    if (!isComplete || failedJobs.length === 0 || !areFailureLogsLoaded) return
+    const timer = setTimeout(() => onFailure(failedJobs), EXIT_FLUSH_MS)
+    return () => clearTimeout(timer)
+  }, [isComplete, areFailureLogsLoaded])
 
   if (!gameId) return <></>
 
   if (flags?.follow || flags?.dryRun) {
+    if (isComplete && failedJobs.length > 0) {
+      return (
+        <ShipFailure
+          failedJobs={failedJobs}
+          gameId={gameId}
+          onLogsLoaded={() => setAreFailureLogsLoaded(true)}
+          showLogTail={false}
+        />
+      )
+    }
+
     if (jobs && jobs.length > 0) {
       return (
         <JobFollow jobId={jobs[0].id} onComplete={handleJobComplete} onFailure={handleJobFailure} projectId={gameId} />
@@ -140,19 +168,12 @@ export const Ship = ({onComplete, onError}: Props): JSX.Element => {
             />
           )}
           {failedJobs.length > 0 && (
-            <>
-              <Markdown
-                filename="ship-failure.md.ejs"
-                templateVars={{
-                  jobDashboardUrl: `${WEB_URL}games/${getShortUUID(gameId)}/job/${getShortUUID(failedJobs[0].id)}`,
-                }}
-              />
-              <Box marginTop={1}>
-                {failedJobs.map((fj) => (
-                  <JobLogTail isWatching={false} jobId={fj.id} key={fj.id} length={10} projectId={fj.project.id} />
-                ))}
-              </Box>
-            </>
+            <ShipFailure
+              failedJobs={failedJobs}
+              gameId={gameId}
+              onLogsLoaded={() => setAreFailureLogsLoaded(true)}
+              showLogTail={true}
+            />
           )}
         </>
       )}

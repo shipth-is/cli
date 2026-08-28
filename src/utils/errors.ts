@@ -1,6 +1,6 @@
 import Axios from 'axios'
 
-import {HandledError} from '@cli/types/index.js'
+import {HandledError, Job} from '@cli/types/index.js'
 
 import {getShortUUID} from './uuid.js'
 
@@ -51,6 +51,16 @@ export function isRetryable(error: unknown) {
   // No status means the request never got an answer, which is worth another try
   if (status === undefined) return true
   return status >= 500 || RETRYABLE_CLIENT_STATUSES.includes(status)
+}
+
+// Carries the job, so a caller outside the wizard can show its logs. The wizard
+// draws in the alternate screen buffer, which the terminal discards on exit, so
+// the failure summary has to be printed after that buffer closes.
+export class JobFailedError extends Error {
+  constructor(public readonly job: Job) {
+    super(`Job ${getShortUUID(job.id)} failed`)
+    this.name = 'JobFailedError'
+  }
 }
 
 // Util to extract API error messages if present
