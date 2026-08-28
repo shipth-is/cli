@@ -91,8 +91,6 @@ export const Ship = ({onComplete, onError, onFailure}: Props): JSX.Element => {
     handleJobComplete(job)
   }
 
-  const handleFailureLogsLoaded = () => setAreFailureLogsLoaded(true)
-
   useEffect(() => {
     if (!isComplete || failedJobs.length > 0) return
     const timer = setTimeout(() => onComplete(successJobs), EXIT_FLUSH_MS)
@@ -115,7 +113,7 @@ export const Ship = ({onComplete, onError, onFailure}: Props): JSX.Element => {
         <ShipFailure
           failedJobs={failedJobs}
           gameId={gameId}
-          onLogsLoaded={handleFailureLogsLoaded}
+          onLogsLoaded={() => setAreFailureLogsLoaded(true)}
           showLogTail={false}
         />
       )
@@ -170,7 +168,7 @@ export const Ship = ({onComplete, onError, onFailure}: Props): JSX.Element => {
             <ShipFailure
               failedJobs={failedJobs}
               gameId={gameId}
-              onLogsLoaded={handleFailureLogsLoaded}
+              onLogsLoaded={() => setAreFailureLogsLoaded(true)}
               showLogTail={true}
             />
           )}
