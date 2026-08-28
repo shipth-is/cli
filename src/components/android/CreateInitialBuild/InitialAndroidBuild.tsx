@@ -2,9 +2,9 @@ import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 import {useContext, useEffect, useRef, useState} from 'react'
 
-import {CommandContext, JobLogTail, JobProgress, ShipFailure, StepProps} from '@cli/components/index.js'
+import {CommandContext, JobLogTail, JobProgress, StepProps} from '@cli/components/index.js'
 import {BuildType, Job, JobStatus, Platform} from '@cli/types/api.js'
-import {useBuilds, useJobs, useShip} from '@cli/utils/index.js'
+import {JobFailedError, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
 
 export interface InitialAndroidBuildProps extends StepProps {
   gameId: string
@@ -20,8 +20,6 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
   const prevHasBuild = useRef<boolean>(false)
   const shipMutation = useShip()
   const [shipLog, setShipLog] = useState<string>('')
-  const [failedJob, setFailedJob] = useState<Job | null>(null)
-  const [failedJobError, setFailedJobError] = useState<Error | null>(null)
 
   // Trigger a build if we don't have one
   useEffect(() => {
@@ -55,12 +53,6 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
         .catch(onError)
   }, [buildData, jobData, command])
 
-  // Exiting on a fixed timer cut the log tail off mid-fetch, so onError waits
-  // for the ShipFailure summary to finish loading its logs.
-  useEffect(() => {
-    if (failedJobError) onError(failedJobError)
-  }, [failedJobError, onError])
-
   const androidJob = jobData?.data.find(
     (job) => job.type === Platform.ANDROID && [JobStatus.PENDING, JobStatus.PROCESSING].includes(job.status),
   )
@@ -78,21 +70,10 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
             <JobProgress
               job={androidJob}
               onComplete={onComplete}
-              onFailure={(j: Job) => {
-                setFailedJob(j)
-              }}
+              onFailure={(j: Job) => onError(new JobFailedError(j))}
             />
             <JobLogTail isWatching={true} jobId={androidJob.id} length={10} projectId={gameId} />
           </>
-        )}
-
-        {failedJob && (
-          <ShipFailure
-            failedJobs={[failedJob]}
-            gameId={gameId}
-            onLogsLoaded={() => setFailedJobError(new Error(`Job ${failedJob.id} failed`))}
-            showLogTail={true}
-          />
         )}
       </Box>
     </>

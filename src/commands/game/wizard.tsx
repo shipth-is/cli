@@ -1,8 +1,12 @@
 import {Args} from '@oclif/core'
+import chalk from 'chalk'
 import {withFullScreen} from 'fullscreen-ink'
+import {render} from 'ink'
 
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
-import {AndroidWizard, Command} from '@cli/components/index.js'
+import {AndroidWizard, Command, ShipFailure} from '@cli/components/index.js'
+import {Job} from '@cli/types/index.js'
+import {JobFailedError, getErrorMessage} from '@cli/utils/errors.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
 
 export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWizard> {
@@ -31,10 +35,52 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
       return this.config.runCommand('game:ios:wizard')
     }
 
-    withFullScreen(
+    // The wizard draws in the alternate screen buffer, which the terminal discards
+    // on exit, so anything worth keeping is printed after the UI closes.
+    const ui: {ink?: ReturnType<typeof withFullScreen>} = {}
+
+    const closeUI = async () => {
+      ui.ink?.instance.unmount()
+      // Resolves once the alternate buffer has closed
+      await ui.ink?.waitUntilExit()
+    }
+
+    const handleComplete = async () => {
+      await closeUI()
+      process.exit(0)
+    }
+
+    // Runs after run() resolved, so this.error() would reach node as an uncaught
+    // exception and kill the process before the buffer closes.
+    const handleError = async (error: Error) => {
+      await closeUI()
+      if (error instanceof JobFailedError) await this.showJobFailure(error.job)
+      else process.stderr.write(`\n${chalk.red('Error:')} ${getErrorMessage(error)}\n`)
+      process.exit(1)
+    }
+
+    ui.ink = withFullScreen(
       <Command command={this}>
-        <AndroidWizard onComplete={() => process.exit(0)} onError={(e) => this.error(e.message, {exit: 1})} />
+        <AndroidWizard onComplete={handleComplete} onError={handleError} />
       </Command>,
-    ).start()
+    )
+    await ui.ink.start()
+  }
+
+  // The same summary `game ship` shows, in the normal buffer so it survives the exit
+  private async showJobFailure(job: Job): Promise<void> {
+    const failureUI = render(
+      <Command command={this}>
+        <ShipFailure
+          failedJobs={[job]}
+          gameId={job.project.id}
+          onLogsLoaded={() => failureUI.unmount()}
+          showLogTail={true}
+        />
+      </Command>,
+    )
+
+    // unmount() paints the final frame before it resolves this
+    await failureUI.waitUntilExit()
   }
 }
