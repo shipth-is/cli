@@ -73,23 +73,26 @@ export const Ship = ({onComplete, onError, onFailure}: Props): JSX.Element => {
     }
   })
 
+  // Two platforms that fail together arrive as two websocket messages, and React
+  // batches them. Reading the arrays from the render closure lost one of the two
+  // removals, so the run waited forever for a job that had already finished.
+  const removeJob = (job: Job) => setJobs((prev) => (prev || []).filter((prevJob) => prevJob.id !== job.id))
+
   const handleJobComplete = (job: Job) => {
-    // Add the job to the list of completed jobs
-    setSuccessJobs([...successJobs, job])
-    // Remove the job from the list
-    const newJobs = (jobs || []).filter((prevJob) => prevJob.id !== job.id)
-    setJobs(newJobs)
-    // If there are no jobs left  - we are done
-    if (newJobs.length === 0) {
-      setIsComplete(true)
-    }
+    setSuccessJobs((prev) => [...prev, job])
+    removeJob(job)
   }
 
   const handleJobFailure = (job: Job) => {
-    // Add the job to the list of failed jobs
-    setFailedJobs([...failedJobs, job])
-    handleJobComplete(job)
+    setFailedJobs((prev) => [...prev, job])
+    removeJob(job)
   }
+
+  // Derived, because a removal can no longer see the array it produced. `jobs` is
+  // null until the jobs start, and a dry run exits before it is set.
+  useEffect(() => {
+    if (jobs !== null && jobs.length === 0) setIsComplete(true)
+  }, [jobs])
 
   useEffect(() => {
     if (!isComplete || failedJobs.length > 0) return
