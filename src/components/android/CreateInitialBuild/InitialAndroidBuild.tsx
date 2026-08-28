@@ -21,6 +21,7 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
   const shipMutation = useShip()
   const [shipLog, setShipLog] = useState<string>('')
   const [failedJob, setFailedJob] = useState<Job | null>(null)
+  const [failedJobError, setFailedJobError] = useState<Error | null>(null)
 
   // Trigger a build if we don't have one
   useEffect(() => {
@@ -54,6 +55,12 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
         .catch(onError)
   }, [buildData, jobData, command])
 
+  // Exiting on a fixed timer cut the log tail off mid-fetch, so onError waits
+  // for the ShipFailure summary to finish loading its logs.
+  useEffect(() => {
+    if (failedJobError) onError(failedJobError)
+  }, [failedJobError, onError])
+
   const androidJob = jobData?.data.find(
     (job) => job.type === Platform.ANDROID && [JobStatus.PENDING, JobStatus.PROCESSING].includes(job.status),
   )
@@ -73,17 +80,20 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
               onComplete={onComplete}
               onFailure={(j: Job) => {
                 setFailedJob(j)
-                // Wait before triggering the error to allow the job log to be displayed
-                setTimeout(() => {
-                  onError(new Error(`Job ${j.id} failed`))
-                }, 1000)
               }}
             />
             <JobLogTail isWatching={true} jobId={androidJob.id} length={10} projectId={gameId} />
           </>
         )}
 
-        {failedJob && <ShipFailure failedJobs={[failedJob]} gameId={gameId} showLogTail={true} />}
+        {failedJob && (
+          <ShipFailure
+            failedJobs={[failedJob]}
+            gameId={gameId}
+            onLogsLoaded={() => setFailedJobError(new Error(`Job ${failedJob.id} failed`))}
+            showLogTail={true}
+          />
+        )}
       </Box>
     </>
   )
