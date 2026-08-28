@@ -11,17 +11,14 @@ import {
   JobProgress,
   JobStatusTable,
   Markdown,
+  ShipFailure,
 } from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 import {Job, ShipGameFlags} from '@cli/types/index.js'
 import {getShortUUID, useSafeInput, useShip} from '@cli/utils/index.js'
-import {FAILURE_LOG_TAIL_LENGTH, getPlatformLabel, getShipFailureVars} from '@cli/utils/ship/failure.js'
 
 // Time for ink to paint the last frame before the command exits
 const EXIT_FLUSH_MS = 500
-
-// Longest the exit waits for the failed job logs to arrive
-const LOG_WAIT_MS = 10_000
 
 interface Props {
   onComplete: (completedJobs: Job[]) => void
@@ -44,8 +41,7 @@ export const Ship = ({onComplete, onError, onFailure}: Props): JSX.Element => {
 
   const [isComplete, setIsComplete] = useState<boolean>(false)
 
-  const [loadedTails, setLoadedTails] = useState<string[]>([]) // ids of the failed jobs whose logs have arrived
-  const [gaveUpOnLogs, setGaveUpOnLogs] = useState<boolean>(false)
+  const [areFailureLogsLoaded, setAreFailureLogsLoaded] = useState<boolean>(false) // the failure summary is filled in
 
   // Start the command on mount
   const handleStartOnMount = async () => {
@@ -95,59 +91,35 @@ export const Ship = ({onComplete, onError, onFailure}: Props): JSX.Element => {
     handleJobComplete(job)
   }
 
-  // Each tail fetches its own logs. Follow mode streams them instead, so it waits
-  // for none.
-  const showsLogTail = !(flags?.follow || flags?.dryRun)
-  const tailsToLoad = showsLogTail ? failedJobs.length : 0
-  const tailsAreReady = gaveUpOnLogs || loadedTails.length >= tailsToLoad
+  const handleFailureLogsLoaded = () => setAreFailureLogsLoaded(true)
 
   useEffect(() => {
-    if (!isComplete) return
-    if (failedJobs.length === 0) {
-      const timer = setTimeout(() => onComplete(successJobs), EXIT_FLUSH_MS)
-      return () => clearTimeout(timer)
-    }
-
-    // A tail that never answers must not hold the terminal open
-    const timer = setTimeout(() => setGaveUpOnLogs(true), LOG_WAIT_MS)
+    if (!isComplete || failedJobs.length > 0) return
+    const timer = setTimeout(() => onComplete(successJobs), EXIT_FLUSH_MS)
     return () => clearTimeout(timer)
   }, [isComplete])
 
-  // Exiting on a fixed timer cut the tails off mid-fetch and left a spinner on
-  // screen, so the failure exit waits for them.
+  // Exiting on a fixed timer cut the log tails off mid-fetch and left a spinner
+  // on screen, so the failure exit waits for the summary to fill in.
   useEffect(() => {
-    if (!isComplete || failedJobs.length === 0 || !tailsAreReady) return
+    if (!isComplete || failedJobs.length === 0 || !areFailureLogsLoaded) return
     const timer = setTimeout(() => onFailure(failedJobs), EXIT_FLUSH_MS)
     return () => clearTimeout(timer)
-  }, [isComplete, tailsAreReady])
+  }, [isComplete, areFailureLogsLoaded])
 
   if (!gameId) return <></>
 
-  // In follow mode the logs have already been streamed to the terminal, so the
-  // summary shows without a tail. Without it the run ends on raw build output.
-  const failureSummary = (showLogTail: boolean) => (
-    <>
-      <Markdown filename="ship-failure.md.ejs" templateVars={getShipFailureVars(failedJobs, gameId, {showLogTail})} />
-      {showLogTail && (
-        <Box flexDirection="column" marginTop={1}>
-          {failedJobs.map((fj) => (
-            <JobLogTail
-              isWatching={false}
-              jobId={fj.id}
-              key={fj.id}
-              length={FAILURE_LOG_TAIL_LENGTH}
-              onLoaded={() => setLoadedTails((prev) => (prev.includes(fj.id) ? prev : [...prev, fj.id]))}
-              projectId={fj.project.id}
-              title={`Job logs - ${getPlatformLabel(fj.type)}`}
-            />
-          ))}
-        </Box>
-      )}
-    </>
-  )
-
   if (flags?.follow || flags?.dryRun) {
-    if (isComplete && failedJobs.length > 0) return failureSummary(false)
+    if (isComplete && failedJobs.length > 0) {
+      return (
+        <ShipFailure
+          failedJobs={failedJobs}
+          gameId={gameId}
+          onLogsLoaded={handleFailureLogsLoaded}
+          showLogTail={false}
+        />
+      )
+    }
 
     if (jobs && jobs.length > 0) {
       return (
@@ -194,7 +166,14 @@ export const Ship = ({onComplete, onError, onFailure}: Props): JSX.Element => {
               }}
             />
           )}
-          {failedJobs.length > 0 && failureSummary(true)}
+          {failedJobs.length > 0 && (
+            <ShipFailure
+              failedJobs={failedJobs}
+              gameId={gameId}
+              onLogsLoaded={handleFailureLogsLoaded}
+              showLogTail={true}
+            />
+          )}
         </>
       )}
     </Box>
