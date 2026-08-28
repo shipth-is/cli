@@ -15,7 +15,7 @@ interface Props {
   gameId: string
   // Says every log the summary will show has arrived, so a caller that exits
   // can wait for it
-  onLogsLoaded: () => void
+  onLogsLoaded?: () => void
   // Follow mode has already streamed the logs to the terminal, so it shows the
   // summary without a tail. Without the summary the run ends on raw build output.
   showLogTail: boolean
@@ -44,7 +44,7 @@ export const ShipFailure = ({failedJobs, gameId, onLogsLoaded, showLogTail}: Pro
   }, [])
 
   useEffect(() => {
-    if (areLogsLoaded) onLogsLoaded()
+    if (areLogsLoaded) onLogsLoaded?.()
   }, [areLogsLoaded])
 
   return (

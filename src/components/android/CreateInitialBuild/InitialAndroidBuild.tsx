@@ -2,10 +2,9 @@ import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 import {useContext, useEffect, useRef, useState} from 'react'
 
-import {CommandContext, JobLogTail, JobProgress, Markdown, StepProps} from '@cli/components/index.js'
-import {WEB_URL} from '@cli/constants/config.js'
+import {CommandContext, JobLogTail, JobProgress, ShipFailure, StepProps} from '@cli/components/index.js'
 import {BuildType, Job, JobStatus, Platform} from '@cli/types/api.js'
-import {getShortUUID, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
+import {useBuilds, useJobs, useShip} from '@cli/utils/index.js'
 
 export interface InitialAndroidBuildProps extends StepProps {
   gameId: string
@@ -84,19 +83,7 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
           </>
         )}
 
-        {failedJob && (
-          <>
-            <Markdown
-              filename="ship-failure.md.ejs"
-              templateVars={{
-                jobDashboardUrl: `${WEB_URL}games/${getShortUUID(gameId)}/job/${getShortUUID(failedJob.id)}`,
-              }}
-            />
-            <Box marginTop={1}>
-              <JobLogTail isWatching={false} jobId={failedJob.id} length={10} projectId={gameId} />
-            </Box>
-          </>
-        )}
+        {failedJob && <ShipFailure failedJobs={[failedJob]} gameId={gameId} showLogTail={true} />}
       </Box>
     </>
   )
