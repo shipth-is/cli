@@ -37,15 +37,16 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     }
 
     if (!this.hasProjectConfig()) {
-      this.errorNoGame()
+      // This check is about the directory, so --gameId is no way out of it.
+      this.errorNoGame({needsProjectConfig: true})
     }
   }
 
   // `never` is load-bearing. Two callers read the game ID after this line, and TypeScript
   // narrows it out of `null` only because this returns `never`.
-  protected errorNoGame(): never {
+  protected errorNoGame(options: {needsProjectConfig?: boolean} = {}): never {
     const {platform} = this.flags as {platform?: string}
-    const {message, ref, suggestions} = getNoGameError(this.getCommandName(), platform)
+    const {message, ref, suggestions} = getNoGameError(this.getCommandName(), platform, options)
     this.error(message, {exit: 1, ref, suggestions})
   }
 

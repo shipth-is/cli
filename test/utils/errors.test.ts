@@ -110,7 +110,7 @@ describe('getNoGameError (utils/errors)', () => {
     expect(suggestions).to.include('shipthis game details --gameId <id>')
   })
 
-  // `shipthis --gameId <id>` is not a command, so the line goes rather than ships broken.
+  // An empty name would build `shipthis --gameId <id>`, which is not a command.
   it('drops the --gameId suggestion when there is no command name', () => {
     const {suggestions} = getNoGameError('')
 
@@ -120,6 +120,25 @@ describe('getNoGameError (utils/errors)', () => {
       'shipthis game wizard ios',
       'shipthis game create --name "My Game"',
     ])
+  })
+
+  // `game ship` needs shipthis.json, so --gameId leads back to this same error.
+  it('drops the --gameId suggestion when the command needs a project config', () => {
+    const {message, suggestions} = getNoGameError('shipthis game ship', undefined, {needsProjectConfig: true})
+
+    expect(suggestions?.some((s) => s.includes('--gameId'))).to.equal(false)
+    expect(message).to.not.include('--gameId')
+    expect(suggestions).to.deep.equal([
+      'shipthis game wizard android',
+      'shipthis game wizard ios',
+      'shipthis game create --name "My Game"',
+    ])
+  })
+
+  it('still narrows the wizard by platform when a project config is needed', () => {
+    const {suggestions} = getNoGameError('shipthis game ship', 'android', {needsProjectConfig: true})
+
+    expect(suggestions).to.deep.equal(['shipthis game wizard android', 'shipthis game create --name "My Game"'])
   })
 
   // The fault issue 252 reports. `shipthis game wizard` alone fails on the missing arg.

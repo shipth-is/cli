@@ -99,7 +99,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     await this.ensureWeAreInAProjectDir()
     const gameId = this.getGameId()
     if (!gameId) {
-      this.errorNoGame()
+      // ship() reads the game from shipthis.json, never from --gameId.
+      this.errorNoGame({needsProjectConfig: true})
     }
 
     const MAX_RETRIES = 3

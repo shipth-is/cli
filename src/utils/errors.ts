@@ -132,21 +132,37 @@ const NO_GAME_MESSAGE =
   'Run the wizard for the platform you want to ship to, or name a game you already have ' +
   'with --gameId. Run `shipthis game list` to see your game IDs.'
 
+// For a command that needs shipthis.json, such as `game ship`. No game ID stands in for it.
+const NO_PROJECT_CONFIG_MESSAGE =
+  'No game is set up in this directory.\nRun the wizard for the platform you want to ship to.'
+
 /**
  * The answer to "there is no game here". `commandName` is the command the user typed, such
- * as "shipthis game status". An empty name drops the --gameId suggestion. `platform` narrows
- * the wizard suggestion to one line.
+ * as "shipthis game status", and an empty name drops the --gameId suggestion. `platform`
+ * narrows the wizard suggestion to one line. `needsProjectConfig` drops --gameId entirely.
  */
-export function getNoGameError(commandName: string, platform?: string): CommandError {
+export function getNoGameError(
+  commandName: string,
+  platform?: string,
+  options: {needsProjectConfig?: boolean} = {},
+): CommandError {
+  const {needsProjectConfig = false} = options
+
   // A command that knows the platform names one wizard. Every other case names both.
   const forPlatform = platform ? WIZARD_COMMANDS.filter((command) => command.endsWith(` ${platform}`)) : []
 
+  // `shipthis --gameId <id>` is not a command, so an empty name drops the line.
+  const showGameId = Boolean(commandName) && !needsProjectConfig
+
   const suggestions = [
     ...(forPlatform.length > 0 ? forPlatform : WIZARD_COMMANDS),
-    // `shipthis --gameId <id>` is not a command, so an empty name drops this line.
-    ...(commandName ? [`${commandName} --gameId <id>`] : []),
+    ...(showGameId ? [`${commandName} --gameId <id>`] : []),
     CREATE_GAME_COMMAND,
   ]
 
-  return {message: NO_GAME_MESSAGE, ref: CREATE_A_PROJECT_DOCS, suggestions}
+  return {
+    message: needsProjectConfig ? NO_PROJECT_CONFIG_MESSAGE : NO_GAME_MESSAGE,
+    ref: CREATE_A_PROJECT_DOCS,
+    suggestions,
+  }
 }
