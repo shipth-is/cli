@@ -4,6 +4,7 @@ import {Box, Text, render} from 'ink'
 import {getProjects} from '@cli/api/index.js'
 import {BaseAuthenticatedCommand} from '@cli/baseCommands/index.js'
 import {Command, Table} from '@cli/components/index.js'
+import {WIZARD_COMMANDS} from '@cli/constants/commands.js'
 import {PageAndSortParams} from '@cli/types'
 import {getShortDate} from '@cli/utils/dates.js'
 import {getShortUUID} from '@cli/utils/index.js'
@@ -52,8 +53,9 @@ export default class GameList extends BaseAuthenticatedCommand<typeof GameList> 
           <Box flexDirection="column">
             <Text>No games found. Create one now with:</Text>
             <Box flexDirection="column" marginLeft={2} marginTop={1}>
-              <Text>shipthis game wizard android</Text>
-              <Text>shipthis game wizard ios</Text>
+              {WIZARD_COMMANDS.map((command) => (
+                <Text key={command}>{command}</Text>
+              ))}
             </Box>
           </Box>
         )}

@@ -9,7 +9,7 @@ import {getSelf, setAuthToken} from '@cli/api/index.js'
 import {Auth} from '@cli/apple/expo.js'
 import {AUTH_ENV_VAR_NAME, DetailsFlags} from '@cli/constants/index.js'
 import {AuthConfig, ProjectConfig} from '@cli/types'
-import {isCWDGodotGame} from '@cli/utils/index.js'
+import {getNoGameError, isCWDGodotGame} from '@cli/utils/index.js'
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<(typeof BaseCommand)['baseFlags'] & T['flags']>
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
@@ -37,11 +37,17 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     }
 
     if (!this.hasProjectConfig()) {
-      this.error(
-        'No ShipThis config found. Please run `shipthis game create --name "Space Invaders"` to create a game.',
-        {exit: 1},
-      )
+      // This check is about the directory, so --gameId is no way out of it.
+      this.errorNoGame({needsProjectConfig: true})
     }
+  }
+
+  // `never` is load-bearing. Two callers read the game ID after this line, and TypeScript
+  // narrows it out of `null` only because this returns `never`.
+  protected errorNoGame(options: {needsProjectConfig?: boolean} = {}): never {
+    const {platform} = this.flags as {platform?: string}
+    const {message, ref, suggestions} = getNoGameError(this.getCommandName(), platform, options)
+    this.error(message, {exit: 1, ref, suggestions})
   }
 
   protected ensureWeHaveAppleCookies(): void {
@@ -107,6 +113,13 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     }
 
     return values
+  }
+
+  // "shipthis game status" - the command the user typed, for a suggestion.
+  // `id` is `string | undefined` on the oclif Command, and an empty name drops that suggestion.
+  public getCommandName(): string {
+    if (!this.id) return ''
+    return [this.config.bin, ...this.id.split(':')].join(' ')
   }
 
   // Exposing it to the react components using the CommandContext

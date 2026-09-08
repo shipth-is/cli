@@ -1,6 +1,6 @@
 import {expect} from 'chai'
 
-import {getS3Error, isRetryable} from '@cli/utils/errors.js'
+import {getNoGameError, getS3Error, isRetryable} from '@cli/utils/errors.js'
 
 // The shape Spaces really answers with, taken from a live failed request
 const s3Error = (code: string, message: string) =>
@@ -79,5 +79,77 @@ describe('isRetryable (utils/errors)', () => {
 
     expect(error.code).to.equal(undefined)
     expect(isRetryable(error)).to.equal(true)
+  })
+})
+
+describe('getNoGameError (utils/errors)', () => {
+  it('names both wizards when the command knows no platform', () => {
+    const {suggestions} = getNoGameError('shipthis game status')
+
+    expect(suggestions).to.include('shipthis game wizard android')
+    expect(suggestions).to.include('shipthis game wizard ios')
+  })
+
+  it('names the android wizard alone for --platform android', () => {
+    const {suggestions} = getNoGameError('shipthis game status', 'android')
+
+    expect(suggestions).to.include('shipthis game wizard android')
+    expect(suggestions).to.not.include('shipthis game wizard ios')
+  })
+
+  it('names the iOS wizard alone for --platform ios', () => {
+    const {suggestions} = getNoGameError('shipthis game status', 'ios')
+
+    expect(suggestions).to.include('shipthis game wizard ios')
+    expect(suggestions).to.not.include('shipthis game wizard android')
+  })
+
+  it('names the command the user typed in the --gameId suggestion', () => {
+    const {suggestions} = getNoGameError('shipthis game details')
+
+    expect(suggestions).to.include('shipthis game details --gameId <id>')
+  })
+
+  // An empty name would build `shipthis --gameId <id>`, which is not a command.
+  it('drops the --gameId suggestion when there is no command name', () => {
+    const {suggestions} = getNoGameError('')
+
+    expect(suggestions?.some((s) => s.includes('--gameId'))).to.equal(false)
+    expect(suggestions).to.deep.equal([
+      'shipthis game wizard android',
+      'shipthis game wizard ios',
+      'shipthis game create --name "My Game"',
+    ])
+  })
+
+  // `game ship` needs shipthis.json, so --gameId leads back to this same error.
+  it('drops the --gameId suggestion when the command needs a project config', () => {
+    const {message, suggestions} = getNoGameError('shipthis game ship', undefined, {needsProjectConfig: true})
+
+    expect(suggestions?.some((s) => s.includes('--gameId'))).to.equal(false)
+    expect(message).to.not.include('--gameId')
+    expect(suggestions).to.deep.equal([
+      'shipthis game wizard android',
+      'shipthis game wizard ios',
+      'shipthis game create --name "My Game"',
+    ])
+  })
+
+  it('still narrows the wizard by platform when a project config is needed', () => {
+    const {suggestions} = getNoGameError('shipthis game ship', 'android', {needsProjectConfig: true})
+
+    expect(suggestions).to.deep.equal(['shipthis game wizard android', 'shipthis game create --name "My Game"'])
+  })
+
+  // The fault issue 252 reports. `shipthis game wizard` alone fails on the missing arg.
+  it('never suggests the wizard without a platform', () => {
+    for (const platform of [undefined, 'android', 'ios']) {
+      const {suggestions} = getNoGameError('shipthis game status', platform)
+      expect(suggestions).to.not.include('shipthis game wizard')
+    }
+  })
+
+  it('points at the docs page for setting a game up', () => {
+    expect(getNoGameError('shipthis game status').ref).to.equal('https://shipth.is/docs/create-a-project')
   })
 })

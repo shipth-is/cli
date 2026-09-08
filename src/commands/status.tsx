@@ -3,6 +3,7 @@ import {render} from 'ink'
 
 import {BaseCommand} from '@cli/baseCommands/index.js'
 import {Command, NextSteps, StatusTable} from '@cli/components/index.js'
+import {WIZARD_COMMANDS} from '@cli/constants/commands.js'
 import {AuthConfig} from '@cli/types'
 import {isCWDGitRepo, isCWDGodotGame} from '@cli/utils/index.js'
 
@@ -28,7 +29,8 @@ export default class Status extends BaseCommand<typeof Status> {
 
     if (!isLoggedIn) steps.push('shipthis login --email my.email@address.nowhere')
     if (!isGodotGame) steps.push('Run this command in a Godot project directory')
-    if (!isShipThisConfigured) steps.push('shipthis game wizard')
+    // The wizard needs a platform, so both commands go in the list.
+    if (!isShipThisConfigured) steps.push(...WIZARD_COMMANDS)
 
     const exitCode = steps.length > 0 ? 1 : 0
 
