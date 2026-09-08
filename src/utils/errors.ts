@@ -1,5 +1,8 @@
 import Axios from 'axios'
 
+// Imported from the file, not from `constants/index.js` - that builds the oclif flags, and
+// importing it here has caused a circular import before (see 4a7357f).
+import {CREATE_A_PROJECT_DOCS, CREATE_GAME_COMMAND, WIZARD_COMMANDS} from '@cli/constants/commands.js'
 import {HandledError, Job} from '@cli/types/index.js'
 
 import {getShortUUID} from './uuid.js'
@@ -111,4 +114,39 @@ export function toHandledError(error: any, context: {projectId?: string} = {}) {
     default:
       return error
   }
+}
+
+/**
+ * A failure a command reports. The fields match the options `this.error()` takes, so a
+ * caller passes them straight through and oclif prints the suggestions and the reference.
+ */
+export interface CommandError {
+  message: string
+  ref?: string
+  suggestions?: string[]
+}
+
+// One `\n`, after the first sentence. oclif wraps the rest itself.
+const NO_GAME_MESSAGE =
+  'No game is set up in this directory.\n' +
+  'Run the wizard for the platform you want to ship to, or name a game you already have ' +
+  'with --gameId. Run `shipthis game list` to see your game IDs.'
+
+/**
+ * The answer to "there is no game here". `commandName` is the command the user typed, such
+ * as "shipthis game status". An empty name drops the --gameId suggestion. `platform` narrows
+ * the wizard suggestion to one line.
+ */
+export function getNoGameError(commandName: string, platform?: string): CommandError {
+  // A command that knows the platform names one wizard. Every other case names both.
+  const forPlatform = platform ? WIZARD_COMMANDS.filter((command) => command.endsWith(` ${platform}`)) : []
+
+  const suggestions = [
+    ...(forPlatform.length > 0 ? forPlatform : WIZARD_COMMANDS),
+    // `shipthis --gameId <id>` is not a command, so an empty name drops this line.
+    ...(commandName ? [`${commandName} --gameId <id>`] : []),
+    CREATE_GAME_COMMAND,
+  ]
+
+  return {message: NO_GAME_MESSAGE, ref: CREATE_A_PROJECT_DOCS, suggestions}
 }

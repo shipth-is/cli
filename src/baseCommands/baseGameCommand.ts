@@ -14,7 +14,7 @@ export abstract class BaseGameCommand<T extends typeof Command> extends BaseAuth
   public async getGame(): Promise<Project> {
     try {
       const gameId = await this.getGameId()
-      if (!gameId) this.error('No game ID found.')
+      if (!gameId) this.errorNoGame()
       return await getProject(gameId)
     } catch (error: any) {
       if (error instanceof HandledError) {

@@ -25,10 +25,7 @@ export default class GameStatus extends BaseAuthenticatedCommand<typeof GameStat
   }
 
   public async run(): Promise<void> {
-    const gameId = this.getGameId()
-    if (!gameId) {
-      this.error('No game found - please run `shipthis game wizard` or specify a game ID with --gameId', {exit: 1})
-    }
+    if (!this.getGameId()) this.errorNoGame()
 
     render(
       <CommandGame command={this}>

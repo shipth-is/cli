@@ -99,7 +99,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     await this.ensureWeAreInAProjectDir()
     const gameId = this.getGameId()
     if (!gameId) {
-      this.error('No game ID found')
+      this.errorNoGame()
     }
 
     const MAX_RETRIES = 3
