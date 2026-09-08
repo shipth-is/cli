@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import {v4 as uuid} from 'uuid'
 
 import {getProject, startJobsFromUpload} from '@cli/api/index.js'
+import {WIZARD_COMMANDS} from '@cli/constants/commands.js'
 import type {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
 import {detectGodotVersion, getGodotVersionDrift} from '@cli/utils/godot.js'
 import {getCWDGitInfo, getFileHash} from '@cli/utils/index.js'
@@ -14,7 +15,10 @@ import {MAX_SINGLE_UPLOAD_SIZE, type ProgressData, singleUpload} from './upload.
 import {formatProgressLog, getPlatforms} from './utils.js'
 import {createZip} from './zip.js'
 
-const ERR_NOT_CONFIGURED = 'No Android or iOS configuration found. Please run `shipthis game wizard android` or `shipthis game wizard ios` to configure your game.'
+const ERR_NOT_CONFIGURED =
+  'This game has no Android or iOS configuration.\n' +
+  'Set up a platform with:\n\n' +
+  WIZARD_COMMANDS.map((command) => `  ${command}`).join('\n')
 
 const getVersionMismatch = (detected: string, configured: string) =>
   `Your project.godot targets Godot ${detected}, but this game builds with Godot ${configured}.`
