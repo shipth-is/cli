@@ -117,7 +117,29 @@ We support **all stable Godot versions since 3.6**, including:
 
 **\* Custom builds** - [maintained by us](https://github.com/shipth-is/godot-android-sdk-upgrade/) to support **[Android SDK 35](https://support.google.com/googleplay/android-developer/answer/11926878?hl=en)** and **[16 KB Google Play compatibility requirement](https://developer.android.com/guide/practices/page-sizes)**.
 
+Using **C#**? ShipThis supports C# games on Godot 3.6 and Godot 4.3+ - see [Can I ship a C# game?](#can-i-ship-a-c-game).
+
 You can read more in our [Godot versioning guide](https://shipth.is/docs/guides/godot-versioning?ref=github_readme).
+
+### Can I ship a C# game?
+
+Yes - ShipThis builds and publishes C# games for **both iOS and Android**, using **Godot 3.6 or Godot 4.3 and later**.
+
+For Godot 4, develop your game with the **.NET version of the Godot editor**, and install the .NET SDK for local builds. ShipThis provides the build environment for cloud builds, so you do not need the Android or iOS toolchains on your own machine.
+
+Godot 3.6 uses **Mono**, while Godot 4 uses **.NET**. ShipThis supports the following target frameworks:
+
+| Godot version     | Android                       | iOS                           |
+| ----------------- | ----------------------------- | ----------------------------- |
+| **3.6**           | `net472`                      | `net472`                      |
+| **4.3**           | `net7.0`                      | `net8.0`                      |
+| **4.4 and later** | `net8.0`, `net9.0`, `net10.0` | `net8.0`, `net9.0`, `net10.0` |
+
+Godot writes this into your `.csproj` when you create the project, so you should not normally need to change it. To check, look for the target framework in the `.csproj` at the root of your project, for example:
+
+```xml
+<TargetFramework>net9.0</TargetFramework>
+```
 
 ### Can I build my game as APK/AAB/IPA without an Apple or Google account?
 
