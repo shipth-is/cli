@@ -12,6 +12,12 @@ const {Auth} = appleUtils
 
 const SOURCE_URL = 'https://github.com/shipth-is/cli/blob/main/src/commands/apple/login.ts'
 
+// TODO: remove once Apple's config endpoint works again, or @expo/apple-utils stops needing it.
+// That endpoint has 404'd since 2026-09-11, which surfaces as "iTunes service key is empty"
+// (expo/eas-cli#4392, fastlane/fastlane#30199). Not a secret - App Store Connect sends the same
+// value as X-Apple-Widget-Key.
+const APPLE_SERVICE_KEY = 'e0b80c3bf78523bfe80974d320935bfa30add02e1bff88ec2166c6bd5a706c42'
+
 export default class AppleLogin extends BaseAuthenticatedCommand<typeof AppleLogin> {
   static override args = {}
 
@@ -37,6 +43,11 @@ Your Apple password is sent only to Apple, never to ShipThis. Only the resulting
 
   public async run(): Promise<void> {
     const {flags} = this
+
+    // Only set if unset, so it can still be overridden from the environment.
+    if (!process.env.EXPO_APP_STORE_AUTH_SERVICE_KEY) {
+      process.env.EXPO_APP_STORE_AUTH_SERVICE_KEY = APPLE_SERVICE_KEY
+    }
 
     if (flags.logout) {
       await this.setAppleCookies(undefined)
