@@ -2,13 +2,16 @@
 
 ## Description
 
-The `shipthis game ship` command starts the process of building and publishing your game.
+The `shipthis game ship` command builds your Godot game in the cloud and publishes it to the **App Store** and **Google Play**.
 
-:::info
-This command creates one or more "jobs". A **job** is a set of work done to create a new build of your game on one platform.
+It uploads your project, compiles it on the ShipThis build servers using the credentials you set up with [`shipthis game wizard`](/docs/reference/game/wizard), and - unless you tell it not to - sends the finished build on to TestFlight or Google Play.
 
-When this command is run, ShipThis uploads the code in the current directory to the ShipThis backend.
-To control which files are uploaded, use `globs` in **shipthis.json**. Legacy keys `shippedFilesGlobs` and `ignoredFilesGlobs` are still supported for older projects. See `https://shipth.is/docs/guides/controlling-uploaded-files`.
+You do not need an Apple computer, Xcode or the Android SDK. If you are not ready to publish yet, `--skipPublish` gives you the build without sending it anywhere.
+
+:::info What is a job?
+Each platform you build for creates a **job** - one build of your game, on one platform, on our cloud build servers.
+
+You can watch a job while it runs, or come back to it later with [`shipthis game job`](/docs/reference/game/job) or in the [ShipThis dashboard](https://shipth.is/dashboard).
 :::
 
 ## Examples
@@ -16,6 +19,10 @@ To control which files are uploaded, use `globs` in **shipthis.json**. Legacy ke
 ### Standard use
 
 When run without any flags, the command will try to run the full build and publish pipelines for each of the platforms that you have configured.
+
+```bash
+shipthis game ship
+```
 
 When run like this, pressing **L** will show or hide the last few lines of the logs, pressing **B** will open the job log in your browser.
 
@@ -25,9 +32,21 @@ When run like this, pressing **L** will show or hide the last few lines of the l
 
 When using ShipThis in a CI environment, it is most useful to use the `--follow` to collect the full output. This flag requires you to specify the `--platform` flag too.
 
+```bash
+shipthis game ship --platform android --follow
+```
+
 [![asciicast](https://asciinema.org/a/gKmZ0E1rJ4oiT9SyuSivXBZfY.svg)](https://asciinema.org/a/gKmZ0E1rJ4oiT9SyuSivXBZfY#shipthis-col80row24)
 
 ### Follow, do not publish, and then download APK
+
+Use `--skipPublish` when you want the build but do not want it sent to TestFlight or Google Play, and `--downloadAPK` to save the APK to a file when the job finishes. Together with `--follow` this builds your game, keeps the logs on screen, and leaves you with something you can install on a device:
+
+```bash
+shipthis game ship --platform android --follow --skipPublish --downloadAPK game.apk
+```
+
+Use `--download` instead of `--downloadAPK` to save the **AAB** for Google Play, or the **IPA** on iOS.
 
 [![asciicast](https://asciinema.org/a/GNf0t8niOlrMDsgPKqmBcuqQh.svg)](https://asciinema.org/a/GNf0t8niOlrMDsgPKqmBcuqQh#shipthis-col80row24)
 
@@ -47,22 +66,21 @@ shipthis game ship --platform android --follow --useDemoCredentials --downloadAP
 
 ### Uploading a large game
 
-ShipThis makes a zip of your game. For a zip of 16MB or more, ShipThis sends the zip in
-several parts at the same time. This is faster than one request.
+Before your build starts, your game files are zipped up and uploaded. Which files end up in that zip is controlled by the `globs` in your **shipthis.json** - see [Controlling uploaded files](/docs/guides/controlling-uploaded-files).
 
-Each part is separate. If the network fails, ShipThis sends that part again. The parts that
-arrived stay on the server.
+If the zip comes to **16MB or more**, ShipThis splits it up and sends the parts in parallel, which is a good deal faster than sending the whole thing in one go. Each part is sent on its own, so a dropped connection does not cost you the whole upload - the failed part is retried and the parts that already arrived stay where they are.
 
-ShipThis sends a zip smaller than 16MB in one request. Parts do not make a small zip faster.
+:::note
+Zips under **16MB** are sent in a single request. Splitting a small zip into parts does not make it any faster.
+:::
 
-To send the zip in one request, use `--skipMultipart`. This method is slower, and the zip
-must be smaller than 5GB. Use this flag only if the upload in parts fails.
+If the parallel upload gives you trouble, `--skipMultipart` will send the whole zip in one request instead. It is slower, and the zip must be **5GB or less**:
 
 ```bash
 shipthis game ship --platform android --skipMultipart
 ```
 
-To see each part, and to see ShipThis send a part again, add `--verbose`.
+Add `--verbose` to watch the individual parts go up, including any that get retried.
 
 ### Overriding the Godot version
 
