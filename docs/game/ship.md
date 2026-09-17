@@ -74,7 +74,7 @@ If the zip comes to **16MB or more**, ShipThis splits it up and sends the parts 
 Zips under **16MB** are sent in a single request. Splitting a small zip into parts does not make it any faster.
 :::
 
-If the parallel upload gives you trouble, `--skipMultipart` will send the whole zip in one request instead. It is slower, and the zip must be under **5GB**:
+If the parallel upload gives you trouble, `--skipMultipart` will send the whole zip in one request instead. It is slower, and the zip must be **5GB or less**:
 
 ```bash
 shipthis game ship --platform android --skipMultipart
