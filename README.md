@@ -6,7 +6,7 @@
 * **Free cloud builds** for most solo devs
 
 <p align="center">
-  <a href="https://shipth.is/docs/reference/game/ship?ref=github_readme">
+  <a href="https://shipth.is/docs/guides/quick-start?ref=github_readme_hero">
     <picture>
       <img height="266" width="504" alt="ShipThis Command - ship output" src="docs/assets/ship-outputx0.8.gif">
     </picture>
@@ -85,7 +85,7 @@ shipthis game wizard ios
 
 ### 4. Ship
 
-Now you can publish new versions of your game to TestFlight or Google Play with the [`shipthis game ship`](https://shipth.is/docs/reference/game/ship?ref=github_readme) command:
+Now you can publish new versions of your game to TestFlight or Google Play with the [`shipthis game ship`](https://shipth.is/docs/reference/game/ship?ref=github_readme_quickstart) command:
 
 ```bash
 shipthis game ship
@@ -147,7 +147,7 @@ Yes.
 
 The [wizard command](https://shipth.is/docs/reference/game/wizard?ref=github_readme) is designed to generate your own credentials for signing and publishing, but you might not need this when initially building your game.
 
-You can create a ShipThis account, create the game and then run the [ship command](https://shipth.is/docs/reference/game/ship?ref=github_readme) using demo credentials. Later, when you need to set up publishing, you can re-run the wizard command.
+You can create a ShipThis account, create the game and then run the [ship command](https://shipth.is/docs/reference/game/ship?ref=github_readme_faq) using demo credentials. Later, when you need to set up publishing, you can re-run the wizard command.
 
 ```bash
 # Create a ShipThis game - run this in a dir with a project.godot file
