@@ -48,6 +48,12 @@ shipthis game ship --platform android --follow --skipPublish --downloadAPK game.
 
 Use `--download` instead of `--downloadAPK` to save the **AAB** for Google Play, or the **IPA** on iOS.
 
+On Android you can use `--download` and `--downloadAPK` together to save both the AAB and the APK:
+
+```bash
+shipthis game ship --platform android --skipPublish --download game.aab --downloadAPK game.apk
+```
+
 [![asciicast](https://asciinema.org/a/GNf0t8niOlrMDsgPKqmBcuqQh.svg)](https://asciinema.org/a/GNf0t8niOlrMDsgPKqmBcuqQh#shipthis-col80row24)
 
 ### Building with demo credentials
@@ -104,7 +110,8 @@ USAGE
 FLAGS
   -g, --gameId=<value>             The ID of the game
       --download=<value>           Download the build artifact to the specified file
-      --downloadAPK=<value>        Download the APK artifact (if available) to the specified file
+      --downloadAPK=<value>        Download the APK artifact (if available) to the specified file. Can be used with
+                                   --download
       --dryRun                     Dry run - lists the files that would be shipped without executing the build or
                                    publish steps
       --follow                     Follow the job logs in real-time (requires --platform)
