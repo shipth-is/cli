@@ -44,8 +44,13 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
     const job = await this.getJob()
     const {follow, lines} = this.flags
 
+    // A finished job sends no more updates, so following it would never exit
+    const isFinished = [JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)
+    const isWatching = follow && !isFinished
+    if (follow && job.status === JobStatus.FAILED) process.exitCode = 1
+
     const handleJobUpdate = (job: Job) => {
-      if (!follow) return
+      if (!isWatching) return
       // Exit 2 seconds after completion to ensure the last log lines are shown
       if ([JobStatus.COMPLETED, JobStatus.FAILED].includes(job.status)) {
         const exitCode = job.status === JobStatus.FAILED ? 1 : 0
@@ -55,8 +60,8 @@ export default class GameJobStatus extends BaseGameCommand<typeof GameJobStatus>
 
     render(
       <Command command={this}>
-        <JobStatusTable isWatching={follow} jobId={job.id} onJobUpdate={handleJobUpdate} projectId={job.project.id} />
-        <JobLogTail isWatching={follow} jobId={job.id} length={lines} projectId={job.project.id} />
+        <JobStatusTable isWatching={isWatching} jobId={job.id} onJobUpdate={handleJobUpdate} projectId={job.project.id} />
+        <JobLogTail isWatching={isWatching} jobId={job.id} length={lines} projectId={job.project.id} />
         <NextSteps steps={[]} />
       </Command>,
     )
