@@ -83,6 +83,13 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
   }
 
   public async run(): Promise<void> {
+    if (this.flags.downloadAPK && this.flags.platform !== 'android') {
+      this.error('--downloadAPK is only for Android builds', {
+        exit: 1,
+        suggestions: ['Use --download to save the IPA'],
+      })
+    }
+
     // Checked before the zip and the upload, so a typo costs no wait. Without the flag there
     // is nothing to check, and the command asks the server nothing.
     const {gameEngineVersion} = this.flags
