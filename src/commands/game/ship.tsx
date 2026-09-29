@@ -6,7 +6,7 @@ import {downloadBuildById, getJob, getSupportedGodotVersions} from '@cli/api/ind
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {CommandGame, Ship} from '@cli/components/index.js'
 import {SUPPORTED_GODOT_VERSIONS} from '@cli/constants/index.js'
-import {Job} from '@cli/types/api.js'
+import {BuildType, Job} from '@cli/types/api.js'
 import {getErrorMessage} from '@cli/utils/errors.js'
 import {validateDetailsValues} from '@cli/utils/validation.js'
 
@@ -36,7 +36,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     }),
     downloadAPK: Flags.string({
       dependsOn: ['platform'],
-      description: 'Download the APK artifact (if available) to the specified file',
+      description: 'Download the APK artifact (if available) to the specified file. Can be used with --download',
       required: false,
     }),
     follow: Flags.boolean({
@@ -120,13 +120,16 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       if (!job?.builds || job.builds.length === 0) this.error('No builds found for this job after multiple attempts')
 
       const {platform} = this.flags
-      const type = platform === 'android' ? (this.flags.downloadAPK ? 'APK' : 'AAB') : 'IPA'
+      const downloads = [
+        {file: this.flags.download, type: platform === 'android' ? BuildType.AAB : BuildType.IPA},
+        {file: this.flags.downloadAPK, type: BuildType.APK},
+      ].filter((d) => d.file)
 
-      const build = job.builds.find((b) => b.buildType === type)
-      if (!build) this.error(`No build found for type ${type}`)
-
-      const filename = this.flags.download || this.flags.downloadAPK
-      await downloadBuildById(gameId, build.id, `${filename}`)
+      for (const {file, type} of downloads) {
+        const build = job.builds.find((b) => b.buildType === type)
+        if (!build) this.error(`No build found for type ${type}`)
+        await downloadBuildById(gameId, build.id, file!)
+      }
 
       process.exit(0)
     }
