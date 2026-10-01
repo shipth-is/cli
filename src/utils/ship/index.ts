@@ -64,13 +64,13 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
   // --gameId wins over shipthis.json. shipthis.json still gives the globs when it exists.
   const gameId = command.getGameId()
   if (!gameId) throw new Error('No game found. Use --gameId or run this from a directory with a shipthis.json')
-  const projectConfig = command.getProjectConfigSafe()
+  const projectConfig = command.hasProjectConfig() ? command.getProjectConfigSafe() : null
   const project = await getProject(gameId)
 
   // After getProject(), so a wrong --gameId fails as "not found" first.
   // Short IDs, because the flag can be a short ID or a full UUID.
   const flagGameId = (commandFlags as {gameId?: string}).gameId
-  const configGameId = projectConfig.project?.id
+  const configGameId = projectConfig?.project?.id
   if (flagGameId && configGameId && getShortUUID(project.id) !== getShortUUID(configGameId)) {
     warnLog(`Shipping game ${getShortUUID(project.id)} (--gameId), not ${getShortUUID(configGameId)} (shipthis.json).`)
   }
