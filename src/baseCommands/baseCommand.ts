@@ -9,7 +9,7 @@ import {getSelf, setAuthToken} from '@cli/api/index.js'
 import {Auth} from '@cli/apple/expo.js'
 import {AUTH_ENV_VAR_NAME, DetailsFlags} from '@cli/constants/index.js'
 import {AuthConfig, ProjectConfig} from '@cli/types'
-import {getNoGameError, isCWDGodotGame} from '@cli/utils/index.js'
+import {getNoGameError} from '@cli/utils/index.js'
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<(typeof BaseCommand)['baseFlags'] & T['flags']>
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
@@ -30,23 +30,11 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return super.catch(err)
   }
 
-  // Used in baseGameCommand and the other commands that need to ensure that the CWD is a Godot project
-  protected ensureWeAreInAProjectDir(): void {
-    if (!isCWDGodotGame()) {
-      this.error('No Godot project detected. Please run this from a godot project directory.', {exit: 1})
-    }
-
-    if (!this.hasProjectConfig()) {
-      // This check is about the directory, so --gameId is no way out of it.
-      this.errorNoGame({needsProjectConfig: true})
-    }
-  }
-
   // `never` is load-bearing. Two callers read the game ID after this line, and TypeScript
   // narrows it out of `null` only because this returns `never`.
-  protected errorNoGame(options: {needsProjectConfig?: boolean} = {}): never {
+  protected errorNoGame(): never {
     const {platform} = this.flags as {platform?: string}
-    const {message, ref, suggestions} = getNoGameError(this.getCommandName(), platform, options)
+    const {message, ref, suggestions} = getNoGameError(this.getCommandName(), platform)
     this.error(message, {exit: 1, ref, suggestions})
   }
 
