@@ -68,10 +68,10 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
   const project = await getProject(gameId)
 
   // After getProject(), so a wrong --gameId fails as "not found" first.
-  // Short IDs, because the flag can be a short ID or a full UUID.
+  // project.id, not the flag - the flag can be a short ID, project.id is the full UUID.
   const flagGameId = (commandFlags as {gameId?: string}).gameId
   const configGameId = projectConfig?.project?.id
-  if (flagGameId && configGameId && getShortUUID(project.id) !== getShortUUID(configGameId)) {
+  if (flagGameId && configGameId && project.id !== configGameId) {
     warnLog(`Shipping game ${getShortUUID(project.id)} (--gameId), not ${getShortUUID(configGameId)} (shipthis.json).`)
   }
 
