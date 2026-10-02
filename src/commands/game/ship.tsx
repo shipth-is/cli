@@ -2,12 +2,13 @@ import {Flags} from '@oclif/core'
 import chalk from 'chalk'
 import {Instance, render} from 'ink'
 
-import {downloadBuildById, getJob, getSupportedGodotVersions} from '@cli/api/index.js'
+import {downloadBuildById, getJob, getProject, getSupportedGodotVersions} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {CommandGame, Ship} from '@cli/components/index.js'
 import {SUPPORTED_GODOT_VERSIONS} from '@cli/constants/index.js'
 import {BuildType, Job} from '@cli/types/api.js'
 import {getErrorMessage} from '@cli/utils/errors.js'
+import {isCWDGodotGame} from '@cli/utils/godot.js'
 import {validateDetailsValues} from '@cli/utils/validation.js'
 
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
@@ -25,6 +26,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     '<%= config.bin %> <%= command.id %> --platform ios --useDemoCredentials --download game.ipa',
     '<%= config.bin %> <%= command.id %> --platform android --gameEngineVersion 4.5.1 --skipPublish',
     '<%= config.bin %> <%= command.id %> --platform android --dryRun',
+    '<%= config.bin %> <%= command.id %> --gameId 0c179fc4 --platform android',
   ]
 
   static override flags = {
@@ -103,11 +105,20 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       })
     }
 
-    await this.ensureWeAreInAProjectDir()
+    if (!isCWDGodotGame()) {
+      this.error('No Godot project detected. Please run this from a godot project directory.', {exit: 1})
+    }
+
+    // --gameId wins over shipthis.json, so shipthis.json is not required.
     const gameId = this.getGameId()
-    if (!gameId) {
-      // ship() reads the game from shipthis.json, never from --gameId.
-      this.errorNoGame({needsProjectConfig: true})
+    if (!gameId) this.errorNoGame()
+
+    // A wrong --gameId stops here, before the UI. Otherwise GameProvider and ship() both
+    // report it.
+    try {
+      await getProject(gameId)
+    } catch (error) {
+      this.error(getErrorMessage(error), {exit: 1})
     }
 
     const MAX_RETRIES = 3
@@ -116,10 +127,12 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     const handleComplete = async ([originalJob]: Job[]) => {
       if (!this.flags.download && !this.flags.downloadAPK) return process.exit(0)
 
+      // The full UUID from the job - gameId can be a short --gameId.
+      const projectId = originalJob.project.id
       let job: Job | null = null
 
       for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-        job = await getJob(originalJob.id, gameId)
+        job = await getJob(originalJob.id, projectId)
         if (job.builds && job.builds.length > 0) break
         if (attempt < MAX_RETRIES) await new Promise((res) => setTimeout(res, RETRY_DELAY_MS))
       }
@@ -135,7 +148,7 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       for (const {file, type} of downloads) {
         const build = job.builds.find((b) => b.buildType === type)
         if (!build) this.error(`No build found for type ${type}`)
-        await downloadBuildById(gameId, build.id, file!)
+        await downloadBuildById(projectId, build.id, file!)
       }
 
       process.exit(0)

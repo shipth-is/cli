@@ -75,8 +75,12 @@ function getRulesetForPlatform(safe: GlobsConfig, platforms: Platform[]): GlobRu
 }
 
 // Determines the final include/exclude rules for the given project config and platforms.
-export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platform[]): GlobRuleSet & {warning?: string} {
-  const {shippedFilesGlobs, ignoredFilesGlobs, globs} = projectConfig
+// A null config means there is no shipthis.json (`game ship --gameId` allows this).
+export function getFinalRuleset(
+  projectConfig: null | ProjectConfig,
+  platforms: Platform[],
+): GlobRuleSet & {warning?: string} {
+  const {shippedFilesGlobs, ignoredFilesGlobs, globs} = projectConfig ?? {}
 
   const legacyShippedProvided = Array.isArray(shippedFilesGlobs)
   const legacyIgnoredProvided = Array.isArray(ignoredFilesGlobs)
@@ -86,7 +90,7 @@ export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platfor
 
   // Merge `globs` defaults + optional platform slice into final include/exclude.
   const returnNewOrDefaults = (warning: string | undefined) => {
-    const safe = getSafeGlobsConfig(projectConfig)
+    const safe = getSafeGlobsConfig(projectConfig ?? {})
     const platformRuleset = getRulesetForPlatform(safe, platforms)
     return {
       warning,
@@ -97,8 +101,9 @@ export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platfor
 
   // No `shippedFilesGlobs` / `ignoredFilesGlobs`: always use new-format `globs` (defaults if absent).
   // Warn when `globs` is missing from shipthis.json; no warning when `globs` is explicitly set.
+  // No warning without a shipthis.json - there is no file to put globs in.
   if (!hasLegacy) {
-    return returnNewOrDefaults(hasGlobs ? undefined : WARN_MISSING_GLOBS)
+    return returnNewOrDefaults(hasGlobs || !projectConfig ? undefined : WARN_MISSING_GLOBS)
   }
 
   const legacyIsAllDefaults =
@@ -123,7 +128,7 @@ export function getFinalRuleset(projectConfig: ProjectConfig, platforms: Platfor
 
 // Gets the list of files to be zipped and uploaded
 export async function getFilesToShip(
-  projectConfig: ProjectConfig,
+  projectConfig: null | ProjectConfig,
   platforms: Platform[],
   log: LogFunction,
   warnLog: LogFunction,

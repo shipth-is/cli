@@ -88,6 +88,16 @@ describe('getFinalRuleset (ship/glob)', () => {
     expect(resolved.exclude).to.include('android/**')
   })
 
+  // `game ship --gameId` runs without a shipthis.json, so there is no file to add globs to.
+  it('uses the defaults without a warning when there is no shipthis.json', () => {
+    const resolved = getFinalRuleset(null, [Platform.IOS])
+
+    expect(resolved.warning).to.equal(undefined)
+    expect(resolved.include).to.deep.equal(DEFAULT_PLATFORM_GLOBS.base.include)
+    expect(resolved.exclude).to.include.members(DEFAULT_PLATFORM_GLOBS.base.exclude)
+    expect(resolved.exclude).to.include('android/**')
+  })
+
   it('merges `base.include` with the active platform `include` when shipping a single platform', () => {
     const projectConfig = {
       globs: {

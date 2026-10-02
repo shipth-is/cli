@@ -4,9 +4,9 @@ import {v4 as uuid} from 'uuid'
 
 import {getProject, startJobsFromUpload} from '@cli/api/index.js'
 import {WIZARD_COMMANDS} from '@cli/constants/commands.js'
-import type {Job, Platform, ProjectConfig, ShipGameFlags, UploadDetails} from '@cli/types'
+import type {Job, Platform, ShipGameFlags, UploadDetails} from '@cli/types'
 import {detectGodotVersion, getGodotVersionDrift} from '@cli/utils/godot.js'
-import {getCWDGitInfo, getFileHash} from '@cli/utils/index.js'
+import {getCWDGitInfo, getFileHash, getShortUUID} from '@cli/utils/index.js'
 
 import {getFilesToShip} from './glob.js'
 import {MULTIPART_MIN_SIZE, multipartUpload} from './multipartUpload.js'
@@ -61,9 +61,19 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
   }
 
   vlog('Fetching game config...')
-  const projectConfig: ProjectConfig = await command.getProjectConfig()
-  if (!projectConfig.project) throw new Error('No project found in project config')
-  const project = await getProject(projectConfig.project.id)
+  // --gameId wins over shipthis.json. shipthis.json still gives the globs when it exists.
+  const gameId = command.getGameId()
+  if (!gameId) throw new Error('No game found. Use --gameId or run this from a directory with a shipthis.json')
+  const projectConfig = command.hasProjectConfig() ? command.getProjectConfigSafe() : null
+  const project = await getProject(gameId)
+
+  // After getProject(), so a wrong --gameId fails as "not found" first.
+  // project.id, not the flag - the flag can be a short ID, project.id is the full UUID.
+  const flagGameId = (commandFlags as {gameId?: string}).gameId
+  const configGameId = projectConfig?.project?.id
+  if (flagGameId && configGameId && project.id !== configGameId) {
+    warnLog(`Shipping game ${getShortUUID(project.id)} (--gameId), not ${getShortUUID(configGameId)} (shipthis.json).`)
+  }
 
   // gameEngineVersion is detected once at create time and drifts when the project is
   // upgraded. A major drift does not build correctly, so stop before we publish one.
@@ -118,7 +128,8 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
     log('Uploading zip file...')
     const uploadProps = {
       filePath: tmpZipFile,
-      projectId: projectConfig.project.id,
+      // The full UUID - the flag can be a short ID.
+      projectId: project.id,
       vlog,
       zipSize: size,
       onProgress: (data: ProgressData) => {

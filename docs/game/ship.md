@@ -99,6 +99,16 @@ shipthis game ship --platform android --follow --gameEngineVersion 4.5.1 --downl
 The CLI checks this version before it builds the zip, so a typo stops the command in a second.
 See [Godot versioning](/docs/guides/godot-versioning) for the versions ShipThis supports.
 
+### Shipping to a different game
+
+Use `--gameId` to ship the files in this directory to a different game. The flag overrides the game in **shipthis.json**. You can use the flag when there is no **shipthis.json**.
+
+```bash
+shipthis game ship --gameId 0c179fc4 --platform android
+```
+
+If **shipthis.json** names a different game, the CLI shows a warning. The `globs` in **shipthis.json** still control which files are uploaded.
+
 ## Help Output
 
 ```help
@@ -145,4 +155,6 @@ EXAMPLES
   $ shipthis game ship --platform android --gameEngineVersion 4.5.1 --skipPublish
 
   $ shipthis game ship --platform android --dryRun
+
+  $ shipthis game ship --gameId 0c179fc4 --platform android
 ```

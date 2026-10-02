@@ -122,9 +122,16 @@ export const Ship = ({onComplete, onError, onFailure}: Props): JSX.Element => {
       )
     }
 
+    // The full UUID from the job - gameId can be a short --gameId, and the websocket
+    // channels are named with the full UUID.
     if (jobs && jobs.length > 0) {
       return (
-        <JobFollow jobId={jobs[0].id} onComplete={handleJobComplete} onFailure={handleJobFailure} projectId={gameId} />
+        <JobFollow
+          jobId={jobs[0].id}
+          onComplete={handleJobComplete}
+          onFailure={handleJobFailure}
+          projectId={jobs[0].project.id}
+        />
       )
     }
 
