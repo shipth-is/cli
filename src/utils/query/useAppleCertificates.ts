@@ -1,6 +1,7 @@
 import type {Certificate as Cert} from '@expo/apple-utils'
 import {UseQueryResult, useQuery} from '@tanstack/react-query'
 import {DateTime} from 'luxon'
+import {useEffect} from 'react'
 
 import {Certificate, CertificateType} from '@cli/apple/expo.js'
 import {ScalarDict, UserCredential} from '@cli/types'
@@ -47,6 +48,14 @@ export const useAppleCertificates = (
   const queryResult = useQuery<AppleCertificateQueryResponse>({
     queryFn: () => queryAppleCertificates(props),
     queryKey: ['appleCertificates'],
+    // A failed Apple request gives the same answer when sent again
+    retry: false,
   })
+
+  // The status commands render and then return, so the exit code is how a script sees the failure
+  useEffect(() => {
+    if (queryResult.isError) process.exitCode = 1
+  }, [queryResult.isError])
+
   return queryResult
 }

@@ -116,6 +116,43 @@ export function toHandledError(error: any, context: {projectId?: string} = {}) {
   }
 }
 
+// The resultCode the Developer Portal sends with "You currently don't have access to this
+// membership resource". The code field is only FORBIDDEN_ERROR, which Apple uses for every 403.
+const APPLE_MEMBERSHIP_RESULT_CODE = 1200
+
+// The App Store Connect side sends its own text for the same problem. It names an API key, but
+// the request uses the Apple login session, so the text is misleading.
+const APPLE_MEMBERSHIP_DETAILS = ['membership resource', 'The API key in use does not allow this request']
+
+interface AppleErrorInfo {
+  detail?: string
+  resultCode?: number
+}
+
+// Converts an Apple error into a HandledError with a user-friendly message, if possible.
+// Apple sends the same 403 for an agreement that is not accepted, an expired membership and
+// a role without access. It does not say which, so the message gives all three.
+export function toAppleHandledError(error: any) {
+  const response = error?.response ?? error?.cause?.response
+  if (response?.status !== 403) return error
+
+  const appleErrors: AppleErrorInfo[] = Array.isArray(response.data?.errors) ? response.data.errors : []
+  const membershipError = appleErrors.find(
+    (e) =>
+      e.resultCode === APPLE_MEMBERSHIP_RESULT_CODE ||
+      APPLE_MEMBERSHIP_DETAILS.some((detail) => e.detail?.includes(detail)),
+  )
+  if (!membershipError) return error
+
+  return new HandledError(
+    'Apple did not give access to the resources of this Apple Developer team.\n' +
+      'Usually, the team has an agreement that you must accept. Sign in at https://developer.apple.com/account, ' +
+      'select the team, and accept the agreements that it shows.\n' +
+      'Apple also gives this error if the membership has expired, or if your role on the team cannot access them.\n' +
+      `Apple said: ${membershipError.detail}`,
+  )
+}
+
 /**
  * A failure a command reports. The fields match the options `this.error()` takes, so a
  * caller passes them straight through and oclif prints the suggestions and the reference.

@@ -1,11 +1,12 @@
 import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {NextSteps, Table, Title} from '@cli/components/common/index.js'
+import {ErrorBox, NextSteps, Table, Title} from '@cli/components/common/index.js'
 import {CredentialsType, Platform, Project} from '@cli/types'
 import {
   canAppleProfileBeUsed,
   getAppleProfileSummary,
+  toAppleHandledError,
   useAppleProfiles,
   useProjectCredentials,
 } from '@cli/utils/index.js'
@@ -21,7 +22,7 @@ export const AppleProfilesTable = ({ctx, project, ...boxProps}: Props) => {
     projectId: project.id,
     type: CredentialsType.CERTIFICATE,
   })
-  const {data: profiles, isLoading} = useAppleProfiles({ctx})
+  const {data: profiles, error, isLoading} = useAppleProfiles({ctx})
 
   const hasUsable =
     profiles &&
@@ -32,6 +33,7 @@ export const AppleProfilesTable = ({ctx, project, ...boxProps}: Props) => {
     <Box flexDirection="column" marginBottom={1} {...boxProps}>
       <Title>Mobile Provisioning Profiles in your Apple account</Title>
       {isLoading && <Spinner type="dots" />}
+      {error && <ErrorBox error={toAppleHandledError(error)} />}
 
       {profiles && credentialsResponse && (
         <>

@@ -1,6 +1,7 @@
 import type {Profile as AppleProfileType} from '@expo/apple-utils'
 import {UseQueryResult, useQuery} from '@tanstack/react-query'
 import {DateTime} from 'luxon'
+import {useEffect} from 'react'
 
 import {Profile, ProfileType} from '@cli/apple/expo.js'
 import {Project, ProjectCredential, ScalarDict} from '@cli/types'
@@ -60,6 +61,14 @@ export const useAppleProfiles = (props: AppleProfilesQueryProps): UseQueryResult
   const queryResult = useQuery<AppleProfileQueryResponse>({
     queryFn: () => queryAppleProfiles(props),
     queryKey: ['appleProfiles'],
+    // A failed Apple request gives the same answer when sent again
+    retry: false,
   })
+
+  // The status commands render and then return, so the exit code is how a script sees the failure
+  useEffect(() => {
+    if (queryResult.isError) process.exitCode = 1
+  }, [queryResult.isError])
+
   return queryResult
 }

@@ -1,15 +1,15 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-import {Command, Flags, Interfaces} from '@oclif/core'
+import {Command, Errors, Flags, Interfaces} from '@oclif/core'
 import chalk from 'chalk'
 import {SerializedCookieJar} from 'tough-cookie'
 
 import {getSelf, setAuthToken} from '@cli/api/index.js'
 import {Auth} from '@cli/apple/expo.js'
 import {AUTH_ENV_VAR_NAME, DetailsFlags} from '@cli/constants/index.js'
-import {AuthConfig, ProjectConfig} from '@cli/types'
-import {getNoGameError} from '@cli/utils/index.js'
+import {AuthConfig, HandledError, ProjectConfig} from '@cli/types'
+import {getNoGameError, toAppleHandledError} from '@cli/utils/index.js'
 
 export type Flags<T extends typeof Command> = Interfaces.InferredFlags<(typeof BaseCommand)['baseFlags'] & T['flags']>
 export type Args<T extends typeof Command> = Interfaces.InferredArgs<T['args']>
@@ -25,8 +25,9 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   protected flags!: Flags<T>
 
   protected async catch(err: {exitCode?: number} & Error): Promise<any> {
-    // add any custom logic to handle errors from the command
-    // or simply return the parent class error handling
+    // An Apple 403 for the team membership gets a message that says what to do, without the stack
+    const appleError = toAppleHandledError(err)
+    if (appleError instanceof HandledError) return super.catch(new Errors.CLIError(appleError.message))
     return super.catch(err)
   }
 

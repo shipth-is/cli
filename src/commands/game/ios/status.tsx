@@ -32,7 +32,8 @@ export default class GameIosStatus extends BaseGameCommand<typeof GameIosStatus>
           gameId={game.id}
           onComplete={(exitCode) => {
             // TODO: this is a hack because the Apple components need time to load
-            setTimeout(() => process.exit(exitCode), 2000)
+            // A failed Apple query sets process.exitCode, which process.exit(0) would otherwise hide
+            setTimeout(() => process.exit(exitCode || process.exitCode), 2000)
           }}
           platforms={[Platform.IOS]}
         >

@@ -1,6 +1,7 @@
 import {expect} from 'chai'
 
-import {getNoGameError, getS3Error, isRetryable} from '@cli/utils/errors.js'
+import {HandledError} from '@cli/types/index.js'
+import {getNoGameError, getS3Error, isRetryable, toAppleHandledError} from '@cli/utils/errors.js'
 
 // The shape Spaces really answers with, taken from a live failed request
 const s3Error = (code: string, message: string) =>
@@ -132,5 +133,54 @@ describe('getNoGameError (utils/errors)', () => {
 
   it('points at the docs page for setting a game up', () => {
     expect(getNoGameError('shipthis game status').ref).to.equal('https://shipth.is/docs/create-a-project')
+  })
+})
+
+// The shape the Developer Portal really answers with, taken from a live failed request
+const appleError = (status: number, errors: object[]) =>
+  Object.assign(new Error('Apple 403 detected - Access forbidden.'), {response: {data: {errors}, status}})
+
+const membershipDetail =
+  "You currently don't have access to this membership resource. Contact your team's Account Holder, Example User, or an Admin."
+
+describe('toAppleHandledError (utils/errors)', () => {
+  it('explains the 403 Apple sends for the team membership', () => {
+    const error = appleError(403, [
+      {code: 'FORBIDDEN_ERROR', detail: membershipDetail, resultCode: 1200, status: '403'},
+    ])
+    const handled = toAppleHandledError(error)
+
+    expect(handled).to.be.instanceOf(HandledError)
+    expect(handled.message).to.include('https://developer.apple.com/account')
+    expect(handled.message).to.include('agreement')
+    expect(handled.message).to.include(`Apple said: ${membershipDetail}`)
+  })
+
+  it('knows the membership error by its detail when the resultCode is missing', () => {
+    const error = appleError(403, [{code: 'FORBIDDEN_ERROR', detail: membershipDetail, status: '403'}])
+
+    expect(toAppleHandledError(error)).to.be.instanceOf(HandledError)
+  })
+
+  it('explains the 403 App Store Connect sends for the same problem', () => {
+    const error = appleError(403, [
+      {code: 'FORBIDDEN_ERROR', detail: 'The API key in use does not allow this request', status: '403'},
+    ])
+
+    expect(toAppleHandledError(error)).to.be.instanceOf(HandledError)
+  })
+
+  it('leaves other 403s from Apple as they are', () => {
+    const error = appleError(403, [{code: 'FORBIDDEN_ERROR', detail: 'Some other reason', status: '403'}])
+
+    expect(toAppleHandledError(error)).to.equal(error)
+  })
+
+  it('leaves errors that are not a 403 as they are', () => {
+    const error = appleError(500, [{detail: membershipDetail, resultCode: 1200}])
+
+    expect(toAppleHandledError(error)).to.equal(error)
+    const plain = new Error('boom')
+    expect(toAppleHandledError(plain)).to.equal(plain)
   })
 })

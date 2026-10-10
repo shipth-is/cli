@@ -1,11 +1,12 @@
 import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {Table, Title} from '@cli/components/common/index.js'
+import {ErrorBox, Table, Title} from '@cli/components/common/index.js'
+import {toAppleHandledError} from '@cli/utils/index.js'
 import {AppleBundleIdQueryProps, useAppleBundleId} from '@cli/utils/query/index.js'
 
 export const AppleBundleIdDetails = (props: AppleBundleIdQueryProps) => {
-  const {data, isLoading} = useAppleBundleId(props)
+  const {data, error, isLoading} = useAppleBundleId(props)
   const {bundleIdSummary, capabilities, capabilitiesTable, shouldSyncCapabilities} = data || {}
 
   return (
@@ -13,6 +14,7 @@ export const AppleBundleIdDetails = (props: AppleBundleIdQueryProps) => {
       <Box flexDirection="column" marginBottom={1}>
         <Title>BundleId Details (in the Apple Developer Portal)</Title>
         {isLoading && <Spinner type="dots" />}
+        {error && <ErrorBox error={toAppleHandledError(error)} />}
         {bundleIdSummary && <Table data={[bundleIdSummary]} />}
       </Box>
       {capabilities && (

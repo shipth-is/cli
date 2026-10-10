@@ -1,9 +1,15 @@
 import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {NextSteps, Table, Title} from '@cli/components/common/index.js'
+import {ErrorBox, NextSteps, Table, Title} from '@cli/components/common/index.js'
 import {CredentialsType, Platform} from '@cli/types'
-import {canAppleApiKeyBeUsed, getAppleApiKeySummary, useAppleApiKeys, useUserCredentials} from '@cli/utils/index.js'
+import {
+  canAppleApiKeyBeUsed,
+  getAppleApiKeySummary,
+  toAppleHandledError,
+  useAppleApiKeys,
+  useUserCredentials,
+} from '@cli/utils/index.js'
 
 interface Props extends BoxProps {
   ctx: any
@@ -11,7 +17,7 @@ interface Props extends BoxProps {
 
 export const AppleApiKeysTable = ({ctx, ...boxProps}: Props) => {
   const {data: userCredentialsResponse} = useUserCredentials({platform: Platform.IOS, type: CredentialsType.KEY})
-  const {data: keys, isLoading} = useAppleApiKeys({ctx})
+  const {data: keys, error, isLoading} = useAppleApiKeys({ctx})
 
   const hasUsable =
     keys && userCredentialsResponse && keys.some((key) => canAppleApiKeyBeUsed(key, userCredentialsResponse.data))
@@ -21,6 +27,7 @@ export const AppleApiKeysTable = ({ctx, ...boxProps}: Props) => {
       <Box flexDirection="column" marginBottom={1} {...boxProps}>
         <Title>App Store Connect API Keys in your Apple account</Title>
         {isLoading && <Spinner type="dots" />}
+        {error && <ErrorBox error={toAppleHandledError(error)} />}
 
         {keys && userCredentialsResponse && (
           <>
