@@ -58,11 +58,14 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
     return authConfig.appleCookies
   }
 
-  // Returns the current auth config - prefers to use the env var
+  // Returns the current auth config - prefers to use the env var for the ShipThis user.
+  // The Apple cookies always come from the file, as there is no env var for them.
   public async getAuthConfig(): Promise<AuthConfig> {
     const envVarValue = process.env[AUTH_ENV_VAR_NAME]
-    if (!envVarValue) return await this.getAuthConfigFromFile()
+    const fileConfig = await this.getAuthConfigFromFile()
+    if (!envVarValue) return fileConfig
 
+    // Set after reading the file, as reading the file sets the token from the file
     setAuthToken(envVarValue)
     const self = await getSelf()
     const selfWithJwt = {
@@ -70,6 +73,7 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
       jwt: envVarValue,
     }
     return {
+      ...fileConfig,
       shipThisUser: selfWithJwt,
     }
   }
@@ -193,8 +197,9 @@ export abstract class BaseCommand<T extends typeof Command> extends Command {
   }
 
   // Pass undefined to logout
+  // Reads from the file (not getAuthConfig) so that a SHIPTHIS_TOKEN env var is not written to disk
   protected async setAppleCookies(cookies: SerializedCookieJar | undefined): Promise<void> {
-    const authConfig = await this.getAuthConfig()
+    const authConfig = await this.getAuthConfigFromFile()
     await this.setAuthConfig({...authConfig, appleCookies: cookies})
   }
 
