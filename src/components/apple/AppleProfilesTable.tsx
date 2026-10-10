@@ -6,6 +6,7 @@ import {CredentialsType, Platform, Project} from '@cli/types'
 import {
   canAppleProfileBeUsed,
   getAppleProfileSummary,
+  toAppleHandledError,
   useAppleProfiles,
   useProjectCredentials,
 } from '@cli/utils/index.js'
@@ -32,7 +33,7 @@ export const AppleProfilesTable = ({ctx, project, ...boxProps}: Props) => {
     <Box flexDirection="column" marginBottom={1} {...boxProps}>
       <Title>Mobile Provisioning Profiles in your Apple account</Title>
       {isLoading && <Spinner type="dots" />}
-      {error && <ErrorBox error={error} />}
+      {error && <ErrorBox error={toAppleHandledError(error)} />}
 
       {profiles && credentialsResponse && (
         <>

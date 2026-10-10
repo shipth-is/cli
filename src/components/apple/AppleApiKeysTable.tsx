@@ -3,7 +3,13 @@ import Spinner from 'ink-spinner'
 
 import {ErrorBox, NextSteps, Table, Title} from '@cli/components/common/index.js'
 import {CredentialsType, Platform} from '@cli/types'
-import {canAppleApiKeyBeUsed, getAppleApiKeySummary, useAppleApiKeys, useUserCredentials} from '@cli/utils/index.js'
+import {
+  canAppleApiKeyBeUsed,
+  getAppleApiKeySummary,
+  toAppleHandledError,
+  useAppleApiKeys,
+  useUserCredentials,
+} from '@cli/utils/index.js'
 
 interface Props extends BoxProps {
   ctx: any
@@ -21,7 +27,7 @@ export const AppleApiKeysTable = ({ctx, ...boxProps}: Props) => {
       <Box flexDirection="column" marginBottom={1} {...boxProps}>
         <Title>App Store Connect API Keys in your Apple account</Title>
         {isLoading && <Spinner type="dots" />}
-        {error && <ErrorBox error={error} />}
+        {error && <ErrorBox error={toAppleHandledError(error)} />}
 
         {keys && userCredentialsResponse && (
           <>

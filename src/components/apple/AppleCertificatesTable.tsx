@@ -6,6 +6,7 @@ import {CredentialsType, Platform} from '@cli/types'
 import {
   canAppleCertificateBeUsed,
   getAppleCertificateSummary,
+  toAppleHandledError,
   useAppleCertificates,
   useUserCredentials,
 } from '@cli/utils/index.js'
@@ -31,7 +32,7 @@ export const AppleCertificatesTable = ({ctx, ...boxProps}: Props) => {
       <Box flexDirection="column" marginBottom={1} {...boxProps}>
         <Title>Distribution Certificates in your Apple account</Title>
         {isLoading && <Spinner type="dots" />}
-        {error && <ErrorBox error={error} />}
+        {error && <ErrorBox error={toAppleHandledError(error)} />}
 
         {certs && userCredentialsResponse && (
           <>
