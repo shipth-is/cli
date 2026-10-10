@@ -136,7 +136,7 @@ export function toAppleHandledError(error: any) {
   const response = error?.response ?? error?.cause?.response
   if (response?.status !== 403) return error
 
-  const appleErrors: AppleErrorInfo[] = response.data?.errors ?? []
+  const appleErrors: AppleErrorInfo[] = Array.isArray(response.data?.errors) ? response.data.errors : []
   const membershipError = appleErrors.find(
     (e) =>
       e.resultCode === APPLE_MEMBERSHIP_RESULT_CODE ||
