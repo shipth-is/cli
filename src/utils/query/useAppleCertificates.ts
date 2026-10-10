@@ -47,6 +47,8 @@ export const useAppleCertificates = (
   const queryResult = useQuery<AppleCertificateQueryResponse>({
     queryFn: () => queryAppleCertificates(props),
     queryKey: ['appleCertificates'],
+    // A failed Apple request gives the same answer when sent again
+    retry: false,
   })
   return queryResult
 }

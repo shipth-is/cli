@@ -90,6 +90,8 @@ export const useAppleBundleId = (props: AppleBundleIdQueryProps): UseQueryResult
   const queryResult = useQuery<AppleBundleIdQueryResponse>({
     queryFn: () => fetchBundleId(props),
     queryKey: ['appleBundleId', props.iosBundleId],
+    // A failed Apple request gives the same answer when sent again
+    retry: false,
   })
 
   return queryResult

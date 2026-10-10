@@ -40,6 +40,8 @@ export const useAppleApiKeys = (props: AppleApiKeysQueryProps): UseQueryResult<A
   const queryResult = useQuery<AppleApiKeyQueryResponse>({
     queryFn: () => queryAppleApiKeys(props),
     queryKey: ['appleApiKeys'],
+    // A failed Apple request gives the same answer when sent again
+    retry: false,
   })
   return queryResult
 }

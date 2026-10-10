@@ -1,7 +1,7 @@
 import {Box, BoxProps, Text} from 'ink'
 import Spinner from 'ink-spinner'
 
-import {NextSteps, Table, Title} from '@cli/components/common/index.js'
+import {ErrorBox, NextSteps, Table, Title} from '@cli/components/common/index.js'
 import {CredentialsType, Platform} from '@cli/types'
 import {
   canAppleCertificateBeUsed,
@@ -19,7 +19,7 @@ export const AppleCertificatesTable = ({ctx, ...boxProps}: Props) => {
     platform: Platform.IOS,
     type: CredentialsType.CERTIFICATE,
   })
-  const {data: certs, isLoading} = useAppleCertificates({ctx})
+  const {data: certs, error, isLoading} = useAppleCertificates({ctx})
 
   const hasUsable =
     certs &&
@@ -31,6 +31,7 @@ export const AppleCertificatesTable = ({ctx, ...boxProps}: Props) => {
       <Box flexDirection="column" marginBottom={1} {...boxProps}>
         <Title>Distribution Certificates in your Apple account</Title>
         {isLoading && <Spinner type="dots" />}
+        {error && <ErrorBox error={error} />}
 
         {certs && userCredentialsResponse && (
           <>

@@ -60,6 +60,8 @@ export const useAppleProfiles = (props: AppleProfilesQueryProps): UseQueryResult
   const queryResult = useQuery<AppleProfileQueryResponse>({
     queryFn: () => queryAppleProfiles(props),
     queryKey: ['appleProfiles'],
+    // A failed Apple request gives the same answer when sent again
+    retry: false,
   })
   return queryResult
 }

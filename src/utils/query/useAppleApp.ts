@@ -42,6 +42,8 @@ export const useAppleApp = (props: AppleAppQueryProps): UseQueryResult<AppleAppQ
   const queryResult = useQuery<AppleAppQueryResponse>({
     queryFn: () => queryAppleApp(props),
     queryKey: ['appleApp', props.iosBundleId],
+    // A failed Apple request gives the same answer when sent again
+    retry: false,
   })
 
   return queryResult
