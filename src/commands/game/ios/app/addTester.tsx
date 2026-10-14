@@ -78,9 +78,11 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
       const {app} = await queryAppleApp({ctx, iosBundleId: game.details?.iosBundleId})
       if (!app) return this.error('No app found')
 
-      const groups = await BetaGroup.getAsync(ctx, {})
+      // Only this app's groups - BetaGroup.getAsync returns groups from every app in the team
+      const groups = await app.getBetaGroupsAsync({query: {limit: 200}})
 
       const testGroupName = flags.testGroupName
+      const appLabel = `${app.attributes.name} (${app.attributes.bundleId})`
 
       let shipThisGroup = groups.find(
         (group) => group.attributes.name === testGroupName && group.attributes.isInternalGroup,
@@ -94,7 +96,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
           name: testGroupName,
         })
 
-        if (!flags.quiet) this.log(`Created test group ${testGroupName}`)
+        if (!flags.quiet) this.log(`Created test group ${testGroupName} for ${appLabel}`)
       }
 
       await shipThisGroup.createBulkBetaTesterAssignmentsAsync([
@@ -105,7 +107,7 @@ export default class GameIosAppAddTester extends BaseGameCommand<typeof GameIosA
         },
       ])
 
-      if (!flags.quiet) this.log(`Added test user ${email} to group ${testGroupName}`)
+      if (!flags.quiet) this.log(`Added test user ${email} to group ${testGroupName} for ${appLabel}`)
     }
 
     const handleComplete = async () => {}
