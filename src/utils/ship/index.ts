@@ -5,6 +5,7 @@ import {v4 as uuid} from 'uuid'
 import {getProject, startJobsFromUpload} from '@cli/api/index.js'
 import {WIZARD_COMMANDS} from '@cli/constants/commands.js'
 import type {Job, Platform, ShipGameFlags, UploadDetails} from '@cli/types'
+import {getArchivedGameError} from '@cli/utils/errors.js'
 import {detectGodotVersion, getGodotVersionDrift} from '@cli/utils/godot.js'
 import {getCWDGitInfo, getFileHash, getShortUUID} from '@cli/utils/index.js'
 
@@ -66,6 +67,12 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
   if (!gameId) throw new Error('No game found. Use --gameId or run this from a directory with a shipthis.json')
   const projectConfig = command.hasProjectConfig() ? command.getProjectConfigSafe() : null
   const project = await getProject(gameId)
+
+  // The wizards call ship() directly, so check here as well as in `game ship`
+  if (project.archivedAt) {
+    const {message, suggestions} = getArchivedGameError(project.id)
+    throw new Error(`${message}\nPlease run \`${suggestions![0]}\` to unarchive it.`)
+  }
 
   // After getProject(), so a wrong --gameId fails as "not found" first.
   // project.id, not the flag - the flag can be a short ID, project.id is the full UUID.

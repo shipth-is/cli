@@ -66,6 +66,13 @@ export class JobFailedError extends Error {
   }
 }
 
+// The upload routes refuse an archived game with a 409 and this code
+const PROJECT_ARCHIVED_CODE = 'PROJECT_ARCHIVED'
+
+const ARCHIVED_GAME_API_MESSAGE =
+  'This game is archived. You cannot ship an archived game.\n' +
+  'Please run `shipthis game unarchive` to unarchive it.'
+
 // Util to extract API error messages if present
 export function getErrorMessage(error: any) {
   try {
@@ -74,6 +81,9 @@ export function getErrorMessage(error: any) {
     }
 
     const data = error?.response?.data
+    // The API does not know which command or --gameId was used, so this names no game ID
+    if (data?.code === PROJECT_ARCHIVED_CODE) return ARCHIVED_GAME_API_MESSAGE
+
     // Zod errors from the backend are an array
     const apiValidation = Array.isArray(data)
       ? data.map((r) => ('message' in r ? `Error - ${r.message}` : r.toString())).join(' ')
@@ -191,5 +201,17 @@ export function getNoGameError(commandName: string, platform?: string): CommandE
     message: NO_GAME_MESSAGE,
     ref: CREATE_A_PROJECT_DOCS,
     suggestions,
+  }
+}
+
+/**
+ * The answer to "this game is archived" before a ship or a wizard starts. The suggestion has
+ * --gameId, because the game may not be the one in shipthis.json.
+ */
+export function getArchivedGameError(projectId: string): CommandError {
+  const shortId = getShortUUID(projectId)
+  return {
+    message: `Game "${shortId}" is archived. You cannot ship an archived game.`,
+    suggestions: [`shipthis game unarchive --gameId ${shortId}`],
   }
 }

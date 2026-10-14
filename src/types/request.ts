@@ -5,6 +5,11 @@ export interface PageAndSortParams {
   pageSize?: number
 }
 
+// GET /projects - false (the default) hides archived games, true shows only them
+export interface ProjectListParams extends PageAndSortParams {
+  archived?: 'all' | 'false' | 'true'
+}
+
 // Submit this to the /auth/exchange to get a Self back
 export interface ExchangeRequest {
   otp: string

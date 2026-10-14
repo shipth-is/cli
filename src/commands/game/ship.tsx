@@ -6,8 +6,8 @@ import {downloadBuildById, getJob, getProject, getSupportedGodotVersions} from '
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {CommandGame, Ship} from '@cli/components/index.js'
 import {SUPPORTED_GODOT_VERSIONS} from '@cli/constants/index.js'
-import {BuildType, Job} from '@cli/types/api.js'
-import {getErrorMessage} from '@cli/utils/errors.js'
+import {BuildType, Job, Project} from '@cli/types/api.js'
+import {getArchivedGameError, getErrorMessage} from '@cli/utils/errors.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
 import {validateDetailsValues} from '@cli/utils/validation.js'
 
@@ -115,10 +115,17 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
 
     // A wrong --gameId stops here, before the UI. Otherwise GameProvider and ship() both
     // report it.
+    let project: Project
     try {
-      await getProject(gameId)
+      project = await getProject(gameId)
     } catch (error) {
       this.error(getErrorMessage(error), {exit: 1})
+    }
+
+    // The API refuses the upload too, but this stops before the zip
+    if (project.archivedAt) {
+      const {message, suggestions} = getArchivedGameError(project.id)
+      this.error(message, {exit: 1, suggestions})
     }
 
     const MAX_RETRIES = 3

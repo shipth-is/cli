@@ -83,6 +83,12 @@ async function fetchGameStatus(gameId: string, platforms: Platform[]): Promise<F
     if (hasConfigError) exitCode = exitCode || 1
   }
 
+  // An archived game cannot be shipped, so a pipeline should stop here
+  if (game.archivedAt) {
+    steps = [`shipthis game unarchive --gameId ${getShortUUID(game.id)}`]
+    exitCode = 1
+  }
+
   // If specifically checking a platform e.g android and android is not enabled, exit with code 1
   // If checking both and both are not enabled, exit with code 1
   if (platforms.length === 1 && !isEnabled[platforms[0]]) {
@@ -128,6 +134,7 @@ export const GameStatusDetails = ({children, gameId, onComplete, onError, platfo
   gameDetails.Version = game.details?.semanticVersion || '0.0.1'
   gameDetails['Build Number'] = `${game.details?.buildNumber || 1}`
   gameDetails['Created At'] = getShortDate(game.createdAt)
+  gameDetails.Archived = game.archivedAt ? 'Yes' : 'No'
   gameDetails['Game Engine'] = `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.7'}`
 
   return (

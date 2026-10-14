@@ -55,6 +55,8 @@ export interface EditableProject {
 
 // What a project from the API looks like
 export interface Project extends EditableProject {
+  // Null when the game is not archived
+  archivedAt: DateTime | null
   createdAt: DateTime
   id: string
   updatedAt: DateTime

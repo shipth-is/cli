@@ -19,6 +19,7 @@ import {
   Platform,
   Project,
   ProjectDetails,
+  ProjectListParams,
   ProjectPlatformProgress,
   Self,
   TermsResponse,
@@ -70,11 +71,14 @@ export interface CreateProjectProps {
   name: string
 }
 
+// castObjectDates only converts createdAt and updatedAt unless told otherwise
+const PROJECT_DATE_KEYS = ['createdAt', 'updatedAt', 'archivedAt']
+
 export async function createProject(props: CreateProjectProps): Promise<Project> {
   const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.post(`${API_URL}/projects`, props, opt)
-  return castObjectDates<Project>(data)
+  return castObjectDates<Project>(data, PROJECT_DATE_KEYS)
 }
 
 export async function getProject(projectId: string): Promise<Project> {
@@ -83,7 +87,7 @@ export async function getProject(projectId: string): Promise<Project> {
 
   try {
     const {data} = await axios.get(`${API_URL}/projects/${projectId}`, opt)
-    return castObjectDates<Project>(data)
+    return castObjectDates<Project>(data, PROJECT_DATE_KEYS)
   } catch (error: any) {
     throw toHandledError(error, {projectId})
   }
@@ -94,11 +98,11 @@ export interface ListResponse<T> {
   pageCount: number
 }
 
-export async function getProjects(params: PageAndSortParams): Promise<ListResponse<Project>> {
+export async function getProjects(params: ProjectListParams): Promise<ListResponse<Project>> {
   const headers = getAuthedHeaders()
   const opt = {headers, params}
   const {data: rawData} = await axios.get(`${API_URL}/projects`, opt)
-  const data = castArrayObjectDates<Project>(rawData.data)
+  const data = castArrayObjectDates<Project>(rawData.data, PROJECT_DATE_KEYS)
   return {
     data,
     pageCount: rawData.pageCount,
@@ -109,7 +113,22 @@ export async function updateProject(projectId: string, edits: EditableProject): 
   const headers = getAuthedHeaders()
   const opt = {headers}
   const {data} = await axios.put(`${API_URL}/projects/${projectId}`, edits, opt)
-  return castObjectDates<Project>(data)
+  return castObjectDates<Project>(data, PROJECT_DATE_KEYS)
+}
+
+// Archive hides a game from the game list and stops it being shipped. It deletes nothing.
+// Both calls return 200 if the game is already in that state.
+export async function setProjectArchived(projectId: string, isArchived: boolean): Promise<Project> {
+  const headers = getAuthedHeaders()
+  const opt = {headers}
+  const action = isArchived ? 'archive' : 'unarchive'
+
+  try {
+    const {data} = await axios.post(`${API_URL}/projects/${projectId}/${action}`, undefined, opt)
+    return castObjectDates<Project>(data, PROJECT_DATE_KEYS)
+  } catch (error: any) {
+    throw toHandledError(error, {projectId})
+  }
 }
 
 export async function getProjectPlatformProgress(

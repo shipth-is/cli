@@ -1,9 +1,10 @@
 import {Command} from '@oclif/core'
 
-import {getSelf, getTerms} from '@cli/api/index.js'
+import {getProject, getSelf, getTerms} from '@cli/api/index.js'
 import {getRenderedMarkdown} from '@cli/components/index.js'
 import {WEB_URL} from '@cli/constants/config.js'
 import {HandledError} from '@cli/types/index.js'
+import {getArchivedGameError} from '@cli/utils/errors.js'
 
 import {BaseCommand} from './baseCommand.js'
 
@@ -51,5 +52,19 @@ export abstract class BaseAuthenticatedCommand<T extends typeof Command> extends
       })
       console.log(warningMD)
     }
+  }
+
+  // Stops a wizard before its first step if the game in shipthis.json is archived. Without
+  // this the wizard does all the setup and then fails at the build.
+  protected async ensureGameNotArchived(): Promise<void> {
+    const gameId = this.hasProjectConfig() ? this.getProjectConfigSafe().project?.id : undefined
+    if (!gameId) return
+
+    // Any other problem with the game is left to the wizard steps, as before
+    const game = await getProject(gameId).catch(() => null)
+    if (!game?.archivedAt) return
+
+    const {message, suggestions} = getArchivedGameError(game.id)
+    this.error(message, {exit: 1, suggestions})
   }
 }
