@@ -1,7 +1,14 @@
 import {expect} from 'chai'
 
 import {HandledError} from '@cli/types/index.js'
-import {getNoGameError, getS3Error, isRetryable, toAppleHandledError} from '@cli/utils/errors.js'
+import {
+  getArchivedGameError,
+  getErrorMessage,
+  getNoGameError,
+  getS3Error,
+  isRetryable,
+  toAppleHandledError,
+} from '@cli/utils/errors.js'
 
 // The shape Spaces really answers with, taken from a live failed request
 const s3Error = (code: string, message: string) =>
@@ -182,5 +189,36 @@ describe('toAppleHandledError (utils/errors)', () => {
     expect(toAppleHandledError(error)).to.equal(error)
     const plain = new Error('boom')
     expect(toAppleHandledError(plain)).to.equal(plain)
+  })
+})
+
+describe('archived game errors (utils/errors)', () => {
+  const gameId = 'a1b2c3d4-0000-4000-8000-000000000000'
+
+  it('names the game and suggests unarchive with its --gameId', () => {
+    const {message, suggestions} = getArchivedGameError(gameId)
+
+    expect(message).to.equal('Game "a1b2c3d4" is archived. You cannot ship an archived game.')
+    expect(suggestions).to.deep.equal(['shipthis game unarchive --gameId a1b2c3d4'])
+  })
+
+  it('turns the 409 from the upload routes into the unarchive hint', () => {
+    const error = {
+      response: {
+        data: {code: 'PROJECT_ARCHIVED', error: 'This game is archived. Unarchive it to ship it.'},
+        status: 409,
+      },
+    }
+
+    expect(getErrorMessage(error)).to.equal(
+      'This game is archived. You cannot ship an archived game.\n' +
+        'Please run `shipthis game unarchive` to unarchive it.',
+    )
+  })
+
+  it('leaves other API errors as they are', () => {
+    const error = {response: {data: {error: 'Upload not found'}, status: 404}}
+
+    expect(getErrorMessage(error)).to.equal('Upload not found')
   })
 })

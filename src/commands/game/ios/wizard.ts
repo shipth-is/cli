@@ -35,6 +35,8 @@ export default class GameIosWizard extends BaseAuthenticatedCommand<typeof GameI
       )
     }
 
+    await this.ensureGameNotArchived()
+
     const projectConfig = this.getProjectConfigSafe()
     const game = projectConfig.project
 

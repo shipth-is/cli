@@ -135,6 +135,8 @@
     "./dist/commands/apple/certificate/show.js",
     "./dist/commands/apple/login.js",
     "./dist/commands/game/list.js",
+    "./dist/commands/game/archive.js",
+    "./dist/commands/game/unarchive.js",
     "./dist/commands/game/ship.js",
     "./dist/commands/game/ios/app/create.js",
     "./dist/commands/game/ios/app/status.js",

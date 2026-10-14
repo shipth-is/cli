@@ -20,10 +20,12 @@ You will need to be authenticated against ShipThis before you can use these comm
 
 ## Commands
 
+- [game archive](/docs/reference/game/archive)
 - [game create](/docs/reference/game/create)
 - [game details](/docs/reference/game/details)
 - [game export](/docs/reference/game/export)
 - [game list](/docs/reference/game/list)
 - [game ship](/docs/reference/game/ship)
 - [game status](/docs/reference/game/status)
+- [game unarchive](/docs/reference/game/unarchive)
 - [game wizard](/docs/reference/game/wizard)

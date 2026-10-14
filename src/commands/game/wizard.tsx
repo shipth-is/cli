@@ -35,6 +35,8 @@ export default class GameWizard extends BaseAuthenticatedCommand<typeof GameWiza
       return this.config.runCommand('game:ios:wizard')
     }
 
+    await this.ensureGameNotArchived()
+
     // The wizard draws in the alternate screen buffer, which the terminal discards
     // on exit, so anything worth keeping is printed after the UI closes.
     const ui: {ink?: ReturnType<typeof withFullScreen>} = {}
