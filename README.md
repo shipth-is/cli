@@ -133,7 +133,10 @@ Godot 3.6 uses **Mono**, while Godot 4 uses **.NET**. ShipThis supports the foll
 | ----------------- | ----------------------------- | ----------------------------- |
 | **3.6**           | `net472`                      | `net472`                      |
 | **4.3**           | `net7.0`                      | `net8.0`                      |
-| **4.4 and later** | `net8.0`, `net9.0`, `net10.0` | `net8.0`, `net9.0`, `net10.0` |
+| **4.4 - 4.7**     | `net8.0`, `net9.0`, `net10.0` | `net8.0`, `net9.0`, `net10.0` |
+| **4.8**           | `net10.0`                     | `net10.0`                     |
+
+Godot 4.8 needs the .NET 10 SDK. If your project targets an older framework, Godot raises it to `net10.0` when it builds.
 
 Godot writes this into your `.csproj` when you create the project, so you should not normally need to change it. To check, look for the target framework in the `.csproj` at the root of your project, for example:
 
