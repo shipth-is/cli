@@ -22,7 +22,8 @@ function getSteps(platform: Platform, progress: ProjectPlatformProgress | null |
     case Platform.ANDROID: {
       return [
         !progress.hasCredentialsForPlatform && 'shipthis game android keyStore create',
-        !progress.hasApiKeyForPlatform && 'shipthis game android apiKey create',
+        // The wizard also connects Google and invites the service account, which the key needs
+        !progress.hasApiKeyForPlatform && 'shipthis game wizard android',
         isPlatformConfigured(platform, progress) && 'shipthis game ship',
       ].filter(Boolean) as string[]
     }
