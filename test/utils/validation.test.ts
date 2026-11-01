@@ -85,8 +85,8 @@ describe('isVersionList', () => {
 
 describe('isSupportedGodotVersion (with a list from the server)', () => {
   it('accepts a version the server lists but the built-in list does not hold', () => {
-    expect(isSupportedGodotVersion('4.8')).to.equal(false)
-    expect(isSupportedGodotVersion('4.8', ['4.7', '4.8'])).to.equal(true)
+    expect(isSupportedGodotVersion('4.9')).to.equal(false)
+    expect(isSupportedGodotVersion('4.9', ['4.8', '4.9'])).to.equal(true)
   })
 
   it('rejects a version the server dropped', () => {
@@ -202,7 +202,7 @@ describe('validateDetailsValues', () => {
   })
 
   it('falls back to the built-in list when it is given none', () => {
-    const error = validateDetailsValues({gameEngineVersion: '4.8'})
+    const error = validateDetailsValues({gameEngineVersion: '4.9'})
     expect(error?.message).to.contain(SUPPORTED_GODOT_VERSIONS.join(', '))
   })
 
