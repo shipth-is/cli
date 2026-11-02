@@ -3,7 +3,7 @@ import axios, {AxiosError} from 'axios'
 
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL, cacheKeys} from '@cli/constants/index.js'
-import {Build, OffsetPaginatedResponse, PageAndSortParams, Platform, ScalarDict} from '@cli/types'
+import {Build, BuildType, OffsetPaginatedResponse, PageAndSortParams, Platform, ScalarDict} from '@cli/types'
 import {
   castArrayObjectDates,
   getJobDetailsSummary,
@@ -36,14 +36,16 @@ export async function queryBuilds({projectId, ...pageAndSortParams}: BuildsQuery
 // How we typically display a project build
 export function getBuildSummary(build: Build): ScalarDict {
   const ext = build.buildType || (build.platform === Platform.IOS ? 'IPA' : 'AAB');
-  const filename = `game.${ext.toLowerCase()}`;
+  // The API sends an APP build as a zip
+  const isApp = build.buildType === BuildType.APP;
+  const filename = isApp ? 'game.app.zip' : `game.${ext.toLowerCase()}`;
   const details = getJobDetailsSummary(build.jobDetails);
 
   const summary: ScalarDict = {};
   summary.id = getShortUUID(build.id);
   summary.version = details.version;
   summary.gitInfo = details.gitInfo;
-  summary.platform = getPlatformName(build.platform);
+  summary.platform = isApp ? 'iOS Simulator' : getPlatformName(build.platform);
   summary.jobId = getShortUUID(build.jobId);
   summary.createdAt = getShortDateTime(build.createdAt);
   summary.cmd = `shipthis game build download ${getShortUUID(build.id)} ${filename}`;

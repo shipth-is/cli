@@ -2,13 +2,25 @@ import {Flags} from '@oclif/core'
 import chalk from 'chalk'
 import {Instance, render} from 'ink'
 
-import {downloadBuildById, getJob, getProject, getSupportedGodotVersions} from '@cli/api/index.js'
+import {
+  downloadBuildById,
+  getActiveSimulatorSession,
+  getJob,
+  getProject,
+  getSelf,
+  getSupportedGodotVersions,
+} from '@cli/api/index.js'
 import {BaseGameCommand} from '@cli/baseCommands/baseGameCommand.js'
 import {CommandGame, Ship} from '@cli/components/index.js'
 import {SUPPORTED_GODOT_VERSIONS} from '@cli/constants/index.js'
 import {BuildType, Job, Project} from '@cli/types/api.js'
 import {getArchivedGameError, getErrorMessage} from '@cli/utils/errors.js'
 import {isCWDGodotGame} from '@cli/utils/godot.js'
+import {
+  getSimulatorCompleteMessage,
+  getSimulatorFlagError,
+  SIMULATOR_NO_ACCESS_ERROR,
+} from '@cli/utils/ship/simulator.js'
 import {validateDetailsValues} from '@cli/utils/validation.js'
 
 export default class GameShip extends BaseGameCommand<typeof GameShip> {
@@ -56,6 +68,15 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
       description: 'Upload the zip in one request instead of several parts in parallel (slower, and limited to 5GB)',
       required: false,
     }),
+    // Hidden until the simulator is public
+    simulator: Flags.boolean({
+      dependsOn: ['platform'],
+      description:
+        'Build for the iOS simulator (requires --platform ios, implies --useDemoCredentials). ' +
+        'Installs into your open simulator session, or saves the build for one.',
+      hidden: true,
+      required: false,
+    }),
     skipPublish: Flags.boolean({
       default: false,
       description: 'Skip the publish step',
@@ -85,6 +106,17 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
   }
 
   public async run(): Promise<void> {
+    // Before the --downloadAPK check, so --simulator gets its own message
+    const simulatorFlagError = getSimulatorFlagError(this.flags)
+    if (simulatorFlagError) this.error(simulatorFlagError, {exit: 1})
+
+    // The API refuses the job too, but only after the zip and the upload.
+    // An older API does not send the field, so only false stops here.
+    if (this.flags.simulator) {
+      const self = await getSelf()
+      if (self.hasSimulatorAccess === false) this.error(SIMULATOR_NO_ACCESS_ERROR, {exit: 1})
+    }
+
     if (this.flags.downloadAPK && this.flags.platform !== 'android') {
       this.error('--downloadAPK is only for Android builds', {
         exit: 1,
@@ -131,7 +163,29 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     const MAX_RETRIES = 3
     const RETRY_DELAY_MS = 5000
 
-    const handleComplete = async ([originalJob]: Job[]) => {
+    // These handlers run after run() has resolved, so oclif no longer watches for a throw.
+    // this.error() here reaches node as an uncaught exception, and node prints a stack
+    // trace over the message the user needs. The handlers therefore print the message
+    // themselves and set the exit code.
+    // The instance lives in an object so the handlers can reach what render() returns below.
+    const ui: {instance?: Instance} = {}
+
+    // The backend sends the job to the open session for this game, if there is one.
+    // A failed lookup must not turn a good build into an error.
+    const handleSimulatorComplete = async ([originalJob]: Job[]) => {
+      const session = await getActiveSimulatorSession().catch(() => null)
+      // The full UUID from the job - gameId can be a short --gameId.
+      const message = getSimulatorCompleteMessage(session, originalJob.project.id)
+      // Printed after ink has torn down: its final frame is not a reliable place for it.
+      ui.instance?.unmount()
+      process.stdout.write(`\n${message}\n`)
+      process.exit(0)
+    }
+
+    const handleComplete = async (jobs: Job[]) => {
+      if (this.flags.simulator) return handleSimulatorComplete(jobs)
+
+      const [originalJob] = jobs
       if (!this.flags.download && !this.flags.downloadAPK) return process.exit(0)
 
       // The full UUID from the job - gameId can be a short --gameId.
@@ -160,13 +214,6 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
 
       process.exit(0)
     }
-
-    // These two run after run() has resolved, so oclif no longer watches for a throw.
-    // this.error() here reaches node as an uncaught exception, and node prints a stack
-    // trace over the message the user needs. Both handlers therefore print the message
-    // themselves and set the exit code.
-    // The instance lives in an object so handleError can reach what render() returns below.
-    const ui: {instance?: Instance} = {}
 
     // The Ship component has already shown the summary and the job logs
     const handleJobsFailed = () => {

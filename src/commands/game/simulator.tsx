@@ -76,18 +76,24 @@ export default class GameSimulator extends BaseGameCommand<typeof GameSimulator>
 
   static override examples = [
     '<%= config.bin %> <%= command.id %> ios',
-    '<%= config.bin %> <%= command.id %> android',
-    '<%= config.bin %> <%= command.id %> android --gameId 0c179fc4',
+    '<%= config.bin %> <%= command.id %> ios --gameId 0c179fc4',
     '<%= config.bin %> <%= command.id %> ios --maxDuration 1800',
   ]
 
   public async run(): Promise<void> {
+    const {platform} = this.args
+
+    // The backend starts an Android session but refuses an Android simulator
+    // build, so stop before the session starts.
+    if (platform === 'android') {
+      this.error('The simulator is iOS only for now', {exit: 1, suggestions: ['Run `shipthis game simulator ios`']})
+    }
+
     const gameId = this.getGameId()
     if (!gameId) {
       this.error('No game found - please run `shipthis game wizard` or specify a game ID with --gameId', {exit: 1})
     }
 
-    const {platform} = this.args
     const {maxDuration} = this.flags
 
     const session = await startSimulator(gameId, `${platform}`.toUpperCase() as Platform, maxDuration).catch((e) =>

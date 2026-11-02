@@ -17,6 +17,8 @@ export interface Self {
   createdAt: DateTime
   details: UserDetails
   email: string
+  // Sent by the API since the simulator. Missing from an older API.
+  hasSimulatorAccess?: boolean
   id: string
   updatedAt: DateTime
 }
@@ -212,6 +214,8 @@ export interface ProjectCredential extends UserCredential {
 export enum BuildType {
   AAB = 'AAB',
   APK = 'APK',
+  // iOS simulator build, downloaded as a zip
+  APP = 'APP',
   IPA = 'IPA',
 }
 

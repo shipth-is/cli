@@ -172,8 +172,9 @@ export const Ship = ({onComplete, onError, onFailure, shipFlags}: Props): JSX.El
               filename="ship-success.md.ejs"
               templateVars={{
                 gameBuildsUrl: `${WEB_URL}games/${getShortUUID(gameId)}/builds`,
-                wasPublished: !(flags?.skipPublish || flags?.useDemoCredentials),
-                usedDemoCredentials: !!flags?.useDemoCredentials,
+                // --simulator implies demo credentials
+                wasPublished: !(flags?.skipPublish || flags?.useDemoCredentials || flags?.simulator),
+                usedDemoCredentials: !!(flags?.useDemoCredentials || flags?.simulator),
               }}
             />
           )}
