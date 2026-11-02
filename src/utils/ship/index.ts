@@ -11,6 +11,7 @@ import {getCWDGitInfo, getFileHash, getShortUUID} from '@cli/utils/index.js'
 
 import {getFilesToShip} from './glob.js'
 import {MULTIPART_MIN_SIZE, multipartUpload} from './multipartUpload.js'
+import {getShipMode} from './simulator.js'
 import {checkStoreKeys} from './storeKey.js'
 import type {ShipOptions} from './types.js'
 import {MAX_SINGLE_UPLOAD_SIZE, type ProgressData, singleUpload} from './upload.js'
@@ -51,7 +52,6 @@ const getTooLargeForSingleUploadError = (size: number) =>
 export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Promise<Job[]> {
   const commandFlags = command.getFlags() as ShipGameFlags
   const finalFlags = shipFlags || commandFlags
-  const {useDemoCredentials} = finalFlags
 
   const verbose = !!finalFlags.verbose || finalFlags.dryRun
 
@@ -93,8 +93,8 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
     if (drift === 'minor') warnLog(getMinorDriftWarning(detected!, configured!))
   }
 
-  const projectUsesDemoCredentials = Boolean(project.details?.useDemoCredentials)
-  const isUsingDemoCredentials = useDemoCredentials ?? projectUsesDemoCredentials ?? false
+  // --simulator forces demo credentials, so it never publishes
+  const {isPublishing, isUsingDemoCredentials} = getShipMode(finalFlags, project)
 
   const hasConfiguredIos = Boolean(project.details?.iosBundleId)
   const hasConfiguredAndroid = Boolean(project.details?.androidPackageName)
@@ -106,7 +106,6 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
   const platforms = await getPlatforms(project, finalFlags, vlog)
 
   // Without a store key the job builds, then fails at the publish step - so check before the zip
-  const isPublishing = !finalFlags.skipPublish && !isUsingDemoCredentials
   const platformsToShip = isPublishing
     ? await checkStoreKeys(project.id, platforms, Boolean(finalFlags.dryRun), warnLog)
     : platforms
