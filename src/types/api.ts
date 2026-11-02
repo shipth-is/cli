@@ -9,14 +9,16 @@ export type ScalarDict = {
 export interface UserDetails {
   hasAcceptedTerms?: boolean
   source?: string
-  termsAgreementVersionId?: AgreementVersion['id'];
-  privacyAgreementVersionId?: AgreementVersion['id'];
+  termsAgreementVersionId?: AgreementVersion['id']
+  privacyAgreementVersionId?: AgreementVersion['id']
 }
 
 export interface Self {
   createdAt: DateTime
   details: UserDetails
   email: string
+  // Sent by the API since the simulator. Missing from an older API.
+  hasSimulatorAccess?: boolean
   id: string
   updatedAt: DateTime
 }
@@ -212,6 +214,8 @@ export interface ProjectCredential extends UserCredential {
 export enum BuildType {
   AAB = 'AAB',
   APK = 'APK',
+  // iOS simulator build, downloaded as a zip
+  APP = 'APP',
   IPA = 'IPA',
 }
 
@@ -303,4 +307,29 @@ export interface AgreementVersion {
 export interface TermsResponse {
   changes: AgreementVersion[]
   current: AgreementVersion[]
+}
+
+export enum SimulatorStatus {
+  BOOTING = 'BOOTING',
+  COMPLETED = 'COMPLETED',
+  FAILED = 'FAILED',
+  PENDING = 'PENDING',
+  RUNNING = 'RUNNING',
+}
+
+export interface SimulatorSession {
+  id: string
+  userId: string
+  projectId: string | null
+  platform: Platform
+  status: SimulatorStatus
+  // Real runtime bounds - startedAt is stamped when the session goes RUNNING,
+  // endedAt when it COMPLETED/FAILED. Time spent queueing is excluded, so the
+  // session clock starts at startedAt, not when the command was run.
+  startedAt?: DateTime | null
+  endedAt?: DateTime | null
+  // Max wall-clock duration this session is allowed to run, in seconds.
+  maxDurationSeconds?: number | null
+  createdAt: DateTime
+  updatedAt: DateTime
 }

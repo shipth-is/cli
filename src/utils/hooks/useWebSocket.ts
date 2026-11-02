@@ -1,53 +1,68 @@
-import {useEffect} from 'react'
-import {io} from 'socket.io-client'
+import {useEffect, useRef} from 'react'
 
-import {getAuthToken} from '@cli/api/index.js'
-import {WS_URL} from '@cli/constants/index.js'
+import {acquire, release, subscribe} from '@cli/utils/socket.js'
 
 export interface WebSocketListener {
   // What we run
   eventHandler: (pattern: string, data: any) => Promise<void>
   // What we listen to
   getPattern: () => string | string[]
+  // Some meta-data
+  id?: string
+}
+
+const patternsOf = (listener: WebSocketListener): string[] => {
+  const pattern = listener.getPattern()
+  return Array.isArray(pattern) ? pattern : [pattern]
 }
 
 export function useWebSocket(listeners: WebSocketListener[] = []) {
+  // Debug toggle. Never let this become console.* to stdout: ink intercepts
+  // console output and re-renders the frame, so chatty logging flickers the TUI.
   // eslint-disable-next-line no-constant-condition -- intentional: toggle for debugging
-  const log = false ? console.debug : () => {}
+  const log = false ? console.debug : (..._args: any[]) => {}
+
+  // Always point at the latest listeners so the (stable) socket handlers below
+  // dispatch to the current eventHandler. Callers rebuild the listener objects
+  // every render, but the handlers only close over stable things (state
+  // setters, queryClient), so we never need to re-subscribe just for those.
+  const listenersRef = useRef(listeners)
+  useEffect(() => {
+    listenersRef.current = listeners
+  })
+
+  // Re-subscribe only when the *set of patterns* changes. Depending on the
+  // listeners array identity (it's rebuilt every render) would re-run this on
+  // every render — under ink that means every spinner frame and keystroke.
+  // Deriving the key from getPattern() also means going from [] (not watching)
+  // to [patterns] (watching) flips the key and correctly forces a subscription.
+  const patternKey = listeners.flatMap(patternsOf).sort().join('|')
 
   useEffect(() => {
-    if (listeners.length === 0) {
+    if (!patternKey) {
       log('Not subscribing to WebSocket - no listeners')
       return
     }
 
-    const token = getAuthToken()
-    const socket = io(WS_URL, {
-      auth: {token},
-      forceNew: true,
+    // Share one connection across every mounted consumer (see utils/socket.ts).
+    acquire()
+
+    const uniquePatterns = new Set(patternKey.split('|'))
+    const unsubscribes = [...uniquePatterns].map((pattern) => {
+      log('Subscribing to', pattern)
+      return subscribe(pattern, (data: any) => {
+        for (const listener of listenersRef.current) {
+          if (patternsOf(listener).includes(pattern)) {
+            listener.eventHandler(pattern, data)
+          }
+        }
+      })
     })
 
-    socket.on('connect', () => log('Connected to WebSocket'))
-
-    for (const listener of listeners) {
-      const pattern = listener.getPattern()
-      const bindSocket = (pattern: string) => {
-        const boundListener = listener.eventHandler.bind(listener, pattern)
-        log('Subscribing to', pattern)
-        socket.on(pattern, boundListener)
-      }
-
-      if (Array.isArray(pattern)) {
-        pattern.forEach(bindSocket)
-        continue
-      }
-
-      bindSocket(pattern)
-    }
-
     return () => {
-      log('Disconnecting from WebSocket')
-      socket.disconnect()
+      log('Unsubscribing from WebSocket')
+      for (const unsubscribe of unsubscribes) unsubscribe()
+      release()
     }
-  }, [])
+  }, [patternKey])
 }
