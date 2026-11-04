@@ -18,12 +18,18 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
     '<%= config.bin %> <%= command.id %> --gameId 0c179fc4',
     '<%= config.bin %> <%= command.id %> --buildNumber 5 --semanticVersion 1.2.3',
     '<%= config.bin %> <%= command.id %> --gameEngine godot --gameEngineVersion 4.2 --force',
+    '<%= config.bin %> <%= command.id %> --useEncryption true',
   ]
 
   static override flags = {
     ...BaseGameCommand.flags,
     force: Flags.boolean({char: 'f', description: 'Force the command to run'}),
     ...DetailsFlags,
+    // Not in DetailsFlags - game create spreads those into the new project as strings
+    useEncryption: Flags.string({
+      description: 'Encrypt the PCK in builds of this game (Godot 4.5+, iOS and Android)',
+      options: ['true', 'false'],
+    }),
   }
 
   public async run(): Promise<void> {
@@ -41,6 +47,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
       name,
       semanticVersion,
       useDemoCredentials,
+      useEncryption,
     } = valueFlags
 
     // Only ask the server which versions it builds when there is a version to check.
@@ -75,6 +82,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
         ...(liquidGlassIconPath !== undefined && {liquidGlassIconPath}),
         ...(semanticVersion && {semanticVersion}),
         ...(useDemoCredentials !== undefined && {useDemoCredentials: useDemoCredentials === 'true'}),
+        ...(useEncryption !== undefined && {useEncryption: useEncryption === 'true'}),
       },
       name: name || game.name,
     }
@@ -97,6 +105,7 @@ export default class GameDetails extends BaseGameCommand<typeof GameDetails> {
             'Semantic Version': game.details?.semanticVersion || '0.0.1',
             'iOS Bundle ID': game.details?.iosBundleId || 'N/A',
             'Using Demo Credentials': game.details?.useDemoCredentials ? 'Yes' : 'No',
+            Encryption: game.details?.useEncryption ? 'On' : 'Off',
             'Liquid Glass Icon Path': game.details?.liquidGlassIconPath || 'N/A',
           }}
           title="Game Details"
