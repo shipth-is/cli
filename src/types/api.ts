@@ -45,6 +45,7 @@ export interface ProjectDetails {
   liquidGlassIconPath?: string
   semanticVersion?: string
   useDemoCredentials?: boolean
+  useEncryption?: boolean
 }
 
 // What the POST/PUT endpoints accept for creating/updating a project
@@ -173,6 +174,7 @@ export interface OffsetPaginatedResponse<T> {
 
 export enum CredentialsType {
   CERTIFICATE = 'CERTIFICATE',
+  ENCRYPTION_KEY = 'ENCRYPTION_KEY',
   KEY = 'KEY',
 }
 

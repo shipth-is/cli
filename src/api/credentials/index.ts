@@ -3,7 +3,7 @@ import axios from 'axios'
 import {getAuthedHeaders} from '@cli/api/index.js'
 import {API_URL} from '@cli/constants/index.js'
 import {ProjectCredential, UserCredential} from '@cli/types'
-import {castArrayObjectDates} from '@cli/utils/dates.js'
+import {castArrayObjectDates, castObjectDates} from '@cli/utils/dates.js'
 
 export * from './export.js'
 export * from './import.js'
@@ -46,6 +46,17 @@ export async function getProjectCredentials(projectId: string, pageSize = 100): 
     url: `${API_URL}/projects/${projectId}/credentials?pageSize=${pageSize}`,
   })
   return castArrayObjectDates<ProjectCredential>(data.data)
+}
+
+// The active key, or null. The url on it is a signed link to the key - never print it.
+export async function getEncryptionKey(projectId: string): Promise<null | ProjectCredential> {
+  const headers = getAuthedHeaders()
+  const {data} = await axios({
+    headers,
+    method: 'get',
+    url: `${API_URL}/projects/${projectId}/credentials/encryption`,
+  })
+  return data.credential ? castObjectDates<ProjectCredential>(data.credential) : null
 }
 
 export async function deleteProjectCredential(projectId: string, options: DeleteCredentialOptions): Promise<void> {
