@@ -156,6 +156,8 @@
     "./dist/commands/game/job/status.js",
     "./dist/commands/game/status.js",
     "./dist/commands/game/details.js",
+    "./dist/commands/game/encryption/export.js",
+    "./dist/commands/game/encryption/status.js",
     "./dist/commands/game/build/list.js",
     "./dist/commands/game/build/download.js",
     "./dist/commands/game/android/keyStore/export.js",
@@ -226,6 +228,9 @@
       },
       "game:build": {
         "description": "Commands related to builds for a specific game"
+      },
+      "game:encryption": {
+        "description": "Commands related to the encryption key for a specific game"
       },
       "game:ios": {
         "description": "Commands related to the iOS platform for a specific game"
