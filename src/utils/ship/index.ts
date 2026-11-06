@@ -196,6 +196,8 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
     skipPublish: finalFlags.skipPublish,
     verbose: finalFlags.verbose,
     useDemoCredentials: isUsingDemoCredentials,
+    // Undefined without the flag, so it is not sent and the backend uses the game's setting
+    useEncryption: finalFlags.useEncryption,
     gameEngineVersion: finalFlags.gameEngineVersion,
   }
 

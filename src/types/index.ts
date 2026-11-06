@@ -40,6 +40,7 @@ export type ShipGameFlags = {
   skipPublish?: boolean
   verbose?: boolean
   useDemoCredentials?: boolean
+  useEncryption?: boolean
   gameEngineVersion?: string
   dryRun?: boolean
 }

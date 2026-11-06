@@ -70,6 +70,18 @@ shipthis game ship --platform ios --follow --useDemoCredentials --download game.
 shipthis game ship --platform android --follow --useDemoCredentials --downloadAPK game.apk
 ```
 
+### Building with encryption
+
+The [game setting](/docs/reference/game/encryption) controls if a build is encrypted. To change it for one build, use `--useEncryption` or `--no-useEncryption`. The game setting does not change.
+
+```bash
+# To encrypt this build only
+shipthis game ship --platform android --useEncryption
+
+# To not encrypt this build, on a game with encryption on
+shipthis game ship --platform android --no-useEncryption
+```
+
 ### Uploading a large game
 
 Before your build starts, your game files are zipped up and uploaded. Which files end up in that zip is controlled by the `globs` in your **shipthis.json** - see [Controlling uploaded files](/docs/guides/controlling-uploaded-files).
@@ -114,7 +126,7 @@ If **shipthis.json** names a different game, the CLI shows a warning. The `globs
 ```help
 USAGE
   $ shipthis game ship [-g <value>] [--download <value> --platform android|ios] [--downloadAPK <value> ]
-    [--follow ] [--skipMultipart] [--skipPublish] [--verbose] [--useDemoCredentials ]
+    [--follow ] [--skipMultipart] [--skipPublish] [--verbose] [--useDemoCredentials ] [--useEncryption]
     [--gameEngineVersion <value>] [--dryRun]
 
 FLAGS
@@ -132,6 +144,7 @@ FLAGS
                                    limited to 5GB)
       --skipPublish                Skip the publish step
       --useDemoCredentials         Use demo credentials for this build (requires --platform, implies --skipPublish)
+      --[no-]useEncryption         Turn encryption on or off for this build, overriding the game setting (Godot 4.5+)
       --verbose                    Enable verbose logging
 
 DESCRIPTION
@@ -157,4 +170,8 @@ EXAMPLES
   $ shipthis game ship --platform android --dryRun
 
   $ shipthis game ship --gameId 0c179fc4 --platform android
+
+  $ shipthis game ship --platform android --useEncryption
+
+  $ shipthis game ship --platform android --no-useEncryption
 ```

@@ -189,6 +189,7 @@ type StartJobsOptions = {
   skipPublish?: boolean
   verbose?: boolean
   useDemoCredentials?: boolean
+  useEncryption?: boolean
   gameEngineVersion?: string
 } & UploadDetails
 

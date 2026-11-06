@@ -30,6 +30,21 @@ export async function exportCredential({credentialId, projectId, zipPath}: Expor
   return await downloadFile(downloadUrl, zipPath)
 }
 
+// The url is a signed link to {serialNumber, scriptEncryptionKey}. It needs no auth headers.
+// A failed axios request holds the url in its config, so it must not leave this function.
+export async function downloadEncryptionKey(url: string): Promise<string> {
+  let key: unknown
+  try {
+    const {data} = await axios.get(url)
+    key = data?.scriptEncryptionKey
+  } catch {
+    throw new Error('Could not download the encryption key. Please try again.')
+  }
+
+  if (typeof key !== 'string' || !key) throw new Error('The encryption key download had no key in it.')
+  return key
+}
+
 async function downloadFile(url: string, destination: string): Promise<void> {
   const response = await axios({
     method: 'GET',

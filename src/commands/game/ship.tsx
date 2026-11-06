@@ -27,6 +27,8 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     '<%= config.bin %> <%= command.id %> --platform android --gameEngineVersion 4.5.1 --skipPublish',
     '<%= config.bin %> <%= command.id %> --platform android --dryRun',
     '<%= config.bin %> <%= command.id %> --gameId 0c179fc4 --platform android',
+    '<%= config.bin %> <%= command.id %> --platform android --useEncryption',
+    '<%= config.bin %> <%= command.id %> --platform android --no-useEncryption',
   ]
 
   static override flags = {
@@ -69,6 +71,12 @@ export default class GameShip extends BaseGameCommand<typeof GameShip> {
     useDemoCredentials: Flags.boolean({
       dependsOn: ['platform'],
       description: 'Use demo credentials for this build (requires --platform, implies --skipPublish)',
+      required: false,
+    }),
+    // No default - without the flag the backend uses the game's setting
+    useEncryption: Flags.boolean({
+      allowNo: true,
+      description: 'Turn encryption on or off for this build, overriding the game setting (Godot 4.5+)',
       required: false,
     }),
     gameEngineVersion: Flags.string({
