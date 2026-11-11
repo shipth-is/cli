@@ -21,7 +21,7 @@
 ### Requirements
 
 - A Godot 3.6 or 4.x game
-- [Node.js](https://nodejs.org/en/download/) version 18 or above
+- [Node.js](https://nodejs.org/en/download/) version 20.5.0 or above
 - **To publish an Android game** - a [Play Console Developer account](https://play.google.com/apps/publish/signup) (not required for building an APK/AAB)
 - **To publish an iOS game** - an [Apple Developer account](https://developer.apple.com) (not required for building an IPA)
 
