@@ -1,4 +1,4 @@
-import {Platform, Project, ShipGameFlags} from '@cli/types'
+import {Platform, Project, ProjectCredential, ShipGameFlags} from '@cli/types'
 import {queryProjectCredentials} from '@cli/utils/index.js'
 
 import type {LogFunction} from './types.d.js'
@@ -17,6 +17,12 @@ export function formatProgressLog(
   const speed = data.speedMBps.toFixed(2)
   const totalPrefix = isEstimated ? '~' : ''
   return `${label}: ${progressPercent}% (${transferredMB}MB / ${totalPrefix}${totalMB}MB) - ${elapsed}s - ${speed}MB/s`
+}
+
+// The encryption key has platform ALL, which is not a platform we can ship
+export const getActiveCredentialPlatforms = (credentials: ProjectCredential[]): Platform[] => {
+  const platforms = credentials.filter((cred) => cred.isActive).map((cred) => cred.platform)
+  return [...new Set(platforms)].filter((platform) => [Platform.ANDROID, Platform.IOS].includes(platform))
 }
 
 // Tells us which platforms are being shipped (used to select the files)
@@ -39,7 +45,7 @@ export async function getPlatforms(project: Project, flags: ShipGameFlags, log: 
     pageSize: 100,
   })
   log(`Found ${response.data.length} project credentials, filtering to active ones...`)
-  const credentialPlatforms = [...new Set(response.data.filter((cred) => cred.isActive).map((cred) => cred.platform))]
+  const credentialPlatforms = getActiveCredentialPlatforms(response.data)
   log(`Active platforms: ${credentialPlatforms.join(', ')}`)
   return credentialPlatforms
 }

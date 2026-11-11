@@ -17,6 +17,8 @@ The following fields can only be changed if you have the `--force` flag set:
 - **iosBundleId** - iOS Bundle ID
 - **androidPackageName** - Android Package Name (used to sign and publish your Android builds)
 
+To turn on encryption for the game, use `--useEncryption true`. This does not need `--force`. See [`game encryption`](/docs/reference/game/encryption).
+
 :::tip
 After changing these values, you will need to trigger a new build of your game with [`shipthis game ship`](/docs/reference/game/ship)
 :::
@@ -51,7 +53,8 @@ The **gcpProjectId** and **gcpServiceAccountId** fields are not checked here.
 ```help
 USAGE
   $ shipthis game details [-g <value>] [-f] [-a <value>] [-b <value>] [-e godot] [-v <value>] [--gcpProjectId
-    <value>] [-c <value>] [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d true|false]
+    <value>] [-c <value>] [-i <value>] [-l <value>] [-n <value>] [-s <value>] [-d true|false] [--useEncryption
+    true|false]
 
 FLAGS
   -a, --androidPackageName=<value>   Set the Android package name
@@ -69,6 +72,8 @@ FLAGS
   -s, --semanticVersion=<value>      Set the semantic version
   -v, --gameEngineVersion=<value>    Set the game engine version
       --gcpProjectId=<value>         Set the GCP project ID
+      --useEncryption=<option>       Encrypt the PCK in builds of this game (Godot 4.5+, iOS and Android)
+                                     <options: true|false>
 
 DESCRIPTION
   Shows and sets the details of a game.
@@ -81,4 +86,6 @@ EXAMPLES
   $ shipthis game details --buildNumber 5 --semanticVersion 1.2.3
 
   $ shipthis game details --gameEngine godot --gameEngineVersion 4.2 --force
+
+  $ shipthis game details --useEncryption true
 ```
