@@ -82,6 +82,8 @@ shipthis game ship --platform android --useEncryption
 shipthis game ship --platform android --no-useEncryption
 ```
 
+An encrypted build has the line `Encryption: on (key <fingerprint>), checks passed` in its job log. The fingerprint is the same as in `shipthis game encryption status`.
+
 ### Uploading a large game
 
 Before your build starts, your game files are zipped up and uploaded. Which files end up in that zip is controlled by the `globs` in your **shipthis.json** - see [Controlling uploaded files](/docs/guides/controlling-uploaded-files).
