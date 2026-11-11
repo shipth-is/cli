@@ -11,6 +11,7 @@ import {getCWDGitInfo, getFileHash, getShortUUID} from '@cli/utils/index.js'
 
 import {getFilesToShip} from './glob.js'
 import {MULTIPART_MIN_SIZE, multipartUpload} from './multipartUpload.js'
+import {checkStoreKeys} from './storeKey.js'
 import type {ShipOptions} from './types.js'
 import {MAX_SINGLE_UPLOAD_SIZE, type ProgressData, singleUpload} from './upload.js'
 import {formatProgressLog, getPlatforms} from './utils.js'
@@ -103,7 +104,14 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
   }
 
   const platforms = await getPlatforms(project, finalFlags, vlog)
-  const files = await getFilesToShip(projectConfig, platforms, vlog, warnLog)
+
+  // Without a store key the job builds, then fails at the publish step - so check before the zip
+  const isPublishing = !finalFlags.skipPublish && !isUsingDemoCredentials
+  const platformsToShip = isPublishing
+    ? await checkStoreKeys(project.id, platforms, Boolean(finalFlags.dryRun), warnLog)
+    : platforms
+
+  const files = await getFilesToShip(projectConfig, platformsToShip, vlog, warnLog)
 
   if (finalFlags.dryRun) {
     log(`Dry run - would ship ${files.length} files:`)
@@ -181,7 +189,10 @@ export async function ship({command, log, warnLog, shipFlags}: ShipOptions): Pro
 
   const startJobsOptions = {
     ...uploadDetails,
-    platform: finalFlags.platform?.toUpperCase() as Platform,
+    // Without a platform the backend starts a job for each platform with credentials,
+    // so name the one that ships when the store key check dropped the other.
+    platform:
+      platformsToShip.length < platforms.length ? platformsToShip[0] : (finalFlags.platform?.toUpperCase() as Platform),
     skipPublish: finalFlags.skipPublish,
     verbose: finalFlags.verbose,
     useDemoCredentials: isUsingDemoCredentials,
