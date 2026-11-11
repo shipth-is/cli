@@ -6,11 +6,15 @@ Commands related to the encryption key for a specific game
 
 ShipThis can encrypt the PCK of your game. It makes a key for the game and handles the export templates, so you do not need to build your own.
 
-## Turn on encryption
+## Turn encryption on or off
 
 ```bash
+# Turn on
 shipthis game details --useEncryption true
 shipthis game encryption status
+
+# Turn off
+shipthis game details --useEncryption false
 ```
 
 The key is made when you turn on encryption, and builds of the game are then encrypted. If you turn encryption off, the game keeps its key.
@@ -34,10 +38,16 @@ shipthis game encryption export key.txt
 ```
 
 :::warning
-Encryption stops casual extraction only. The key ships inside your game, so tools can pull it out.
+Encryption stops casual extraction only. The key ships inside your game, so tools can pull it out. This is the same protection as [Godot's own PCK encryption](https://docs.godotengine.org/en/latest/engine_details/development/compiling/compiling_with_script_encryption_key.html).
 
 On iOS, C# code is not in the PCK, so encryption does not cover it.
 :::
+
+All files in the PCK are encrypted, and so is its file list. Only the PCK is encrypted: save files and other files your game writes to `user://` are not changed.
+
+## App Store export compliance
+
+PCK encryption is copy protection for your game files, which is exempt under US export rules. So `ITSAppUsesNonExemptEncryption` stays `false` in your iOS build, and App Store Connect does not ask about encryption. If your game adds its own encryption for other things, check your answer to Apple's export compliance question.
 
 ## Commands
 
