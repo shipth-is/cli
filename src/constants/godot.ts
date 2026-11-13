@@ -5,4 +5,4 @@
 // This is the fallback. The CLI asks GET /godot/versions for the live list, and only uses
 // this one when that call cannot answer. A stale entry here costs nothing until then.
 // https://shipth.is/docs/guides/godot-versioning
-export const SUPPORTED_GODOT_VERSIONS = ['3.6', '4.0', '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7']
+export const SUPPORTED_GODOT_VERSIONS = ['3.6', '4.0', '4.1', '4.2', '4.3', '4.4', '4.5', '4.6', '4.7', '4.8']

@@ -136,7 +136,7 @@ export const GameStatusDetails = ({children, gameId, onComplete, onError, platfo
   gameDetails['Build Number'] = `${game.details?.buildNumber || 1}`
   gameDetails['Created At'] = getShortDate(game.createdAt)
   gameDetails.Archived = game.archivedAt ? 'Yes' : 'No'
-  gameDetails['Game Engine'] = `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.7'}`
+  gameDetails['Game Engine'] = `${game.details?.gameEngine || 'godot'} ${game.details?.gameEngineVersion || '4.8'}`
 
   return (
     <Box flexDirection="column">
