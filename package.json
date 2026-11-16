@@ -74,7 +74,7 @@
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-unicorn": "^56.0.1",
-    "mocha": "^11",
+    "mocha": "^12.0.3",
     "oclif": "^4.22.96",
     "pkgroll": "^2.4.2",
     "shx": "^0.3.3",
@@ -278,6 +278,9 @@
     "http-cache-semantics": "^4.3.0",
     "diff": "^8.0.3",
     "fast-xml-parser": "^5.12.0",
-    "minimatch@10": "^11.0.1"
+    "minimatch@10": "^11.0.1",
+    "mocha": {
+      "glob": "^14.0.2"
+    }
   }
 }
