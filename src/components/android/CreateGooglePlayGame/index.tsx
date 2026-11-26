@@ -4,10 +4,10 @@ import open from 'open'
 import {useContext, useEffect, useRef} from 'react'
 
 import {getShortAuthRequiredUrl} from '@cli/api/index.js'
+import {isInitialAndroidBuild} from '@cli/components/android/AndroidWizard/utils.js'
 import {GameContext, Markdown} from '@cli/components/index.js'
 import {StepProps} from '@cli/components/index.js'
 import {WEB_URL, cacheKeys} from '@cli/constants/index.js'
-import {BuildType, Platform} from '@cli/types/api.js'
 import {
   KeyTestError,
   KeyTestResult,
@@ -78,9 +78,7 @@ const Create = ({gameId, onComplete, onError, ...boxProps}: Props): JSX.Element 
     }
   })
 
-  const initialBuild = builds?.data.find(
-    (build) => build.platform === Platform.ANDROID && build.buildType === BuildType.AAB,
-  )
+  const initialBuild = builds?.data.find(isInitialAndroidBuild)
 
   const downloadCmd = initialBuild ? `${getBuildSummary(initialBuild).cmd}` : 'Initial AAB build not found!'
 

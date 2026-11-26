@@ -1,6 +1,6 @@
 import {getGoogleStatus, getProject, getProjectCredentials} from '@cli/api/index.js'
 import {BaseCommand} from '@cli/baseCommands/baseCommand.js'
-import {BuildType, CredentialsType, Platform} from '@cli/types/index.js'
+import {Build, BuildType, CredentialsType, Job, JobStatus, Platform} from '@cli/types/index.js'
 import {KeyTestError, KeyTestStatus, fetchKeyTestResult, queryBuilds} from '@cli/utils/index.js'
 
 export enum StepStatus {
@@ -22,6 +22,16 @@ export const Steps = [
 ] as const
 
 export type Step = (typeof Steps)[number]
+
+// An AAB the user can upload to Google Play: their package name and keystore, not the demo ones
+export const isInitialAndroidBuild = (build: Build): boolean =>
+  build.platform === Platform.ANDROID && build.buildType === BuildType.AAB && !build.jobDetails?.useDemoCredentials
+
+// A running job which will make an initial Android build
+export const isRunningInitialAndroidJob = (job: Job): boolean =>
+  job.type === Platform.ANDROID &&
+  [JobStatus.PENDING, JobStatus.PROCESSING].includes(job.status) &&
+  !job.details?.useDemoCredentials
 
 // Determines the initial status of a step
 // We apply what is running / failed over this
@@ -91,9 +101,7 @@ export const getStatusFlags = async (cmd: BaseCommand<any>): Promise<StatusFlags
   )
 
   const buildsResponse = projectId && hasShipThisProject ? await queryBuilds({pageNumber: 0, projectId: `${projectId}`}) : null
-  const hasInitialBuild = Boolean(
-    buildsResponse?.data?.some((build) => build.platform === Platform.ANDROID && build.buildType === BuildType.AAB),
-  )
+  const hasInitialBuild = Boolean(buildsResponse?.data?.some(isInitialAndroidBuild))
 
   const testResult = projectId ? await fetchKeyTestResult({projectId}) : null
 
