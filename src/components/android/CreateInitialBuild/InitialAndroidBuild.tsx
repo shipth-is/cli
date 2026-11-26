@@ -2,8 +2,9 @@ import {Box, Text} from 'ink'
 import Spinner from 'ink-spinner'
 import {useContext, useEffect, useRef, useState} from 'react'
 
+import {isInitialAndroidBuild, isRunningInitialAndroidJob} from '@cli/components/android/AndroidWizard/utils.js'
 import {CommandContext, JobLogTail, JobProgress, StepProps} from '@cli/components/index.js'
-import {BuildType, Job, JobStatus, Platform} from '@cli/types/api.js'
+import {Job} from '@cli/types/api.js'
 import {JobFailedError, useBuilds, useJobs, useShip} from '@cli/utils/index.js'
 
 export interface InitialAndroidBuildProps extends StepProps {
@@ -28,15 +29,11 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
     if (!jobData) return
     if (!command) return
 
-    const hasAndroidBuild = buildData.data.some(
-      (build) => build.platform === Platform.ANDROID && build.buildType == BuildType.AAB,
-    )
+    const hasAndroidBuild = buildData.data.some(isInitialAndroidBuild)
     // If we now have a build - trigger the onComplete
     if (!prevHasBuild.current && hasAndroidBuild) return onComplete()
     prevHasBuild.current = hasAndroidBuild
-    const hasRunningAndroidJob = jobData.data.some(
-      (job) => job.type === Platform.ANDROID && [JobStatus.PENDING, JobStatus.PROCESSING].includes(job.status),
-    )
+    const hasRunningAndroidJob = jobData.data.some(isRunningInitialAndroidJob)
     // If we don't have a build and we don't have an android job - run the ship command
     const shouldRun = !hasAndroidBuild && !hasRunningAndroidJob
     if (shouldRun)
@@ -48,14 +45,14 @@ export const InitialAndroidBuild = ({gameId, onComplete, onError, ...boxProps}: 
           shipFlags: {
             platform: 'android',
             skipPublish: true,
+            // Not the game setting - Google Play needs the user's package name and keystore
+            useDemoCredentials: false,
           },
         })
         .catch(onError)
   }, [buildData, jobData, command])
 
-  const androidJob = jobData?.data.find(
-    (job) => job.type === Platform.ANDROID && [JobStatus.PENDING, JobStatus.PROCESSING].includes(job.status),
-  )
+  const androidJob = jobData?.data.find(isRunningInitialAndroidJob)
 
   return (
     <>
